@@ -2,6 +2,16 @@
 (function () {
   'use strict';
 
+  /* Declarative no-JS path used by the "No-JS init" cards. Config is read by
+     the DOMContentLoaded auto-init inside zidan-form.js, so set it first. */
+  window.ZIDAN_FORM_CONFIG = {
+    targets: ['#cms-country'],
+    fieldTargets: [
+      { selector: '#cms-email', options: { label: 'Work email', icon: 'mail', clearable: true } },
+      { selector: '#cms-upload', options: { variant: 'dropzone', title: 'Drop a file — configured by ID' } }
+    ]
+  };
+
   var form = window.ZidanForm;
   var select = window.ZidanSelect;
   if (!form || !select) return;

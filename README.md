@@ -205,19 +205,20 @@ Copyable CDN URLs (pin the version):
 - `plugin-file-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/plugin-file-core.css>
 - `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/plugin-file-theme.css>
 
-Select / combobox / tags only (≈90 kB JS, ≈12 kB core CSS, ≈32 kB theme CSS):
+Select / combobox / tags only (≈95 kB JS, ≈12 kB core CSS, ≈32 kB theme CSS):
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/plugin-select-core.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/plugin-select-theme.css">
 <script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/zidan-select.js"></script>
 <script>
-  // auto-init works for [data-zidan-select]; JS-only:
+  // auto-init covers [data-zidan-select], class="zidan-select", zidan-form scopes
+  // and ZIDAN_FORM_CONFIG targets; JS-only options:
   zidanSelect('#country', { mode: 'select' });
 </script>
 ```
 
-File upload only (≈70 kB JS, ≈9 kB core CSS, ≈35 kB theme CSS):
+File upload only (≈76 kB JS, ≈9 kB core CSS, ≈35 kB theme CSS):
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/plugin-file-core.css">
@@ -234,6 +235,11 @@ Load a subset **instead of** `zidan-form.js`, not together with it — the guard
 initialised copy. If one page needs select *and* file upload, use the full build. The select
 bundle exposes `ZidanSelect`, `zidanSelect`, `initZidanSelects`; the file bundle exposes
 `ZidanFileUpload`, `zidanField`, `initZidanForms`.
+
+Declarative init ships in both subsets too: `class="zidan-select"` (or a `zidan-form` wrapper)
+works with no JS in the select build, and `class="zidan-field"` / a `zidan-form` wrapper works
+with no JS in the file build. The same [`window.ZIDAN_FORM_CONFIG`](#no-javascript-init-ids-classes--json-cms-friendly)
+targets apply.
 
 ---
 
@@ -272,8 +278,8 @@ bundle exposes `ZidanSelect`, `zidanSelect`, `initZidanSelects`; the file bundle
 </script>
 ```
 
-Auto-init runs on `DOMContentLoaded` for `[data-zidan-select]` and `[data-zidan*]` unless
-disabled:
+Auto-init runs on `DOMContentLoaded` for `[data-zidan-select]`, `[data-zidan*]`, the marker
+classes described below and any configured targets, unless disabled:
 
 ```html
 <html data-zidan-auto-init="false">
@@ -282,6 +288,53 @@ disabled:
 ```js
 window.ZIDAN_SELECT_CONFIG = { autoInit: false };
 ```
+
+### No-JavaScript init: IDs, classes & JSON (CMS-friendly)
+
+Some CMS platforms and page builders hide per-element options or strip custom scripts. Three
+declarative paths need no wiring call, and all three behave the same in the full build, the
+select-only bundle and the file-only bundle:
+
+| Path | Markup | Enhanced |
+| --- | --- | --- |
+| Marker class | `<select class="zidan-select">`, `<input class="zidan-field">` | That control. `zidan-field` covers file, checkbox and text/textarea inputs; radio groups go on the `<fieldset class="zidan-field">`. |
+| Form wrapper | `<form class="zidan-form">` (or `data-zidan-form` on any element) | Every `<select>` and every `<input type="file">` inside, marked or not. |
+| Config targets | `window.ZIDAN_FORM_CONFIG` | Anything matching an ID, class or full CSS selector. |
+
+`data-zidan-options` passes plain options as JSON, so a CMS field can expose a single attribute.
+It works on selects and every field type:
+
+```html
+<select class="zidan-select" multiple
+        data-zidan-options='{"mode":"tags","maxTags":3,"placeholder":"Type and press Enter"}'>…</select>
+<input type="file" class="zidan-field"
+       data-zidan-options='{"variant":"dropzone","title":"Attach a document"}'>
+```
+
+Reach controls by ID or any selector — define the config **before** the library script runs
+(before `DOMContentLoaded`):
+
+```html
+<script>
+  window.ZIDAN_FORM_CONFIG = {
+    targets: ['#country', 'select.product-variants',
+              { selector: '#brands', options: { mode: 'tags', maxTags: 3 } }],
+    fieldTargets: [
+      { selector: '#avatar', options: { variant: 'avatar' } },
+      { selector: 'input[name="email"]', options: { icon: 'mail' } }
+    ],
+    formTargets: ['#checkout']          // extra form scopes
+  };
+</script>
+<script src="zidan-form.js"></script>
+```
+
+`targets` and `fieldTargets` accept a selector string or `{ selector, options }`; per-target
+options win over `data-zidan-options`, which wins over data attributes. `ZIDAN_SELECT_CONFIG`
+still works as an alias of `ZIDAN_FORM_CONFIG`. JSON can only carry literal values — callbacks,
+upload functions and custom icon markup still need a small JS block. Trimmed bundles:
+the select build enhances selects, the file build enhances file inputs; both understand the
+same config keys, marker classes and JSON attribute.
 
 Windows/macOS keyboard behaviour, grouping, search and all select features live in
 [`docs/options.md`](docs/options.md).
@@ -870,6 +923,9 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](docs
 
 - **Subset builds** — select-only and file-only JS bundles with matching core/theme CSS in
   `dist/select/` and `dist/file/`; themes, layouts and framework adapters included.
+- **No-JS init** — `zidan-select` / `zidan-field` marker classes, `zidan-form` wrapper scopes,
+  `data-zidan-options` JSON and `window.ZIDAN_FORM_CONFIG` targets for ID/CSS-selector setup in
+  CMS builds. Works in the full build and both subsets.
 - **Input icons** — `data-zidan-auto-icon`, `data-zidan-icon`, left/right placement,
   clickable icons and `ZidanForm.registerIcon()` for custom artwork.
 - **Number stepper** — stacked, split and inline − / + controls with hold-to-repeat,

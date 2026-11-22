@@ -289,6 +289,45 @@
               <option>Unavailable option</option>
             </select>
           </div>
+          <div class="card" id="cms-select" style="grid-column:1 / -1">
+            <h3>No-JS init: IDs, classes &amp; JSON</h3>
+            <p>For CMS pages where you cannot add attributes or call <code>zidanSelect()</code>.
+              All three paths work in the full build and the select-only bundle.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;align-items:start">
+              <div>
+                <p style="margin:0 0 6px;font-size:.8rem;color:#6b7385">Wrapper class only</p>
+                <div class="zidan-form">
+                  <select name="cms-plan">
+                    <option value="">Plan — wrapper class only</option>
+                    <option>Starter</option><option>Pro</option><option>Team</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <p style="margin:0 0 6px;font-size:.8rem;color:#6b7385">ID target from the config</p>
+                <select id="cms-country" name="cms-country">
+                  <option value="">Country — ID target</option>
+                  <option>Germany</option><option>Japan</option><option>Brazil</option>
+                </select>
+              </div>
+              <div>
+                <p style="margin:0 0 6px;font-size:.8rem;color:#6b7385">Marker class + JSON options</p>
+                <select class="zidan-select" multiple
+                        data-zidan-options='{"mode":"tags","maxTags":2,"placeholder":"Tags — class + JSON"}'>
+                  <option>CSS</option><option>HTML</option><option>JavaScript</option>
+                </select>
+              </div>
+            </div>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>&lt;select id="cms-country"&gt;…&lt;/select&gt;
+&lt;select class="zidan-select"
+        data-zidan-options='{"mode":"tags","maxTags":2}'&gt;…&lt;/select&gt;
+&lt;div class="zidan-form"&gt; …every &lt;select&gt; inside… &lt;/div&gt;
+
+// set before the library script runs
+window.ZIDAN_FORM_CONFIG = { targets: ['#cms-country'] };</code></pre>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -451,6 +490,27 @@
                    data-zidan-title="Upload media" data-zidan-upload-icon="cloud">
             <p class="form-status" id="file-status" role="status" aria-live="polite"></p>
           </div>
+          <div class="card" id="cms-file" style="grid-column:1 / -1">
+            <h3>No-JS init for uploads</h3>
+            <p>A plain file input is enough. Target it by ID in <code>ZIDAN_FORM_CONFIG</code>, or add the
+              marker class and JSON options — no <code>zidanField()</code> call. Identical in the
+              file-only bundle; a <code>zidan-form</code> wrapper also picks up unmarked file inputs.</p>
+            <div style="display:flex;flex-direction:column;gap:18px">
+              <input type="file" id="cms-upload" name="cms-upload">
+              <input type="file" class="zidan-field"
+                     data-zidan-options='{"variant":"compact","title":"Attach a file (JSON)"}'>
+            </div>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>&lt;input type="file" id="cms-upload"&gt;
+&lt;input type="file" class="zidan-field"
+       data-zidan-options='{"variant":"compact"}'&gt;
+
+window.ZIDAN_FORM_CONFIG = {
+  fieldTargets: [{ selector: '#cms-upload',
+                   options: { variant: 'dropzone' } }]
+};</code></pre>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -580,6 +640,26 @@ ZidanForm.registerIcon('sparkle',
           <div class="card">
             <h3>Outlined label</h3>
             <input type="text" data-zidan="input" data-zidan-layout="outlined" data-zidan-label="Workspace URL" data-zidan-prefix="https://">
+          </div>
+          <div class="card" id="cms-input" style="grid-column:1 / -1">
+            <h3>No-JS init for text fields</h3>
+            <p>Target a plain input by ID, or mark it with <code>class="zidan-field"</code> and pass the
+              label, icon and utilities as JSON — useful when a CMS only exposes fields and a script tag.</p>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <input type="text" id="cms-email" placeholder="you@company.com">
+              <input type="text" class="zidan-field" placeholder="Type here"
+                     data-zidan-options='{"label":"JSON options","icon":"user","clearable":true}'>
+            </div>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>&lt;input type="text" id="cms-email"&gt;
+&lt;input type="text" class="zidan-field"
+       data-zidan-options='{"label":"Name","icon":"user"}'&gt;
+
+window.ZIDAN_FORM_CONFIG = {
+  fieldTargets: [{ selector: '#cms-email',
+                   options: { label: 'Work email', icon: 'mail' } }]
+};</code></pre>
+            </div>
           </div>
         </div>
       </section>
@@ -789,6 +869,11 @@ ZidanForm.registerIcon('sparkle',
                 <th scope="row">Built-in validation rules</th>
                 <td class="is-ours"><strong>Every type, weekend/blocked dates, validation icons</strong></td>
                 <td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+              <tr>
+                <th scope="row">No-JS init (ID, class, JSON)</th>
+                <td class="is-ours"><strong>Config targets, marker classes, data-zidan-options JSON</strong></td>
+                <td>JS selector</td><td>JS selector</td><td>JS selector</td><td>JS selector</td>
               </tr>
               <tr>
                 <th scope="row">Split structure / theme CSS</th>

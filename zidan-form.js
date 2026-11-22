@@ -53,7 +53,9 @@
   var FIELD_LAYOUTS = ['stacked', 'inline', 'card', 'compact', 'floating', 'outlined'];
   var FIELD_KINDS = ['checkbox', 'radio', 'radio-group', 'file', 'input', 'textarea'];
   var FIELDS_SELECTOR = '[data-zidan], [data-zidan-checkbox], [data-zidan-switch], [data-zidan-radio], ' +
-    '[data-zidan-radio-group], [data-zidan-file], [data-zidan-input], [data-zidan-textarea]';
+    '[data-zidan-radio-group], [data-zidan-file], [data-zidan-input], [data-zidan-textarea], .zidan-field';
+  var SELECT_SELECTOR = '[data-zidan-select], .zidan-select';
+  var FORM_SCOPE_SELECTOR = '[data-zidan-form], .zidan-form';
   var SCROLLBARS = ['default', 'thin', 'fancy', 'hover', 'hidden'];
   var EVENT_PREFIX = 'zidan:';
   var uidSeq = 0;
@@ -103,6 +105,36 @@
     if (value === undefined || value === null || value === '') return fallback;
     var v = String(value).toLowerCase();
     return !(v === 'false' || v === '0' || v === 'no' || v === 'off');
+  }
+
+  /* copy own keys from each source; later sources win */
+  function mergeOptions() {
+    var out = {};
+    for (var i = 0; i < arguments.length; i++) {
+      (function (source) {
+        if (!source || typeof source !== 'object') return;
+        Object.keys(source).forEach(function (key) {
+          if (source[key] !== undefined) out[key] = source[key];
+        });
+      })(arguments[i]);
+    }
+    return out;
+  }
+
+  /* data-zidan-options='{"mode":"tags",...}' — options for CMS/JSON-only setups */
+  function parseOptionsAttr(node) {
+    if (!node || !node.getAttribute) return null;
+    var raw = node.getAttribute('data-zidan-options');
+    if (!raw) return null;
+    try {
+      var parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : null;
+    } catch (error) {
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn('[ZidanForm] ignoring invalid data-zidan-options JSON on', node, error);
+      }
+      return null;
+    }
   }
 
   function clamp(value, min, max) {
@@ -636,7 +668,8 @@
     this.layout = this.opts.layout;
     this.id = this.opts.id || uid('zs');
     this.isMount = /^(DIV|SPAN|SECTION|ARTICLE|FORM-FIELD)$/i.test(element.tagName) ||
-      element.hasAttribute('data-zidan-select') && !/^(SELECT|INPUT|TEXTAREA)$/i.test(element.tagName);
+      (element.hasAttribute('data-zidan-select') || hasClass(element, 'zidan-select')) &&
+      !/^(SELECT|INPUT|TEXTAREA)$/i.test(element.tagName);
     this.native = this.isMount ? null : element;
     this.syncEl = null;
 
@@ -673,6 +706,7 @@
   /* ---------------- option normalisation ---------------- */
 
   ZidanSelect.prototype._normalizeOptions = function (options) {
+    options = mergeOptions(parseOptionsAttr(this.el), options);
     var d = this.el.dataset || {};
     var isNativeSelect = this.el.tagName === 'SELECT';
     var isTagsMount = /tags/i.test(d.zidanSelect || '') || /tags/i.test(d.zidanMode || '');
@@ -1117,6 +1151,7 @@
 
     if (!this.opts.multiple && this.mode !== 'tags') next = next.slice(0, 1);
     this.value_ = next;
+    if (next.length && this.opts.validation === 'invalid') this.opts.validation = null;
     this._render();
     this._syncNative();
     if (!cfg.silent) {
@@ -1186,6 +1221,13 @@
     this.root.classList.toggle('zs-root--disabled', !!this.disabled_);
     this.root.classList.toggle('zs-root--invalid', opts.validation === 'invalid');
     this.root.classList.toggle('zs-root--valid', opts.validation === 'valid');
+    if (opts.validation === 'invalid') this.root.setAttribute('data-zs-validation', 'invalid');
+    else if (opts.validation === 'valid') this.root.setAttribute('data-zs-validation', 'valid');
+    else this.root.removeAttribute('data-zs-validation');
+    if (opts.validation === 'invalid') this.input.setAttribute('aria-invalid', 'true');
+    else if (opts.validation === 'valid') this.input.setAttribute('aria-invalid', 'false');
+    else this.input.removeAttribute('aria-invalid');
+    if (this.el.required || opts.required) this.input.setAttribute('aria-required', 'true');
 
     if (opts.validation === 'invalid') this.controlEl.classList.add('is-invalid');
     else this.controlEl.classList.remove('is-invalid');
@@ -1664,6 +1706,7 @@
     var tag = { value: formatted, label: formatted };
     this.value_.push(tag);
     this.query = '';
+    if (this.opts.validation === 'invalid') this.opts.validation = null;
 
     if (!cfg.silent) {
       this._render();
@@ -1987,6 +2030,14 @@
 
     this.debouncedFetch = debounce(function (query) { self._fetch(query); }, this.opts.debounce);
 
+    if (this.el && this.el.addEventListener) {
+      this.onNativeInvalid = function () {
+        self.setValidation('invalid');
+        if (self.input && self.input.focus) self.input.focus();
+      };
+      this.el.addEventListener('invalid', this.onNativeInvalid);
+    }
+
     this.input.addEventListener('input', this.onInput);
     this.input.addEventListener('keydown', this.onKeyDown);
     this.input.addEventListener('focus', this.onFocus);
@@ -2026,6 +2077,7 @@
       var previous = this.getTags();
       this.value_ = [];
       raw.forEach(function (tag) { this._addTagObject(tag, { silent: true }); }, this);
+      if (this.value_.length && this.opts.validation === 'invalid') this.opts.validation = null;
       this._render();
       this._syncNative();
       if (!cfg.silent) {
@@ -2071,6 +2123,16 @@
         }
         return self.opts.allowFreeText;
       });
+      if (this.native && this.native.tagName === 'SELECT') {
+        while (this.native.firstChild) this.native.removeChild(this.native.firstChild);
+        this.items.forEach(function (item) {
+          var option = doc.createElement('option');
+          option.value = item.value;
+          option.textContent = item.label;
+          if (item.disabled) option.disabled = true;
+          self.native.appendChild(option);
+        });
+      }
     }
     this.asyncItems = null;
     this.activeIndex = -1;
@@ -2210,6 +2272,7 @@
 
     doc.removeEventListener('pointerdown', this.onDocumentPointerDown, true);
     global.removeEventListener('resize', this.onWindowResize);
+    if (this.el && this.onNativeInvalid) this.el.removeEventListener('invalid', this.onNativeInvalid);
 
     this.emit('destroy', { instance: this });
 
@@ -2531,6 +2594,47 @@
 
   ZidanFieldBase.prototype.getValidation = function () {
     return this.validation;
+  };
+
+  ZidanFieldBase.prototype.getValue = function () {
+    var el = this.el;
+    if (!el) return null;
+    if (this.kind === 'file') {
+      return this.getFiles ? this.getFiles() : Array.prototype.slice.call(el.files || []);
+    }
+    if (el.type === 'checkbox') return !!el.checked;
+    if (el.multiple && el.options) {
+      return Array.prototype.filter.call(el.options, function (option) { return option.selected; })
+        .map(function (option) { return option.value; });
+    }
+    return el.value;
+  };
+
+  ZidanFieldBase.prototype.setValue = function (value) {
+    var el = this.el;
+    if (!el) return this;
+    if (this.kind === 'file') {
+      var files = value === null || value === undefined ? [] : (Array.isArray(value) ? value : [value]);
+      if (!files.length) return this.clear ? this.clear() : this;
+      if (this.addFiles) this.addFiles(files);
+      return this;
+    }
+    if (el.type === 'checkbox') {
+      if (this.setChecked) return this.setChecked(!!value);
+      el.checked = !!value;
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      return this.update();
+    }
+    if (el.multiple && el.options) {
+      var wanted = (Array.isArray(value) ? value : [value]).map(String);
+      Array.prototype.forEach.call(el.options, function (option) {
+        option.selected = wanted.indexOf(option.value) !== -1;
+      });
+    } else {
+      el.value = value === null || value === undefined ? '' : String(value);
+    }
+    el.dispatchEvent(new Event('change', { bubbles: true }));
+    return this.update();
   };
 
   ZidanFieldBase.prototype.update = function () {
@@ -4438,6 +4542,10 @@
       this.counter.classList.toggle('zs-counter--limit', length >= this.counterMax);
     }
     if (this.range) this._syncRange(value);
+    if (this.rangeOutput) {
+      this.rangeOutput.textContent = value;
+      this.rangeOutput.value = value;
+    }
     if (this.stepper) {
       var min = parseFloat(input.min);
       var max = parseFloat(input.max);
@@ -4480,11 +4588,19 @@
     if (type === 'checkbox') return 'checkbox';
     if (type === 'radio') return 'radio';
     if (type === 'file') return 'file';
+    if (hasClass(node, 'zidan-field')) {
+      if (node.tagName === 'FIELDSET') return node.querySelector('input[type="radio"]') ? 'radio-group' : null;
+      if (node.tagName === 'TEXTAREA') return 'textarea';
+      if (node.tagName !== 'INPUT') return null;
+      // a lone radio needs its group container, so only the fieldset form is inferred
+      if (type === 'radio') return null;
+      if (typeof TEXT_TYPES !== 'undefined' && TEXT_TYPES.indexOf(type) !== -1) return 'input';
+    }
     return null;
   }
 
   function createField(node, kind, options) {
-    var opts = options || {};
+    var opts = mergeOptions(parseOptionsAttr(node), options);
     if (node.__zidanField && !opts.force) return node.__zidanField;
     switch (kind) {
       case 'checkbox':
@@ -4513,13 +4629,9 @@
     var created = [];
     nodes.forEach(function (node) {
       if (node.__zidanField) return;
-      var kind = fieldKindFor(node);
       // zidanField() accepts a plain input/textarea too, so JS-only options
       // (output, counter, clearable, …) work without a data attribute
-      if (!kind && typeof TEXT_TYPES !== 'undefined' && (node.tagName === 'TEXTAREA' ||
-        (node.tagName === 'INPUT' && TEXT_TYPES.indexOf(String(node.type).toLowerCase()) !== -1))) {
-        kind = node.tagName === 'TEXTAREA' ? 'textarea' : 'input';
-      }
+      var kind = fieldKindFor(node) || inferredTextKind(node);
       if (!kind) return;
       if (kind === 'radio' && !node.hasAttribute('data-zidan-radio')) {
         kind = 'radio-group';
@@ -4530,14 +4642,10 @@
     return created.length === 1 ? created[0] : created;
   }
 
-  function initZidanForms(container, options) {
-    var scope = container || doc;
-    if (!scope || !scope.querySelectorAll) return [];
-    var nodes = Array.prototype.slice.call(scope.querySelectorAll(FIELDS_SELECTOR));
-    if (isElement(scope) && scope.matches && scope.matches(FIELDS_SELECTOR)) nodes.unshift(scope);
+  function initFieldList(nodes, options) {
     var instances = [];
     nodes.forEach(function (node) {
-      if (node.__zidanField) return;
+      if (!isElement(node) || node.__zidanField) return;
       var kind = fieldKindFor(node);
       if (!kind) return;
       if (kind === 'radio') kind = 'radio-group';
@@ -4545,6 +4653,14 @@
       if (instance) instances.push(instance);
     });
     return instances;
+  }
+
+  function initZidanForms(container, options) {
+    var scope = container || doc;
+    if (!scope || !scope.querySelectorAll) return [];
+    var nodes = Array.prototype.slice.call(scope.querySelectorAll(FIELDS_SELECTOR));
+    if (isElement(scope) && scope.matches && scope.matches(FIELDS_SELECTOR)) nodes.unshift(scope);
+    return initFieldList(nodes, options);
   }
 
   var ZidanForm = {
@@ -4672,35 +4788,120 @@
     return instances.length === 1 ? instances[0] : instances;
   }
 
+  function initSelectList(nodes, options) {
+    return nodes.filter(function (node) {
+      return isElement(node) && !node.__zidanSelect;
+    }).map(function (node) {
+      ZidanSelect.instances.push(new ZidanSelect(node, options || {}));
+      return node.__zidanSelect;
+    });
+  }
+
   function initZidanSelects(container, options) {
     var scope = container || doc;
     if (!scope || !scope.querySelectorAll) return [];
-    var nodes = Array.prototype.slice.call(scope.querySelectorAll('[data-zidan-select]'));
-    if (isElement(scope) && scope.hasAttribute('data-zidan-select')) nodes.unshift(scope);
-    return nodes
-      .filter(function (node) { return !node.__zidanSelect; })
-      .map(function (node) {
-        ZidanSelect.instances.push(new ZidanSelect(node, options || {}));
-        return node.__zidanSelect;
+    var nodes = Array.prototype.slice.call(scope.querySelectorAll(SELECT_SELECTOR));
+    if (isElement(scope) && scope.matches && scope.matches(SELECT_SELECTOR)) nodes.unshift(scope);
+    return initSelectList(nodes, options);
+  }
+
+  /* a config target is a CSS selector string or { selector, options } */
+  function eachTarget(list, run) {
+    toArray(list).forEach(function (entry) {
+      if (!entry) return;
+      if (typeof entry === 'string') run(entry, null);
+      else if (entry.selector) run(String(entry.selector), entry.options || null);
+    });
+  }
+
+  function initSelectTargets(list, shared) {
+    eachTarget(list, function (selector, options) {
+      initSelectList(Array.prototype.slice.call(doc.querySelectorAll(selector)),
+        mergeOptions(shared, options));
+    });
+  }
+
+  function initFieldTargets(list, shared) {
+    eachTarget(list, function (selector, options) {
+      var opts = mergeOptions(shared, options);
+      Array.prototype.slice.call(doc.querySelectorAll(selector)).forEach(function (node) {
+        if (!isElement(node) || node.__zidanField) return;
+        var kind = fieldKindFor(node) || inferredTextKind(node);
+        if (!kind) return;
+        if (kind === 'radio') kind = 'radio-group';
+        createField(node, kind, opts);
       });
+    });
+  }
+
+  /* explicit targets may point at a plain text input or textarea */
+  function inferredTextKind(node) {
+    if (typeof TEXT_TYPES === 'undefined' || !isElement(node)) return null;
+    if (node.tagName === 'TEXTAREA') return 'textarea';
+    if (node.tagName !== 'INPUT') return null;
+    return TEXT_TYPES.indexOf(String(node.type).toLowerCase()) !== -1 ? 'input' : null;
+  }
+
+  /* a form scope enhances every native select inside, marked or not */
+  function initScopeSelects(scope, options) {
+    if (typeof ZidanSelect === 'undefined') return [];
+    var selector = SELECT_SELECTOR + ', select';
+    var nodes = Array.prototype.slice.call(scope.querySelectorAll(selector));
+    if (isElement(scope) && scope.matches && scope.matches(selector)) nodes.unshift(scope);
+    return initSelectList(nodes, options);
+  }
+
+  function initScope(scope, selectOptions, fieldOptions) {
+    if (!isElement(scope)) return;
+    initScopeSelects(scope, selectOptions);
+    if (typeof ZidanFileUpload !== 'undefined') {
+      // a form scope also picks up plain file inputs, not just marked ones
+      initFieldList(Array.prototype.slice.call(scope.querySelectorAll('input[type="file"]')), fieldOptions);
+    }
+    if (typeof ZidanCheckbox !== 'undefined' || typeof ZidanRadioGroup !== 'undefined' ||
+      typeof ZidanFileUpload !== 'undefined' || typeof ZidanTextField !== 'undefined') {
+      initZidanForms(scope, fieldOptions);
+    }
+  }
+
+  function initFormScopes(list, selectOptions, fieldOptions) {
+    Array.prototype.slice.call(doc.querySelectorAll(FORM_SCOPE_SELECTOR))
+      .forEach(function (scope) { initScope(scope, selectOptions, fieldOptions); });
+    eachTarget(list, function (selector, options) {
+      Array.prototype.slice.call(doc.querySelectorAll(selector)).forEach(function (scope) {
+        initScope(scope, mergeOptions(selectOptions, options), mergeOptions(fieldOptions, options));
+      });
+    });
   }
 
   function autoInit() {
     if (!doc) return;
-    var config = global.ZIDAN_SELECT_CONFIG || {};
+    var config = global.ZIDAN_FORM_CONFIG || global.ZIDAN_SELECT_CONFIG || {};
     if (config.autoInit === false) return;
     if (global.ZidanSelect && global.ZidanSelect.autoInit === false) return;
     if (doc.documentElement.getAttribute('data-zidan-auto-init') === 'false') return;
-    if (config.selector) {
-      if (typeof ZidanSelect === 'undefined') return;
-      Array.prototype.slice.call(doc.querySelectorAll(config.selector)).forEach(function (node) {
-        if (node.__zidanSelect) return;
-        ZidanSelect.instances.push(new ZidanSelect(node, config.options || {}));
-      });
-      return;
+
+    var hasSelect = typeof ZidanSelect !== 'undefined';
+    var hasFields = typeof ZidanCheckbox !== 'undefined' || typeof ZidanRadioGroup !== 'undefined' ||
+      typeof ZidanFileUpload !== 'undefined' || typeof ZidanTextField !== 'undefined';
+    var selectOptions = config.options || {};
+    var fieldOptions = config.fieldOptions || config.fields || {};
+
+    // explicit targets run first so their per-target options win over the
+    // generic attribute scan (the scan then skips what is already initialised)
+    if (hasSelect) {
+      if (config.selector) {
+        // legacy: an explicit selector replaces the data-attribute scan
+        initSelectTargets(config.selector, selectOptions);
+      } else {
+        initSelectTargets(config.targets || config.selectors, selectOptions);
+      }
     }
-    if (typeof ZidanSelect !== 'undefined') initZidanSelects(doc, config.options || {});
-    initZidanForms(doc, config.fields || {});
+    if (hasFields) initFieldTargets(config.fieldTargets, fieldOptions);
+    initFormScopes(config.formTargets, selectOptions, fieldOptions);
+
+    if (hasSelect && !config.selector) initZidanSelects(doc, selectOptions);
+    if (hasFields) initZidanForms(doc, fieldOptions);
   }
 
   if (doc) {

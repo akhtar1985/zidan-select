@@ -21,6 +21,7 @@ same two stylesheets.
 | Built-in validation rules | **Every type, weekend/blocked dates, validation icons** | — | — | — | — | Styles only |
 | Checkbox / switch / radio UI | **Built in** | — | — | — | — | Native only |
 | Native `value` / `checked` / `files` kept | **Yes** | Yes | Yes | Yes | Yes | Yes |
+| No-JS init by ID, class or JSON | **Config targets, marker classes, `data-zidan-options` JSON** | JS selector | JS selector | JS selector | JS selector | JS selector |
 | Split structure / theme CSS | **Yes** (`plugin-core.css` + `plugin-theme.css`) | Partial | Partial | Partial | Partial | Yes (Sass tokens) |
 | Select-only / file-only bundles | **Yes — trimmed JS + matching CSS** | Core is select-only | Core is select + text | Core is select-only | Core is select-only | Whole framework |
 | Built-in themes | **5** + custom tokens | Themes via CSS | Themes via CSS | Themes via CSS | Themes via CSS | 1 (Bootstrap) |

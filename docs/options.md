@@ -1,9 +1,68 @@
 # Options & data attributes
 
 Everything is opt-in. A control is enhanced only when it carries a `data-zidan*` attribute,
-is matched by `initZidanSelects()` / `initZidanForms()`, or is passed to `zidanSelect()` /
-`zidanField()`. `zidanField()` itself accepts any supported `<input>`/`<textarea>`, with or
-without a `data-zidan*` attribute, which is how JS-only options are applied.
+carries a marker class, sits inside a form scope, is matched by a configured target, or is
+passed to `initZidanSelects()` / `initZidanForms()` / `zidanSelect()` / `zidanField()`.
+`zidanField()` itself accepts any supported `<input>`/`<textarea>`, with or without a
+`data-zidan*` attribute, which is how JS-only options are applied.
+
+## No-JS init (IDs, classes, selectors, JSON)
+
+For CMS templates where attributes are limited and custom scripts are unwelcome, init can be
+entirely declarative. The same rules apply to the full build, the select-only bundle and the
+file-only bundle.
+
+| Path | Markup | What is enhanced |
+| --- | --- | --- |
+| Marker class | `<select class="zidan-select">` | That select, or a mount `<div>`. Mode comes from `data-zidan-options` / `data-zidan-mode`. |
+| Marker class | `<input class="zidan-field">` | A checkbox, file or text/textarea input. Put it on the `<fieldset>` for a radio group. |
+| Form wrapper | `<form class="zidan-form">` or `data-zidan-form` on any element | Every `<select>` and every `<input type="file">` inside, marked or not. |
+| Config targets | `window.ZIDAN_FORM_CONFIG` (alias `ZIDAN_SELECT_CONFIG`) | Anything matched by an ID, class or full CSS selector. |
+
+### `data-zidan-options` JSON
+
+Plain options as JSON on the element itself, for selects and every field type:
+
+```html
+<select class="zidan-select" multiple
+        data-zidan-options='{"mode":"tags","maxTags":3,"placeholder":"Add a tag…"}'>…</select>
+
+<input type="file" class="zidan-field"
+       data-zidan-options='{"variant":"gallery","maxFiles":4,"title":"Add images"}'>
+```
+
+Values must be literal JSON; callbacks, upload functions and raw SVG icon markup still need a
+small JS block. Invalid JSON is ignored with one console warning.
+
+### `window.ZIDAN_FORM_CONFIG`
+
+| Key | Type | Effect |
+| --- | --- | --- |
+| `autoInit` | boolean | `false` disables every automatic pass (`data-zidan-auto-init="false"` does the same). |
+| `targets` / `selectors` | string or array | CSS selectors, or `{ selector, options }` entries, initialised as selects. |
+| `fieldTargets` | string or array | Selectors initialised as fields; plain text inputs and textareas are accepted. |
+| `formTargets` | string or array | Extra form scopes: every select and file input inside is initialised. |
+| `options` | object | Shared select options for the attribute scan and for targets. |
+| `fieldOptions` | object | Shared field options for the scan and for targets. |
+| `fields` | object | Legacy alias of `fieldOptions`. |
+| `selector` | string | Legacy: initialise only these selects and skip the attribute scan. |
+
+```js
+window.ZIDAN_FORM_CONFIG = {
+  targets: ['#country', 'select.product-variants',
+            { selector: '#brands', options: { mode: 'tags', maxTags: 3 } }],
+  fieldTargets: [
+    { selector: '#avatar', options: { variant: 'avatar' } },
+    { selector: 'input[name="email"]', options: { icon: 'mail' } }
+  ],
+  formTargets: ['#checkout']
+};
+```
+
+Precedence for any single option: per-target `options` → `data-zidan-options` JSON →
+`data-zidan-*` attribute → default. Config is read during the `DOMContentLoaded` pass, so set it
+before the library script (or call `initZidanSelects()` / `initZidanForms()` yourself with the
+same values). Explicit targets run first so their options win over the generic scan.
 
 ## Field options
 
@@ -383,7 +442,8 @@ Every callback receives a single payload object with `instance` and the relevant
 `data-zidan-multiple`, `data-zidan-searchable`, `data-zidan-clearable`, `data-zidan-disabled`,
 `data-zidan-allow-free-text`, `data-zidan-max-tags`, `data-zidan-min-tag-length`,
 `data-zidan-max-tag-length`, `data-zidan-case-sensitive`, `data-zidan-validation`,
-`data-zidan-scrollbar`.
+`data-zidan-scrollbar`, and the JSON escape hatch `data-zidan-options` (any JS option that
+takes a literal value). Marker classes: `zidan-select`, `zidan-field`, `zidan-form`.
 
 ## Defaults
 

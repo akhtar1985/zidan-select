@@ -83,12 +83,18 @@ Both theme stylesheets keep the token set, the five preset themes (`default`, `m
 adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
 as in the full build.
 
-Approximate v2.2.0 sizes: select ≈90 kB JS + 12 kB core + 32 kB theme; file ≈70 kB JS +
-9 kB core + 35 kB theme, against ≈189 kB JS + 36 kB core + 47 kB theme for the full build.
+Approximate v2.2.0 sizes: select ≈95 kB JS + 12 kB core + 32 kB theme; file ≈76 kB JS +
+9 kB core + 35 kB theme, against ≈194 kB JS + 36 kB core + 47 kB theme for the full build.
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their
 APIs — use the full build when a page needs both select and file upload.
+
+Declarative init comes along in both subsets because the marker scan and the factory live in the
+shared/factory sections every variant keeps. `class="zidan-select"`, `class="zidan-field"`,
+`data-zidan-options` JSON and `window.ZIDAN_FORM_CONFIG` targets all work without a JS call; a
+`zidan-form` scope enhances every select in the select bundle and every file input in the file
+bundle.
 
 Build-time safety: every generated JS file is passed through `node --check`, and missing sections
 abort the build instead of producing a partial bundle.
