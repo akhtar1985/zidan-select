@@ -1,0 +1,71 @@
+{
+  "name": "zidan-select",
+  "version": "2.0.1",
+  "description": "Zero-dependency form enhancement library: select/combobox/tags, checkboxes, switches, radio groups, drag & drop file upload and text inputs with split core/theme CSS, 5 themes, 5 layouts and framework adapters.",
+  "keywords": [
+    "select",
+    "combobox",
+    "tags",
+    "checkbox",
+    "switch",
+    "radio",
+    "file-upload",
+    "form",
+    "vanilla-js",
+    "zero-dependency",
+    "accessible",
+    "bootstrap",
+    "tailwind"
+  ],
+  "license": "MIT",
+  "author": "akhtar1985",
+  "homepage": "https://akhtar1985.github.io/zidan-select/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akhtar1985/zidan-select.git"
+  },
+  "bugs": {
+    "url": "https://github.com/akhtar1985/zidan-select/issues"
+  },
+  "main": "zidan-form.js",
+  "module": "zidan-form.mjs",
+  "unpkg": "zidan-form.js",
+  "jsdelivr": "zidan-form.js",
+  "style": "plugin-theme.css",
+  "exports": {
+    ".": {
+      "import": "./zidan-form.mjs",
+      "require": "./zidan-form.js",
+      "default": "./zidan-form.js"
+    },
+    "./css/core": "./plugin-core.css",
+    "./css/theme": "./plugin-theme.css",
+    "./core.css": "./plugin-core.css",
+    "./theme.css": "./plugin-theme.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "zidan-form.js",
+    "zidan-form.mjs",
+    "plugin-core.css",
+    "plugin-theme.css",
+    "dist",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css",
+    "zidan-form.js",
+    "zidan-form.mjs"
+  ],
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/test.mjs",
+    "lint": "node --check zidan-form.js && node --check demo.js && node --check zidan-form.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

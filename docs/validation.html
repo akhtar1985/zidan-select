@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZidanForm × validation libraries</title>
+  <link rel="stylesheet" href="../plugin-core.css">
+  <link rel="stylesheet" href="../plugin-theme.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 40px 22px 70px;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: #101324;
+      background: #f5f6fb;
+      line-height: 1.55;
+    }
+    main { max-width: 900px; margin: 0 auto; }
+    h1 { margin: 0 0 6px; font-size: 1.9rem; letter-spacing: -0.02em; }
+    .lead { margin: 0 0 26px; color: #525a70; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+    .card {
+      background: #fff;
+      border: 1px solid #e4e8f1;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 1px 2px rgba(16, 19, 36, 0.05);
+    }
+    .card h2 { margin: 0 0 2px; font-size: 1rem; }
+    .card p { margin: 0 0 16px; font-size: 0.8125rem; color: #6b7385; }
+    .card form { display: flex; flex-direction: column; gap: 14px; }
+    .status { margin-top: 12px; font-size: 0.8125rem; color: #067647; min-height: 20px; }
+    .status[data-state="error"] { color: #b42318; }
+    .status[data-state="missing"] { color: #b45309; }
+    button.submit {
+      align-self: flex-start;
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 0;
+      color: #fff;
+      background: linear-gradient(140deg, #4f6bed, #6f5cf0);
+      cursor: pointer;
+    }
+    label.error { color: #b42318; font-size: 0.75rem; }
+    .just-validate-error-label { color: #b42318; font-size: 0.75rem; margin-top: 4px; }
+    .parsley-errors-list { color: #b42318; font-size: 0.75rem; list-style: none; padding: 0; margin: 4px 0 0; }
+    .back { display: inline-block; margin-bottom: 18px; font-size: 0.85rem; color: #4f6bed; }
+  </style>
+</head>
+<body>
+  <main>
+    <a class="back" href="index.html">← documentation</a>
+    <h1>Validation-library test bench</h1>
+    <p class="lead">
+      The same plugin markup under four validators. Everything is loaded from a CDN, so this
+      page also works as a smoke test: submit each empty form, then fill it in.
+    </p>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Native HTML5</h2>
+        <p>Constraint validation and <code>aria-invalid</code> mirroring.</p>
+        <form id="form-native" novalidate>
+          <input name="email" type="email" required data-zidan="input" data-zidan-label="Email">
+          <label><input type="checkbox" name="terms" required data-zidan="checkbox" data-zidan-label="Accept terms"> Accept terms</label>
+          <button class="submit" type="submit">Submit</button>
+        </form>
+        <p class="status" id="native-status" role="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>jQuery Validation</h2>
+        <p><code>ignore: []</code>, plugin-aware error placement.</p>
+        <form id="form-jquery">
+          <input name="email" id="jq-email" type="email" required data-zidan="input" data-zidan-label="Email">
+          <input name="name" id="jq-name" required minlength="3" data-zidan="input" data-zidan-label="Name">
+          <button class="submit" type="submit">Submit</button>
+        </form>
+        <p class="status" id="jquery-status" role="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>JustValidate</h2>
+        <p>Shared error class and container.</p>
+        <form id="form-justvalidate">
+          <input name="email" id="jv-email" data-zidan="input" data-zidan-label="Email">
+          <input name="name" id="jv-name" data-zidan="input" data-zidan-label="Name">
+          <button class="submit" type="submit">Submit</button>
+        </form>
+        <p class="status" id="justvalidate-status" role="status"></p>
+      </section>
+
+      <section class="card">
+        <h2>Parsley</h2>
+        <p>Data attributes plus an errors container inside the field.</p>
+        <form id="form-parsley">
+          <input name="email" id="parsley-email" data-parsley-required data-parsley-type="email"
+                 data-zidan="input" data-zidan-label="Email">
+          <input name="name" id="parsley-name" data-parsley-required data-parsley-minlength="3"
+                 data-zidan="input" data-zidan-label="Name">
+          <button class="submit" type="submit">Submit</button>
+        </form>
+        <p class="status" id="parsley-status" role="status"></p>
+      </section>
+    </div>
+  </main>
+
+  <script src="../zidan-form.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.20.0/dist/jquery.validate.min.js"></script>
+  <script src="https://unpkg.com/just-validate@4.3.0/dist/just-validate.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/parsleyjs@2.9.2/dist/parsley.min.js"></script>
+  <script>
+    initZidanForms(document);
+
+    function report(id, message, state) {
+      var node = document.getElementById(id);
+      if (!node) return;
+      node.textContent = message;
+      node.dataset.state = state || '';
+    }
+
+    /* native ------------------------------------------------------------ */
+    var nativeForm = document.getElementById('form-native');
+    nativeForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      ZidanForm.fields.forEach(function (field) {
+        if (nativeForm.contains(field.el)) field.update();
+      });
+      if (!nativeForm.checkValidity()) {
+        nativeForm.querySelector(':invalid').focus();
+        report('native-status', 'Blocked: ' + nativeForm.querySelectorAll(':invalid').length + ' invalid field(s).', 'error');
+        return;
+      }
+      report('native-status', 'Valid — FormData: ' + new URLSearchParams(new FormData(nativeForm)).toString());
+    });
+
+    /* jQuery Validation -------------------------------------------------- */
+    if (window.jQuery && jQuery.validator) {
+      jQuery('#form-jquery').validate({
+        ignore: [],
+        errorPlacement: function (error, element) {
+          var field = element.closest('.zs-field');
+          (field || element.parent()).append(error);
+        },
+        highlight: function (element) {
+          jQuery(element).attr('aria-invalid', 'true');
+          jQuery(element).closest('.zs-field').addClass('zs-field--invalid');
+        },
+        unhighlight: function (element) {
+          jQuery(element).removeAttr('aria-invalid');
+          jQuery(element).closest('.zs-field').removeClass('zs-field--invalid');
+        },
+        submitHandler: function (form) {
+          report('jquery-status', 'Valid — ' + new URLSearchParams(new FormData(form)).toString());
+        }
+      });
+    } else {
+      report('jquery-status', 'jQuery Validation could not load from the CDN.', 'missing');
+    }
+
+    /* JustValidate ------------------------------------------------------- */
+    if (window.JustValidate) {
+      new JustValidate('#form-justvalidate', {
+        errorFieldCssClass: 'zs-field--invalid',
+        errorLabelStyle: { color: 'var(--zs-border-color-invalid)', fontSize: '0.75rem' }
+      })
+        .addField('#jv-email', [{ rule: 'required' }, { rule: 'email' }])
+        .addField('#jv-name', [{ rule: 'required' }, { rule: 'minLength', value: 3 }])
+        .onSuccess(function (event) {
+          event.preventDefault();
+          report('justvalidate-status', 'Valid — ' + new URLSearchParams(new FormData(event.target)).toString());
+        });
+    } else {
+      report('justvalidate-status', 'JustValidate could not load from the CDN.', 'missing');
+    }
+
+    /* Parsley ------------------------------------------------------------ */
+    if (window.jQuery && jQuery.fn.parsley) {
+      jQuery('#form-parsley').parsley({
+        errorsContainer: function (field) {
+          return field.$element.closest('.zs-field');
+        }
+      });
+      jQuery('#form-parsley').on('form:success', function () {
+        report('parsley-status', 'Valid — ' + new URLSearchParams(new FormData(this)).toString());
+      });
+      jQuery('#form-parsley').on('form:error', function () {
+        report('parsley-status', 'Blocked by Parsley.', 'error');
+      });
+    } else {
+      report('parsley-status', 'Parsley could not load from the CDN.', 'missing');
+    }
+  </script>
+</body>
+</html>

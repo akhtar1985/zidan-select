@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZidanForm — vanilla form controls: select, checkbox, radio, file &amp; inputs</title>
+  <meta name="description" content="ZidanForm: zero-dependency form enhancement library with custom select/combobox/tags, checkboxes, switches, radio groups, drag &amp; drop file upload and text inputs. Split core + theme CSS, 5 themes, 5 layouts, Bootstrap/Tailwind/Bulma/Foundation adapters and validation-library compatibility.">
+  <meta name="theme-color" content="#4f6bed">
+  <link rel="stylesheet" href="plugin-core.css">
+  <link rel="stylesheet" href="plugin-theme.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <a class="skip-link" href="#demo-app">Skip to demo</a>
+
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+
+  <header class="site-header">
+    <a class="brand" href="https://github.com/akhtar1985/zidan-select">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2 · zero dependencies</span>
+      </span>
+    </a>
+    <nav class="header-nav" aria-label="Project links">
+      <a href="#compare">Compare</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <a href="docs/">Docs</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+      </select>
+    </nav>
+  </header>
+
+  <main id="demo-app" class="wrap">
+    <section class="hero">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.0 · zero dependencies · one JS file</p>
+      <h1>Every form control, <span>one small library</span>.</h1>
+      <p>
+        ZidanForm upgrades native inputs in place — select, checkbox, switch, radio, file upload
+        and text fields — while keeping real form values, <code>FormData</code>,
+        <code>form.reset()</code> and constraint validation intact. Structure ships separately
+        from the theme, so you can restyle everything with a handful of CSS variables.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#playground">Open the playground</a>
+        <a class="btn" href="https://github.com/akhtar1985/zidan-select#readme">Read the docs</a>
+      </div>
+      <ul class="feature-chips">
+        <li>Zero dependencies</li>
+        <li>Core + theme CSS</li>
+        <li>5 themes</li>
+        <li>5 layouts</li>
+        <li>Bootstrap · Tailwind · Bulma · Foundation</li>
+        <li>Validation-library friendly</li>
+        <li>WAI-ARIA keyboard support</li>
+      </ul>
+      <dl class="hero-stats">
+        <div><dt>Controls</dt><dd>6</dd></div>
+        <div><dt>Themes</dt><dd>5</dd></div>
+        <div><dt>Adapters</dt><dd>4</dd></div>
+        <div><dt>Dependencies</dt><dd>0</dd></div>
+      </dl>
+    </section>
+
+    <section class="playground" id="playground" aria-labelledby="playground-title">
+      <div class="playground-head">
+        <h2 id="playground-title">Options playground</h2>
+        <p>Changes apply live to every control on this page and update the config snippet.</p>
+      </div>
+      <div class="playground-grid">
+        <div class="field-mini">
+          <label for="opt-theme">Theme</label>
+          <select id="opt-theme">
+            <option value="default">default</option>
+            <option value="modern">modern</option>
+            <option value="minimal">minimal</option>
+            <option value="dark">dark</option>
+            <option value="glass">glass</option>
+          </select>
+        </div>
+        <div class="field-mini">
+          <label for="opt-framework">Framework adapter</label>
+          <select id="opt-framework">
+            <option value="none">none (standalone)</option>
+            <option value="bootstrap">bootstrap</option>
+            <option value="tailwind">tailwind</option>
+            <option value="bulma">bulma</option>
+            <option value="foundation">foundation</option>
+          </select>
+        </div>
+        <div class="field-mini">
+          <label for="opt-layout">Select layout</label>
+          <select id="opt-layout">
+            <option value="classic-clean">classic-clean</option>
+            <option value="floating-label">floating-label</option>
+            <option value="soft-pill">soft-pill</option>
+            <option value="bordered-brutalist">bordered-brutalist</option>
+            <option value="glass-elevated">glass-elevated</option>
+          </select>
+        </div>
+        <div class="field-mini">
+          <label for="opt-field-layout">Field layout</label>
+          <select id="opt-field-layout">
+            <option value="stacked">stacked</option>
+            <option value="inline">inline</option>
+            <option value="compact">compact</option>
+            <option value="floating">floating</option>
+            <option value="outlined">outlined</option>
+            <option value="card">card</option>
+          </select>
+        </div>
+      </div>
+      <div class="playground-actions">
+        <span class="viewport-group" role="group" aria-label="Preview width">
+          <button type="button" data-width="" aria-pressed="true">Full</button>
+          <button type="button" data-width="360" aria-pressed="false">360px</button>
+          <button type="button" data-width="768" aria-pressed="false">768px</button>
+          <button type="button" data-width="1280" aria-pressed="false">1280px</button>
+          <button type="button" data-width="container" aria-pressed="false">Container</button>
+        </span>
+        <button type="button" class="btn" id="btn-iframe" aria-pressed="false">Iframe test</button>
+        <span class="spacer"></span>
+        <a class="btn" href="#panel-themes" data-tab-link="themes">Theme showcase</a>
+      </div>
+      <div class="snippet-block">
+        <button type="button" class="snippet-copy" id="copy-config">Copy</button>
+        <pre><code id="snippet"></code></pre>
+      </div>
+      <div class="preview-frame" id="iframe-slot" hidden>
+        <iframe id="embed-frame" title="Isolated preview of the demo" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <div class="tabs-section">
+      <div class="tablist" role="tablist" aria-label="Demo sections" id="demo-tabs">
+        <button type="button" role="tab" id="tab-all" aria-controls="panel-all" aria-selected="true" tabindex="0" data-tab="all">All inputs</button>
+        <button type="button" role="tab" id="tab-select" aria-controls="panel-select" aria-selected="false" tabindex="-1" data-tab="select">Select</button>
+        <button type="button" role="tab" id="tab-check" aria-controls="panel-check" aria-selected="false" tabindex="-1" data-tab="check">Checkbox &amp; Radio</button>
+        <button type="button" role="tab" id="tab-file" aria-controls="panel-file" aria-selected="false" tabindex="-1" data-tab="file">File upload</button>
+        <button type="button" role="tab" id="tab-inputs" aria-controls="panel-inputs" aria-selected="false" tabindex="-1" data-tab="inputs">Inputs &amp; textarea</button>
+        <button type="button" role="tab" id="tab-themes" aria-controls="panel-themes" aria-selected="false" tabindex="-1" data-tab="themes">Theme showcase</button>
+      </div>
+
+      <!-- ================= ALL INPUTS ================= -->
+      <section class="tab-panel" id="panel-all" role="tabpanel" aria-labelledby="tab-all" tabindex="0">
+        <div class="panel-head">
+          <h2>One form, every control type</h2>
+          <p>Everything opt-in in a single form: submit it, reset it, or run it through your validation library.</p>
+        </div>
+        <form class="card" id="form-all" novalidate>
+          <div class="grid-2">
+            <div>
+              <input id="all-name" name="name" type="text" placeholder="Ada Lovelace" required
+                     data-zidan="input" data-zidan-label="Full name" data-zidan-hint="As it appears on your invoice." data-zidan-clear>
+            </div>
+            <div>
+              <input id="all-email" name="email" type="email" placeholder="ada@example.com" required
+                     data-zidan="input" data-zidan-label="Email" data-zidan-clear>
+            </div>
+            <div>
+              <input id="all-password" name="password" type="password" minlength="8" required
+                     data-zidan="input" data-zidan-label="Password" data-zidan-reveal
+                     data-zidan-hint="At least 8 characters.">
+            </div>
+            <div>
+              <select id="all-country" name="country" required data-zidan-select="combobox"
+                      data-zidan-label="Country" data-zidan-searchable="true"
+                      data-zidan-clearable="true" data-zidan-placeholder="Choose a country…">
+                <option value="">Choose a country…</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>Italy</option>
+                <option>Japan</option>
+                <option>Nigeria</option>
+                <option>Pakistan</option>
+                <option>United Kingdom</option>
+                <option>United States</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top:18px">
+            <fieldset data-zidan="radio-group" data-zidan-variant="inline" data-zidan-label="Plan">
+              <legend>Plan</legend>
+              <label><input type="radio" name="plan" value="starter" checked> Starter</label>
+              <label><input type="radio" name="plan" value="pro"> Pro</label>
+              <label><input type="radio" name="plan" value="scale"> Scale</label>
+            </fieldset>
+            <div>
+              <span class="field-label">Notifications</span>
+              <label><input type="checkbox" name="notify" value="email" checked data-zidan="checkbox" data-zidan-label="Email updates"> Email updates</label>
+              <label><input type="checkbox" name="notify" value="sms" data-zidan="checkbox" data-zidan-variant="switch" data-zidan-label="SMS alerts"> SMS alerts</label>
+            </div>
+          </div>
+
+          <div style="margin-top:18px">
+            <label for="all-cv" class="field-label">Attachment</label>
+            <input id="all-cv" name="cv" type="file" data-zidan="file" data-zidan-max-size="2097152"
+                   data-zidan-title="Attach a document" data-zidan-drop-hint="PDF or image, up to 2 MB">
+          </div>
+
+          <div style="margin-top:18px">
+            <textarea id="all-notes" name="notes" rows="3" maxlength="240" placeholder="Anything we should know?"
+                      data-zidan="textarea" data-zidan-label="Notes" data-zidan-counter="240" data-zidan-clear></textarea>
+          </div>
+
+          <div style="margin-top:14px">
+            <label>
+              <input type="checkbox" name="terms" required data-zidan="checkbox" data-zidan-label="I accept the terms and privacy policy">
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+            <button class="btn" type="reset">Reset</button>
+            <span class="form-status" id="all-status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= SELECT ================= -->
+      <section class="tab-panel" id="panel-select" role="tabpanel" aria-labelledby="tab-select" tabindex="0" hidden>
+        <div class="panel-head">
+          <h2>Select, combobox &amp; tags</h2>
+          <p>Single and multiple selects, searchable comboboxes, tag entry, grouped options and every scrollbar variant.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Single select</h3>
+            <p>Searchable combobox with a clear button and a fancy scrollbar.</p>
+            <select id="sel-single" name="framework" data-zidan-select="combobox"
+                    data-zidan-searchable="true" data-zidan-clearable="true"
+                    data-zidan-label="Framework" data-zidan-scrollbar="fancy" data-zidan-placeholder="Search frameworks…">
+              <option value="">Search frameworks…</option>
+              <option>Alpine.js</option><option>Angular</option><option>Astro</option>
+              <option>Ember</option><option>htmx</option><option>Lit</option>
+              <option>Next.js</option><option>Nuxt</option><option>Preact</option>
+              <option>React</option><option>Remix</option><option>Solid</option>
+              <option>Svelte</option><option>Vue</option>
+            </select>
+          </div>
+          <div class="card">
+            <h3>Multiple select</h3>
+            <p>Native <code>multiple</code> is preserved; chips reflect the selection.</p>
+            <select id="sel-multi" name="team" multiple size="5" data-zidan-select="select"
+                    data-zidan-label="Team members" data-zidan-scrollbar="thin">
+              <option value="ada" selected>Ada</option>
+              <option value="grace">Grace</option>
+              <option value="linus">Linus</option>
+              <option value="margaret">Margaret</option>
+              <option value="alan">Alan</option>
+              <option value="barbara">Barbara</option>
+            </select>
+          </div>
+          <div class="card">
+            <h3>Tags</h3>
+            <p>Free text or suggestions, capped at three tags.</p>
+            <select id="sel-tags" name="skills" multiple data-zidan-select="tags"
+                    data-zidan-label="Skills" data-zidan-placeholder="Add a skill…"
+                    data-zidan-max-tags="3" data-zidan-allow-free-text="true">
+              <option>CSS</option><option>HTML</option><option>JavaScript</option>
+              <option>Accessibility</option><option>Performance</option><option>TypeScript</option>
+            </select>
+          </div>
+          <div class="card">
+            <h3>Grouped &amp; disabled</h3>
+            <p><code>optgroup</code> becomes listbox groups; disabled states are mirrored.</p>
+            <select id="sel-grouped" name="region" data-zidan-select="combobox" data-zidan-label="Region">
+              <optgroup label="Europe">
+                <option>Berlin</option><option>Lisbon</option><option>Warsaw</option>
+              </optgroup>
+              <optgroup label="Asia">
+                <option>Karachi</option><option>Osaka</option><option>Seoul</option>
+              </optgroup>
+              <optgroup label="Americas">
+                <option>Bogotá</option><option>Toronto</option><option>Austin</option>
+              </optgroup>
+            </select>
+            <select id="sel-disabled" style="margin-top:14px" data-zidan-select="select" disabled data-zidan-label="Disabled">
+              <option>Unavailable option</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CHECKBOX & RADIO ================= -->
+      <section class="tab-panel" id="panel-check" role="tabpanel" aria-labelledby="tab-check" tabindex="0" hidden>
+        <div class="panel-head">
+          <h2>Checkboxes, switches &amp; radios</h2>
+          <p>Native checked state, <code>indeterminate</code>, card variants and full keyboard support.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Checkbox states</h3>
+            <p>Standard, checked, disabled and indeterminate.</p>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <label><input type="checkbox" data-zidan="checkbox" data-zidan-label="Unchecked"> Unchecked</label>
+              <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-label="Checked"> Checked</label>
+              <label><input type="checkbox" disabled data-zidan="checkbox" data-zidan-label="Disabled"> Disabled</label>
+              <label><input type="checkbox" data-zidan="checkbox" data-zidan-indeterminate data-zidan-label="Indeterminate" id="cb-parent"> Indeterminate parent</label>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Switches</h3>
+            <p>Same input, different skin — keyboard and screen-reader behaviour unchanged.</p>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <label><input type="checkbox" data-zidan="checkbox" data-zidan-variant="switch" data-zidan-label="Weekly digest" checked> Weekly digest</label>
+              <label><input type="checkbox" data-zidan="checkbox" data-zidan-variant="switch" data-zidan-label="Product updates"> Product updates</label>
+              <label><input type="checkbox" disabled data-zidan="checkbox" data-zidan-variant="switch" data-zidan-label="Locked setting"> Locked setting</label>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Card checkboxes</h3>
+            <p>Option cards with the same native semantics.</p>
+            <div role="group" aria-label="Add-ons" style="display:grid;gap:10px">
+              <label><input type="checkbox" name="addon" value="backup" data-zidan="checkbox" data-zidan-variant="card" data-zidan-label="Daily backup"> Daily backup</label>
+              <label><input type="checkbox" name="addon" value="monitoring" data-zidan="checkbox" data-zidan-variant="card" data-zidan-label="Uptime monitoring" checked> Uptime monitoring</label>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Indeterminate group</h3>
+            <p>The parent reflects its children; clicking it selects or clears them all.</p>
+            <div style="display:flex;flex-direction:column;gap:10px" id="tri-group">
+              <label><input type="checkbox" name="scope" value="read" data-zidan="checkbox" data-zidan-label="Read" checked> Read</label>
+              <label><input type="checkbox" name="scope" value="write" data-zidan="checkbox" data-zidan-label="Write"> Write</label>
+              <label><input type="checkbox" name="scope" value="admin" data-zidan="checkbox" data-zidan-label="Admin"> Admin</label>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Radio groups</h3>
+            <p>Stacked and inline; arrow keys move and select natively.</p>
+            <fieldset data-zidan="radio-group" data-zidan-variant="stacked" data-zidan-label="Billing cycle">
+              <legend>Billing cycle</legend>
+              <label><input type="radio" name="cycle" value="monthly" checked> Monthly</label>
+              <label><input type="radio" name="cycle" value="yearly"> Yearly — save 20%</label>
+            </fieldset>
+            <fieldset data-zidan="radio-group" data-zidan-variant="inline" style="margin-top:18px">
+              <legend>Contact preference</legend>
+              <label><input type="radio" name="contact" value="email" checked> Email</label>
+              <label><input type="radio" name="contact" value="phone"> Phone</label>
+              <label><input type="radio" name="contact" value="none"> None</label>
+            </fieldset>
+          </div>
+          <div class="card">
+            <h3>Radio cards</h3>
+            <p>Card variant with a required group.</p>
+            <fieldset data-zidan="radio-group" data-zidan-variant="card" data-zidan-label="Seat">
+              <legend>Seat</legend>
+              <label><input type="radio" name="seat" value="window" required> Window</label>
+              <label><input type="radio" name="seat" value="aisle"> Aisle</label>
+              <label><input type="radio" name="seat" value="middle"> Middle</label>
+            </fieldset>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FILE ================= -->
+      <section class="tab-panel" id="panel-file" role="tabpanel" aria-labelledby="tab-file" tabindex="0" hidden>
+        <div class="panel-head">
+          <h2>File upload &amp; dropzone</h2>
+          <p>Drop files, preview images, remove individual files or clear everything — <code>input.files</code> stays the source of truth.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Single image</h3>
+            <p>Images get a thumbnail; other files get an extension badge.</p>
+            <input id="file-avatar" name="avatar" type="file" accept="image/*"
+                   data-zidan="file" data-zidan-title="Upload an avatar"
+                   data-zidan-drop-hint="PNG or JPG, dragged or picked">
+          </div>
+          <div class="card">
+            <h3>Multiple files with limits</h3>
+            <p>Max 3 files, 1 MB each, images or PDFs only.</p>
+            <input id="file-docs" name="docs" type="file" multiple accept="image/*,.pdf"
+                   data-zidan="file" data-zidan-max-files="3" data-zidan-max-size="1048576"
+                   data-zidan-title="Drop documents here">
+            <p class="form-status" id="file-status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= INPUTS ================= -->
+      <section class="tab-panel" id="panel-inputs" role="tabpanel" aria-labelledby="tab-inputs" tabindex="0" hidden>
+        <div class="panel-head">
+          <h2>Text inputs, pickers &amp; textarea</h2>
+          <p>Wrappers, clear buttons, prefixes and suffixes, password toggle, character counter and floating/outlined labels.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Text, prefix &amp; clear</h3>
+            <input type="text" placeholder="0.00" data-zidan="input" data-zidan-label="Amount"
+                   data-zidan-prefix="$" data-zidan-suffix="USD" data-zidan-clear
+                   data-zidan-hint="Clear button appears while typing.">
+          </div>
+          <div class="card">
+            <h3>Password reveal</h3>
+            <input type="password" value="hunter2secret" data-zidan="input" data-zidan-label="Password"
+                   data-zidan-reveal data-zidan-clear>
+          </div>
+          <div class="card">
+            <h3>Email, URL &amp; search</h3>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <input type="email" placeholder="you@company.com" required data-zidan="input" data-zidan-label="Email">
+              <input type="url" placeholder="https://example.com" data-zidan="input" data-zidan-label="Website" data-zidan-clear>
+              <input type="search" placeholder="Search…" data-zidan="input" data-zidan-label="Search">
+            </div>
+          </div>
+          <div class="card">
+            <h3>Number, tel &amp; date/time</h3>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <input type="number" min="1" max="12" value="3" data-zidan="input" data-zidan-label="Seats">
+              <input type="tel" placeholder="+44 7700 900000" data-zidan="input" data-zidan-label="Phone">
+              <input type="date" value="2026-11-22" data-zidan="input" data-zidan-label="Start date">
+              <input type="time" value="09:30" data-zidan="input" data-zidan-label="Start time">
+            </div>
+          </div>
+          <div class="card">
+            <h3>Range with output</h3>
+            <input type="range" min="0" max="100" value="65" id="range-demo"
+                   data-zidan="input" data-zidan-label="Budget" data-zidan-output="#range-out" data-zidan-suffix="$">
+            <p class="form-status">Value: <output id="range-out" for="range-demo">65</output></p>
+          </div>
+          <div class="card">
+            <h3>Textarea with counter</h3>
+            <textarea rows="4" maxlength="140" placeholder="Tell us more…" data-zidan="textarea"
+                      data-zidan-label="Message" data-zidan-counter="140" data-zidan-clear></textarea>
+          </div>
+          <div class="card">
+            <h3>Floating label</h3>
+            <input type="text" data-zidan="input" data-zidan-layout="floating" data-zidan-label="Company name">
+          </div>
+          <div class="card">
+            <h3>Outlined label</h3>
+            <input type="text" data-zidan="input" data-zidan-layout="outlined" data-zidan-label="Workspace URL" data-zidan-prefix="https://">
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= THEMES ================= -->
+      <section class="tab-panel" id="panel-themes" role="tabpanel" aria-labelledby="tab-themes" tabindex="0" hidden>
+        <div class="panel-head">
+          <h2>Theme &amp; framework showcase</h2>
+          <p>Switch the theme below — every control type on this panel restyles through CSS variables, no re-initialisation.</p>
+        </div>
+        <div class="card">
+          <div class="swatch-row" role="group" aria-label="Preview theme">
+            <button type="button" data-theme="default" aria-pressed="true">default</button>
+            <button type="button" data-theme="modern" aria-pressed="false">modern</button>
+            <button type="button" data-theme="minimal" aria-pressed="false">minimal</button>
+            <button type="button" data-theme="dark" aria-pressed="false">dark</button>
+            <button type="button" data-theme="glass" aria-pressed="false">glass</button>
+          </div>
+          <div class="swatch-row" role="group" aria-label="Preview framework adapter">
+            <button type="button" data-framework="none" aria-pressed="true">standalone</button>
+            <button type="button" data-framework="bootstrap" aria-pressed="false">bootstrap</button>
+            <button type="button" data-framework="tailwind" aria-pressed="false">tailwind</button>
+            <button type="button" data-framework="bulma" aria-pressed="false">bulma</button>
+            <button type="button" data-framework="foundation" aria-pressed="false">foundation</button>
+          </div>
+
+          <div class="theme-preview" id="theme-preview" data-zs-theme="default" data-zs-framework="none">
+            <div class="grid-2">
+              <div>
+                <select id="tp-select" data-zidan-select="combobox" data-zidan-label="Framework" data-zidan-searchable="true">
+                  <option>Bootstrap</option><option>Tailwind</option><option>Bulma</option><option>Foundation</option>
+                </select>
+              </div>
+              <div>
+                <input type="text" placeholder="you@example.com" data-zidan="input" data-zidan-label="Email" data-zidan-clear>
+              </div>
+            </div>
+            <div class="grid-2" style="margin-top:18px">
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-label="Checkbox"> Checkbox</label>
+                <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="switch" data-zidan-label="Switch"> Switch</label>
+              </div>
+              <fieldset data-zidan="radio-group" data-zidan-variant="inline">
+                <legend class="field-label">Radio</legend>
+                <label><input type="radio" name="tp-radio" value="a" checked> One</label>
+                <label><input type="radio" name="tp-radio" value="b"> Two</label>
+              </fieldset>
+            </div>
+            <div style="margin-top:18px">
+              <input type="file" data-zidan="file" data-zidan-title="Drop a file" data-zidan-drop-hint="Any type">
+            </div>
+            <div style="margin-top:18px">
+              <textarea rows="2" placeholder="Textarea…" data-zidan="textarea" data-zidan-label="Notes"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <details class="options-details">
+          <summary>Options &amp; data attributes</summary>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr><th>Option</th><th>Data attribute</th><th>Default</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code>theme</code></td><td><code>data-zidan-theme</code></td><td><code>default</code></td><td>Preset theme: default, modern, minimal, dark, glass.</td></tr>
+                <tr><td><code>framework</code></td><td><code>data-zidan-framework</code></td><td><code>none</code></td><td>Adapter: none, bootstrap, tailwind, bulma, foundation.</td></tr>
+                <tr><td><code>layout</code></td><td><code>data-zidan-layout</code></td><td><code>stacked</code></td><td>Field layout: stacked, inline, compact, floating, outlined, card. Selects use their own five layouts.</td></tr>
+                <tr><td><code>variant</code></td><td><code>data-zidan-variant</code></td><td><code>default</code></td><td>Checkbox: default/switch/card. Radio groups: stacked/inline/card.</td></tr>
+                <tr><td><code>label</code></td><td><code>data-zidan-label</code></td><td>—</td><td>Label text when the markup has no <code>&lt;label&gt;</code>.</td></tr>
+                <tr><td><code>hint</code></td><td><code>data-zidan-hint</code></td><td>—</td><td>Helper text, wired through <code>aria-describedby</code>.</td></tr>
+                <tr><td><code>clearable</code></td><td><code>data-zidan-clear</code></td><td><code>search</code> only</td><td>Adds a clear button to text fields and textarea.</td></tr>
+                <tr><td><code>reveal</code></td><td><code>data-zidan-reveal</code></td><td><code>false</code></td><td>Password show/hide toggle.</td></tr>
+                <tr><td><code>prefix</code> / <code>suffix</code></td><td><code>data-zidan-prefix</code> / <code>-suffix</code></td><td>—</td><td>Static adornments inside the input shell.</td></tr>
+                <tr><td><code>counter</code></td><td><code>data-zidan-counter</code></td><td><code>maxlength</code></td><td>Character counter maximum.</td></tr>
+                <tr><td><code>maxFiles</code></td><td><code>data-zidan-max-files</code></td><td>—</td><td>Maximum number of files.</td></tr>
+                <tr><td><code>maxSize</code></td><td><code>data-zidan-max-size</code></td><td>—</td><td>Maximum size per file, in bytes.</td></tr>
+                <tr><td><code>maxSizeMB</code></td><td><code>data-zidan-max-size-mb</code></td><td>—</td><td>Maximum size per file, in megabytes (<code>2</code> = 2 MB). Ignored when <code>maxSize</code> is set.</td></tr>
+                <tr><td><code>indeterminate</code></td><td><code>data-zidan-indeterminate</code></td><td><code>false</code></td><td>Start a checkbox in the mixed state.</td></tr>
+                <tr><td><code>validation</code></td><td><code>data-zidan-validation</code></td><td><code>null</code></td><td>Force <code>valid</code> / <code>invalid</code> state.</td></tr>
+                <tr><td><code>scrollbar</code></td><td><code>data-zidan-scrollbar</code></td><td><code>default</code></td><td>Select listbox scrollbar: default, thin, fancy, hover, hidden.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <div class="card" style="margin-top:16px">
+          <h3>Supported browsers</h3>
+          <p>Tested on current Chromium, Firefox and WebKit engines. Windows Firefox exposes thin native scrollbars only.</p>
+          <ul class="browser-grid">
+            <li><strong>Chrome / Edge 105+</strong>Full theming, custom scrollbars, <code>:has()</code>-free implementation.</li>
+            <li><strong>Firefox 121+</strong>All controls; scrollbars use the thin native gutter with <code>scrollbar-color</code>.</li>
+            <li><strong>Safari 15.4+ / iOS 15.4+</strong>All controls; overlay scrollbars follow the OS appearance.</li>
+            <li><strong>Node / SSR</strong>Imports safely; initialise in an effect after hydration.</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- ================= COMPARISON ================= -->
+    <section class="compare-section" id="compare" aria-labelledby="compare-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Why ZidanForm</p>
+        <h2 id="compare-title">One library for the whole form</h2>
+        <p>
+          Select libraries usually stop at the select box. ZidanForm styles every native control
+          with the same API and the same two stylesheets — and never hides the real input.
+        </p>
+      </div>
+
+      <div class="benefit-grid">
+        <article class="benefit-card">
+          <span class="benefit-icon" aria-hidden="true">◎</span>
+          <h3>One API, every control</h3>
+          <p>Select, combobox, tags, checkbox, switch, radio, file upload and text inputs share one lifecycle and one theme.</p>
+        </article>
+        <article class="benefit-card">
+          <span class="benefit-icon" aria-hidden="true">✓</span>
+          <h3>Native underneath</h3>
+          <p>The real control stays in the DOM at 1×1 px, so <code>FormData</code>, <code>reset()</code>, <code>required</code> and <code>:invalid</code> keep working.</p>
+        </article>
+        <article class="benefit-card">
+          <span class="benefit-icon" aria-hidden="true">◐</span>
+          <h3>Theme without forking</h3>
+          <p>Structure lives in <code>plugin-core.css</code>, colour and skins in <code>plugin-theme.css</code> — override tokens, not layout.</p>
+        </article>
+      </div>
+
+      <div class="card compare-card">
+        <div class="table-scroll">
+          <table class="compare-table">
+            <caption class="sr-only">Feature comparison of ZidanForm with other form and select libraries</caption>
+            <thead>
+              <tr>
+                <th scope="col">Feature</th>
+                <th scope="col" class="is-ours">ZidanForm</th>
+                <th scope="col">Select2</th>
+                <th scope="col">Choices.js</th>
+                <th scope="col">Tom Select</th>
+                <th scope="col">Slim Select</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Runtime dependencies</th>
+                <td class="is-ours"><strong>None</strong></td>
+                <td>jQuery</td><td>None</td><td>None</td><td>None</td>
+              </tr>
+              <tr>
+                <th scope="row">Controls covered</th>
+                <td class="is-ours"><strong>Select, checkbox, switch, radio, file, text</strong></td>
+                <td>Select / tags</td><td>Select, text, tags</td><td>Select / tags</td><td>Select</td>
+              </tr>
+              <tr>
+                <th scope="row">Drag &amp; drop file upload</th>
+                <td class="is-ours"><strong>Built in</strong></td>
+                <td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+              <tr>
+                <th scope="row">Split structure / theme CSS</th>
+                <td class="is-ours"><strong>Yes</strong></td>
+                <td>Partial</td><td>Partial</td><td>Partial</td><td>Partial</td>
+              </tr>
+              <tr>
+                <th scope="row">Built-in themes</th>
+                <td class="is-ours"><strong>5 + custom tokens</strong></td>
+                <td>Via CSS</td><td>Via CSS</td><td>Via CSS</td><td>Via CSS</td>
+              </tr>
+              <tr>
+                <th scope="row">CSS-framework adapters</th>
+                <td class="is-ours"><strong>Bootstrap, Tailwind, Bulma, Foundation</strong></td>
+                <td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+              <tr>
+                <th scope="row">Validation coexistence</th>
+                <td class="is-ours"><strong>Native, jQuery Validation, JustValidate, Parsley</strong></td>
+                <td>—</td><td>—</td><td>—</td><td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="compare-note">
+          Describes each project's core package; plugins can close some gaps. Full matrix, trade-offs
+          and migration notes in <a href="docs/comparison.md">docs/comparison.md</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section class="faq-section" id="faq" aria-labelledby="faq-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Questions</p>
+        <h2 id="faq-title">Frequently asked</h2>
+        <p>The short answers. The detailed ones live in the docs.</p>
+      </div>
+      <div class="faq-grid">
+        <details class="faq-item">
+          <summary>Does it require jQuery?</summary>
+          <p>No. ZidanForm is vanilla JavaScript with no runtime dependencies. It works alongside jQuery, but never needs it.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Will <code>FormData</code>, reset and validation still work?</summary>
+          <p>Yes. The native control stays in the DOM at 1×1 px and is only visually covered, so <code>FormData</code>, <code>form.reset()</code>, <code>required</code>, <code>:invalid</code> and <code>input.files</code> behave exactly as before.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use it with React, Vue or Angular?</summary>
+          <p>Yes — initialise in a mount/effect and call <code>destroy()</code> on cleanup. The <a href="docs/frameworks.md">framework guide</a> covers React, Next.js SSR, Vue and Angular patterns.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Does it conflict with jQuery Validation, JustValidate or Parsley?</summary>
+          <p>No. These libraries ignore hidden fields, so ZidanForm keeps the native control reachable and syncs <code>aria-invalid</code>. There is a <a href="docs/validation.html">runnable test bench</a> for all four validators.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I customise the look?</summary>
+          <p>Load <code>plugin-core.css</code> then <code>plugin-theme.css</code>, and override CSS variables or add a theme. Register custom names with <code>ZidanForm.themes.push('brand')</code> before initialising. See <a href="docs/theming.md">theming</a>.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I enhance just one select?</summary>
+          <p>Yes. Everything is opt-in: add a <code>data-zidan-select</code> attribute, initialise only that element, or call <code>zidanField()</code> / <code>zidanSelect()</code> directly. <code>destroy()</code> restores the original markup.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a build step or bundler requirement?</summary>
+          <p>No. It ships as a classic script, an ESM wrapper and plain CSS. Use a CDN, npm, or copy the files; no compiler or bundler is required.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Which browsers are supported?</summary>
+          <p>Current Chromium (105+), Firefox (121+) and Safari 15.4+ / iOS 15.4+. Firefox exposes thin native scrollbars only. See the browser matrix in the <a href="#panel-themes" data-tab-link="themes">theme showcase</a>.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a> ·
+        <a href="https://www.npmjs.com/package/zidan-select">npm</a> ·
+        <a href="docs/">Documentation</a> ·
+        <a href="#compare">Comparison</a> ·
+        <a href="#faq">FAQ</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="zidan-form.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

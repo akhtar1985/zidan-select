@@ -1,0 +1,1073 @@
+/*!
+ * ZidanForm v2.0.0 — plugin-core.css
+ * Structure and mechanics only: layout, positioning, visibility, focus
+ * plumbing and accessible native-input handling. No colours, borders colours,
+ * shadows or decorative skin — load plugin-theme.css (or your own theme) for
+ * appearance.
+ *
+ * https://github.com/akhtar1985/zidan-select
+ * MIT License © akhtar1985
+ */
+
+/* ==================================================================
+   1. Scope reset
+   ================================================================== */
+
+.zs-root,
+.zs-field,
+.zs-radio-group {
+  position: relative;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--zs-font-family, inherit);
+  font-size: var(--zs-font-size, 0.9375rem);
+  line-height: var(--zs-line-height, 1.4);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.zs-root *,
+.zs-root *::before,
+.zs-root *::after,
+.zs-field *,
+.zs-field *::before,
+.zs-field *::after,
+.zs-radio-group *,
+.zs-radio-group *::before,
+.zs-radio-group *::after {
+  box-sizing: border-box;
+}
+
+/* ==================================================================
+   2. Select / combobox / tags — shell
+   ================================================================== */
+
+.zs-root .zs-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--zs-label-size, 0.8125rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.zs-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--zs-gap, 6px);
+  width: 100%;
+  min-height: var(--zs-height, 44px);
+  padding: var(--zs-padding-y, 5px) var(--zs-padding-x, 12px);
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius, 10px);
+  cursor: pointer;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+/* bootstrap mounted inside the widget must not double-style our control */
+.zs-root .zs-control.form-control {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--zs-gap, 6px);
+  padding: var(--zs-padding-y, 5px) var(--zs-padding-x, 12px);
+  height: auto;
+  min-height: var(--zs-height, 44px);
+}
+
+.zs-root--focus .zs-control,
+.zs-root--open .zs-control {
+  outline: none;
+}
+
+.zs-root--disabled .zs-control,
+.zs-root--disabled .zs-control:hover {
+  cursor: not-allowed;
+}
+
+/* ==================================================================
+   3. Values, chips, input, icons
+   ================================================================== */
+
+.zs-root .zs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--zs-gap, 6px);
+  max-width: 100%;
+}
+
+.zs-root .zs-chips[hidden] {
+  display: none;
+}
+
+.zs-root .zs-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 3px 4px 3px 9px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: var(--zs-chip-radius, 8px);
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.zs-root .zs-chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zs-root .zs-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 150ms ease, background-color 150ms ease;
+}
+
+.zs-root .zs-chip-remove:hover,
+.zs-root .zs-chip-remove:focus-visible {
+  opacity: 1;
+  outline: none;
+}
+
+.zs-root .zs-input {
+  flex: 1 1 60px;
+  min-width: 60px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.zs-root .zs-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.zs-root .zs-input[readonly],
+.zs-root--disabled .zs-input {
+  cursor: pointer;
+}
+
+.zs-root--disabled .zs-input {
+  cursor: not-allowed;
+}
+
+.zs-root .zs-clear,
+.zs-root .zs-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.zs-root .zs-clear {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 150ms ease, background-color 150ms ease;
+}
+
+.zs-root .zs-clear[hidden] {
+  display: none;
+}
+
+.zs-root .zs-clear:hover {
+  opacity: 1;
+}
+
+.zs-root .zs-clear:focus-visible {
+  outline: none;
+}
+
+.zs-root .zs-arrow {
+  pointer-events: none;
+  transition: transform 150ms ease, color 150ms ease;
+}
+
+.zs-root--open .zs-arrow {
+  transform: rotate(180deg);
+}
+
+.zs-root--tags .zs-control {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.zs-root--tags .zs-input {
+  height: 28px;
+}
+
+/* ==================================================================
+   4. Dropdown / listbox
+   ================================================================== */
+
+.zs-root .zs-dropdown {
+  position: absolute;
+  z-index: var(--zs-z-index, 1055);
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  display: none;
+  max-height: 280px;
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-width: var(--zs-dropdown-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-dropdown-radius, 12px);
+}
+
+.zs-root--open .zs-dropdown {
+  display: block;
+  animation: zs-dropdown-in 140ms ease-out;
+}
+
+.zs-root--dropup .zs-dropdown {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
+
+.zs-root--dropup.zs-root--open .zs-dropdown {
+  animation-name: zs-dropdown-in-up;
+}
+
+@keyframes zs-dropdown-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zs-dropdown-in-up {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.zs-root .zs-group {
+  padding: 8px 10px 4px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.zs-root .zs-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: var(--zs-option-padding-y, 9px) var(--zs-option-padding-x, 12px);
+  border-radius: var(--zs-option-radius, 8px);
+  cursor: pointer;
+  transition: background-color 90ms linear, color 90ms linear;
+  scroll-margin: 6px;
+}
+
+.zs-root .zs-option-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zs-root .zs-option--selected::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  margin-left: auto;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 0.85;
+}
+
+.zs-root .zs-option--disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.zs-root .zs-option--disabled::after {
+  display: none;
+}
+
+.zs-root .zs-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  font-size: 0.875rem;
+}
+
+.zs-root .zs-spinner {
+  width: 14px;
+  height: 14px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 50%;
+  animation: zs-spin 700ms linear infinite;
+}
+
+@keyframes zs-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+  .zs-root .zs-dropdown {
+    max-height: min(280px, 45vh);
+  }
+}
+
+/* screen-reader only live region */
+.zs-root .zs-live,
+.zs-field .zs-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==================================================================
+   5. Select layout mechanics
+   (skin and token presets live in plugin-theme.css)
+   ================================================================== */
+
+.zs-root[data-zs-layout="classic-clean"] .zs-control {
+  padding-top: var(--zs-padding-y, 5px);
+  padding-bottom: var(--zs-padding-y, 5px);
+}
+
+.zs-root[data-zs-layout="floating-label"] .zs-control {
+  padding-top: 16px;
+  padding-bottom: 6px;
+  align-items: flex-end;
+}
+
+.zs-root[data-zs-layout="floating-label"] .zs-label {
+  position: absolute;
+  left: calc(var(--zs-padding-x, 12px) + 1px);
+  top: 50%;
+  margin: 0;
+  padding: 0 4px;
+  transform: translateY(-50%);
+  font-size: var(--zs-font-size, 0.9375rem);
+  font-weight: 500;
+  border-radius: 4px;
+  pointer-events: none;
+  transition: transform 150ms ease, font-size 150ms ease, color 150ms ease, top 150ms ease;
+}
+
+.zs-root[data-zs-layout="floating-label"].zs-root--focus .zs-label,
+.zs-root[data-zs-layout="floating-label"].zs-root--open .zs-label,
+.zs-root[data-zs-layout="floating-label"].zs-root--has-value .zs-label {
+  top: 10px;
+  transform: translateY(-50%) scale(0.86);
+  transform-origin: left center;
+  font-weight: 600;
+}
+
+.zs-root[data-zs-layout="floating-label"] .zs-input {
+  height: 28px;
+}
+
+.zs-root[data-zs-layout="floating-label"].zs-root--multiple .zs-control,
+.zs-root[data-zs-layout="floating-label"].zs-root--tags .zs-control {
+  padding-top: 20px;
+}
+
+.zs-root[data-zs-layout="soft-pill"] .zs-chip-remove {
+  width: 20px;
+  height: 20px;
+}
+
+.zs-root[data-zs-layout="soft-pill"] .zs-dropdown {
+  padding: 8px;
+}
+
+.zs-root[data-zs-layout="soft-pill"].zs-root--multiple .zs-input,
+.zs-root[data-zs-layout="soft-pill"].zs-root--tags .zs-input {
+  min-width: 90px;
+}
+
+.zs-root[data-zs-layout="bordered-brutalist"] .zs-control {
+  font-weight: 600;
+}
+
+.zs-root[data-zs-layout="bordered-brutalist"] .zs-chip {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.zs-root[data-zs-layout="bordered-brutalist"] .zs-dropdown {
+  padding: 0;
+}
+
+.zs-root[data-zs-layout="bordered-brutalist"] .zs-option {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  font-weight: 500;
+}
+
+.zs-root[data-zs-layout="bordered-brutalist"] .zs-option:last-child {
+  border-bottom: 0;
+}
+
+.zs-root[data-zs-layout="bordered-brutalist"] .zs-group {
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  font-weight: 800;
+}
+
+.zs-root[data-zs-layout="glass-elevated"] .zs-control,
+.zs-root[data-zs-layout="glass-elevated"] .zs-dropdown {
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+}
+
+.zs-root[data-zs-layout="glass-elevated"] .zs-dropdown {
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+
+.zs-root--mount {
+  margin: 0;
+}
+
+/* ==================================================================
+   6. Fields — shared shell
+   ================================================================== */
+
+.zs-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zs-field-gap, 6px);
+}
+
+.zs-field[data-zs-layout="inline"] {
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.zs-field__label {
+  display: block;
+  font-size: var(--zs-label-size, 0.8125rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.zs-field__hint {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+.zs-field__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.zs-counter {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* the real control: 1×1px and transparent, never display:none — jQuery
+   Validation's ":hidden" ignore and native validation must still see it */
+.zs-native-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.zs-field--inline .zs-check,
+.zs-field--inline .zs-radio {
+  margin: 0;
+}
+
+/* ==================================================================
+   7. Checkbox / switch
+   ================================================================== */
+
+.zs-check {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zs-check-gap, 10px);
+  cursor: pointer;
+  user-select: none;
+}
+
+.zs-check--disabled {
+  cursor: not-allowed;
+}
+
+.zs-check-box,
+.zs-switch-track,
+.zs-radio-dot {
+  position: relative;
+  flex: 0 0 auto;
+  display: inline-block;
+  width: var(--zs-check-size, 20px);
+  height: var(--zs-check-size, 20px);
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-check-radius, 6px);
+  transition: background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.zs-check-box::after,
+.zs-check-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.zs-check-box::after {
+  -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 13px 13px no-repeat;
+  mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 13px 13px no-repeat;
+}
+
+.zs-check-box::before {
+  inset: 5px 4px;
+  border-radius: 1px;
+}
+
+.zs-check--checked .zs-check-box::after {
+  opacity: 1;
+}
+
+.zs-check--indeterminate .zs-check-box::before {
+  opacity: 1;
+}
+
+.zs-check-label {
+  min-width: 0;
+}
+
+.zs-check-label:empty {
+  display: none;
+}
+
+/* switch */
+.zs-switch-track {
+  width: var(--zs-switch-width, 40px);
+  height: var(--zs-switch-height, 22px);
+  border-radius: 999px;
+}
+
+.zs-switch-track::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  width: calc(var(--zs-switch-height, 22px) - 6px);
+  height: calc(var(--zs-switch-height, 22px) - 6px);
+  transform: translateY(-50%);
+  border-radius: 50%;
+  transition: transform 160ms ease;
+}
+
+.zs-check--checked .zs-switch-track::after {
+  transform: translate(calc(var(--zs-switch-width, 40px) - var(--zs-switch-height, 22px)), -50%);
+}
+
+/* card variant */
+.zs-field[data-zs-variant="card"] .zs-check {
+  width: 100%;
+  padding: 12px 14px;
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius, 10px);
+  transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+}
+
+.zs-field[data-zs-variant="card"] .zs-check-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ==================================================================
+   8. Radio groups
+   ================================================================== */
+
+.zs-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--zs-radio-gap, 10px);
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+.zs-radio-group > legend {
+  padding: 0;
+  margin-bottom: 6px;
+  font-size: var(--zs-label-size, 0.8125rem);
+  font-weight: 600;
+}
+
+.zs-radio-group[data-zs-variant="inline"] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+
+.zs-radio-group[data-zs-variant="card"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.zs-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--zs-check-gap, 10px);
+  cursor: pointer;
+  user-select: none;
+}
+
+.zs-radio-dot {
+  width: var(--zs-radio-size, 18px);
+  height: var(--zs-radio-size, 18px);
+  border-radius: 50%;
+}
+
+.zs-radio-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.zs-radio--checked .zs-radio-dot::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.zs-radio--disabled {
+  cursor: not-allowed;
+}
+
+.zs-radio-group[data-zs-variant="card"] .zs-radio {
+  padding: 12px;
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius, 10px);
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.zs-radio-label {
+  min-width: 0;
+}
+
+/* ==================================================================
+   9. File upload
+   ================================================================== */
+
+.zs-field--file .zs-file-drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 22px 16px;
+  min-height: 128px;
+  text-align: center;
+  border-width: 1.5px;
+  border-style: dashed;
+  border-radius: var(--zs-radius, 10px);
+  cursor: pointer;
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.zs-file-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+}
+
+.zs-file-drop-title {
+  font-weight: 600;
+}
+
+.zs-file-drop-hint {
+  font-size: 0.75rem;
+}
+
+.zs-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.zs-file-list[hidden] {
+  display: none;
+}
+
+.zs-file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius, 10px);
+}
+
+.zs-file-thumb {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border-radius: 8px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.zs-file-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.zs-file-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.zs-file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.zs-file-size {
+  font-size: 0.6875rem;
+}
+
+.zs-file-remove {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.zs-file-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 20px;
+}
+
+.zs-file-status {
+  font-size: 0.75rem;
+}
+
+.zs-file-clear {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.zs-file-clear[hidden] {
+  display: none;
+}
+
+/* ==================================================================
+   10. Text inputs & textarea
+   ================================================================== */
+
+.zs-input-shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: var(--zs-height, 44px);
+  padding: 0 var(--zs-padding-x, 12px);
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius, 10px);
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.zs-input-native {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  padding: 10px 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.zs-input-native::placeholder {
+  opacity: 1;
+}
+
+textarea.zs-input-native {
+  resize: vertical;
+  min-height: 92px;
+}
+
+/* controls that own their native widget keep it: appearance:none would
+   flatten the range track and hide the number spinners */
+.zs-field[data-zs-type="number"] .zs-input-native,
+.zs-field[data-zs-type="range"] .zs-input-native,
+.zs-field[data-zs-type="color"] .zs-input-native,
+.zs-field[data-zs-type="date"] .zs-input-native,
+.zs-field[data-zs-type="time"] .zs-input-native,
+.zs-field[data-zs-type="datetime-local"] .zs-input-native,
+.zs-field[data-zs-type="month"] .zs-input-native,
+.zs-field[data-zs-type="week"] .zs-input-native {
+  appearance: auto;
+  -webkit-appearance: auto;
+}
+
+.zs-field[data-zs-type="color"] .zs-input-native {
+  height: 34px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.zs-field[data-zs-type="range"] .zs-input-native {
+  padding: 0;
+  height: 26px;
+  cursor: pointer;
+}
+
+.zs-field[data-zs-type="file"] .zs-input-native {
+  width: 100%;
+}
+
+.zs-input-prefix,
+.zs-input-suffix {
+  flex: 0 0 auto;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.zs-input-action {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 3px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 150ms ease, opacity 150ms ease;
+}
+
+.zs-input-action[hidden] {
+  display: none;
+}
+
+.zs-input-clear {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.zs-input-action:focus-visible {
+  outline: none;
+}
+
+/* floating & outlined label mechanics */
+.zs-field[data-zs-layout="floating"] .zs-input-shell,
+.zs-field[data-zs-layout="outlined"] .zs-input-shell {
+  padding-top: 6px;
+  align-items: center;
+}
+
+.zs-field[data-zs-layout="floating"] .zs-field__label,
+.zs-field[data-zs-layout="outlined"] .zs-field__label {
+  position: absolute;
+  left: calc(var(--zs-padding-x, 12px) + 2px);
+  top: 50%;
+  margin: 0;
+  padding: 0 4px;
+  transform: translateY(-50%);
+  font-size: var(--zs-font-size, 0.9375rem);
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: transform 140ms ease, font-size 140ms ease, top 140ms ease, color 140ms ease;
+}
+
+/* lifted label: filled, focused, or forced up by a prefix/suffix adornment */
+.zs-field[data-zs-layout="floating"].zs-field--filled .zs-field__label,
+.zs-field[data-zs-layout="floating"].zs-field--focused .zs-field__label,
+.zs-field[data-zs-layout="floating"].zs-field--adorned .zs-field__label,
+.zs-field[data-zs-layout="outlined"].zs-field--filled .zs-field__label,
+.zs-field[data-zs-layout="outlined"].zs-field--focused .zs-field__label,
+.zs-field[data-zs-layout="outlined"].zs-field--adorned .zs-field__label {
+  top: 0;
+  transform: translateY(-50%) scale(0.86);
+  transform-origin: left center;
+  font-weight: 600;
+}
+
+.zs-field[data-zs-layout="floating"].zs-field--adorned .zs-input-shell,
+.zs-field[data-zs-layout="outlined"].zs-field--adorned .zs-input-shell {
+  padding-top: 10px;
+}
+
+.zs-field[data-zs-layout="floating"] .zs-input-native,
+.zs-field[data-zs-layout="outlined"] .zs-input-native {
+  padding-top: 12px;
+}
+
+.zs-field[data-zs-layout="compact"] .zs-input-shell,
+.zs-field[data-zs-layout="compact"] .zs-control {
+  min-height: 34px;
+}
+
+.zs-field[data-zs-layout="card"] {
+  padding: 14px;
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius, 10px);
+}
+
+/* ==================================================================
+   11. Form layout helper
+   ================================================================== */
+
+.zs-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--zs-grid-min, 230px), 1fr));
+  gap: var(--zs-grid-gap, 16px);
+  align-items: start;
+}
+
+.zs-form-grid > .zs-full {
+  grid-column: 1 / -1;
+}
+
+/* ==================================================================
+   12. Focus & motion
+   ================================================================== */
+
+.zs-check input:focus-visible + .zs-check-box,
+.zs-check input:focus-visible + .zs-switch-track,
+.zs-radio input:focus-visible + .zs-radio-dot {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.zs-input-native:focus-visible,
+.zs-file-input:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zs-root,
+  .zs-root *,
+  .zs-root *::before,
+  .zs-root *::after,
+  .zs-field,
+  .zs-field *,
+  .zs-field *::before,
+  .zs-field *::after,
+  .zs-radio-group,
+  .zs-radio-group * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .zs-root .zs-spinner {
+    animation-duration: 1.2s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
