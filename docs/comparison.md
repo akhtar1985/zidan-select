@@ -10,14 +10,22 @@ same two stylesheets.
 | | ZidanForm | Select2 | Choices.js | Tom Select | Slim Select | Bootstrap 5 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Runtime dependencies | **None** | jQuery | None | None | None | Bootstrap CSS/JS |
-| Scope | Select, checkbox, switch, radio, file, text | Select / tags | Select, text, tags | Select / tags | Select | Styling of native controls |
-| File upload UI | **Built in** (drag & drop, previews, limits) | — | — | — | — | — |
+| Scope | Select, checkbox, switch, radio, file, text, phone, stepper, range, date/time | Select / tags | Select, text, tags | Select / tags | Select | Styling of native controls |
+| Input icons & adornments | **Auto, custom SVG, left/right, clickable** | — | — | — | — | Markup (`input-group`) |
+| Phone number formatting | **Per country, 3 styles each** | — | — | — | — | — |
+| Number stepper | **Stacked, split, inline, hold-to-repeat** | — | — | — | — | Markup only |
+| Range slider skins | **Gradient, stepped, minimal, formatter functions** | — | — | — | — | Styled native range |
+| File upload UI | **Built in** (dropzone, button, avatar, gallery, compact, progress, previews, limits) | — | — | — | — | Styled input only |
+| Text input utilities | **Clear, reveal, prefix/suffix, counter, floating labels** | — | — | — | — | Markup (`input-group`) |
+| Date/time picker customization | **Icon as picker button, left/right, labels, date rules** | — | — | — | — | — |
+| Built-in validation rules | **Every type, weekend/blocked dates, validation icons** | — | — | — | — | Styles only |
 | Checkbox / switch / radio UI | **Built in** | — | — | — | — | Native only |
 | Native `value` / `checked` / `files` kept | **Yes** | Yes | Yes | Yes | Yes | Yes |
 | Split structure / theme CSS | **Yes** (`plugin-core.css` + `plugin-theme.css`) | Partial | Partial | Partial | Partial | Yes (Sass tokens) |
 | Built-in themes | **5** + custom tokens | Themes via CSS | Themes via CSS | Themes via CSS | Themes via CSS | 1 (Bootstrap) |
 | CSS-framework adapters | **Bootstrap, Tailwind, Bulma, Foundation** | — | — | — | — | n/a |
 | Validation coexistence tests | **jQuery Validation, JustValidate, Parsley, native** | — | — | — | — | Native + framework |
+| Framework support | **React, Next.js, Vue, Svelte, Angular guides** | Community wrappers | Community wrappers | Community wrappers | Community wrappers | Framework kits |
 | Weight | ~3,000 lines, one JS file | larger, plus jQuery | moderate | moderate | small | large (whole framework) |
 
 Feature claims above describe each project's *core* package. Plugins and community add-ons can
@@ -27,7 +35,8 @@ close some gaps — check the other project's current docs before deciding.
 
 - **One dependency-free file for every control.** Select2/Choices/Tom Select/Slim Select solve
   the select problem; ZidanForm also replaces checkboxes, switches, radios, file pickers and
-  text inputs, so a form does not need three libraries and three visual languages.
+  text inputs, and adds input icons, phone masks, number steppers, range skins and date rules,
+  so a form does not need three libraries and three visual languages.
 - **Nothing breaks underneath.** The real control stays in the DOM (1×1 px, never
   `display:none`), so `FormData`, `form.reset()`, `required`, `:invalid`, `input.files` and
   jQuery Validation's `:hidden` ignore keep working.

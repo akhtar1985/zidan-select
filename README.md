@@ -40,11 +40,17 @@ the same two stylesheets and no dependencies.
 | | ZidanForm | Select2 | Choices.js | Tom Select | Slim Select |
 | --- | --- | --- | --- | --- | --- |
 | Runtime dependencies | **None** | jQuery | None | None | None |
-| Controls covered | **Select, checkbox, switch, radio, file, text** | Select / tags | Select, text, tags | Select / tags | Select |
-| Drag & drop file upload | **Built in** | — | — | — | — |
+| Controls covered | **Select, checkbox, switch, radio, file, text, phone, stepper, range, date/time** | Select / tags | Select, text, tags | Select / tags | Select |
+| Input icons & adornments | **Auto, custom SVG, left/right, clickable** | — | — | — | — |
+| Phone number formatting | **Per country, 3 styles each** | — | — | — | — |
+| Number stepper & range skins | **3 stepper layouts, 3 range skins** | — | — | — | — |
+| File upload variants & progress | **Dropzone, button, avatar, gallery, compact** | — | — | — | — |
+| Text input utilities | **Clear, reveal, prefix/suffix, counter** | — | — | — | — |
+| Built-in validation rules | **Every type, date rules, validation icons** | — | — | — | — |
 | Split structure / theme CSS | **Yes** | Partial | Partial | Partial | Partial |
 | Validation coexistence tested | **Native, jQuery Validation, JustValidate, Parsley** | — | — | — | — |
 | CSS-framework adapters | **Bootstrap, Tailwind, Bulma, Foundation** | — | — | — | — |
+| Framework support | **React, Next.js, Vue, Svelte, Angular guides** | Community wrappers | Community wrappers | Community wrappers | Community wrappers |
 
 **Benefits**
 
