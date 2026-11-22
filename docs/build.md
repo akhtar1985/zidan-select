@@ -98,7 +98,7 @@ tarball only contains the readable files:
 | Select-only | `/dist/select/zidan-select.min.js` | `/dist/select/plugin-select-core.min.css` | `/dist/select/plugin-select-theme.min.css` |
 | File-only | `/dist/file/zidan-file.min.js` | `/dist/file/plugin-file-core.min.css` | `/dist/file/plugin-file-theme.min.css` |
 
-Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.2.3` to each path. Check the three you use
+Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.2.4` to each path. Check the three you use
 with `curl -I` before changing a version, then update the URLs in the README, the demo build
 cards and the playground in the same commit.
 
@@ -119,7 +119,7 @@ Both theme stylesheets keep the token set, the five preset themes (`default`, `m
 adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
 as in the full build.
 
-Approximate v2.2.3 sizes: select ≈95 kB JS + 12 kB core + 32 kB theme; file ≈76 kB JS +
+Approximate v2.2.4 sizes: select ≈95 kB JS + 12 kB core + 32 kB theme; file ≈76 kB JS +
 9 kB core + 35 kB theme, against ≈194 kB JS + 36 kB core + 47 kB theme for the full build.
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
