@@ -1,6 +1,6 @@
 {
   "name": "zidan-select",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Zero-dependency form enhancement library: select/combobox/tags, checkboxes, switches, radio groups, drag & drop file upload with progress, text/number/phone/date/range inputs and textarea with input icons and steppers, split core/theme CSS, 5 themes, 11 layouts and framework adapters.",
   "keywords": [
     "select",
