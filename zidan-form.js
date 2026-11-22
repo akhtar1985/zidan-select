@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.2.2
+ * ZidanForm v2.2.3
  * Zero-dependency form enhancement library: select / combobox / tags,
  * checkboxes, switches, radio groups, file upload with drag & drop and
  * upload progress, text / number / phone / date / range inputs and textarea.
@@ -32,7 +32,7 @@
 })(typeof window !== 'undefined' ? window : this, function (global) {
   'use strict';
 
-  var VERSION = '2.2.2';
+  var VERSION = '2.2.3';
 
   // Loading the file twice (classic script + module wrapper, or two bundles)
   // must not replace the classes and orphan the live instances.
