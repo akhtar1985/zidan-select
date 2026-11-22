@@ -1231,6 +1231,15 @@ textarea.zs-input-native {
   -webkit-appearance: auto;
 }
 
+/* a custom icon (or picker button) replaces the browser's own indicator */
+.zs-field--custom-picker[data-zs-type="date"] .zs-input-native::-webkit-calendar-picker-indicator,
+.zs-field--custom-picker[data-zs-type="time"] .zs-input-native::-webkit-calendar-picker-indicator,
+.zs-field--custom-picker[data-zs-type="datetime-local"] .zs-input-native::-webkit-calendar-picker-indicator,
+.zs-field--custom-picker[data-zs-type="month"] .zs-input-native::-webkit-calendar-picker-indicator,
+.zs-field--custom-picker[data-zs-type="week"] .zs-input-native::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
 .zs-field[data-zs-type="color"] .zs-input-native {
   height: 34px;
   padding: 0;
