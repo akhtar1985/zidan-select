@@ -1,7 +1,7 @@
 {
   "name": "zidan-select",
-  "version": "2.2.1",
-  "description": "Zero-dependency form enhancement library: select/combobox/tags, checkboxes, switches, radio groups, drag & drop file upload with progress, text/number/phone/date/range inputs and textarea with input icons and steppers. Split core/theme CSS, 5 themes, 11 layouts, framework adapters, plus select-only and file-only bundles.",
+  "version": "2.2.2",
+  "description": "Zero-dependency form enhancement library: select/combobox/tags, checkboxes, switches, radio groups, drag & drop file upload with progress, text/number/phone/date/range inputs and textarea with input icons and steppers. Split core/theme CSS, 5 themes, 11 layouts, framework adapters. Load only the select-only or file-only build if that is all you need, or the full form bundle to enhance every input at once.",
   "keywords": [
     "select",
     "combobox",
@@ -79,7 +79,7 @@
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
     "test": "node scripts/test.mjs",
-    "lint": "node --check zidan-form.js && node --check demo.js && node --check zidan-form.mjs"
+    "lint": "node --check zidan-form.js && node --check demo.js && node --check playground.js && node --check zidan-form.mjs"
   },
   "engines": {
     "node": ">=18"

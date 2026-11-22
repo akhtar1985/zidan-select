@@ -363,6 +363,110 @@
     });
   }
 
+  /* ---------------- direct JS init playground ---------------- */
+
+  var directCode = document.getElementById('direct-code');
+  var directTarget = document.getElementById('direct-target');
+  var directRun = document.getElementById('direct-run');
+  var directDestroy = document.getElementById('direct-destroy');
+  var directStatus = document.getElementById('direct-status');
+  var directValue = document.getElementById('direct-value');
+  var directOption = document.getElementById('direct-option');
+
+  function directScopeNodes() {
+    return Array.prototype.slice.call(document.querySelectorAll('#mymov, .mymovclass'));
+  }
+
+  function directDetails(node) {
+    var instance = node.__zidanSelect;
+    var selected = Array.prototype.map.call(node.selectedOptions || [], function (option) {
+      return { value: option.value, label: option.text, disabled: option.disabled };
+    });
+    return {
+      value: instance ? instance.getValue() : node.value,
+      selected: selected
+    };
+  }
+
+  function refreshDirect() {
+    if (!directValue) return;
+    var enhanced = directScopeNodes().filter(function (node) { return !!node.__zidanSelect; });
+    if (!enhanced.length) {
+      directValue.textContent = '—';
+      directOption.textContent = '—';
+      return;
+    }
+    var details = enhanced.map(directDetails);
+    directValue.textContent = details.length === 1
+      ? JSON.stringify(details[0].value)
+      : JSON.stringify(details.map(function (item) { return item.value; }));
+    directOption.textContent = details.length === 1
+      ? JSON.stringify(details[0].selected[0] || null)
+      : JSON.stringify(details.map(function (item) {
+          return item.selected[0] ? item.selected[0].label : 'none';
+        }));
+  }
+
+  function setDirectStatus(message, isError) {
+    if (!directStatus) return;
+    directStatus.textContent = message;
+    directStatus.className = 'direct-status' + (isError ? ' is-error' : '');
+  }
+
+  function runDirectCode() {
+    try {
+      var selector = (directTarget.value || '').trim();
+      if (!selector) throw new Error('Enter a selector, for example #mymov or .mymovclass.');
+      var matches = Array.prototype.slice.call(document.querySelectorAll(selector))
+        .filter(function (node) { return node.tagName === 'SELECT'; });
+      if (!matches.length) throw new Error('No <select> matches ' + selector + '.');
+      matches.forEach(function (node) {
+        if (node.__zidanSelect) node.__zidanSelect.destroy();
+      });
+      var options = new Function('return (' + directCode.value + ');')();
+      var result = window.zidanSelect(matches, options);
+      var instances = Array.isArray(result) ? result : [result];
+      refreshDirect();
+      setDirectStatus('Enhanced ' + instances.length + ' select(s) with zidanSelect(' + selector +
+        '). Pick an option to see getValue() and the selected <option> update.');
+    } catch (error) {
+      setDirectStatus('Error: ' + (error && error.message ? error.message : error), true);
+    }
+  }
+
+  function destroyDirect() {
+    var count = 0;
+    directScopeNodes().forEach(function (node) {
+      if (node.__zidanSelect) {
+        node.__zidanSelect.destroy();
+        count += 1;
+      }
+    });
+    refreshDirect();
+    setDirectStatus(count
+      ? 'Destroyed ' + count + ' instance(s) — original native selects restored.'
+      : 'Nothing to destroy — these selects are native.');
+  }
+
+  var directHost = document.getElementById('direct-demo');
+  if (directHost) {
+    directHost.addEventListener('zidan:change', refreshDirect);
+  }
+
+  if (directRun && directCode && directTarget) {
+    directRun.addEventListener('click', runDirectCode);
+    if (directDestroy) directDestroy.addEventListener('click', destroyDirect);
+    directScopeNodes().forEach(function (node) {
+      node.addEventListener('change', refreshDirect);
+    });
+    directCode.addEventListener('keydown', function (event) {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+        event.preventDefault();
+        runDirectCode();
+      }
+    });
+  }
+
   /* ---------------- indeterminate tri-state ---------------- */
 
   var parentBox = document.getElementById('cb-parent');

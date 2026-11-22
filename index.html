@@ -24,6 +24,8 @@
       </span>
     </a>
     <nav class="header-nav" aria-label="Project links">
+      <a href="playground.html">Playground</a>
+      <a href="#builds">Builds</a>
       <a href="#compare">Compare</a>
       <a href="#faq">FAQ</a>
       <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
@@ -51,7 +53,9 @@
         from the theme, so you can restyle everything with a handful of CSS variables.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#playground">Open the playground</a>
+        <a class="btn btn-primary" href="playground.html">Field playground</a>
+        <a class="btn" href="#playground">Page options</a>
+        <a class="btn" href="#builds">Compare builds</a>
         <a class="btn" href="https://github.com/akhtar1985/zidan-select#readme">Read the docs</a>
       </div>
       <ul class="feature-chips">
@@ -69,6 +73,97 @@
         <div><dt>Adapters</dt><dd>4</dd></div>
         <div><dt>Dependencies</dt><dd>0</dd></div>
       </dl>
+    </section>
+
+    <section class="builds-section" id="builds" aria-labelledby="builds-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Choose your build</p>
+        <h2 id="builds-title">One library, or just the controls you need</h2>
+        <p>
+          The full bundle ships every control. Select-only and file-only builds keep the same API,
+          markup attributes, themes, layouts and framework adapters for their controls, with their
+          own smaller CSS. Load one build per page — never a subset together with the full bundle.
+        </p>
+      </div>
+      <div class="build-picker">
+        <p class="build-picker-title">Which files should you load?</p>
+        <p class="build-picker-lead">
+          <strong>You do not need to load everything.</strong> Each build is complete and standalone.
+          If you only want one control, load only that build; the full bundle is for forms that
+          enhance several inputs at once.
+        </p>
+        <div class="build-picker-grid">
+          <a class="build-pick" href="#build-select">
+            <strong>Only custom select dropdowns</strong>
+            <span>Load the select-only JS plus its core and theme CSS. The rest of the page stays untouched — no full bundle.</span>
+            <em>≈95 kB JS</em>
+          </a>
+          <a class="build-pick" href="#build-file">
+            <strong>Only file uploads</strong>
+            <span>Load the file-only JS plus its core and theme CSS and leave every other input as it is.</span>
+            <em>≈76 kB JS</em>
+          </a>
+          <a class="build-pick" href="#build-full">
+            <strong>Every input in the form</strong>
+            <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
+            <em>≈194 kB JS</em>
+          </a>
+        </div>
+      </div>
+      <div class="grid-3">
+        <article class="card build-card" id="build-full">
+          <h3>Full build <span class="build-size">≈194 kB JS</span></h3>
+          <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
+          <p class="build-direct">
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/zidan-form.js">JS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/zidan-form.min.js">JS min</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/plugin-core.css">core CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/plugin-theme.css">theme CSS</a>
+          </p>
+          <div class="snippet-block snippet-block--inline">
+            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/plugin-core.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/plugin-theme.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/zidan-form.min.js"&gt;&lt;/script&gt;</code></pre>
+          </div>
+        </article>
+        <article class="card build-card" id="build-select">
+          <h3>Select-only <span class="build-size">≈95 kB JS</span></h3>
+          <p>Select, combobox, tags and multi-select — everything the select family needs.</p>
+          <p class="build-direct">
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/select/zidan-select.js">JS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/select/zidan-select.min.js">JS min</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/select/plugin-select-core.css">core CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/select/plugin-select-theme.css">theme CSS</a>
+          </p>
+          <div class="snippet-block snippet-block--inline">
+            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/select/plugin-select-core.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/select/plugin-select-theme.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/select/zidan-select.min.js"&gt;&lt;/script&gt;</code></pre>
+          </div>
+        </article>
+        <article class="card build-card" id="build-file">
+          <h3>File-only <span class="build-size">≈76 kB JS</span></h3>
+          <p>Dropzone, picker and inline file upload with progress, cancel and previews.</p>
+          <p class="build-direct">
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/file/zidan-file.js">JS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/file/zidan-file.min.js">JS min</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/file/plugin-file-core.css">core CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/file/plugin-file-theme.css">theme CSS</a>
+          </p>
+          <div class="snippet-block snippet-block--inline">
+            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/file/plugin-file-core.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/file/plugin-file-theme.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.2/dist/file/zidan-file.min.js"&gt;&lt;/script&gt;</code></pre>
+          </div>
+        </article>
+      </div>
+      <p class="compare-note">
+        The snippets use jsDelivr's auto-minified <code>.min</code> URLs — drop <code>.min</code>
+        to load the readable source. ESM variants and every per-file URL are listed in the
+        <a href="https://github.com/akhtar1985/zidan-select#select-only-and-file-only-builds">README build section</a>
+        and <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/build.md">docs/build.md</a>.
+        Not sure which options to pick? <a href="playground.html">Build the field in the playground</a>.
+      </p>
     </section>
 
     <section class="playground" id="playground" aria-labelledby="playground-title">
@@ -326,6 +421,128 @@
 
 // set before the library script runs
 window.ZIDAN_FORM_CONFIG = { targets: ['#cms-country'] };</code></pre>
+            </div>
+          </div>
+          <div class="card direct-card" id="direct-demo">
+            <h3>Direct JS init: one select by ID or class</h3>
+            <p>These selects have no <code>data-*</code> attributes. Choose a selector, edit the
+              JavaScript options object, then run <code>zidanSelect()</code>. Works with the full
+              build and the select-only build.</p>
+            <div class="direct-grid">
+              <div class="direct-preview">
+                <div>
+                  <label class="direct-label" for="mymov">#mymov <span>plain native select</span></label>
+                  <select id="mymov" name="movie">
+                    <option value="">Choose a movie…</option>
+                    <optgroup label="Christopher Nolan">
+                      <option value="inception" selected>Inception</option>
+                      <option value="interstellar">Interstellar</option>
+                      <option value="oppenheimer">Oppenheimer</option>
+                    </optgroup>
+                    <optgroup label="Denis Villeneuve">
+                      <option value="dune">Dune</option>
+                      <option value="arrival" disabled>Arrival (unavailable)</option>
+                      <option value="blade-runner-2049">Blade Runner 2049</option>
+                    </optgroup>
+                  </select>
+                </div>
+                <div>
+                  <label class="direct-label" for="mymov-a">.mymovclass <span>two selects, one call</span></label>
+                  <select id="mymov-a" class="mymovclass" name="mymov-a">
+                    <option value="">Genre…</option>
+                    <option value="drama">Drama</option>
+                    <option value="scifi">Sci-Fi</option>
+                    <option value="comedy">Comedy</option>
+                  </select>
+                  <select id="mymov-b" class="mymovclass" name="mymov-b" multiple size="4">
+                    <option value="1990s">1990s</option>
+                    <option value="2000s">2000s</option>
+                    <option value="2010s">2010s</option>
+                  </select>
+                </div>
+                <div class="direct-controls">
+                  <div class="field-mini">
+                    <label for="direct-target">Target selector</label>
+                    <input id="direct-target" type="text" value="#mymov" spellcheck="false">
+                  </div>
+                  <button type="button" class="btn btn-primary" id="direct-run">Run zidanSelect()</button>
+                  <button type="button" class="btn" id="direct-destroy">Destroy</button>
+                </div>
+                <p class="direct-status" id="direct-status" role="status" aria-live="polite">Native selects — run the code to enhance them.</p>
+                <p class="direct-value">
+                  <strong>getValue():</strong> <code id="direct-value">—</code><br>
+                  <strong>selected &lt;option&gt;:</strong> <code id="direct-option">—</code>
+                </p>
+              </div>
+              <div>
+                <label class="direct-label" for="direct-code">Options object <span>all select options, defaults shown</span></label>
+                <textarea id="direct-code" class="direct-code" spellcheck="false" rows="26">{
+  /* Core */
+  mode: 'combobox',                 // 'select' | 'combobox' | 'tags'
+  layout: 'classic-clean',          // floating-label, soft-pill, bordered-brutalist, glass-elevated
+  themeFramework: 'none',           // auto | none | vanilla | bootstrap | tailwind | bulma | foundation
+  theme: 'default',                 // default | modern | minimal | dark | glass
+  // id: 'mymov',                  // root id prefix; leave unset for class targets
+  // name: 'movie',                // defaults to the native name
+  disabled: false,
+  required: false,
+  validation: null,                 // 'valid' | 'invalid'
+  scrollbar: 'default',             // thin | fancy | hover | hidden
+  customClasses: { root: '', control: '', input: '' },
+
+  /* Data — omit to use the native options */
+  // options: [{ value: 'dune', label: 'Dune', group: 'Villeneuve' }],
+  // suggestions: ['Interstellar', 'Oppenheimer'],
+  // value: 'inception',
+  label: 'Movie',
+  placeholder: 'Search a movie…',
+
+  /* Behaviour */
+  multiple: false,
+  searchable: true,
+  clearable: true,
+  closeOnSelect: true,
+  maxDropdownHeight: 280,
+  noResultsText: 'No results found',
+  emptyText: 'No options',
+  loadingText: 'Searching…',
+  clearText: 'Clear selection',
+
+  /* Async combobox */
+  // fetchOptions: function (query, signal) {
+  //   return fetch('/api/movies?q=' + encodeURIComponent(query), { signal: signal })
+  //     .then(function (response) { return response.json(); });
+  // },
+  debounce: 250,
+  minChars: 0,
+  searchValues: true,
+
+  /* Tags (mode: 'tags') */
+  maxTags: 3,
+  minTagLength: 1,
+  maxTagLength: 24,
+  caseSensitive: false,
+  allowFreeText: true,
+  delimiters: [','],
+  commitOnTab: false,
+  commitOnBlur: false,
+  valueDelimiter: ',',
+
+  /* Rendering hooks */
+  // filterOption: function (item, query) { return item.label.toLowerCase().includes(query.toLowerCase()); },
+  // renderOption: function (item) { return '&lt;strong&gt;' + item.label + '&lt;/strong&gt;'; },
+  // renderSelected: function (value) { return value; },
+  // renderTag: function (tag) { return tag; },
+  // validateTag: function (tag) { return tag.length <= 24 || 'Too long'; },
+  // formatTag: function (tag) { return tag.toUpperCase(); },
+
+  /* Callbacks — also onSelect, onOpen, onClose, onTagAdd, onTagRemove, onError */
+  onInit: function (event) { console.log('zidan:init', event.instance); },
+  onChange: function (event) { console.log('zidan:change', event.value); }
+}</textarea>
+                <p class="direct-hint">Ctrl/⌘ + Enter runs the code. The select-only build accepts
+                  the same object; load that build <em>instead of</em> the full bundle, never both.</p>
+              </div>
             </div>
           </div>
         </div>

@@ -30,7 +30,7 @@ function assert(condition, message) {
 }
 
 check('JavaScript syntax', () => {
-  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'scripts/build.mjs', 'scripts/serve.mjs']) {
+  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'playground.js', 'scripts/build.mjs', 'scripts/serve.mjs']) {
     execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'pipe' });
   }
 });
@@ -86,10 +86,25 @@ check('docs and demo reference the current files', () => {
   const html = read('index.html');
   assert(html.includes('plugin-core.css') && html.includes('plugin-theme.css'), 'demo does not load both stylesheets');
   assert(!html.includes('ZidanSelect.js'), 'demo still references the removed bundle');
+  assert(html.includes('Which files should you load?'), 'demo does not explain which files to load');
+  assert(html.includes('You do not need to load everything.'), 'demo does not state that the full bundle is optional');
   const readme = fs.existsSync(path.join(root, 'README.md')) ? read('README.md') : '';
+  if (readme) assert(readme.includes('Which files should you load?'), 'README does not explain which files to load');
+  if (readme) assert(readme.includes('You do not need to load everything.'), 'README does not state that the full bundle is optional');
   if (readme) assert(readme.includes('plugin-core.css'), 'README missing split CSS section');
   if (readme) assert(readme.includes('docs/comparison.md'), 'README does not link the comparison guide');
   assert(fs.existsSync(path.join(root, 'docs/comparison.md')), 'comparison guide missing');
+});
+
+check('field playground is wired up', () => {
+  const playground = read('playground.html');
+  assert(playground.includes('plugin-core.css') && playground.includes('plugin-theme.css'), 'playground does not load both stylesheets');
+  assert(playground.includes('playground.css') && playground.includes('playground.js'), 'playground assets missing');
+  ['select', 'file', 'checkbox', 'radio', 'text'].forEach(kind => {
+    assert(playground.includes('data-kind="' + kind + '"'), 'missing playground tab ' + kind);
+  });
+  assert(read('index.html').includes('playground.html'), 'demo does not link the playground');
+  assert(read('README.md').includes('playground.html'), 'README does not link the playground');
 });
 
 console.log(failures ? '\n' + failures + ' check(s) failed' : '\nall checks passed');

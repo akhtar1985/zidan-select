@@ -6,6 +6,65 @@ passed to `initZidanSelects()` / `initZidanForms()` / `zidanSelect()` / `zidanFi
 `zidanField()` itself accepts any supported `<input>`/`<textarea>`, with or without a
 `data-zidan*` attribute, which is how JS-only options are applied.
 
+> **Prefer to click through the options?** The
+> [field playground](https://akhtar1985.github.io/zidan-select/playground.html) exposes every
+> option for one control at a time and copies both the HTML attribute form and the vanilla
+> JavaScript object shown below.
+
+## Direct init by ID or class
+
+The first argument of `zidanSelect()` accepts a CSS selector, an element, or a NodeList. Plain
+selects are not auto-initialised, so you can enhance exactly the field you want:
+
+```html
+<select id="mymov">…</select>
+<select class="mymovclass">…</select>
+<select class="mymovclass">…</select>
+```
+
+```js
+const picker = zidanSelect('#mymov', {
+  mode: 'combobox',
+  label: 'Movie',
+  placeholder: 'Search a movie…',
+  searchable: true,
+  clearable: true
+});
+
+const pickers = zidanSelect('.mymovclass', { mode: 'select', layout: 'soft-pill' });
+// one match → instance, several → array
+```
+
+`initZidanSelects(scope, options)` still bulk-enhances every `[data-zidan-select]` and
+`.zidan-select` inside a scope; use it when the markup can carry attributes. `zidanSelect()`
+is the targeted form for IDs, classes and elements you already have a reference to.
+
+### Read values and option details
+
+```js
+picker.getValue();                 // selected value; array for multiple/tags
+picker.setValue('dune');
+picker.getTags();                  // tags mode
+
+const native = picker.el;          // the original <select>
+native.selectedOptions;            // selected <option> elements
+Array.from(native.options).map(option => ({
+  value: option.value,
+  label: option.text,
+  disabled: option.disabled,
+  group: option.parentElement.tagName === 'OPTGROUP' ? option.parentElement.label : null
+}));
+
+picker.setOptions([                // rebuilds listbox and native <option>s
+  { value: 'inception', label: 'Inception' },
+  { value: 'dune', label: 'Dune', group: 'Villeneuve' },
+  { value: 'arrival', label: 'Arrival', disabled: true }
+]);
+```
+
+Listen to the library callback in the options (`onChange: ({ instance, value }) => …`) or to the
+native `change` event; the native `<select>` always holds the current value.
+
 ## No-JS init (IDs, classes, selectors, JSON)
 
 For CMS templates where attributes are limited and custom scripts are unwelcome, init can be
@@ -317,6 +376,60 @@ Variants are set with `fileVariant` / `data-zidan-file-variant` (defaults to `dr
 | `cancelLabel` / `retryLabel` | — | string | `Cancel` / `Retry` | Per-file action labels. |
 | `renderFile` | — | function | — | `(itemElement, { file, index, state, field })` after the default row renders. |
 
+### Every file option in one object
+
+```js
+const upload = zidanField('#files', {
+  /* Target by ID, class or element; no data-* attribute required */
+
+  /* Variant & copy */
+  variant: 'dropzone',              // dropzone | button | avatar | gallery | compact
+  uploadIcon: 'upload',             // any registered icon name or SVG markup
+  title: 'Choose a file',
+  dropHint: 'Drag & drop or browse',
+  layout: 'stacked',                // stacked | inline | compact | floating | outlined | card
+  theme: 'default',
+  framework: 'none',
+  label: 'Attachments',
+  hint: 'PDF or images up to 5 MB.',
+
+  /* Rules */
+  accept: 'image/*,.pdf',           // shown in the hint, checked against the picker
+  maxFiles: 4,
+  maxSizeMB: 5,                     // or maxSize: 5242880 (bytes)
+  showFileMeta: true,
+  showPreview: true,
+  replaceTitle: 'Change image',
+
+  /* Upload pipeline */
+  // upload: function (context) { … },       // custom uploader, contract below
+  // uploadUrl: '/api/files',                // or XHR endpoint
+  uploadField: 'file',
+  // uploadData: function (file, field) { return { folder: 'avatars' }; },
+  // uploadHeaders: function (file, field) { return { 'X-Token': '…' }; },
+  withCredentials: false,
+  autoUpload: true,
+  simulateUpload: false,            // visual-only pipeline
+  simulateDuration: 900,            // ms
+
+  /* Per-file UI */
+  progressTemplate: 'Uploading {percent}%',
+  uploadedLabel: 'Uploaded',
+  failedLabel: 'Upload failed',
+  canceledLabel: 'Upload canceled',
+  cancelLabel: 'Cancel',
+  retryLabel: 'Retry',
+  // renderFile: function (itemElement, state) { … },
+
+  /* Callbacks — also zidan:upload-start/progress/success/error/cancel */
+  onUploadStart: function (event) { console.log('start', event.file); },
+  onUploadProgress: function (event) { console.log(event.progress); },
+  onUploadSuccess: function (event) { console.log('done', event.result); },
+  onUploadError: function (event) { console.log('failed', event.error); },
+  onUploadCancel: function (event) { console.log('canceled', event.file); }
+});
+```
+
 Custom uploader contract:
 
 ```js
@@ -434,6 +547,86 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 
 `onInit`, `onChange`, `onSelect`, `onOpen`, `onClose`, `onTagAdd`, `onTagRemove`, `onError`.
 Every callback receives a single payload object with `instance` and the relevant value(s).
+
+### Every select option in one object
+
+Copy the block, delete what you do not need. Values shown are the defaults; only clauses that
+change the shape of the result (options, value, callbacks) are commented out.
+
+```js
+const picker = zidanSelect('#mymov', {
+  /* Core */
+  mode: 'combobox',                 // 'select' | 'combobox' | 'tags' (default 'select')
+  layout: 'classic-clean',          // 5 select layouts, see theming.md
+  themeFramework: 'none',           // 'auto' | 'none' | 'vanilla' | 'bootstrap' | 'tailwind' | 'bulma' | 'foundation'
+  theme: 'default',                 // 'default' | 'modern' | 'minimal' | 'dark' | 'glass'
+  // id: 'mymov',                   // root id prefix; leave unset for class targets
+  // name: 'movie',                 // defaults to the native name
+  disabled: false,
+  required: false,
+  validation: null,                 // 'valid' | 'invalid' | null
+  scrollbar: 'default',             // 'default' | 'thin' | 'fancy' | 'hover' | 'hidden'
+  customClasses: { root: '', control: '', input: '' },
+
+  /* Data — omit to use the native <option>s */
+  // options: [
+  //   { value: 'inception', label: 'Inception' },
+  //   { value: 'dune', label: 'Dune', group: 'Villeneuve' },
+  //   { value: 'arrival', label: 'Arrival', disabled: true }
+  // ],
+  // suggestions: ['Interstellar', 'Oppenheimer'],
+  // value: 'inception',            // string, or array for multiple/tags
+  label: 'Movie',
+  placeholder: 'Search a movie…',
+
+  /* Behaviour */
+  multiple: false,                  // mirrors native multiple by default
+  searchable: true,                 // false in plain 'select' mode
+  clearable: true,
+  closeOnSelect: true,              // single mode
+  maxDropdownHeight: 280,           // px
+  noResultsText: 'No results found',
+  emptyText: 'No options',
+  loadingText: 'Searching…',
+  clearText: 'Clear selection',
+
+  /* Combobox / async */
+  // fetchOptions: function (query, signal) {
+  //   return fetch('/api/movies?q=' + encodeURIComponent(query), { signal: signal })
+  //     .then(function (response) { return response.json(); });
+  // },
+  debounce: 250,                    // ms
+  minChars: 0,
+  searchValues: true,               // match labels and values
+
+  /* Tags (mode: 'tags') */
+  maxTags: Infinity,
+  minTagLength: 1,
+  maxTagLength: Infinity,
+  caseSensitive: false,
+  allowFreeText: true,
+  delimiters: [','],
+  commitOnTab: false,
+  commitOnBlur: false,
+  valueDelimiter: ',',
+
+  /* Rendering hooks */
+  // filterOption: function (item, query) { return item.label.toLowerCase().includes(query.toLowerCase()); },
+  // renderOption: function (item) { return '<strong>' + item.label + '</strong>'; },
+  // renderSelected: function (value) { return value; },
+  // renderTag: function (tag) { return tag; },
+  // validateTag: function (tag) { return tag.length <= 24 || 'Use 24 characters or fewer'; },
+  // formatTag: function (tag) { return tag.toUpperCase(); },
+
+  /* Callbacks — also: onSelect, onOpen, onClose, onTagAdd, onTagRemove, onError */
+  onInit: function (event) { console.log('init', event.instance); },
+  onChange: function (event) { console.log('value', event.value); }
+});
+```
+
+Data attributes remain available as a 1:1 fallback; the tables above list the matching
+`data-zidan-*` name for each option, and `data-zidan-options` accepts any literal-value subset
+as JSON.
 
 ### DOM data attributes
 

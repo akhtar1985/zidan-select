@@ -13,6 +13,8 @@ zidan-select/
 ├─ plugin-core.css      # structure only
 ├─ plugin-theme.css     # tokens, presets, layouts, framework adapters
 ├─ index.html           # tabbed demo + theme showcase
+├─ playground.html      # per-field option builder
+├─ playground.css/js    # playground-only assets
 ├─ demo.css / demo.js   # demo-only assets
 ├─ package.json         # npm metadata + scripts
 ├─ scripts/
@@ -23,6 +25,22 @@ zidan-select/
 ├─ README.md
 └─ LICENSE
 ```
+
+### Which files should you load?
+
+**You do not have to load everything.** If the page only needs one control, load only that
+build; the complete form bundle is only for forms that enhance several inputs at once. A subset
+is a standalone build, not an add-on, so never load it together with the full bundle.
+
+| If the page only needs… | Load |
+| --- | --- |
+| Custom select dropdowns | `dist/select/zidan-select.js` plus `plugin-select-core.css` and `plugin-select-theme.css`. Every other input stays untouched; the full bundle is not needed. |
+| File uploads | `dist/file/zidan-file.js` plus `plugin-file-core.css` and `plugin-file-theme.css`. The rest of the form is untouched. |
+| Every input at once | `zidan-form.js` plus `plugin-core.css` and `plugin-theme.css`; one `initZidanForms()` call enhances text fields, selects, file uploads, checkboxes and radios together. |
+
+Snippets and ESM variants for each row are under
+[Select-only and file-only builds](#select-only-and-file-only-builds); the demo shows all three
+side by side at the [builds section](https://akhtar1985.github.io/zidan-select/#builds).
 
 ## Scripts
 
@@ -66,6 +84,22 @@ npm run build
 Without esbuild the build still succeeds and prints that minification was skipped. Add
 `dist/` to `.gitignore`; it is regenerated at publish time.
 
+### Minified CDN URLs
+
+You do not need esbuild to ship minified files from a CDN. jsDelivr generates `.min.*` on
+request from the published sources, so these URLs track the pinned version even though the npm
+tarball only contains the readable files:
+
+| Build | JavaScript | Core CSS | Theme CSS |
+| --- | --- | --- | --- |
+| Full | `/zidan-form.min.js` | `/plugin-core.min.css` | `/plugin-theme.min.css` |
+| Select-only | `/dist/select/zidan-select.min.js` | `/dist/select/plugin-select-core.min.css` | `/dist/select/plugin-select-theme.min.css` |
+| File-only | `/dist/file/zidan-file.min.js` | `/dist/file/plugin-file-core.min.css` | `/dist/file/plugin-file-theme.min.css` |
+
+Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.2.2` to each path. Check the three you use
+with `curl -I` before changing a version, then update the URLs in the README, the demo build
+cards and the playground in the same commit.
+
 ## Select-only and file-only builds
 
 `scripts/build.mjs` slices the single source into two smaller distributables. The sections in
@@ -83,7 +117,7 @@ Both theme stylesheets keep the token set, the five preset themes (`default`, `m
 adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
 as in the full build.
 
-Approximate v2.2.1 sizes: select ≈95 kB JS + 12 kB core + 32 kB theme; file ≈76 kB JS +
+Approximate v2.2.2 sizes: select ≈95 kB JS + 12 kB core + 32 kB theme; file ≈76 kB JS +
 9 kB core + 35 kB theme, against ≈194 kB JS + 36 kB core + 47 kB theme for the full build.
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
@@ -164,16 +198,19 @@ import 'zidan-select/file/css/theme';
 ## GitHub Pages
 
 The demo is static and needs no build. `.github/workflows/pages.yml` assembles `_site/` on every
-push to `main` — `index.html`, `demo.css`, `demo.js`, the four library files and `docs/` — then
-uploads it with `actions/upload-pages-artifact` and publishes it with `actions/deploy-pages`.
+push to `main` — `index.html`, `playground.html`, `playground.css`, `playground.js`, `demo.css`,
+`demo.js`, the four library files and `docs/` — then uploads it with
+`actions/upload-pages-artifact` and publishes it with `actions/deploy-pages`.
 
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 | URL | Serves |
 | --- | --- |
 | `https://akhtar1985.github.io/zidan-select/` | The tabbed demo |
+| `https://akhtar1985.github.io/zidan-select/playground.html` | Per-field option playground |
 | `https://akhtar1985.github.io/zidan-select/docs/` | Documentation index |
 | `/#select`, `/#check`, `/#file`, `/#inputs`, `/#themes` | Deep links to a demo tab |
+| `/playground.html#select`, `#file`, `#checkbox`, `#radio`, `#text` | Deep links to a playground control |
 
 The workflow only copies demo assets, so `scripts/`, `dist/`, `package.json` and local scratch
 files are never published.

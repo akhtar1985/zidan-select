@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Field playground — build a ZidanForm control and copy its code</title>
+  <meta name="description" content="Interactive ZidanForm playground: choose a select, file, checkbox, switch, radio or text input, toggle its options, preview it live and copy the matching HTML attributes or vanilla JavaScript.">
+  <meta name="theme-color" content="#4f6bed">
+  <link rel="stylesheet" href="plugin-core.css">
+  <link rel="stylesheet" href="plugin-theme.css">
+  <link rel="stylesheet" href="demo.css">
+  <link rel="stylesheet" href="playground.css">
+</head>
+<body>
+  <a class="skip-link" href="#pg-stage">Skip to preview</a>
+
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">field playground</span>
+      </span>
+    </a>
+    <nav class="header-nav" aria-label="Project links">
+      <a href="index.html">Demo</a>
+      <a href="index.html#builds">Builds</a>
+      <a href="docs/">Docs</a>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+    </nav>
+  </header>
+
+  <main id="demo-app" class="wrap pg-main">
+    <section class="pg-hero">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Per-field playground</p>
+      <h1>Set the options. <span>Copy the code.</span></h1>
+      <p>
+        Pick a control, flip the switches and selects, and watch it update. Every field produces
+        both a copy-paste HTML snippet with <code>data-*</code> attributes and a plain vanilla
+        JavaScript call, so you can use whichever fits your project.
+      </p>
+    </section>
+
+    <div class="pg-kinds" role="tablist" aria-label="Control type" id="pg-kinds">
+      <button type="button" role="tab" id="pg-tab-select" aria-selected="true" aria-controls="pg-panel" tabindex="0" data-kind="select">Select</button>
+      <button type="button" role="tab" id="pg-tab-file" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="file">File upload</button>
+      <button type="button" role="tab" id="pg-tab-checkbox" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="checkbox">Checkbox / switch</button>
+      <button type="button" role="tab" id="pg-tab-radio" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="radio">Radio group</button>
+      <button type="button" role="tab" id="pg-tab-text" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="text">Text &amp; inputs</button>
+    </div>
+
+    <section class="pg-panel" id="pg-panel" role="tabpanel" aria-labelledby="pg-tab-select" tabindex="0">
+      <div class="pg-grid">
+        <div class="card pg-options">
+          <div class="pg-card-head">
+            <div>
+              <h2 id="pg-options-title">Select options</h2>
+              <p>Only the options for this control are shown.</p>
+            </div>
+            <button type="button" class="btn" id="pg-reset">Reset</button>
+          </div>
+          <div id="pg-options-body"></div>
+        </div>
+
+        <div class="pg-column">
+          <div class="card pg-preview">
+            <div class="pg-card-head">
+              <div>
+                <h2>Live preview</h2>
+                <p>The demo uses the full build and re-initialises on every change.</p>
+              </div>
+              <div class="pg-runmode" role="group" aria-label="How the preview initialises">
+                <button type="button" data-mode="attrs" aria-pressed="true">HTML attrs</button>
+                <button type="button" data-mode="js" aria-pressed="false">JavaScript</button>
+              </div>
+            </div>
+            <div class="pg-stage" id="pg-stage"></div>
+            <p class="pg-value">
+              <span id="pg-kind-note">Enhanced with <code>initZidanSelects()</code> from the data attributes.</span>
+              <br>
+              <strong>getValue():</strong> <code id="pg-value">—</code>
+            </p>
+          </div>
+
+          <div class="card pg-code">
+            <div class="pg-card-head">
+              <div>
+                <h2>Copy code</h2>
+                <p>Both snippets describe the same field.</p>
+              </div>
+            </div>
+            <div class="pg-code-block">
+              <div class="pg-code-head">
+                <span>HTML · data attributes</span>
+                <button type="button" class="pg-copy" data-copy="html">Copy</button>
+              </div>
+              <pre><code id="pg-html"></code></pre>
+            </div>
+            <div class="pg-code-block">
+              <div class="pg-code-head">
+                <span>JavaScript · vanilla</span>
+                <button type="button" class="pg-copy" data-copy="js">Copy</button>
+              </div>
+              <pre><code id="pg-js"></code></pre>
+            </div>
+            <p class="pg-code-note">
+              The JavaScript tab keeps the same native markup but removes the <code>data-*</code>
+              attributes; auto-init only scans marked elements, so nothing is enhanced twice.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <noscript>
+      <p class="pg-noscript">This playground needs JavaScript. Every generated snippet still works without it once copied into your page.</p>
+    </noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="index.html">Demo</a> ·
+        <a href="docs/">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="zidan-form.js"></script>
+  <script src="playground.js"></script>
+</body>
+</html>

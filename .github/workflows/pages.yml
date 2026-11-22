@@ -26,7 +26,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p _site/docs
-          cp index.html demo.css demo.js LICENSE _site/
+          cp index.html playground.html playground.css playground.js demo.css demo.js LICENSE _site/
           cp zidan-form.js zidan-form.mjs plugin-core.css plugin-theme.css _site/
           cp -r docs/. _site/docs/
 
