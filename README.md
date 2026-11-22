@@ -157,10 +157,10 @@ override presets.
 
 Copyable URLs for the published files (pin the version in production):
 
-- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.2/zidan-form.js>
-- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.2/zidan-form.mjs>
-- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.2/plugin-core.css>
-- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.2/plugin-theme.css>
+- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.3/zidan-form.js>
+- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.3/zidan-form.mjs>
+- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.3/plugin-core.css>
+- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.3/plugin-theme.css>
 - npm package — <https://www.npmjs.com/package/zidan-select>
 - Source — <https://github.com/akhtar1985/zidan-select>
 
@@ -820,6 +820,11 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](docs
   [`docs/validation.md`](docs/validation.md), and a live event console on the demo page.
 
 The 2.0 API is unchanged; every addition is opt-in.
+
+**2.1.3** fixes the duplicate calendar/clock indicator on date, time, datetime-local, month and
+week fields when a custom icon or picker button is used. The demo gains an icon card covering
+auto, built-in, registered and JavaScript-only icons, and every comparison table now lists the
+2.1 capabilities (icons, phone masks, stepper, range skins, file variants, date rules).
 
 **2.1.2** is a documentation-only patch: it ships this README, the GitHub Pages deployment, the
 demo screenshots and the copyable CDN URLs. No JavaScript or CSS behaviour changed.
