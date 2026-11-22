@@ -107,5 +107,25 @@ check('field playground is wired up', () => {
   assert(read('README.md').includes('playground.html'), 'README does not link the playground');
 });
 
+check('Pages metadata is complete', () => {
+  const robots = read('robots.txt');
+  const sitemap = read('sitemap.xml');
+  assert(robots.includes('Sitemap: https://akhtar1985.github.io/zidan-select/sitemap.xml'), 'robots.txt missing sitemap pointer');
+  assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/playground.html'), 'sitemap missing the playground');
+  const workflow = read('.github/workflows/pages.yml');
+  assert(workflow.includes('robots.txt') && workflow.includes('sitemap.xml'), 'Pages workflow does not publish robots/sitemap');
+  const html = read('index.html');
+  assert(html.includes('<link rel="canonical"'), 'demo missing canonical URL');
+  assert(html.includes('property="og:image"'), 'demo missing Open Graph image');
+  assert(read('playground.html').includes('<link rel="canonical"'), 'playground missing canonical URL');
+  const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  assert(ld, 'demo missing JSON-LD structured data');
+  try {
+    JSON.parse(ld[1]);
+  } catch (err) {
+    throw new Error('JSON-LD is not valid JSON: ' + err.message);
+  }
+});
+
 console.log(failures ? '\n' + failures + ' check(s) failed' : '\nall checks passed');
 process.exit(failures ? 1 : 0);

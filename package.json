@@ -11,14 +11,21 @@
     "radio",
     "file-upload",
     "form",
+    "form-validation",
+    "phone-input",
+    "range-slider",
     "vanilla-js",
     "zero-dependency",
     "accessible",
+    "theming",
     "bootstrap",
     "tailwind"
   ],
   "license": "MIT",
-  "author": "akhtar1985",
+  "author": {
+    "name": "akhtar1985",
+    "url": "https://github.com/akhtar1985"
+  },
   "homepage": "https://akhtar1985.github.io/zidan-select/",
   "repository": {
     "type": "git",
@@ -83,5 +90,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

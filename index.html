@@ -5,7 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ZidanForm — vanilla form controls: select, checkbox, radio, file &amp; inputs</title>
   <meta name="description" content="ZidanForm: zero-dependency form enhancement library with custom select/combobox/tags, checkboxes, switches, radio groups, drag &amp; drop file upload and text inputs. Split core + theme CSS, 5 themes, 5 layouts, Bootstrap/Tailwind/Bulma/Foundation adapters and validation-library compatibility.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/">
   <meta name="theme-color" content="#4f6bed">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:title" content="ZidanForm — vanilla form controls: select, checkbox, radio, file &amp; inputs">
+  <meta property="og:description" content="Zero-dependency form enhancement: custom select/combobox/tags, checkboxes, switches, radio groups, drag &amp; drop file upload and text/number/phone/date/range inputs — native validation intact.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo.png">
+  <meta property="og:image:alt" content="ZidanForm demo showing custom select, file upload and input controls">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ZidanForm — vanilla form controls">
+  <meta name="twitter:description" content="Zero-dependency select, checkbox, switch, radio, file upload and text inputs — native validation intact.">
+  <meta name="twitter:image" content="https://akhtar1985.github.io/zidan-select/docs/demo.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "ZidanForm",
+        "alternateName": "zidan-select",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "description": "Zero-dependency form enhancement library for select, combobox, tags, checkbox, switch, radio, file upload and text inputs, with split core/theme CSS, five themes and framework adapters.",
+        "url": "https://akhtar1985.github.io/zidan-select/",
+        "sameAs": [
+          "https://github.com/akhtar1985/zidan-select",
+          "https://www.npmjs.com/package/zidan-select"
+        ],
+        "license": "https://github.com/akhtar1985/zidan-select/blob/main/LICENSE",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Does ZidanForm require jQuery?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. ZidanForm is vanilla JavaScript with no runtime dependencies. It works alongside jQuery but never needs it." }
+          },
+          {
+            "@type": "Question",
+            "name": "Will FormData, form reset and native validation still work?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. The native control stays in the DOM at 1x1 px and is only visually covered, so FormData, form.reset(), required, :invalid and input.files behave exactly as before." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can ZidanForm be used with React, Vue or Angular?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Initialise in a mount or effect and call destroy() on cleanup; the framework guide covers React, Next.js SSR, Vue and Angular patterns." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does ZidanForm conflict with jQuery Validation, JustValidate or Parsley?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. These libraries ignore hidden fields, so ZidanForm keeps the native control reachable and syncs aria-invalid. A runnable test bench covers all four validators." }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I customise the look of the fields?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Load plugin-core.css then plugin-theme.css and override CSS variables or add a theme. Register custom names with ZidanForm.themes.push('brand') before initialising." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I enhance just one select?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Everything is opt-in: add a data-zidan-select attribute, initialise only that element, or call zidanField() / zidanSelect() directly. destroy() restores the original markup." }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a build step or bundler requirement?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. ZidanForm ships as a classic script, an ESM wrapper and plain CSS. Use a CDN, npm or copy the files; no compiler or bundler is required." }
+          },
+          {
+            "@type": "Question",
+            "name": "Which browsers are supported?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Current Chromium 105+, Firefox 121+ and Safari 15.4+ / iOS 15.4+. Firefox exposes thin native scrollbars only." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <link rel="stylesheet" href="plugin-core.css">
   <link rel="stylesheet" href="plugin-theme.css">
   <link rel="stylesheet" href="demo.css">

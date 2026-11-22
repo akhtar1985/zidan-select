@@ -15,6 +15,8 @@ zidan-select/
 ├─ index.html           # tabbed demo + theme showcase
 ├─ playground.html      # per-field option builder
 ├─ playground.css/js    # playground-only assets
+├─ robots.txt           # Pages crawler directives + sitemap pointer
+├─ sitemap.xml          # public Pages URLs
 ├─ demo.css / demo.js   # demo-only assets
 ├─ package.json         # npm metadata + scripts
 ├─ scripts/
@@ -199,7 +201,7 @@ import 'zidan-select/file/css/theme';
 
 The demo is static and needs no build. `.github/workflows/pages.yml` assembles `_site/` on every
 push to `main` — `index.html`, `playground.html`, `playground.css`, `playground.js`, `demo.css`,
-`demo.js`, the four library files and `docs/` — then uploads it with
+`demo.js`, `robots.txt`, `sitemap.xml`, the four library files and `docs/` — then uploads it with
 `actions/upload-pages-artifact` and publishes it with `actions/deploy-pages`.
 
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
@@ -211,6 +213,7 @@ One-time setup: **Settings → Pages → Build and deployment → Source: GitHub
 | `https://akhtar1985.github.io/zidan-select/docs/` | Documentation index |
 | `/#select`, `/#check`, `/#file`, `/#inputs`, `/#themes` | Deep links to a demo tab |
 | `/playground.html#select`, `#file`, `#checkbox`, `#radio`, `#text` | Deep links to a playground control |
+| `/robots.txt`, `/sitemap.xml` | Crawler directives and the four public page URLs |
 
 The workflow only copies demo assets, so `scripts/`, `dist/`, `package.json` and local scratch
 files are never published.

@@ -210,6 +210,7 @@ override presets.
 | `dist/file/` | File-only build: `zidan-file.js`, `zidan-file.mjs`, `plugin-file-core.css`, `plugin-file-theme.css`. |
 | `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase (not shipped logic). |
 | `playground.html`, `playground.css`, `playground.js` | Per-field option builder with live preview and copyable HTML / JS output (not shipped logic). |
+| `robots.txt`, `sitemap.xml` | Crawler directives and the public page list for GitHub Pages (not shipped on npm). |
 | `docs/` | Comparison, options, validation, frameworks, theming and build guides. |
 
 Copyable URLs for the published files (pin the version in production):
