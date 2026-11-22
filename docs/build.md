@@ -111,9 +111,20 @@ import 'zidan-select/css/theme';
 
 ## GitHub Pages
 
-The demo is static and needs no build: enable Pages for the default branch, root folder.
-`index.html` is served at `https://<user>.github.io/zidan-select/`, and the documentation
-under `docs/` (with `docs/index.html` as the entry) next to it.
+The demo is static and needs no build. `.github/workflows/pages.yml` assembles `_site/` on every
+push to `main` — `index.html`, `demo.css`, `demo.js`, the four library files and `docs/` — then
+uploads it with `actions/upload-pages-artifact` and publishes it with `actions/deploy-pages`.
+
+One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+| URL | Serves |
+| --- | --- |
+| `https://akhtar1985.github.io/zidan-select/` | The tabbed demo |
+| `https://akhtar1985.github.io/zidan-select/docs/` | Documentation index |
+| `/#select`, `/#check`, `/#file`, `/#inputs`, `/#themes` | Deep links to a demo tab |
+
+The workflow only copies demo assets, so `scripts/`, `dist/`, `package.json` and local scratch
+files are never published.
 
 ## Release automation (optional)
 

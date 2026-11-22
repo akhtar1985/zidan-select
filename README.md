@@ -6,7 +6,8 @@ switch, radio, file and text inputs **in place** — real form values, `FormData
 two separate stylesheets.
 
 [![demo](https://img.shields.io/badge/demo-live-4f6bed)](https://akhtar1985.github.io/zidan-select/)
-[![npm](https://img.shields.io/badge/npm-zidan--select-cb3837)](https://www.npmjs.com/package/zidan-select)
+[![npm](https://img.shields.io/npm/v/zidan-select?color=cb3837)](https://www.npmjs.com/package/zidan-select)
+[![docs](https://img.shields.io/badge/docs-options%20%7C%20API%20%7C%20theming-6b7280)](docs/options.md)
 [![license](https://img.shields.io/badge/license-MIT-22c55e)](LICENSE)
 
 - **One file of JS** — `zidan-form.js` (classic script, UMD-ish) + `zidan-form.mjs` (ESM wrapper).
@@ -65,20 +66,44 @@ limitations and migration notes: **[`docs/comparison.md`](docs/comparison.md)**.
 
 ## Contents
 
-1. [Install](#install)
-2. [Why ZidanForm](#why-zidanform)
-3. [Quick start](#quick-start)
-4. [Input types](#input-types)
-5. [Options & data attributes](#options--data-attributes)
-6. [JavaScript API](#javascript-api)
-7. [Themes, layouts & frameworks](#themes-layouts--frameworks)
-8. [Validation libraries](#validation-libraries)
-9. [Form lifecycle & state sync](#form-lifecycle--state-sync)
-10. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
-11. [Build & publish](#build--publish)
-12. [Browser support](#browser-support)
-13. [What's new in 2.1](#whats-new-in-21)
-14. [Migrating from 1.x](#migrating-from-1x)
+1. [Live demo](#live-demo)
+2. [Install](#install)
+3. [Why ZidanForm](#why-zidanform)
+4. [Quick start](#quick-start)
+5. [Input types](#input-types)
+6. [Options & data attributes](#options--data-attributes)
+7. [JavaScript API](#javascript-api)
+8. [Themes, layouts & frameworks](#themes-layouts--frameworks)
+9. [Validation libraries](#validation-libraries)
+10. [Form lifecycle & state sync](#form-lifecycle--state-sync)
+11. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
+12. [Build & publish](#build--publish)
+13. [Browser support](#browser-support)
+14. [What's new in 2.1](#whats-new-in-21)
+15. [Migrating from 1.x](#migrating-from-1x)
+
+---
+
+## Live demo
+
+[![ZidanForm demo — every control on one page](docs/demo.png)](https://akhtar1985.github.io/zidan-select/)
+
+**Demo:** <https://akhtar1985.github.io/zidan-select/> — deployed from `main` by
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) on every push.
+
+Deep links open the matching tab:
+
+| Tab | Direct link |
+| --- | --- |
+| All inputs | <https://akhtar1985.github.io/zidan-select/#all> |
+| Select / combobox / tags | <https://akhtar1985.github.io/zidan-select/#select> |
+| Checkbox, switch & radio | <https://akhtar1985.github.io/zidan-select/#check> |
+| File upload variants & progress | <https://akhtar1985.github.io/zidan-select/#file> |
+| Icons, stepper, phone, range, date & time | <https://akhtar1985.github.io/zidan-select/#inputs> |
+| Themes & layouts | <https://akhtar1985.github.io/zidan-select/#themes> |
+
+The page also has a live **event console** (below the tabs) that shows every `zidan:*` event as
+you interact, and the **Embed & share** tab for copying snippets.
 
 ---
 
@@ -123,6 +148,18 @@ override presets.
 | `plugin-theme.css` | Tokens, colours, states, presets, layout skins, framework adapters. |
 | `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase (not shipped logic). |
 | `docs/` | Comparison, options, validation, frameworks, theming and build guides. |
+
+Copyable URLs for the published files (pin the version in production):
+
+- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.0/zidan-form.js>
+- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.0/zidan-form.mjs>
+- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.0/plugin-core.css>
+- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.0/plugin-theme.css>
+- npm package — <https://www.npmjs.com/package/zidan-select>
+- Source — <https://github.com/akhtar1985/zidan-select>
+
+The demo page loads these same four files from the repository root, so it always exercises the
+exact code that ships.
 
 ---
 
