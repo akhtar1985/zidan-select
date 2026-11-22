@@ -83,5 +83,5 @@ close some gaps — check the other project's current docs before deciding.
 ZidanForm enhances the same native elements the other libraries start from, so migration is
 usually: remove the old library's init call and CSS, add `data-zidan` attributes (or call
 `initZidanForms()`), then keep your existing `<select>` markup. Values, names and validation
-attributes do not change — see [Migrating from 1.x](../README.md#migrating-from-1x) for the
+attributes do not change — see [Migrating from 1.x](https://github.com/akhtar1985/zidan-select/blob/main/README.md#migrating-from-1x) for the
 in-library upgrade path.
