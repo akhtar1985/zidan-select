@@ -151,10 +151,10 @@ override presets.
 
 Copyable URLs for the published files (pin the version in production):
 
-- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.2/zidan-form.js>
-- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.2/zidan-form.mjs>
-- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.2/plugin-core.css>
-- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.2/plugin-theme.css>
+- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.1/zidan-form.js>
+- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.1/zidan-form.mjs>
+- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.1/plugin-core.css>
+- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.1/plugin-theme.css>
 - npm package — <https://www.npmjs.com/package/zidan-select>
 - Source — <https://github.com/akhtar1985/zidan-select>
 
@@ -802,7 +802,7 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](docs
 
 The 2.0 API is unchanged; every addition is opt-in.
 
-**2.1.2** is a documentation-only patch: it ships this README, the GitHub Pages deployment, the
+**2.1.1** is a documentation-only patch: it ships this README, the GitHub Pages deployment, the
 demo screenshots and the copyable CDN URLs. No JavaScript or CSS behaviour changed.
 
 ---
