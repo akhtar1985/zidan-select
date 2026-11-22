@@ -25,6 +25,17 @@
     '<path d="M12 12v6"/><path d="m9.5 14.5 2.5-2.5 2.5 2.5"/>');
 
   /* JS-only options, configured before auto-init picks the rest up */
+  var iconJs = document.getElementById('icon-js');
+  if (iconJs) {
+    window.zidanField(iconJs, {
+      label: 'JS options only',
+      icon: 'palette',
+      iconPosition: 'right',
+      iconClickable: true,
+      iconLabel: 'Pick a brand colour'
+    });
+  }
+
   var rangeMinimal = document.getElementById('range-minimal');
   if (rangeMinimal) {
     window.zidanField(rangeMinimal, {

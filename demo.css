@@ -584,6 +584,9 @@ body::after {
 
 .snippet-copy:hover { background: rgba(255, 255, 255, 0.18); }
 
+.snippet-block--inline { margin: 14px 0 0; }
+.snippet-block--inline pre { font-size: 0.72rem; white-space: pre-wrap; word-break: break-word; }
+
 /* demo viewport constraint */
 #demo-app {
   transition: max-width 180ms ease;

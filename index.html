@@ -472,20 +472,43 @@
             <input type="password" value="hunter2secret" data-zidan="input" data-zidan-label="Password"
                    data-zidan-reveal data-zidan-clear>
           </div>
-          <div class="card">
-            <h3>Icons — auto, custom, right</h3>
-            <p><code>data-zidan-auto-icon</code> picks the icon for the type; <code>data-zidan-icon</code> takes any registered name.</p>
+          <div class="card" id="icon-options">
+            <h3>Input icons — auto, built-in, custom</h3>
+            <p>Auto picks the icon for the type; <code>data-zidan-icon</code> takes a built-in name,
+              your own registered name, or raw SVG markup. Date/time fields use the icon as their
+              picker button.</p>
             <div style="display:flex;flex-direction:column;gap:14px">
-              <input type="email" placeholder="you@company.com" required data-zidan="input" data-zidan-label="Email"
+              <input type="email" placeholder="you@company.com" required data-zidan="input" data-zidan-label="Auto icon (email)"
                      data-zidan-auto-icon="true" data-zidan-clear>
-              <input type="url" placeholder="https://example.com" data-zidan="input" data-zidan-label="Website"
+              <input type="url" placeholder="https://example.com" data-zidan="input" data-zidan-label="Built-in icon, right, clickable"
                      data-zidan-icon="link" data-zidan-icon-position="right" data-zidan-icon-clickable="true"
                      data-zidan-icon-label="Open website">
-              <input type="search" placeholder="Search…" data-zidan="input" data-zidan-label="Search"
+              <input type="search" placeholder="Search…" data-zidan="input" data-zidan-label="Auto icon, right, clickable"
                      data-zidan-auto-icon="true" data-zidan-icon-position="right" data-zidan-icon-clickable="true">
-              <input type="text" placeholder="Acme Inc." data-zidan="input" data-zidan-label="Custom icon"
+              <input type="text" placeholder="Acme Inc." data-zidan="input" data-zidan-label="Custom registered icon (sparkle)"
                      data-zidan-icon="sparkle" data-zidan-icon-label="Brand mark">
+              <input type="text" id="icon-js" placeholder="Pick a brand colour">
             </div>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>&lt;!-- data attributes --&gt;
+&lt;input data-zidan="input" data-zidan-auto-icon="true"&gt;
+&lt;input data-zidan="input" data-zidan-icon="link"
+       data-zidan-icon-position="right" data-zidan-icon-clickable="true"&gt;
+
+// JS options — no data attributes needed
+zidanField('#icon-js', {
+  icon: 'palette', iconPosition: 'right', iconClickable: true
+});
+
+// custom artwork: register once, before fields initialise
+ZidanForm.registerIcon('sparkle',
+  '&lt;path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17Z"/&gt;');</code></pre>
+            </div>
+            <p>Built-in names: <code>text mail phone user lock search calendar clock link hash palette
+              sliders file upload eye eye-off check x plus minus chevron-* alert info globe map-pin
+              image refresh trash</code>. <code>icon</code> also accepts raw
+              <code>&lt;path&gt;</code> or <code>&lt;svg&gt;</code> markup. The last field above is
+              initialised entirely from JavaScript.</p>
           </div>
           <div class="card">
             <h3>Number stepper (− / +)</h3>

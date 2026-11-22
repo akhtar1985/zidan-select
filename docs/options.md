@@ -92,7 +92,20 @@ Supports `text`, `email`, `password`, `number`, `tel`, `url`, `search`, `date`, 
 // register your own icon (path markup or a full <svg>), then use its name anywhere
 ZidanForm.registerIcon('sparkle', '<path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17Z"/>');
 window.registerZidanIcon('heart', '<path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9Z"/>');
+
+// or configure a plain input entirely from JavaScript
+zidanField('#brand', {
+  icon: 'palette',
+  iconPosition: 'right',
+  iconClickable: true,
+  iconLabel: 'Pick a brand colour'
+});
 ```
+
+Built-in names: `text`, `mail`, `phone`, `user`, `lock`, `search`, `calendar`, `clock`, `link`,
+`hash`, `palette`, `sliders`, `file`, `upload`, `eye`, `eye-off`, `check`, `x`, `plus`, `minus`,
+`chevron-down`, `chevron-up`, `chevron-left`, `chevron-right`, `alert`, `info`, `globe`,
+`map-pin`, `image`, `refresh`, `trash`. `icon` also accepts raw `<path>` or `<svg>` markup.
 
 Icons are sanitised with `DOMParser`: only SVG shape elements and safe attributes survive.
 

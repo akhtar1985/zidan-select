@@ -357,7 +357,20 @@ Supported types: `text`, `email`, `password`, `number`, `tel`, `url`, `search`, 
 
 ```js
 ZidanForm.registerIcon('sparkle', '<path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17Z"/>');
+
+// or configure a plain input entirely from JavaScript
+zidanField('#brand', {
+  icon: 'palette',
+  iconPosition: 'right',
+  iconClickable: true,
+  iconLabel: 'Pick a brand colour'
+});
 ```
+
+Built-in names: `text`, `mail`, `phone`, `user`, `lock`, `search`, `calendar`, `clock`, `link`,
+`hash`, `palette`, `sliders`, `file`, `upload`, `eye`, `eye-off`, `check`, `x`, `plus`, `minus`,
+`chevron-*`, `alert`, `info`, `globe`, `map-pin`, `image`, `refresh`, `trash`. Raw `<path>` or
+`<svg>` markup is accepted too.
 
 Works for `text`, `email`, `password`, `number`, `tel`, `url`, `search`, all date/time types
 and `range`. `data-zidan-validation-icon="true"` adds check/alert glyphs.
