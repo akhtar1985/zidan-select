@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.1.3
+ * ZidanForm v2.2.0
  * Zero-dependency form enhancement library: select / combobox / tags,
  * checkboxes, switches, radio groups, file upload with drag & drop and
  * upload progress, text / number / phone / date / range inputs and textarea.
@@ -17,12 +17,14 @@
   var api = factory(root);
   if (typeof window !== 'undefined') {
     window.ZidanForm = api.ZidanForm;
-    window.ZidanSelect = api.ZidanSelect;
-    window.zidanSelect = api.zidanSelect;
-    window.initZidanSelects = api.initZidanSelects;
-    window.zidanField = api.zidanField;
-    window.initZidanForms = api.initZidanForms;
-    window.registerZidanIcon = api.registerIcon;
+    if (api.ZidanSelect) {
+      window.ZidanSelect = api.ZidanSelect;
+      window.zidanSelect = api.zidanSelect;
+      window.initZidanSelects = api.initZidanSelects;
+    }
+    if (api.zidanField) window.zidanField = api.zidanField;
+    if (api.initZidanForms) window.initZidanForms = api.initZidanForms;
+    if (api.registerIcon) window.registerZidanIcon = api.registerIcon;
   }
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = api;
@@ -30,7 +32,7 @@
 })(typeof window !== 'undefined' ? window : this, function (global) {
   'use strict';
 
-  var VERSION = '2.1.3';
+  var VERSION = '2.2.0';
 
   // Loading the file twice (classic script + module wrapper, or two bundles)
   // must not replace the classes and orphan the live instances.
@@ -40,6 +42,7 @@
 
   var doc = typeof document !== 'undefined' ? document : null;
 
+  /* @zidan-build:shared */
   /* ------------------------------------------------------------------ *
    * Constants & tiny helpers
    * ------------------------------------------------------------------ */
@@ -344,6 +347,7 @@
     return fillTemplate(map[key] || FIELD_MESSAGES[key] || map.generic, vars);
   }
 
+  /* @zidan-build:phone */
   /* ---------------- phone formatting ---------------- */
 
   var PHONE_COUNTRIES = {
@@ -494,6 +498,7 @@
     return text.length;
   }
 
+  /* @zidan-build:shared2 */
   /* first non-empty value of any of `names`, walking up the tree */
   function inheritedAttr(node, names) {
     var current = node;
@@ -544,6 +549,7 @@
     return debounced;
   }
 
+  /* @zidan-build:select-defaults */
   /* ------------------------------------------------------------------ *
    * Defaults
    * ------------------------------------------------------------------ */
@@ -609,6 +615,7 @@
     onError: null
   };
 
+  /* @zidan-build:select */
   /* ------------------------------------------------------------------ *
    * ZidanSelect
    * ------------------------------------------------------------------ */
@@ -2234,6 +2241,7 @@
     return this;
   };
 
+  /* @zidan-build:fields */
   /* ================================================================== *
    * Part 2 — opt-in form fields
    *
@@ -2552,6 +2560,7 @@
     return this;
   };
 
+  /* @zidan-build:checkbox */
   /* ---------------- checkbox ---------------- */
 
   function ZidanCheckbox(target, options) {
@@ -2733,6 +2742,7 @@
     if (this._restoreInput) this._restoreInput();
   };
 
+  /* @zidan-build:radio */
   /* ---------------- radio group ---------------- */
 
   function ZidanRadioGroup(target, options) {
@@ -2905,6 +2915,7 @@
     return '';
   };
 
+  /* @zidan-build:file */
   /* ---------------- file upload ---------------- */
 
   function formatBytes(bytes) {
@@ -3698,6 +3709,7 @@
     if (this._restoreInput) this._restoreInput();
   };
 
+  /* @zidan-build:text */
   /* ---------------- text inputs & textarea ---------------- */
 
   var TEXT_TYPES = ['text', 'email', 'password', 'number', 'tel', 'url', 'search', 'date', 'time', 'datetime-local', 'month', 'week', 'range', 'color'];
@@ -4451,6 +4463,7 @@
     if (this._restoreInput) this._restoreInput();
   };
 
+  /* @zidan-build:factory */
   /* ---------------- factory, registry, auto-init ---------------- */
 
   function fieldKindFor(node) {
@@ -4474,13 +4487,16 @@
     var opts = options || {};
     if (node.__zidanField && !opts.force) return node.__zidanField;
     switch (kind) {
-      case 'checkbox': return new ZidanCheckbox(node, opts);
-      case 'radio': return new ZidanRadioGroup(node, opts);
-      case 'radio-group': return new ZidanRadioGroup(node, opts);
-      case 'file': return new ZidanFileUpload(node, opts);
+      case 'checkbox':
+        return typeof ZidanCheckbox !== 'undefined' ? new ZidanCheckbox(node, opts) : null;
+      case 'radio':
+      case 'radio-group':
+        return typeof ZidanRadioGroup !== 'undefined' ? new ZidanRadioGroup(node, opts) : null;
+      case 'file':
+        return typeof ZidanFileUpload !== 'undefined' ? new ZidanFileUpload(node, opts) : null;
       case 'input':
       case 'textarea':
-        return new ZidanTextField(node, opts);
+        return typeof ZidanTextField !== 'undefined' ? new ZidanTextField(node, opts) : null;
       default: return null;
     }
   }
@@ -4500,7 +4516,7 @@
       var kind = fieldKindFor(node);
       // zidanField() accepts a plain input/textarea too, so JS-only options
       // (output, counter, clearable, …) work without a data attribute
-      if (!kind && (node.tagName === 'TEXTAREA' ||
+      if (!kind && typeof TEXT_TYPES !== 'undefined' && (node.tagName === 'TEXTAREA' ||
         (node.tagName === 'INPUT' && TEXT_TYPES.indexOf(String(node.type).toLowerCase()) !== -1))) {
         kind = node.tagName === 'TEXTAREA' ? 'textarea' : 'input';
       }
@@ -4562,7 +4578,7 @@
     destroyAll: function () {
       ZidanForm.fields.slice().forEach(function (field) { field.destroy(); });
       ZidanForm.fields = [];
-      if (ZidanSelect && ZidanSelect.destroyAll) ZidanSelect.destroyAll();
+      if (typeof ZidanSelect !== 'undefined' && ZidanSelect.destroyAll) ZidanSelect.destroyAll();
       return ZidanForm;
     },
     /* keep a subtree in sync when it is re-rendered by a framework */
@@ -4581,9 +4597,11 @@
         ZidanForm.fields.slice().forEach(function (field) {
           if (!field.el.isConnected) field.destroy();
         });
-        ZidanSelect.instances.slice().forEach(function (instance) {
-          if (!instance.el.isConnected) instance.destroy();
-        });
+        if (typeof ZidanSelect !== 'undefined') {
+          ZidanSelect.instances.slice().forEach(function (instance) {
+            if (!instance.el.isConnected) instance.destroy();
+          });
+        }
       });
       observer.observe(root, { childList: true, subtree: true });
       return observer;
@@ -4595,38 +4613,41 @@
   /* registries, presets and helpers shared by every field type */
   ZidanForm.registerIcon = registerIcon;
   ZidanForm.icons = ICON_REGISTRY;
-  ZidanForm.phoneCountries = PHONE_COUNTRIES;
-  ZidanForm.phoneFormats = PHONE_FORMATS.slice();
-  ZidanForm.formatPhone = formatPhone;
-  ZidanForm.detectPhoneCountry = detectPhoneCountry;
+  if (typeof PHONE_COUNTRIES !== 'undefined') {
+    ZidanForm.phoneCountries = PHONE_COUNTRIES;
+    ZidanForm.phoneFormats = PHONE_FORMATS.slice();
+    ZidanForm.formatPhone = formatPhone;
+    ZidanForm.detectPhoneCountry = detectPhoneCountry;
+  }
   ZidanForm.messages = FIELD_MESSAGES;
-  ZidanForm.variants = {
-    checkbox: CHECKBOX_VARIANTS.slice(),
-    switch: SWITCH_STYLES.slice(),
-    radio: RADIO_VARIANTS.slice(),
-    file: FILE_VARIANTS.slice(),
-    range: RANGE_VARIANTS.slice()
-  };
-  ZidanForm.stepperModes = STEPPER_MODES.slice();
+  ZidanForm.variants = {};
+  if (typeof CHECKBOX_VARIANTS !== 'undefined') ZidanForm.variants.checkbox = CHECKBOX_VARIANTS.slice();
+  if (typeof SWITCH_STYLES !== 'undefined') ZidanForm.variants.switch = SWITCH_STYLES.slice();
+  if (typeof RADIO_VARIANTS !== 'undefined') ZidanForm.variants.radio = RADIO_VARIANTS.slice();
+  if (typeof FILE_VARIANTS !== 'undefined') ZidanForm.variants.file = FILE_VARIANTS.slice();
+  if (typeof RANGE_VARIANTS !== 'undefined') ZidanForm.variants.range = RANGE_VARIANTS.slice();
+  if (typeof STEPPER_MODES !== 'undefined') ZidanForm.stepperModes = STEPPER_MODES.slice();
   ZidanForm.fieldLayouts = FIELD_LAYOUTS.slice();
 
   /* static helpers */
-  ZidanSelect.version = VERSION;
-  ZidanSelect.__zidanSelectGuard = VERSION;
-  ZidanSelect.layouts = LAYOUTS.slice();
-  ZidanSelect.frameworks = FRAMEWORKS.slice();
-  ZidanSelect.scrollbars = SCROLLBARS.slice();
-  ZidanSelect.defaults = DEFAULTS;
-  ZidanSelect.get = function (target) {
-    var element = typeof target === 'string' ? doc.querySelector(target) : target;
-    if (!isElement(element)) return null;
-    return element.__zidanSelect || null;
-  };
-  ZidanSelect.instances = [];
-  ZidanSelect.destroyAll = function () {
-    ZidanSelect.instances.slice().forEach(function (instance) { instance.destroy(); });
+  if (typeof ZidanSelect !== 'undefined') {
+    ZidanSelect.version = VERSION;
+    ZidanSelect.__zidanSelectGuard = VERSION;
+    ZidanSelect.layouts = LAYOUTS.slice();
+    ZidanSelect.frameworks = FRAMEWORKS.slice();
+    ZidanSelect.scrollbars = SCROLLBARS.slice();
+    ZidanSelect.defaults = DEFAULTS;
+    ZidanSelect.get = function (target) {
+      var element = typeof target === 'string' ? doc.querySelector(target) : target;
+      if (!isElement(element)) return null;
+      return element.__zidanSelect || null;
+    };
     ZidanSelect.instances = [];
-  };
+    ZidanSelect.destroyAll = function () {
+      ZidanSelect.instances.slice().forEach(function (instance) { instance.destroy(); });
+      ZidanSelect.instances = [];
+    };
+  }
 
   /* ------------------------------------------------------------------ *
    * Factory + auto-init
@@ -4671,13 +4692,14 @@
     if (global.ZidanSelect && global.ZidanSelect.autoInit === false) return;
     if (doc.documentElement.getAttribute('data-zidan-auto-init') === 'false') return;
     if (config.selector) {
+      if (typeof ZidanSelect === 'undefined') return;
       Array.prototype.slice.call(doc.querySelectorAll(config.selector)).forEach(function (node) {
         if (node.__zidanSelect) return;
         ZidanSelect.instances.push(new ZidanSelect(node, config.options || {}));
       });
       return;
     }
-    initZidanSelects(doc, config.options || {});
+    if (typeof ZidanSelect !== 'undefined') initZidanSelects(doc, config.options || {});
     initZidanForms(doc, config.fields || {});
   }
 
@@ -4691,19 +4713,26 @@
 
   var api = {
     ZidanForm: ZidanForm,
-    ZidanSelect: ZidanSelect,
-    ZidanCheckbox: ZidanCheckbox,
-    ZidanRadioGroup: ZidanRadioGroup,
-    ZidanFileUpload: ZidanFileUpload,
-    ZidanTextField: ZidanTextField,
-    zidanSelect: zidanSelect,
-    zidanField: zidanField,
-    initZidanSelects: initZidanSelects,
-    initZidanForms: initZidanForms,
-    registerIcon: registerIcon,
-    formatPhone: formatPhone,
-    detectPhoneCountry: detectPhoneCountry
+    registerIcon: registerIcon
   };
+  if (typeof ZidanSelect !== 'undefined') {
+    api.ZidanSelect = ZidanSelect;
+    api.zidanSelect = zidanSelect;
+    api.initZidanSelects = initZidanSelects;
+  }
+  if (typeof ZidanCheckbox !== 'undefined' || typeof ZidanRadioGroup !== 'undefined' ||
+    typeof ZidanFileUpload !== 'undefined' || typeof ZidanTextField !== 'undefined') {
+    api.zidanField = zidanField;
+    api.initZidanForms = initZidanForms;
+  }
+  if (typeof ZidanCheckbox !== 'undefined') api.ZidanCheckbox = ZidanCheckbox;
+  if (typeof ZidanRadioGroup !== 'undefined') api.ZidanRadioGroup = ZidanRadioGroup;
+  if (typeof ZidanFileUpload !== 'undefined') api.ZidanFileUpload = ZidanFileUpload;
+  if (typeof ZidanTextField !== 'undefined') api.ZidanTextField = ZidanTextField;
+  if (typeof formatPhone === 'function') {
+    api.formatPhone = formatPhone;
+    api.detectPhoneCountry = detectPhoneCountry;
+  }
 
   ZidanForm.api = api;
 

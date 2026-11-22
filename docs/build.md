@@ -17,7 +17,7 @@ zidan-select/
 ├─ package.json         # npm metadata + scripts
 ├─ scripts/
 │  ├─ serve.mjs         # dependency-free dev server (port 4173)
-│  ├─ build.mjs         # assembles dist/ (+ optional minification)
+│  ├─ build.mjs         # assembles dist/ and the select/file subset bundles
 │  └─ test.mjs          # syntax / split-CSS / API checks
 ├─ docs/                # comparison, options, validation, frameworks, theming, build
 ├─ README.md
@@ -31,7 +31,7 @@ zidan-select/
 | `npm run dev` | Serves the repo at <http://localhost:4173> (`PORT=8080 npm run dev`). No dependency needed. |
 | `npm test` | `node --check` on every script, asserts `plugin-core.css` has no colour literals, checks all presets/adapters and the exported API. |
 | `npm run lint` | Syntax check only. |
-| `npm run build` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, and minifies **if** esbuild is installed. |
+| `npm run build` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, generates the select-only and file-only bundles, and minifies **if** esbuild is installed. |
 
 There is no watch task: the JS and CSS are the distributables, so edit and reload. `npm run
 dev` sends `Cache-Control: no-store`, which is enough for the demo.
@@ -45,6 +45,16 @@ dist/
 ├─ zidan-form.cjs          # module.exports = require('../zidan-form.js')
 ├─ plugin-core.css
 ├─ plugin-theme.css
+├─ select/
+│  ├─ zidan-select.js      # select / combobox / tags only
+│  ├─ zidan-select.mjs
+│  ├─ plugin-select-core.css
+│  └─ plugin-select-theme.css
+├─ file/
+│  ├─ zidan-file.js        # file upload only
+│  ├─ zidan-file.mjs
+│  ├─ plugin-file-core.css
+│  └─ plugin-file-theme.css
 └─ *.min.*                 # only when esbuild is installed
 ```
 
@@ -55,6 +65,33 @@ npm run build
 
 Without esbuild the build still succeeds and prints that minification was skipped. Add
 `dist/` to `.gitignore`; it is regenerated at publish time.
+
+## Select-only and file-only builds
+
+`scripts/build.mjs` slices the single source into two smaller distributables. The sections in
+`zidan-form.js`, `plugin-core.css` and `plugin-theme.css` are marked with
+`/* @zidan-build:name */` comments; the builder keeps only the sections each variant needs and
+writes the matching ESM wrapper. Edit the shared files, never the generated outputs.
+
+| Build | JS | ESM | Core CSS | Theme CSS | Contains |
+| --- | --- | --- | --- | --- | --- |
+| Select | `dist/select/zidan-select.js` | `.mjs` | `plugin-select-core.css` | `plugin-select-theme.css` | Select, combobox, tags; icons, layouts, scrollbars |
+| File | `dist/file/zidan-file.js` | `.mjs` | `plugin-file-core.css` | `plugin-file-theme.css` | File upload variants, previews, progress, validation |
+
+Both theme stylesheets keep the token set, the five preset themes (`default`, `modern`,
+`minimal`, `dark`, `glass`), the field layouts and the Bootstrap, Tailwind, Bulma and Foundation
+adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
+as in the full build.
+
+Approximate v2.2.0 sizes: select ≈90 kB JS + 12 kB core + 32 kB theme; file ≈70 kB JS +
+9 kB core + 35 kB theme, against ≈189 kB JS + 36 kB core + 47 kB theme for the full build.
+
+A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
+check keeps the first initialised copy, so loading two flavours together does not merge their
+APIs — use the full build when a page needs both select and file upload.
+
+Build-time safety: every generated JS file is passed through `node --check`, and missing sections
+abort the build instead of producing a partial bundle.
 
 ## Local verification
 
@@ -91,13 +128,21 @@ git push --follow-tags
 First publish: `npm publish --access public`. Scoped forks need `--access public` on every
 publish.
 
-`package.json` exposes both entries, so all of these work:
+`package.json` exposes both entries plus the subset builds, so all of these work:
 
 ```js
 import ZidanForm from 'zidan-select';
 const { ZidanForm } = require('zidan-select');
 import 'zidan-select/css/core';
 import 'zidan-select/css/theme';
+
+import { ZidanSelect } from 'zidan-select/select';
+import 'zidan-select/select/css/core';
+import 'zidan-select/select/css/theme';
+
+import { zidanField, ZidanFileUpload } from 'zidan-select/file';
+import 'zidan-select/file/css/core';
+import 'zidan-select/file/css/theme';
 ```
 
 ### Pre-publish checklist
@@ -107,6 +152,7 @@ import 'zidan-select/css/theme';
 - [ ] Both stylesheets present; core contains no colours.
 - [ ] `README.md` links point to files that exist in the tarball.
 - [ ] `npm pack --dry-run` lists JS, CSS, dist, docs, README and LICENSE only.
+- [ ] Subset bundles regenerate and load without console errors.
 - [ ] Version bumped in `package.json` and the JS/CSS headers.
 
 ## GitHub Pages

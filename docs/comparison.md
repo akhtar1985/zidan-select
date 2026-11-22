@@ -22,6 +22,7 @@ same two stylesheets.
 | Checkbox / switch / radio UI | **Built in** | — | — | — | — | Native only |
 | Native `value` / `checked` / `files` kept | **Yes** | Yes | Yes | Yes | Yes | Yes |
 | Split structure / theme CSS | **Yes** (`plugin-core.css` + `plugin-theme.css`) | Partial | Partial | Partial | Partial | Yes (Sass tokens) |
+| Select-only / file-only bundles | **Yes — trimmed JS + matching CSS** | Core is select-only | Core is select + text | Core is select-only | Core is select-only | Whole framework |
 | Built-in themes | **5** + custom tokens | Themes via CSS | Themes via CSS | Themes via CSS | Themes via CSS | 1 (Bootstrap) |
 | CSS-framework adapters | **Bootstrap, Tailwind, Bulma, Foundation** | — | — | — | — | n/a |
 | Validation coexistence tests | **jQuery Validation, JustValidate, Parsley, native** | — | — | — | — | Native + framework |

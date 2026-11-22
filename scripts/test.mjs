@@ -65,7 +65,12 @@ const js = read('zidan-form.js');
 
 check('public API is exported', () => {
   for (const name of ['ZidanForm', 'ZidanSelect', 'ZidanCheckbox', 'ZidanRadioGroup', 'ZidanFileUpload', 'ZidanTextField', 'zidanField', 'initZidanForms']) {
-    assert(new RegExp('window\\.' + name + '\\s*=').test(js) || js.includes(name + ': ' + name), 'missing export ' + name);
+    assert(
+      new RegExp('window\\.' + name + '\\s*=').test(js) ||
+        js.includes('api.' + name + ' = ' + name) ||
+        js.includes(name + ': ' + name),
+      'missing export ' + name
+    );
   }
 });
 

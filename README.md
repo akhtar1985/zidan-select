@@ -48,6 +48,7 @@ the same two stylesheets and no dependencies.
 | Text input utilities | **Clear, reveal, prefix/suffix, counter** | — | — | — | — |
 | Built-in validation rules | **Every type, date rules, validation icons** | — | — | — | — |
 | Split structure / theme CSS | **Yes** | Partial | Partial | Partial | Partial |
+| Select-only / file-only builds | **Yes, with matching CSS** | Core is select-only | Core is select + text | Core is select-only | Core is select-only |
 | Validation coexistence tested | **Native, jQuery Validation, JustValidate, Parsley** | — | — | — | — |
 | CSS-framework adapters | **Bootstrap, Tailwind, Bulma, Foundation** | — | — | — | — |
 | Framework support | **React, Next.js, Vue, Svelte, Angular guides** | Community wrappers | Community wrappers | Community wrappers | Community wrappers |
@@ -74,19 +75,20 @@ limitations and migration notes: **[`docs/comparison.md`](docs/comparison.md)**.
 
 1. [Live demo](#live-demo)
 2. [Install](#install)
-3. [Why ZidanForm](#why-zidanform)
-4. [Quick start](#quick-start)
-5. [Input types](#input-types)
-6. [Options & data attributes](#options--data-attributes)
-7. [JavaScript API](#javascript-api)
-8. [Themes, layouts & frameworks](#themes-layouts--frameworks)
-9. [Validation libraries](#validation-libraries)
-10. [Form lifecycle & state sync](#form-lifecycle--state-sync)
-11. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
-12. [Build & publish](#build--publish)
-13. [Browser support](#browser-support)
-14. [What's new in 2.1](#whats-new-in-21)
-15. [Migrating from 1.x](#migrating-from-1x)
+3. [Select-only & file-only builds](#select-only-and-file-only-builds)
+4. [Why ZidanForm](#why-zidanform)
+5. [Quick start](#quick-start)
+6. [Input types](#input-types)
+7. [Options & data attributes](#options--data-attributes)
+8. [JavaScript API](#javascript-api)
+9. [Themes, layouts & frameworks](#themes-layouts--frameworks)
+10. [Validation libraries](#validation-libraries)
+11. [Form lifecycle & state sync](#form-lifecycle--state-sync)
+12. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
+13. [Build & publish](#build--publish)
+14. [Browser support](#browser-support)
+15. [What's new in 2.1–2.2](#whats-new-in-2122)
+16. [Migrating from 1.x](#migrating-from-1x)
 
 ---
 
@@ -133,6 +135,17 @@ import 'zidan-select/css/theme';
 const { ZidanForm, initZidanForms, initZidanSelects } = require('zidan-select');
 ```
 
+```js
+// Select-only or file-only bundles (matching JS + CSS)
+import { ZidanSelect } from 'zidan-select/select';
+import 'zidan-select/select/css/core';
+import 'zidan-select/select/css/theme';
+
+import { ZidanFileUpload, zidanField } from 'zidan-select/file';
+import 'zidan-select/file/css/core';
+import 'zidan-select/file/css/theme';
+```
+
 ### CDN
 
 ```html
@@ -152,20 +165,75 @@ override presets.
 | `zidan-form.mjs` | ES module wrapper around the same file. |
 | `plugin-core.css` | Layout, positioning, native-input handling, mechanics. **No colours, shadows or skins.** |
 | `plugin-theme.css` | Tokens, colours, states, presets, layout skins, framework adapters. |
+| `dist/select/` | Select-only build: `zidan-select.js`, `zidan-select.mjs`, `plugin-select-core.css`, `plugin-select-theme.css`. |
+| `dist/file/` | File-only build: `zidan-file.js`, `zidan-file.mjs`, `plugin-file-core.css`, `plugin-file-theme.css`. |
 | `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase (not shipped logic). |
 | `docs/` | Comparison, options, validation, frameworks, theming and build guides. |
 
 Copyable URLs for the published files (pin the version in production):
 
-- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.3/zidan-form.js>
-- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.3/zidan-form.mjs>
-- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.3/plugin-core.css>
-- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.1.3/plugin-theme.css>
+- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/zidan-form.js>
+- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/zidan-form.mjs>
+- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/plugin-core.css>
+- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/plugin-theme.css>
 - npm package — <https://www.npmjs.com/package/zidan-select>
 - Source — <https://github.com/akhtar1985/zidan-select>
 
 The demo page loads these same four files from the repository root, so it always exercises the
 exact code that ships.
+
+### Select-only and file-only builds
+
+Only need one control family? Load a trimmed bundle instead of the full library. Each bundle
+ships matching structure and theme stylesheets and keeps the five preset themes, the layouts and
+the Bootstrap, Tailwind, Bulma and Foundation adapters, so theme and framework attributes behave
+exactly like the full build.
+
+| Build | JS | ESM | Core CSS | Theme CSS |
+| --- | --- | --- | --- | --- |
+| Select / combobox / tags | `dist/select/zidan-select.js` | `dist/select/zidan-select.mjs` | `dist/select/plugin-select-core.css` | `dist/select/plugin-select-theme.css` |
+| File upload | `dist/file/zidan-file.js` | `dist/file/zidan-file.mjs` | `dist/file/plugin-file-core.css` | `dist/file/plugin-file-theme.css` |
+
+Copyable CDN URLs (pin the version):
+
+- `zidan-select.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/zidan-select.js>
+- `zidan-select.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/zidan-select.mjs>
+- `plugin-select-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/plugin-select-core.css>
+- `plugin-select-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/plugin-select-theme.css>
+- `zidan-file.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/zidan-file.js>
+- `zidan-file.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/zidan-file.mjs>
+- `plugin-file-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/plugin-file-core.css>
+- `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/plugin-file-theme.css>
+
+Select / combobox / tags only (≈90 kB JS, ≈12 kB core CSS, ≈32 kB theme CSS):
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/plugin-select-core.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/plugin-select-theme.css">
+<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/select/zidan-select.js"></script>
+<script>
+  // auto-init works for [data-zidan-select]; JS-only:
+  zidanSelect('#country', { mode: 'select' });
+</script>
+```
+
+File upload only (≈70 kB JS, ≈9 kB core CSS, ≈35 kB theme CSS):
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/plugin-file-core.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/plugin-file-theme.css">
+<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.0/dist/file/zidan-file.js"></script>
+<script>
+  zidanField('#upload', { variant: 'dropzone', upload: '/api/files' });
+</script>
+```
+
+Framework and theme options are unchanged: `data-zidan-framework="bootstrap|tailwind|bulma|foundation"`,
+`data-zidan-theme`, `data-zidan-layout` and the framework adapter CSS all ship in each subset.
+Load a subset **instead of** `zidan-form.js`, not together with it — the guard keeps the first
+initialised copy. If one page needs select *and* file upload, use the full build. The select
+bundle exposes `ZidanSelect`, `zidanSelect`, `initZidanSelects`; the file bundle exposes
+`ZidanFileUpload`, `zidanField`, `initZidanForms`.
 
 ---
 
@@ -798,8 +866,10 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](docs
 
 ---
 
-## What's new in 2.1
+## What's new in 2.1–2.2
 
+- **Subset builds** — select-only and file-only JS bundles with matching core/theme CSS in
+  `dist/select/` and `dist/file/`; themes, layouts and framework adapters included.
 - **Input icons** — `data-zidan-auto-icon`, `data-zidan-icon`, left/right placement,
   clickable icons and `ZidanForm.registerIcon()` for custom artwork.
 - **Number stepper** — stacked, split and inline − / + controls with hold-to-repeat,
@@ -821,10 +891,13 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](docs
 
 The 2.0 API is unchanged; every addition is opt-in.
 
-**2.1.3** fixes the duplicate calendar/clock indicator on date, time, datetime-local, month and
-week fields when a custom icon or picker button is used. The demo gains an icon card covering
-auto, built-in, registered and JavaScript-only icons, and every comparison table now lists the
-2.1 capabilities (icons, phone masks, stepper, range skins, file variants, date rules).
+**2.2.0** adds select-only and file-only builds. Each ships a trimmed JS bundle plus matching
+core and theme stylesheets, keeps all five preset themes, layouts and the Bootstrap, Tailwind,
+Bulma and Foundation adapters, and is generated from the same source by `npm run build`.
+The full build is unchanged. This release also fixes the duplicate calendar/clock indicator on
+date, time, datetime-local, month and week fields when a custom icon or picker button is used,
+adds the icon demo card (auto, built-in, registered and JavaScript-only icons), and lists every
+2.1 capability in the comparison tables.
 
 **2.1.2** is a documentation-only patch: it ships this README, the GitHub Pages deployment, the
 demo screenshots and the copyable CDN URLs. No JavaScript or CSS behaviour changed.

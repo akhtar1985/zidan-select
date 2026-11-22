@@ -1,7 +1,7 @@
 {
   "name": "zidan-select",
-  "version": "2.1.3",
-  "description": "Zero-dependency form enhancement library: select/combobox/tags, checkboxes, switches, radio groups, drag & drop file upload with progress, text/number/phone/date/range inputs and textarea with input icons and steppers, split core/theme CSS, 5 themes, 11 layouts and framework adapters.",
+  "version": "2.2.0",
+  "description": "Zero-dependency form enhancement library: select/combobox/tags, checkboxes, switches, radio groups, drag & drop file upload with progress, text/number/phone/date/range inputs and textarea with input icons and steppers. Split core/theme CSS, 5 themes, 11 layouts, framework adapters, plus select-only and file-only bundles.",
   "keywords": [
     "select",
     "combobox",
@@ -38,6 +38,20 @@
       "require": "./zidan-form.js",
       "default": "./zidan-form.js"
     },
+    "./select": {
+      "import": "./dist/select/zidan-select.mjs",
+      "require": "./dist/select/zidan-select.js",
+      "default": "./dist/select/zidan-select.js"
+    },
+    "./select/css/core": "./dist/select/plugin-select-core.css",
+    "./select/css/theme": "./dist/select/plugin-select-theme.css",
+    "./file": {
+      "import": "./dist/file/zidan-file.mjs",
+      "require": "./dist/file/zidan-file.js",
+      "default": "./dist/file/zidan-file.js"
+    },
+    "./file/css/core": "./dist/file/plugin-file-core.css",
+    "./file/css/theme": "./dist/file/plugin-file-theme.css",
     "./css/core": "./plugin-core.css",
     "./css/theme": "./plugin-theme.css",
     "./core.css": "./plugin-core.css",
@@ -57,7 +71,9 @@
   "sideEffects": [
     "*.css",
     "zidan-form.js",
-    "zidan-form.mjs"
+    "zidan-form.mjs",
+    "dist/**/*.css",
+    "dist/**/*.js"
   ],
   "scripts": {
     "dev": "node scripts/serve.mjs",

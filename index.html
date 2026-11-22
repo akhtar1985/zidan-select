@@ -42,7 +42,7 @@
 
   <main id="demo-app" class="wrap">
     <section class="hero">
-      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.1 · zero dependencies · one JS file</p>
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.2 · zero dependencies · full or subset builds</p>
       <h1>Every form control, <span>one small library</span>.</h1>
       <p>
         ZidanForm upgrades native inputs in place — select, checkbox, switch, radio, file upload
@@ -796,6 +796,11 @@ ZidanForm.registerIcon('sparkle',
                 <td>Partial</td><td>Partial</td><td>Partial</td><td>Partial</td>
               </tr>
               <tr>
+                <th scope="row">Select-only / file-only bundles</th>
+                <td class="is-ours"><strong>Yes — trimmed JS + matching CSS</strong></td>
+                <td>Core is select-only</td><td>Core is select + text</td><td>Core is select-only</td><td>Core is select-only</td>
+              </tr>
+              <tr>
                 <th scope="row">Built-in themes</th>
                 <td class="is-ours"><strong>5 + custom tokens</strong></td>
                 <td>Via CSS</td><td>Via CSS</td><td>Via CSS</td><td>Via CSS</td>
@@ -820,7 +825,9 @@ ZidanForm.registerIcon('sparkle',
         </div>
         <p class="compare-note">
           Describes each project's core package; plugins can close some gaps. Full matrix, trade-offs
-          and migration notes in <a href="docs/comparison.md">docs/comparison.md</a>.
+          and migration notes in <a href="docs/comparison.md">docs/comparison.md</a>. Trimmed
+          select-only and file-only bundles are listed in the README and
+          <a href="docs/build.md">docs/build.md</a>.
         </p>
       </div>
     </section>
