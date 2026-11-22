@@ -19,6 +19,14 @@ two separate stylesheets.
 - **5 select layouts** `classic-clean · floating-label · soft-pill · bordered-brutalist · glass-elevated`.
 - **Field layouts** `stacked · inline · compact · floating · outlined · card`.
 - **Framework adapters** standalone, Bootstrap 5, Tailwind CSS, Bulma, Foundation.
+- **Input add-ons (2.1)** — opt-in icons for any input type, a − / + number stepper in three
+  modes, phone formatting (national / international / E.164, caret-safe), rich range skins
+  with ticks/bubble/formatters, weekend/date rules and a full upload pipeline.
+- **More skins** — checkbox `default · switch · card · button · minimal`; five switch styles
+  (`ios · material · square · labeled · icon`); radio `stacked · inline · card · button · tile`
+  with click-to-deselect; file `dropzone · button · avatar · gallery · compact`.
+- **Upload API** — `simulateUpload`, custom `upload()` handler, XHR `uploadUrl`, progress,
+  cancel, retry, `getUploadState()`, per-file `renderFile` hook.
 - WAI-ARIA labels, focus management, keyboard support throughout, `prefers-reduced-motion`.
 
 ---
@@ -69,7 +77,8 @@ limitations and migration notes: **[`docs/comparison.md`](docs/comparison.md)**.
 10. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
 11. [Build & publish](#build--publish)
 12. [Browser support](#browser-support)
-13. [Migrating from 1.x](#migrating-from-1x)
+13. [What's new in 2.1](#whats-new-in-21)
+14. [Migrating from 1.x](#migrating-from-1x)
 
 ---
 
@@ -196,6 +205,38 @@ Windows/macOS keyboard behaviour, grouping, search and all select features live 
 The mixed state paints a bar and clears as soon as the user clicks, exactly like a native
 checkbox.
 
+### Checkbox, switch & radio — extra skins
+
+```html
+<!-- filter-style pill and dense minimal row -->
+<label><input type="checkbox" data-zidan="checkbox" data-zidan-variant="button" data-zidan-label="Email"> Email</label>
+<label><input type="checkbox" data-zidan="checkbox" data-zidan-variant="minimal" data-zidan-label="Compact row"> Compact row</label>
+
+<!-- five switch skins -->
+<label><input type="checkbox" data-zidan="checkbox" data-zidan-variant="switch"
+              data-zidan-switch-style="ios" data-zidan-label="iOS"> iOS</label>
+<label><input type="checkbox" data-zidan="checkbox" data-zidan-variant="switch"
+              data-zidan-switch-style="labeled"
+              data-zidan-on-label="YES" data-zidan-off-label="NO"> Labeled</label>
+
+<!-- pill radios and description tiles, click-to-clear -->
+<fieldset data-zidan="radio-group" data-zidan-variant="button">
+  <legend>View</legend>
+  <label><input type="radio" name="view" value="day" checked> Day</label>
+  <label><input type="radio" name="view" value="week"> Week</label>
+</fieldset>
+<fieldset data-zidan="radio-group" data-zidan-variant="tile" data-zidan-deselectable="true">
+  <legend>Workspace</legend>
+  <label><input type="radio" name="workspace" value="design"
+                data-zidan-description="Boards, docs and feedback."> Design</label>
+  <label><input type="radio" name="workspace" value="build"
+                data-zidan-description="Repos, pipelines and previews."> Build</label>
+</fieldset>
+```
+
+`data-zidan-description` adds a second line to card/tile/button/minimal labels.
+`data-zidan-deselectable="true"` lets a click on the checked radio clear the group.
+
 ### Radio groups
 
 ```html
@@ -206,23 +247,47 @@ checkbox.
 </fieldset>
 ```
 
-Variants: `stacked`, `inline`, `card`. Radios share a native `name`, so arrow keys, Home/End
-and Space keep browser semantics; the wrapper adds `role="radiogroup"` when missing.
+Variants: `stacked`, `inline`, `card`, `button`, `tile`. Radios share a native `name`, so arrow
+keys, Home/End and Space keep browser semantics; the wrapper adds `role="radiogroup"` when missing.
 
-### File upload
+### File upload — variants, progress and the upload API
 
 ```html
-<input type="file" name="docs" multiple accept="image/*,.pdf"
-       data-zidan="file"
-       data-zidan-max-files="3"
-       data-zidan-max-size="1048576"
+<!-- drop target -->
+<input type="file" name="docs" multiple accept="image/*,.pdf" data-zidan="file"
+       data-zidan-max-files="3" data-zidan-max-size="1048576"
        data-zidan-title="Drop documents here">
+
+<!-- other designs -->
+<input type="file" data-zidan="file" data-zidan-file-variant="button" data-zidan-upload-icon="document">
+<input type="file" accept="image/*" data-zidan="file" data-zidan-file-variant="avatar">
+<input type="file" multiple accept="image/*" data-zidan="file" data-zidan-file-variant="gallery">
+<input type="file" data-zidan="file" data-zidan-file-variant="compact"
+       data-zidan-show-file-meta="false">
+
+<!-- simulated progress (no network) -->
+<input type="file" multiple data-zidan="file" data-zidan-simulate-upload="true"
+       data-zidan-simulate-duration="1800">
 ```
 
+- Variants: `dropzone`, `button`, `avatar`, `gallery`, `compact`.
 - Native `input.files` is the source of truth; removing a file rebuilds it with `DataTransfer`.
-- Drag & drop, click to pick, thumbnails for images, extension badges otherwise.
 - `maxFiles`, `maxSize` (bytes) / `maxSizeMB`, `accept` are validated with a live status message.
-- `required` works: an empty file input fails native validation as usual.
+- Real uploads: set `data-zidan-upload-url` (XHR multipart) or pass `upload(context)` in JS.
+- Progress, cancel, retry, `getUploadState()`, `renderFile(item, info)` and `zidan:upload-*`
+  events are all available; files stay put during `simulateUpload`.
+
+```js
+zidanField('#files', {
+  upload(context) {
+    // context: { file, field, formData, signal, onProgress, complete, fail }
+    fetch('/upload', { method: 'POST', body: context.formData, signal: context.signal })
+      .then(res => res.ok ? res.json() : Promise.reject(res.status))
+      .then(context.complete)
+      .catch(context.fail);
+  }
+});
+```
 
 ### Text inputs & textarea
 
@@ -236,12 +301,91 @@ and Space keep browser semantics; the wrapper adds `role="radiogroup"` when miss
           data-zidan-counter="140" data-zidan-clear></textarea>
 
 <input type="text" data-zidan="input" data-zidan-layout="floating" data-zidan-label="Company">
-<input type="range" data-zidan="input" data-zidan-label="Budget" data-zidan-output="#budget-out">
 ```
 
 Supported types: `text`, `email`, `password`, `number`, `tel`, `url`, `search`, `date`,
 `time`, `datetime-local`, `month`, `week`, `range`, `color`, plus `<textarea>`.
-Range inputs can mirror their value into any element with `data-zidan-output`.
+
+### Input icons
+
+```html
+<!-- automatic icon for the input type -->
+<input type="email" data-zidan="input" data-zidan-auto-icon="true" data-zidan-clear>
+
+<!-- choose an icon and the side; clickable ones emit zidan:icon-click -->
+<input type="url" data-zidan="input" data-zidan-icon="link"
+       data-zidan-icon-position="right" data-zidan-icon-clickable="true"
+       data-zidan-icon-label="Open website">
+```
+
+```js
+ZidanForm.registerIcon('sparkle', '<path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17Z"/>');
+```
+
+Works for `text`, `email`, `password`, `number`, `tel`, `url`, `search`, all date/time types
+and `range`. `data-zidan-validation-icon="true"` adds check/alert glyphs.
+
+### Number stepper
+
+```html
+<input type="number" min="0" max="10" value="3" data-zidan="input"
+       data-zidan-stepper="stacked">
+<input type="number" min="0" max="99" data-zidan="input" data-zidan-stepper="split">
+<input type="number" step="0.5" data-zidan="input" data-zidan-stepper="inline"
+       data-zidan-stepper-position="left" data-zidan-stepper-long-press="true">
+```
+
+Modes: `stacked`, `split`, `inline`. Press and hold repeats (configurable delay/interval);
+min, max and step are respected. Methods: `stepUp()`, `stepDown()`, `setStepper()`.
+
+### Phone formatting
+
+```html
+<input type="tel" data-zidan="input" data-zidan-phone="true"
+       data-zidan-phone-country="GB" data-zidan-phone-format="international">
+<input type="tel" data-zidan="input" data-zidan-phone="true"
+       data-zidan-phone-country="US" data-zidan-phone-format="national"
+       data-zidan-phone-country-select="false">
+```
+
+Three styles per country: `national`, `international`, `e164`. The optional country `<select>`
+changes both the dial code and the mask; typing re-formats around the caret. Static helpers:
+`ZidanForm.formatPhone(value, 'US', 'e164')` and `ZidanForm.detectPhoneCountry(value)`.
+
+### Range inputs
+
+```html
+<input type="range" min="0" max="1000" step="50" value="400"
+       data-zidan="input" data-zidan-range-variant="minimal"
+       data-zidan-range-bubble="true" data-zidan-range-minmax="false"
+       data-zidan-output="#budget-out">
+```
+
+```js
+zidanField('#price', {
+  rangeTicks: [0, 250, 500, 750, 1000],
+  rangeTickLabels: true,
+  rangeLabels: { 0: 'Free', 1000: 'Top' },
+  rangeFormat: value => '€' + Number(value).toLocaleString('en-US')
+});
+```
+
+Variants: `default`, `gradient`, `stepped`, `minimal`. Bubble, min/max scale, ticks and labels
+can each be toggled; `rangeFormat` accepts a template (`{value}`, `{min}`, `{max}`) or a function.
+
+### Date & time pickers
+
+```html
+<input type="date" data-zidan="input" data-zidan-icon="calendar"
+       data-zidan-icon-position="right" data-zidan-disable-weekends="true">
+
+<input type="datetime-local" data-zidan="input" data-zidan-picker-button="true"
+       data-zidan-picker-icon="calendar">
+```
+
+`data-zidan-disable-weekends` and `data-zidan-disabled-dates` (ISO list or JS function) are
+written into native validity, so `checkValidity()` blocks them. Change the picker icon and side
+per field; clickable icons call `input.showPicker()` when available.
 
 ---
 
@@ -251,7 +395,7 @@ Range inputs can mirror their value into any element with `data-zidan-output`.
 
 | Option | Data attribute | Type | Default | Description |
 | --- | --- | --- | --- | --- |
-| `variant` | `data-zidan-variant` | string | `default` | Checkbox `default/switch/card`; radio `stacked/inline/card`. |
+| `variant` | `data-zidan-variant` | string | `default` | Checkbox `default/switch/card/button/minimal`; radio `stacked/inline/card/button/tile`; file `dropzone/button/avatar/gallery/compact`; range `default/gradient/stepped/minimal`. |
 | `layout` | `data-zidan-layout` | string | `stacked` | `stacked`, `inline`, `compact`, `floating`, `outlined`, `card`. |
 | `theme` | `data-zidan-theme` | string | `default` | `default`, `modern`, `minimal`, `dark`, `glass`. |
 | `framework` | `data-zidan-framework` | string | `none` | `none`, `bootstrap`, `tailwind`, `bulma`, `foundation`. |
@@ -264,8 +408,26 @@ Range inputs can mirror their value into any element with `data-zidan-output`.
 | `prefix` / `suffix` | `data-zidan-prefix` / `-suffix` | string | — | Static adornments. |
 | `counter` | `data-zidan-counter` | number | `maxlength` | Character limit for the counter; overrides `maxlength`. |
 | `output` | `data-zidan-output` | selector | — | Range value is mirrored into this element. |
+| `autoIcon` / `icon` | `data-zidan-auto-icon` / `data-zidan-icon` | boolean / string | `false` / — | Type-based or custom input icon (any registered name). |
+| `iconPosition` / `iconClickable` | `data-zidan-icon-position` / `-icon-clickable` | `left`\|`right` / boolean | `left` / `false` | Side and behaviour of the icon. |
+| `validationIcon` | `data-zidan-validation-icon` | boolean | `false` | Check/alert glyphs tied to validation state. |
+| `stepper` | `data-zidan-stepper` | boolean \| `stacked`\|`split`\|`inline` | `false` | Number − / + controls. |
+| `stepperPosition` / `stepperLongPress` | `data-zidan-stepper-position` / `-long-press` | `left`\|`right` / boolean | `right` / `true` | Inline side and hold-to-repeat. |
+| `stepperDelay` / `stepperInterval` | `data-zidan-stepper-delay` / `-interval` | number | `420` / `90` | Repeat timing in ms. |
+| `phone` / `phoneCountry` / `phoneFormat` | `data-zidan-phone` / `-phone-country` / `-phone-format` | boolean / ISO-2 / `national`\|`international`\|`e164` | — / `US` / `national` | Phone formatting and validation. |
+| `phoneCountrySelect` / `phoneCountries` | `data-zidan-phone-country-select` / `-phone-countries` | boolean / list | `true` / common set | Country selector. |
+| `rangeVariant` / `rangeBubble` / `rangeMinMax` | `data-zidan-range-variant` / `-range-bubble` / `-range-minmax` | string / boolean / boolean | `default` / `true` / `true` | Range skin and chrome. |
+| `rangeTicks` / `rangeTickLabels` / `rangeLabels` / `rangeFormat` | `data-zidan-range-ticks` / `-range-tick-labels` / — / `-range-format` | number\|array / boolean / object / string\|function | `0` / `false` / — / — | Ticks, labels and value formatter. |
+| `pickerButton` / `pickerIcon` | `data-zidan-picker-button` / `-picker-icon` | boolean / string | `false` / per type | Date/time picker button and icon. |
+| `disableWeekends` / `disabledDates` | `data-zidan-disable-weekends` / `-disabled-dates` | boolean / list\|function | `false` / — | Date rules written into native validity. |
 | `title` | `data-zidan-title` | string | `Choose a file` | File dropzone title. |
 | `dropHint` | `data-zidan-drop-hint` | string | — | File dropzone subtitle. |
+| `fileVariant` / `uploadIcon` | `data-zidan-file-variant` / `-upload-icon` | string | `dropzone` / `upload` | Upload design and icon. |
+| `upload` / `uploadHandler` / `uploadUrl` | `data-zidan-upload-url` | function / string | — | Custom uploader or XHR endpoint. |
+| `uploadField` / `uploadData` / `uploadHeaders` | `data-zidan-upload-field` | string / object\|function / object\|function | `file` / — / — | FormData and request extras. |
+| `simulateUpload` / `simulateDuration` / `autoUpload` | `data-zidan-simulate-upload` / `-simulate-duration` / `-auto-upload` | boolean / number / boolean | `false` / `900` / `true` | Visual upload mode and timing. |
+| `showFileMeta` / `showPreview` / `replaceTitle` | `data-zidan-show-file-meta` / `-preview` | boolean / boolean / string | `true` / `true` / `Change image` | Per-file rows and avatar preview. |
+| `renderFile` | — | function | — | `(itemEl, { file, index, state, field })` hook. |
 | `maxFiles` | `data-zidan-max-files` | number | — | File count limit. |
 | `maxSize` | `data-zidan-max-size` | number | — | Bytes per file. |
 | `maxSizeMB` | `data-zidan-max-size-mb` | number | — | Per-file limit in megabytes; `2` = 2 MB, decimals allowed. Ignored when `maxSize` is set. |
@@ -313,14 +475,31 @@ Per-select instance: `open()`, `close()`, `toggle()`, `isOpen()`, `getValue()`,
 Per-field instance: `getValue()`, `setValue(v)`, `update()`, `refresh()`,
 `setValidation(state)`, `getValidation()`, `setTheme()`, `setFramework()`, `setLayout()`,
 `destroy()`, plus `setIndeterminate()`/`isChecked()` (checkbox), `setValue()` (radio group),
-and `clear()` (file).
+`stepUp()`/`stepDown()`/`setStepper()` (number), `getPhoneCountry()`/`setPhoneCountry()`/
+`setPhoneFormat()`/`formatPhone()` (phone), `openPicker()`/`showPicker()` (date/time),
+and `getFiles()`/`getUploadState()`/`addFiles()`/`replaceFiles()`/`removeFile()`/`clear()`/
+`setVariant()`/`setUploader()`/`uploadAll()`/`uploadFile()`/`cancelUpload()`/`cancelAll()`/
+`retryUpload()` (file).
 
-Events bubble from the wrapper as `zidan:change`, `zidan:validation`, `zidan:init`,
-`zidan:destroy`, `zidan:error`:
+Events bubble from the wrapper:
+
+| Event | Detail |
+| --- | --- |
+| `zidan:change` | `{ instance, kind, value }`, `{ checked }` or `{ files }` |
+| `zidan:validation` | `{ instance, state, message? }` |
+| `zidan:step` | `{ instance, value, direction }` (number stepper) |
+| `zidan:phone-country` / `zidan:phone-format` | `{ country }` / `{ format }` |
+| `zidan:icon-click` | `{ instance, icon, position }` |
+| `zidan:picker` | `{ instance, type }` |
+| `zidan:upload-start` / `-progress` / `-success` / `-error` / `-cancel` | file state, name, progress/result/message |
+| `zidan:remove` / `zidan:clear` / `zidan:init` / `zidan:destroy` / `zidan:error` | lifecycle |
 
 ```js
 document.addEventListener('zidan:change', event => {
   console.log(event.detail.kind, event.detail.value || event.detail.checked);
+});
+document.addEventListener('zidan:upload-progress', event => {
+  console.log(event.detail.name, event.detail.progress + '%');
 });
 ```
 
@@ -563,9 +742,34 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](docs
 
 ---
 
+## What's new in 2.1
+
+- **Input icons** — `data-zidan-auto-icon`, `data-zidan-icon`, left/right placement,
+  clickable icons and `ZidanForm.registerIcon()` for custom artwork.
+- **Number stepper** — stacked, split and inline − / + controls with hold-to-repeat,
+  min/max/step support and `stepUp()` / `stepDown()`.
+- **Phone formatting** — country selector plus `national`, `international` and `e164` masks,
+  caret-safe while typing, with `setPhoneCountry()` / `setPhoneFormat()`.
+- **Range skins** — `gradient`, `stepped`, `minimal`; bubble, min/max scale, tick arrays,
+  labels and string/function formatters.
+- **More skins** — checkbox `button` / `minimal`; switch `ios/material/square/labeled/icon`
+  with YES/NO labels; radio `button` / `tile` with descriptions and deselect.
+- **File variants & uploads** — `dropzone/button/avatar/gallery/compact`, progress, cancel,
+  retry, simulated uploads, XHR or custom `upload()` handlers, `getUploadState()`,
+  `renderFile` and `zidan:upload-*` events.
+- **Date rules** — weekend and blocked-date rules now write into native validity, so
+  `form.checkValidity()` and third-party validators see them.
+- **Docs & demo** — new option tables in [`docs/options.md`](docs/options.md), token list in
+  [`docs/theming.md`](docs/theming.md), validation rules in
+  [`docs/validation.md`](docs/validation.md), and a live event console on the demo page.
+
+The 2.0 API is unchanged; every addition is opt-in.
+
+---
+
 ## Migrating from 1.x
 
-| 1.x | 2.0 |
+| 1.x | 2.x |
 | --- | --- |
 | `ZidanSelect.js` | `zidan-form.js` (same select engine inside; `window.ZidanSelect` kept as alias) |
 | `ZidanSelect.mjs` | `zidan-form.mjs` |

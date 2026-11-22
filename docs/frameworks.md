@@ -226,8 +226,9 @@ zidanSelect('#tags', {
 
 | Need | API |
 | --- | --- |
-| External value → control | `setValue()` (select/field/radio), `setIndeterminate()`, `clear()` (file) |
+| External value → control | `setValue()` (select/field/radio/range), `stepUp()` / `stepDown()` (stepper), `setPhoneCountry()` / `setPhoneFormat()`, `setIndeterminate()`, `clear()` (file) |
 | Control → state | `onChange` callback or `zidan:change` event |
+| File upload progress | `zidan:upload-*` events or `getUploadState()` |
 | Re-render with same instances | `update()` / `ZidanForm.refresh(scope)` |
 | New nodes from a list re-render | `ZidanForm.observe(scope)` — additions/removals inside the scope; call `destroy()` first when removing the scope itself |
 | Unmount | `destroy()`, or `ZidanForm.destroyAll()` for a page |

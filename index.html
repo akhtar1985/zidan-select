@@ -42,7 +42,7 @@
 
   <main id="demo-app" class="wrap">
     <section class="hero">
-      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.0 · zero dependencies · one JS file</p>
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.1 · zero dependencies · one JS file</p>
       <h1>Every form control, <span>one small library</span>.</h1>
       <p>
         ZidanForm upgrades native inputs in place — select, checkbox, switch, radio, file upload
@@ -360,6 +360,41 @@
               <label><input type="radio" name="seat" value="middle"> Middle</label>
             </fieldset>
           </div>
+          <div class="card">
+            <h3>Checkbox button &amp; minimal</h3>
+            <p>Two more skins: a filter-style pill and a dense list row.</p>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="button" data-zidan-label="Email"> Email</label>
+              <label><input type="checkbox" data-zidan="checkbox" data-zidan-variant="button" data-zidan-label="SMS"> SMS</label>
+              <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="minimal" data-zidan-label="Compact row" data-zidan-description="No border, dense spacing."> Compact row</label>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Five switch styles</h3>
+            <p><code>data-zidan-switch-style</code> changes only the skin.</p>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="switch" data-zidan-switch-style="ios" data-zidan-label="iOS"> iOS</label>
+              <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="switch" data-zidan-switch-style="material" data-zidan-label="Material"> Material</label>
+              <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="switch" data-zidan-switch-style="square" data-zidan-label="Square"> Square</label>
+              <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="switch" data-zidan-switch-style="labeled" data-zidan-label="Labeled" data-zidan-on-label="YES" data-zidan-off-label="NO"> Labeled</label>
+              <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="switch" data-zidan-switch-style="icon" data-zidan-label="Icon"> Icon</label>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Radio buttons &amp; tiles</h3>
+            <p>Pill buttons and description tiles, plus click-to-clear.</p>
+            <fieldset data-zidan="radio-group" data-zidan-variant="button" data-zidan-label="View">
+              <legend>View</legend>
+              <label><input type="radio" name="view" value="day" checked> Day</label>
+              <label><input type="radio" name="view" value="week"> Week</label>
+              <label><input type="radio" name="view" value="month"> Month</label>
+            </fieldset>
+            <fieldset data-zidan="radio-group" data-zidan-variant="tile" data-zidan-deselectable="true" style="margin-top:18px" data-zidan-label="Workspace">
+              <legend>Workspace (deselectable)</legend>
+              <label><input type="radio" name="workspace" value="design" data-zidan-description="Boards, docs and feedback."> Design</label>
+              <label><input type="radio" name="workspace" value="build" data-zidan-description="Repos, pipelines and previews."> Build</label>
+            </fieldset>
+          </div>
         </div>
       </section>
 
@@ -371,18 +406,49 @@
         </div>
         <div class="grid-2">
           <div class="card">
-            <h3>Single image</h3>
-            <p>Images get a thumbnail; other files get an extension badge.</p>
-            <input id="file-avatar" name="avatar" type="file" accept="image/*"
-                   data-zidan="file" data-zidan-title="Upload an avatar"
-                   data-zidan-drop-hint="PNG or JPG, dragged or picked">
-          </div>
-          <div class="card">
-            <h3>Multiple files with limits</h3>
-            <p>Max 3 files, 1 MB each, images or PDFs only.</p>
+            <h3>Dropzone (default)</h3>
+            <p>Full-width drop target. Images get a thumbnail; other files get an extension badge.</p>
             <input id="file-docs" name="docs" type="file" multiple accept="image/*,.pdf"
                    data-zidan="file" data-zidan-max-files="3" data-zidan-max-size="1048576"
                    data-zidan-title="Drop documents here">
+          </div>
+          <div class="card">
+            <h3>Button variant</h3>
+            <p><code>data-zidan-file-variant="button"</code> turns the whole target into a compact button.</p>
+            <input id="file-button" name="resume" type="file" accept=".pdf,.doc,.docx"
+                   data-zidan="file" data-zidan-file-variant="button"
+                   data-zidan-upload-icon="document" data-zidan-title="Attach résumé"
+                   data-zidan-drop-hint="PDF or Word, up to 5 MB" data-zidan-max-size-mb="5">
+          </div>
+          <div class="card">
+            <h3>Avatar variant</h3>
+            <p>Single circular preview; the title switches to “Change image” once a file is chosen.</p>
+            <input id="file-avatar" name="avatar" type="file" accept="image/*"
+                   data-zidan="file" data-zidan-file-variant="avatar"
+                   data-zidan-title="Upload an avatar" data-zidan-upload-icon="user">
+          </div>
+          <div class="card">
+            <h3>Gallery variant</h3>
+            <p>Grid of thumbnails, multiple images, 4 files max.</p>
+            <input id="file-gallery" name="shots" type="file" multiple accept="image/*"
+                   data-zidan="file" data-zidan-file-variant="gallery" data-zidan-max-files="4"
+                   data-zidan-title="Add images" data-zidan-drop-hint="Up to 4 screenshots">
+          </div>
+          <div class="card">
+            <h3>Compact variant</h3>
+            <p>One-line target for sidebars and settings panels. File size text can be hidden.</p>
+            <input id="file-compact" name="attachment" type="file"
+                   data-zidan="file" data-zidan-file-variant="compact"
+                   data-zidan-show-file-meta="false" data-zidan-title="Choose attachment"
+                   data-zidan-upload-icon="paperclip">
+          </div>
+          <div class="card">
+            <h3>Simulated upload &amp; progress</h3>
+            <p>Auto-uploads on pick with progress, cancel and retry. Events feed the console below.</p>
+            <input id="file-sim" name="media" type="file" multiple accept="image/*,video/*"
+                   data-zidan="file" data-zidan-simulate-upload="true"
+                   data-zidan-simulate-duration="1800" data-zidan-max-size-mb="8"
+                   data-zidan-title="Upload media" data-zidan-upload-icon="cloud">
             <p class="form-status" id="file-status" role="status" aria-live="polite"></p>
           </div>
         </div>
@@ -407,27 +473,77 @@
                    data-zidan-reveal data-zidan-clear>
           </div>
           <div class="card">
-            <h3>Email, URL &amp; search</h3>
+            <h3>Icons — auto, custom, right</h3>
+            <p><code>data-zidan-auto-icon</code> picks the icon for the type; <code>data-zidan-icon</code> takes any registered name.</p>
             <div style="display:flex;flex-direction:column;gap:14px">
-              <input type="email" placeholder="you@company.com" required data-zidan="input" data-zidan-label="Email">
-              <input type="url" placeholder="https://example.com" data-zidan="input" data-zidan-label="Website" data-zidan-clear>
-              <input type="search" placeholder="Search…" data-zidan="input" data-zidan-label="Search">
+              <input type="email" placeholder="you@company.com" required data-zidan="input" data-zidan-label="Email"
+                     data-zidan-auto-icon="true" data-zidan-clear>
+              <input type="url" placeholder="https://example.com" data-zidan="input" data-zidan-label="Website"
+                     data-zidan-icon="link" data-zidan-icon-position="right" data-zidan-icon-clickable="true"
+                     data-zidan-icon-label="Open website">
+              <input type="search" placeholder="Search…" data-zidan="input" data-zidan-label="Search"
+                     data-zidan-auto-icon="true" data-zidan-icon-position="right" data-zidan-icon-clickable="true">
+              <input type="text" placeholder="Acme Inc." data-zidan="input" data-zidan-label="Custom icon"
+                     data-zidan-icon="sparkle" data-zidan-icon-label="Brand mark">
             </div>
           </div>
           <div class="card">
-            <h3>Number, tel &amp; date/time</h3>
+            <h3>Number stepper (− / +)</h3>
+            <p><code>data-zidan-stepper="stacked|split|inline"</code>. Press and hold to repeat; min, max and step are respected.</p>
             <div style="display:flex;flex-direction:column;gap:14px">
-              <input type="number" min="1" max="12" value="3" data-zidan="input" data-zidan-label="Seats">
-              <input type="tel" placeholder="+44 7700 900000" data-zidan="input" data-zidan-label="Phone">
-              <input type="date" value="2026-11-22" data-zidan="input" data-zidan-label="Start date">
-              <input type="time" value="09:30" data-zidan="input" data-zidan-label="Start time">
+              <input type="number" min="0" max="10" value="3" data-zidan="input" data-zidan-label="Stacked"
+                     data-zidan-stepper="stacked">
+              <input type="number" min="0" max="99" value="12" data-zidan="input" data-zidan-label="Split"
+                     data-zidan-stepper="split">
+              <input type="number" min="0" max="5" step="0.5" value="2.5" data-zidan="input" data-zidan-label="Inline, left"
+                     data-zidan-stepper="inline" data-zidan-stepper-position="left">
             </div>
           </div>
           <div class="card">
-            <h3>Range with output</h3>
-            <input type="range" min="0" max="100" value="65" id="range-demo"
-                   data-zidan="input" data-zidan-label="Budget" data-zidan-output="#range-out" data-zidan-suffix="$">
-            <p class="form-status">Value: <output id="range-out" for="range-demo">65</output></p>
+            <h3>Phone formatting</h3>
+            <p>Country list plus national, international and E.164 masks; the caret stays put while typing.</p>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <input id="phone-demo" type="tel" value="2025550134" data-zidan="input" data-zidan-label="US number"
+                     data-zidan-phone="true" data-zidan-phone-country="US" data-zidan-phone-format="national">
+              <input type="tel" value="447700900123" data-zidan="input" data-zidan-label="UK, no country select"
+                     data-zidan-phone="true" data-zidan-phone-country="GB" data-zidan-phone-format="international"
+                     data-zidan-phone-country-select="false">
+              <div class="swatch-row" role="group" aria-label="Phone format for the US number">
+                <button type="button" data-phone-format="national" data-target="#phone-demo" aria-pressed="true">national</button>
+                <button type="button" data-phone-format="international" data-target="#phone-demo" aria-pressed="false">international</button>
+                <button type="button" data-phone-format="e164" data-target="#phone-demo" aria-pressed="false">e164</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Range variants</h3>
+            <p>Gradient, stepped and minimal skins with bubble, ticks and a formatter.</p>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <input type="range" min="0" max="100" value="65" id="range-demo" data-zidan="input"
+                     data-zidan-label="Gradient" data-zidan-range-variant="gradient"
+                     data-zidan-output="#range-out" data-zidan-suffix="$">
+              <p class="form-status">Value: <output id="range-out" for="range-demo">65</output></p>
+              <input type="range" min="0" max="4" step="1" value="2" id="range-stepped" data-zidan="input"
+                     data-zidan-label="Stepped — 5 stops" data-zidan-range-variant="stepped" data-zidan-range-ticks="5">
+              <input type="range" min="0" max="1000" step="50" value="400" id="range-minimal" data-zidan="input"
+                     data-zidan-label="Minimal, JS formatter" data-zidan-range-variant="minimal"
+                     data-zidan-range-minmax="false" data-zidan-output="#range-out-2">
+              <p class="form-status">Value: <output id="range-out-2" for="range-minimal">400</output></p>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Date &amp; time pickers</h3>
+            <p>Change the picker icon and side; <code>data-zidan-disable-weekends</code> blocks Sat/Sun.</p>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <input type="date" value="2026-11-23" data-zidan="input" data-zidan-label="Start date"
+                     data-zidan-icon="calendar" data-zidan-icon-position="left" data-zidan-disable-weekends="true">
+              <input type="date" value="2026-11-24" data-zidan="input" data-zidan-label="Custom icon, right"
+                     data-zidan-icon="clock" data-zidan-icon-position="right">
+              <input type="time" value="09:30" data-zidan="input" data-zidan-label="Start time"
+                     data-zidan-auto-icon="true">
+              <input type="datetime-local" value="2026-11-24T09:30" data-zidan="input" data-zidan-label="Launch at"
+                     data-zidan-picker-button="true" data-zidan-picker-icon="calendar">
+            </div>
           </div>
           <div class="card">
             <h3>Textarea with counter</h3>
@@ -539,6 +655,23 @@
         </div>
       </section>
     </div>
+
+    <!-- ================= EVENTS ================= -->
+    <section class="compare-section" id="events" aria-labelledby="events-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Live events</p>
+        <h2 id="events-title">Event console</h2>
+        <p>Every <code>zidan:*</code> event fired by the demos above is appended here — steps, pickers, phone formats, uploads, validation and icon clicks.</p>
+      </div>
+      <div class="card">
+        <div class="event-toolbar">
+          <button type="button" class="btn" id="event-clear">Clear log</button>
+          <span class="form-status" id="event-count" role="status" aria-live="polite">0 events</span>
+        </div>
+        <ol class="event-log" id="event-log" aria-live="polite" aria-relevant="additions"></ol>
+        <p class="form-status" id="event-empty">Interact with any control above to see events.</p>
+      </div>
+    </section>
 
     <!-- ================= COMPARISON ================= -->
     <section class="compare-section" id="compare" aria-labelledby="compare-title">

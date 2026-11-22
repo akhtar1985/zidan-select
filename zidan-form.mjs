@@ -17,15 +17,20 @@ if (!api.ZidanForm) {
   throw new Error('ZidanForm: core script did not initialise (no DOM available?).');
 }
 
+const core = api.ZidanForm.api || api;
+
 export const ZidanForm = api.ZidanForm;
-export const ZidanSelect = api.ZidanSelect;
-export const ZidanCheckbox = api.ZidanCheckbox;
-export const ZidanRadioGroup = api.ZidanRadioGroup;
-export const ZidanFileUpload = api.ZidanFileUpload;
-export const ZidanTextField = api.ZidanTextField;
-export const zidanSelect = api.zidanSelect;
-export const zidanField = api.zidanField;
-export const initZidanSelects = api.initZidanSelects;
-export const initZidanForms = api.initZidanForms;
+export const ZidanSelect = core.ZidanSelect;
+export const ZidanCheckbox = core.ZidanCheckbox;
+export const ZidanRadioGroup = core.ZidanRadioGroup;
+export const ZidanFileUpload = core.ZidanFileUpload;
+export const ZidanTextField = core.ZidanTextField;
+export const zidanSelect = core.zidanSelect;
+export const zidanField = core.zidanField;
+export const initZidanSelects = core.initZidanSelects;
+export const initZidanForms = core.initZidanForms;
+export const registerIcon = core.registerIcon;
+export const formatPhone = core.formatPhone;
+export const detectPhoneCountry = core.detectPhoneCountry;
 
 export default ZidanForm;

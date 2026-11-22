@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.0.0 — plugin-core.css
+ * ZidanForm v2.1.0 — plugin-core.css
  * Structure and mechanics only: layout, positioning, visibility, focus
  * plumbing and accessible native-input handling. No colours, borders colours,
  * shadows or decorative skin — load plugin-theme.css (or your own theme) for
@@ -497,6 +497,16 @@
   gap: 10px;
 }
 
+.zs-field__error {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.zs-field__error[hidden] {
+  display: none;
+}
+
 .zs-counter {
   margin-left: auto;
   font-size: 0.75rem;
@@ -583,11 +593,22 @@
 }
 
 .zs-check-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   min-width: 0;
 }
 
 .zs-check-label:empty {
   display: none;
+}
+
+.zs-check-desc,
+.zs-radio-desc {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
 }
 
 /* switch */
@@ -613,6 +634,95 @@
   transform: translate(calc(var(--zs-switch-width, 40px) - var(--zs-switch-height, 22px)), -50%);
 }
 
+.zs-switch-on,
+.zs-switch-off {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  pointer-events: none;
+}
+
+.zs-switch-on {
+  left: 5px;
+}
+
+.zs-switch-off {
+  right: 5px;
+}
+
+.zs-check--checked .zs-switch-on {
+  opacity: 1;
+}
+
+.zs-check:not(.zs-check--checked) .zs-switch-off {
+  opacity: 1;
+}
+
+/* switch styles */
+.zs-field[data-zs-switch-style="material"] .zs-switch-track {
+  width: 46px;
+  height: 20px;
+}
+
+.zs-field[data-zs-switch-style="material"] .zs-switch-track::after {
+  width: 22px;
+  height: 22px;
+  left: -2px;
+  border-radius: 50%;
+}
+
+.zs-field[data-zs-switch-style="material"] .zs-check--checked .zs-switch-track::after {
+  transform: translate(26px, -50%);
+}
+
+.zs-field[data-zs-switch-style="square"] .zs-switch-track,
+.zs-field[data-zs-switch-style="square"] .zs-switch-track::after {
+  border-radius: 4px;
+}
+
+.zs-field[data-zs-switch-style="labeled"] .zs-switch-track,
+.zs-field[data-zs-switch-style="icon"] .zs-switch-track {
+  width: var(--zs-switch-width-lg, 56px);
+  height: var(--zs-switch-height-lg, 24px);
+}
+
+.zs-field[data-zs-switch-style="labeled"] .zs-switch-track::after,
+.zs-field[data-zs-switch-style="icon"] .zs-switch-track::after {
+  width: 18px;
+  height: 18px;
+}
+
+.zs-field[data-zs-switch-style="labeled"] .zs-check--checked .zs-switch-track::after,
+.zs-field[data-zs-switch-style="icon"] .zs-check--checked .zs-switch-track::after {
+  transform: translate(32px, -50%);
+}
+
+.zs-field[data-zs-switch-style="labeled"] .zs-switch-on,
+.zs-field[data-zs-switch-style="labeled"] .zs-switch-off {
+  font-size: 0.5625rem;
+}
+
+.zs-field[data-zs-switch-style="icon"] .zs-switch-on,
+.zs-field[data-zs-switch-style="icon"] .zs-switch-off {
+  font-size: 0;
+}
+
+.zs-field[data-zs-switch-style="icon"] .zs-switch-on::before {
+  content: "\2713";
+  font-size: 0.625rem;
+}
+
+.zs-field[data-zs-switch-style="icon"] .zs-switch-off::before {
+  content: "\2715";
+  font-size: 0.625rem;
+}
+
 /* card variant */
 .zs-field[data-zs-variant="card"] .zs-check {
   width: 100%;
@@ -627,6 +737,24 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.zs-field[data-zs-variant="button"] .zs-check {
+  padding: 8px 12px;
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius-pill, 999px);
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.zs-field[data-zs-variant="minimal"] .zs-check {
+  width: 100%;
+  padding: 4px 0;
+}
+
+.zs-field[data-zs-variant="minimal"] .zs-check-box {
+  border-width: 0;
+  border-radius: 4px;
 }
 
 /* ==================================================================
@@ -705,6 +833,43 @@
   border-style: solid;
   border-radius: var(--zs-radius, 10px);
   transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.zs-radio-group[data-zs-variant="button"] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.zs-radio-group[data-zs-variant="button"] .zs-radio {
+  padding: 8px 12px;
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius-pill, 999px);
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.zs-radio-group[data-zs-variant="tile"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.zs-radio-group[data-zs-variant="tile"] .zs-radio {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 12px;
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius, 10px);
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.zs-radio-group[data-zs-variant="tile"] .zs-radio-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .zs-radio-label {
@@ -853,6 +1018,163 @@
   display: none;
 }
 
+/* upload variants (scoped to beat the base .zs-field--file .zs-file-drop rules) */
+.zs-field--file .zs-file-drop--button,
+.zs-field--file .zs-file-drop--compact {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  min-height: 0;
+  padding: 10px 14px;
+  text-align: left;
+  border-style: solid;
+}
+
+.zs-field--file .zs-file-drop--compact {
+  padding: 6px 10px;
+}
+
+.zs-field--file .zs-file-drop--button .zs-file-icon,
+.zs-field--file .zs-file-drop--compact .zs-file-icon {
+  margin: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.zs-field--file .zs-file-drop--button .zs-file-drop-hint,
+.zs-field--file .zs-file-drop--compact .zs-file-drop-hint {
+  margin-left: auto;
+}
+
+.zs-field--file .zs-file-drop--avatar {
+  flex: 0 0 auto;
+  width: var(--zs-avatar-size, 96px);
+  height: var(--zs-avatar-size, 96px);
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border-style: solid;
+  border-radius: 50%;
+}
+
+.zs-field--file .zs-file-drop--avatar .zs-file-drop-title,
+.zs-field--file .zs-file-drop--avatar .zs-file-drop-hint {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.zs-field--file .zs-file-drop--avatar .zs-file-icon {
+  margin: 0;
+}
+
+.zs-file-avatar {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.zs-file-avatar[hidden] {
+  display: none;
+}
+
+.zs-file-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.zs-file-drop--has-preview .zs-file-icon {
+  display: none;
+}
+
+.zs-field--file .zs-file-drop--gallery {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  min-height: 88px;
+  padding: 14px;
+}
+
+.zs-field[data-zs-file-variant="gallery"] .zs-file-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.zs-field[data-zs-file-variant="gallery"] .zs-file-item {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 6px;
+}
+
+.zs-field[data-zs-file-variant="gallery"] .zs-file-thumb {
+  width: 100%;
+  height: 86px;
+  border-radius: 6px;
+}
+
+.zs-field[data-zs-file-variant="gallery"] .zs-file-actions {
+  justify-content: flex-end;
+}
+
+.zs-field[data-zs-file-variant="gallery"] .zs-file-upload-state {
+  flex-wrap: wrap;
+}
+
+.zs-file-upload-state {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.6875rem;
+}
+
+.zs-file-progress {
+  position: relative;
+  display: inline-block;
+  flex: 1 1 58px;
+  height: 4px;
+  min-width: 44px;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.zs-file-progress-bar {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  transition: width 120ms linear;
+}
+
+.zs-file-actions {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.zs-file-cancel,
+.zs-file-retry {
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 /* ==================================================================
    10. Text inputs & textarea
    ================================================================== */
@@ -959,6 +1281,218 @@ textarea.zs-input-native {
 
 .zs-input-action:focus-visible {
   outline: none;
+}
+
+/* field icons */
+.zs-input-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  line-height: 1;
+}
+
+.zs-input-icon svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.zs-input-icon--action {
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.zs-input-icon--action:focus-visible {
+  outline: none;
+}
+
+/* phone country selector */
+.zs-phone-country {
+  flex: 0 0 auto;
+  max-width: 104px;
+  height: calc(var(--zs-height, 44px) - 10px);
+  padding: 0 4px;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-right-width: 1px;
+  border-right-style: solid;
+  cursor: pointer;
+}
+
+.zs-field--phone .zs-input-native {
+  min-width: 7ch;
+}
+
+/* number stepper */
+.zs-stepper {
+  flex: 0 0 auto;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.zs-stepper--stacked {
+  flex-direction: column;
+  gap: 1px;
+}
+
+.zs-stepper-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.zs-stepper--stacked .zs-stepper-btn {
+  width: 24px;
+  height: 15px;
+}
+
+.zs-field--stepper-split .zs-stepper-btn {
+  width: 30px;
+  height: auto;
+  min-height: calc(var(--zs-height, 44px) - 2px);
+}
+
+.zs-stepper-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.zs-stepper-btn:focus-visible {
+  outline: none;
+}
+
+.zs-stepper-glyph svg {
+  display: block;
+  width: 12px;
+  height: 12px;
+}
+
+.zs-stepper--stacked .zs-stepper-glyph svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* the custom stepper replaces the native number spinners */
+.zs-field[data-zs-type="number"] .zs-input-native--stepper {
+  appearance: textfield;
+  -webkit-appearance: none;
+}
+
+.zs-field[data-zs-type="number"] .zs-input-native--stepper::-webkit-outer-spin-button,
+.zs-field[data-zs-type="number"] .zs-input-native--stepper::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* range chrome */
+.zs-input-shell--range {
+  min-height: 0;
+  padding: 0;
+  border-width: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.zs-range {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 20px 0 4px;
+}
+
+.zs-range .zs-input-native {
+  width: 100%;
+  margin: 0;
+  height: 6px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.zs-range-ticks {
+  position: relative;
+  height: 6px;
+  margin-top: 2px;
+  pointer-events: none;
+}
+
+.zs-range-tick {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 6px;
+  transform: translateX(-50%);
+}
+
+.zs-range-tick--labeled {
+  top: 8px;
+  width: auto;
+  height: auto;
+  font-size: 0.625rem;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.zs-range-scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.zs-range-bubble {
+  position: absolute;
+  top: 0;
+  left: calc(var(--zs-range-pct, 0) * 100%);
+  min-width: 28px;
+  padding: 1px 6px;
+  text-align: center;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* validation state icons */
+.zs-input-validation {
+  display: none;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+}
+
+.zs-input-validation svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.zs-field[data-zs-validation="valid"] .zs-input-validation--valid,
+.zs-field[data-zs-validation="invalid"] .zs-input-validation--invalid {
+  display: inline-flex;
 }
 
 /* floating & outlined label mechanics */

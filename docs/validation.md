@@ -13,6 +13,7 @@ native validation, `FormData` and third-party validators keep working.
 | Signal | Written by | Used for |
 | --- | --- | --- |
 | `input.validity` | the browser | source of truth |
+| `input.setCustomValidity()` | plugin | phone length, weekends, blocked dates, custom `validate`, file limits |
 | `aria-invalid` | plugin (`setValidation`) or your validator | screen readers and CSS |
 | `.zs-field--invalid` / `.zs-field--valid` | plugin | theme states |
 | `data-zs-validation="valid\|invalid"` | plugin | attribute-based styling |
@@ -26,6 +27,41 @@ The plugin marks a field invalid when:
 It clears the state on `input`/`change` once validity passes, on `form.reset()`, and whenever
 `setValidation(null)` is called. `data-zidan-validation="invalid"` forces the state without
 native validity.
+
+## Built-in rules (written into native validity)
+
+These rules call `input.setCustomValidity(message)`, so `form.checkValidity()`,
+`:invalid`, `validationMessage` and third-party validators that read native validity all see
+them. Clearing the value (or fixing it) clears the message.
+
+| Control | Rule | Enable with | Message key |
+| --- | --- | --- | --- |
+| `tel` | Length per country (10–11 digits for GB, 10 for US, …) | `data-zidan-phone`, `phone.validate !== false` | `messages.phone` (`{country}`, `{min}`, `{max}`) |
+| `date` | Sat/Sun blocked | `data-zidan-disable-weekends` | `messages.weekend` |
+| `date` | Specific ISO dates blocked | `data-zidan-disabled-dates="2026-12-25,…"` or `disabledDates` function | `messages.dateDisabled` |
+| `date` | Custom date rule | JS `validateDate(value, date, field)` | `messages.date` or the returned string |
+| text / textarea | Custom rule | JS `validate(value, field)` | `messages.generic` or the returned string |
+| file | Count / size / type | `maxFiles`, `maxSize` (or `maxSizeMB`), `accept` | `messages.fileCount`, `fileSize`, `fileType` |
+
+```js
+zidanField('#start', {
+  disableWeekends: true,
+  disabledDates: ['2026-12-25', '2027-01-01'],
+  validateDate(value, date) {
+    return date < new Date('2026-11-01') ? 'Pick a date after 1 November.' : true;
+  }
+});
+```
+
+Override any message globally before initialising:
+
+```js
+Object.assign(ZidanForm.messages, {
+  phone: 'Enter a valid {country} number ({min}–{max} digits).',
+  weekend: 'We are closed at weekends — pick a weekday.',
+  fileSize: '“{name}” is {size}; the limit is {limit}.'
+});
+```
 
 ## The hidden-input trap
 
@@ -164,7 +200,8 @@ field instead.
 
 ## Preventing double submits
 
-The plugin deliberately does not submit or block forms. Use an idempotent guard:
+The plugin never submits forms. It mirrors state and writes custom rules into native validity,
+so your submit handler stays in charge. Use an idempotent guard:
 
 ```js
 const form = document.getElementById('form');

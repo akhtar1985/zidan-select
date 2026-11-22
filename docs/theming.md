@@ -96,6 +96,48 @@ Themes and frameworks resolve independently: you can combine `dark` + `bootstrap
 | `--zs-file-thumb-bg` / `-text` | `#eef1fd` / `#4a5590` |
 | `--zs-field-gap` | `6px` |
 
+### Input icons, stepper, phone, range & upload
+
+| Token | Default | Used by |
+| --- | --- | --- |
+| `--zs-icon-color` / `--zs-icon-hover-bg` | muted text / primary-soft | input icons, upload glyph |
+| `--zs-stepper-color` / `--zs-stepper-hover-bg` | text / primary-soft | − / + buttons |
+| `--zs-phone-border` | border colour | country `<select>` separator |
+| `--zs-switch-width-lg` / `-height-lg` | larger track | material/square/labeled styles |
+| `--zs-switch-on-text` / `--zs-switch-off-text` | white / muted | labeled & icon switches |
+| `--zs-radius-pill` | `999px` | button checkbox/radio variants |
+| `--zs-avatar-size` | `96px` | avatar file variant |
+| `--zs-avatar-bg` / `--zs-avatar-border` | primary-soft / border | avatar target & preview fallback |
+| `--zs-range-track` / `--zs-range-fill` | border / primary | default & minimal range |
+| `--zs-range-gradient` | linear-gradient | gradient variant |
+| `--zs-range-thumb-bg` / `-thumb-border` | white / primary | range thumbs |
+| `--zs-range-tick` / `--zs-range-tick-text` | border / muted | tick marks and labels |
+| `--zs-range-bubble-bg` / `-bubble-text` | text / white | value bubble |
+| `--zs-upload-track` / `--zs-upload-bar` / `--zs-upload-success` | border / primary / green | progress bar and states |
+
+### Variant hooks
+
+Variants are selected per control and can be restyled with attribute selectors — no JS:
+
+```css
+/* checkbox pill */
+.zs-field[data-zs-variant="button"] .zs-check { --zs-pill-bg: #ecfdf3; }
+/* radio tiles */
+.zs-radio-group[data-zs-variant="tile"] .zs-radio { border-radius: 14px; }
+/* switch skins */
+.zs-field[data-zs-switch-style="ios"] .zs-switch-track::after { box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+/* file variants */
+.zs-field[data-zs-file-variant="avatar"] { --zs-avatar-size: 128px; }
+.zs-field[data-zs-file-variant="gallery"] .zs-file-list { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+/* range skins */
+.zs-range[data-zs-range="gradient"] { --zs-range-gradient: linear-gradient(90deg, #22c55e, #eab308); }
+```
+
+`data-zs-file-variant` is set on the field root; the drop target also carries
+`zs-file-drop--<variant>`. `data-zs-range` is set on `.zs-range`, and validation-driven
+icons/progress are keyed off `[data-zs-validation]` and `data-zs-upload-state`.
+
+
 ### Scrollbar
 
 `--zs-scrollbar-size`, `--zs-scrollbar-thumb`, `--zs-scrollbar-thumb-hover`,

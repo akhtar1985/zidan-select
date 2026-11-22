@@ -10,10 +10,76 @@
   var embed = params.get('embed') === '1';
   if (embed) document.body.classList.add('embed');
 
+  /* ---------------- demo-only icon registrations ---------------- */
+
+  form.registerIcon('sparkle',
+    '<path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17l-1.9-5.3L5 10l5.1-1.7Z"/>' +
+    '<path d="M18 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8Z"/>');
+  form.registerIcon('document',
+    '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>' +
+    '<path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>');
+  form.registerIcon('paperclip',
+    '<path d="M21 11.5 12.5 20a5 5 0 0 1-7-7l8-8a3.5 3.5 0 0 1 5 5l-8 8a2 2 0 0 1-3-3l7-7"/>');
+  form.registerIcon('cloud',
+    '<path d="M7 18a4 4 0 0 1-.6-8 6 6 0 0 1 11.6 1.6A3.5 3.5 0 0 1 17.5 18Z"/>' +
+    '<path d="M12 12v6"/><path d="m9.5 14.5 2.5-2.5 2.5 2.5"/>');
+
+  /* JS-only options, configured before auto-init picks the rest up */
+  var rangeMinimal = document.getElementById('range-minimal');
+  if (rangeMinimal) {
+    window.zidanField(rangeMinimal, {
+      rangeFormat: function (value) {
+        return '€' + Number(value).toLocaleString('en-US');
+      },
+      rangeTicks: [0, 250, 500, 750, 1000],
+      rangeTickLabels: true,
+      rangeLabels: { 0: 'Free', 1000: 'Top' }
+    });
+  }
+
+  var gallery = document.getElementById('file-gallery');
+  if (gallery) {
+    window.zidanField(gallery, {
+      // custom uploader: call onProgress while working, then complete()
+      upload: function (context) {
+        var progress = 0;
+        var timer = window.setInterval(function () {
+          if (context.signal && context.signal.aborted) {
+            window.clearInterval(timer);
+            return;
+          }
+          progress = Math.min(99, progress + 9 + Math.round(Math.random() * 12));
+          context.onProgress(progress);
+          if (progress >= 99) {
+            window.clearInterval(timer);
+            window.setTimeout(function () {
+              context.complete({ url: 'https://cdn.example.com/' + encodeURIComponent(context.file.name) });
+            }, 350);
+          }
+        }, 150);
+      }
+    });
+  }
+
   /* ---------------- initialise ---------------- */
 
   window.initZidanSelects(document);
   window.initZidanForms(document);
+
+  /* ---------------- phone format switcher ---------------- */
+
+  document.querySelectorAll('[data-phone-format]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var target = document.querySelector(button.dataset.target || '');
+      var field = target && target.__zidanField;
+      if (!field || typeof field.setPhoneFormat !== 'function' || !field.phone) return;
+      field.setPhoneFormat(button.dataset.phoneFormat);
+      var group = button.parentNode;
+      group.querySelectorAll('[data-phone-format]').forEach(function (other) {
+        other.setAttribute('aria-pressed', String(other === button));
+      });
+    });
+  });
 
   var state = {
     theme: 'default',
@@ -387,6 +453,89 @@
       fileStatus.textContent = message || (files.length ? files.length + ' file(s) attached' : '');
     });
   }
+
+  /* ---------------- live event console ---------------- */
+
+  var logList = document.getElementById('event-log');
+  var logCount = document.getElementById('event-count');
+  var logEmpty = document.getElementById('event-empty');
+  var eventClear = document.getElementById('event-clear');
+  var simInput = document.getElementById('file-sim');
+  var logTotal = 0;
+
+  var EVENT_NAMES = [
+    'init', 'change', 'input', 'validation', 'step', 'picker',
+    'phone-country', 'phone-format', 'icon-click',
+    'upload-start', 'upload-progress', 'upload-success', 'upload-error', 'upload-cancel',
+    'remove', 'clear', 'error', 'reveal', 'open', 'close', 'select',
+    'tag-add', 'tag-remove', 'no-results'
+  ];
+
+  function refreshLogCount() {
+    if (!logCount) return;
+    logCount.textContent = logTotal + (logTotal === 1 ? ' event' : ' events');
+    if (logEmpty) logEmpty.hidden = logTotal > 0;
+  }
+
+  EVENT_NAMES.forEach(function (name) {
+    document.addEventListener('zidan:' + name, function (event) {
+      var detail = event.detail || {};
+
+      if (name === 'upload-progress' && simInput && detail.instance && detail.instance.el === simInput) {
+        if (docsInput && fileStatus) {
+          fileStatus.textContent = detail.name + ' — ' + detail.progress + '%';
+        }
+      }
+      if (name === 'upload-success' && simInput && detail.instance && detail.instance.el === simInput) {
+        if (docsInput && fileStatus) fileStatus.textContent = detail.name + ' uploaded (simulated).';
+      }
+      if (name === 'upload-error' && simInput && detail.instance && detail.instance.el === simInput) {
+        if (docsInput && fileStatus) fileStatus.textContent = detail.name + ' failed: ' + (detail.message || 'error');
+      }
+
+      if (!logList) return;
+      logTotal += 1;
+      refreshLogCount();
+
+      var parts = [];
+      var instance = detail.instance;
+      if (instance && instance.el) {
+        var el = instance.el;
+        var label = el.getAttribute('data-zidan-label') || el.name || el.id;
+        if (label) parts.push(label);
+      }
+      Object.keys(detail).forEach(function (key) {
+        if (key === 'instance' || key === 'kind' || key === 'file' || key === 'error' || key === 'result') return;
+        var value = detail[key];
+        if (value === undefined || value === null || value === '' || typeof value === 'object') return;
+        parts.push(key + '=' + value);
+      });
+      if (detail.file && detail.file.name) parts.push('file=' + detail.file.name);
+
+      var item = document.createElement('li');
+      var time = document.createElement('time');
+      time.textContent = new Date().toLocaleTimeString();
+      var text = document.createElement('span');
+      var strong = document.createElement('b');
+      strong.textContent = event.type;
+      text.appendChild(strong);
+      if (parts.length) text.appendChild(document.createTextNode(' · ' + parts.join(' · ')));
+      item.appendChild(time);
+      item.appendChild(text);
+      logList.appendChild(item);
+      while (logList.children.length > 80) logList.removeChild(logList.firstChild);
+      logList.scrollTop = logList.scrollHeight;
+    });
+  });
+
+  if (eventClear) {
+    eventClear.addEventListener('click', function () {
+      if (logList) logList.textContent = '';
+      logTotal = 0;
+      refreshLogCount();
+    });
+  }
+  refreshLogCount();
 
   /* ---------------- boot ---------------- */
 

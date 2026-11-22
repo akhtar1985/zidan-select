@@ -1,9 +1,9 @@
 /*!
- * ZidanForm v2.0.0
+ * ZidanForm v2.1.0
  * Zero-dependency form enhancement library: select / combobox / tags,
- * checkboxes, switches, radio groups, file upload with drag & drop, and
- * text inputs / textarea. Structure and theming are split into
- * plugin-core.css and plugin-theme.css.
+ * checkboxes, switches, radio groups, file upload with drag & drop and
+ * upload progress, text / number / phone / date / range inputs and textarea.
+ * Structure and theming are split into plugin-core.css and plugin-theme.css.
  *
  * https://github.com/akhtar1985/zidan-select
  * MIT License © akhtar1985
@@ -22,6 +22,7 @@
     window.initZidanSelects = api.initZidanSelects;
     window.zidanField = api.zidanField;
     window.initZidanForms = api.initZidanForms;
+    window.registerZidanIcon = api.registerIcon;
   }
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = api;
@@ -29,7 +30,7 @@
 })(typeof window !== 'undefined' ? window : this, function (global) {
   'use strict';
 
-  var VERSION = '2.0.0';
+  var VERSION = '2.1.0';
 
   // Loading the file twice (classic script + module wrapper, or two bundles)
   // must not replace the classes and orphan the live instances.
@@ -103,6 +104,394 @@
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
+  }
+
+  function fillTemplate(template, vars) {
+    return String(template).replace(/\{(\w+)\}/g, function (match, key) {
+      return vars && vars[key] !== undefined && vars[key] !== null ? String(vars[key]) : match;
+    });
+  }
+
+  /* ---------------- opt-in icon presets ---------------- */
+
+  var ICON_PATHS = {
+    text: '<path d="M4 7h16M4 12h10M4 17h13"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/>',
+    user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    lock: '<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    link: '<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/>',
+    hash: '<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
+    palette: '<path d="M12 3a9 9 0 0 0 0 18h1.5a2.5 2.5 0 0 0 0-5H12a2 2 0 0 1 0-4h4a5 5 0 0 0 0-10Z"/><circle cx="8.5" cy="8.5" r="1"/><circle cx="8" cy="14" r="1"/>',
+    sliders: '<path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2.5"/><circle cx="15" cy="17" r="2.5"/>',
+    file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+    upload: '<path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>',
+    eye: '<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="3"/>',
+    'eye-off': '<path d="m3 3 18 18"/><path d="M10.6 6.2A9.9 9.9 0 0 1 12 6c6.5 0 10 6 10 6a17 17 0 0 1-3.1 3.6"/><path d="M6.4 6.7C3.5 8.4 2 12 2 12s3.5 6 10 6c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+    check: '<path d="m4 12.5 5 5L20 6.5"/>',
+    x: '<path d="M6 6l12 12M18 6 6 18"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    minus: '<path d="M5 12h14"/>',
+    'chevron-down': '<path d="m6 9 6 6 6-6"/>',
+    'chevron-up': '<path d="m6 15 6-6 6 6"/>',
+    'chevron-left': '<path d="m15 6-6 6 6 6"/>',
+    'chevron-right': '<path d="m9 6 6 6-6 6"/>',
+    alert: '<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20h15.4a2 2 0 0 0 1.7-2.6L13.7 3.9a2 2 0 0 0-3.4 0Z"/>',
+    info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
+    globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z"/>',
+    'map-pin': '<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+    image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',
+    refresh: '<path d="M20 11a8 8 0 0 0-14.9-3.9L3 10"/><path d="M3 5v5h5"/><path d="M4 13a8 8 0 0 0 14.9 3.9L21 14"/><path d="M21 19v-5h-5"/>',
+    trash: '<path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v5M14 11v5"/>'
+  };
+
+  var ICON_REGISTRY = {};
+  Object.keys(ICON_PATHS).forEach(function (key) { ICON_REGISTRY[key] = ICON_PATHS[key]; });
+  var ICON_NAMESPACE = 'http://www.w3.org/2000/svg';
+
+  var ICON_ALLOWED = {
+    svg: 1, g: 1, path: 1, circle: 1, rect: 1, line: 1, polyline: 1,
+    polygon: 1, ellipse: 1, title: 1, defs: 1, clipPath: 1, clippath: 1, mask: 1
+  };
+
+  function sanitizeIcon(markup) {
+    if (typeof markup !== 'string' || !markup.trim()) return '';
+    var parsed;
+    try {
+      if (typeof global.DOMParser === 'undefined') return '';
+      parsed = new global.DOMParser().parseFromString(markup, 'image/svg+xml');
+    } catch (err) {
+      return '';
+    }
+    if (!parsed || !parsed.documentElement) return '';
+    var svg = parsed.documentElement;
+    if (String(svg.nodeName).toLowerCase() !== 'svg') return '';
+    if (parsed.getElementsByTagName('parsererror').length) return '';
+    var walk = function (node) {
+      Array.prototype.slice.call(node.children || []).forEach(function (child) {
+        var tag = String(child.nodeName);
+        if (tag !== tag.toLowerCase()) tag = tag.toLowerCase();
+        if (!ICON_ALLOWED[tag]) {
+          child.parentNode.removeChild(child);
+          return;
+        }
+        Array.prototype.slice.call(child.attributes || []).forEach(function (attr) {
+          var name = String(attr.name).toLowerCase();
+          if (name.indexOf('on') === 0) child.removeAttribute(attr.name);
+          if ((name === 'href' || name === 'xlink:href') && !/^#/.test(attr.value)) child.removeAttribute(attr.name);
+          if (/url\s*\(\s*['"]?\s*(?:https?:|\/\/)/i.test(attr.value)) child.removeAttribute(attr.name);
+        });
+        walk(child);
+      });
+    };
+    walk(svg);
+    return svg.outerHTML;
+  }
+
+  function iconSvgFromMarkup(markup) {
+    var paths = markup;
+    if (/^\s*</.test(paths) && !/^\s*<svg/i.test(paths)) {
+      paths = '<svg xmlns="' + ICON_NAMESPACE + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+        'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + paths + '</svg>';
+    } else if (!/^\s*<svg/i.test(paths)) {
+      paths = '';
+    }
+    return sanitizeIcon(paths);
+  }
+
+  function iconNode(spec, className) {
+    var markup = '';
+    var name = '';
+    if (typeof spec === 'string' && spec) {
+      name = spec;
+      if (/^\s*</.test(spec)) {
+        markup = iconSvgFromMarkup(spec) || iconSvgFromMarkup('<path d="M4 12h16"/>');
+      } else if (ICON_REGISTRY[spec]) {
+        markup = iconSvgFromMarkup(ICON_REGISTRY[spec]) || '';
+      }
+    } else if (spec && typeof spec === 'object' && spec.name) {
+      name = spec.name;
+      markup = iconSvgFromMarkup(ICON_REGISTRY[spec.name] || '');
+    }
+    if (!markup) return null;
+    var node = doc.createElement('span');
+    if (className) node.className = className;
+    node.setAttribute('data-zs-icon', name || 'custom');
+    try {
+      node.innerHTML = markup;
+    } catch (err) {
+      return null;
+    }
+    var svg = node.firstChild;
+    if (svg) {
+      svg.setAttribute('focusable', 'false');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('width', '18');
+      svg.setAttribute('height', '18');
+    }
+    return node;
+  }
+
+  var TYPE_ICONS = {
+    text: 'text',
+    email: 'mail',
+    password: 'lock',
+    number: 'hash',
+    tel: 'phone',
+    url: 'link',
+    search: 'search',
+    date: 'calendar',
+    time: 'clock',
+    'datetime-local': 'calendar',
+    month: 'calendar',
+    week: 'calendar',
+    range: 'sliders',
+    color: 'palette'
+  };
+
+  function iconForType(type) {
+    return TYPE_ICONS[type] || '';
+  }
+
+  function registerIcon(name, markup) {
+    if (!name || typeof markup !== 'string') return ZidanSelect;
+    ICON_REGISTRY[String(name)] = markup;
+    return ZidanSelect;
+  }
+
+  /* ---------------- field options (JS options + data-* attributes) ---------------- */
+
+  function fieldOption(node, options, key, attr, fallback) {
+    if (options && options[key] !== undefined && options[key] !== null) return options[key];
+    if (node && attr && node.getAttribute) {
+      var value = node.getAttribute('data-zidan-' + attr);
+      if (value !== null && value !== '') return value;
+    }
+    return fallback;
+  }
+
+  function fieldBool(node, options, key, attr, fallback) {
+    if (options && options[key] !== undefined && options[key] !== null) return !!options[key];
+    if (node && attr && node.getAttribute) {
+      var value = node.getAttribute('data-zidan-' + attr);
+      if (value !== null) return readBoolAttr(value, fallback);
+    }
+    return fallback;
+  }
+
+  function fieldNumber(node, options, key, attr, fallback) {
+    var value = fieldOption(node, options, key, attr, fallback);
+    if (value === null || value === undefined || value === '') return fallback;
+    var number = parseFloat(value);
+    return isFinite(number) ? number : fallback;
+  }
+
+  function fieldList(node, options, key, attr, fallback) {
+    var value = fieldOption(node, options, key, attr, null);
+    if (value === null || value === undefined || value === '') return fallback;
+    if (Array.isArray(value)) return value.slice();
+    return String(value).split(',').map(function (item) { return item.trim(); }).filter(Boolean);
+  }
+
+  /* ---------------- validation messages ---------------- */
+
+  var FIELD_MESSAGES = {
+    required: 'This field is required.',
+    email: 'Enter a valid email address.',
+    url: 'Enter a valid URL.',
+    pattern: 'The value does not match the expected format.',
+    min: 'Value must be at least {min}.',
+    max: 'Value must be at most {max}.',
+    step: 'Value must be a multiple of {step}.',
+    minlength: 'Use at least {minlength} characters.',
+    maxlength: 'Use at most {maxlength} characters.',
+    badInput: 'Enter a valid value.',
+    phone: 'Enter a valid phone number for {country}.',
+    integer: 'Enter a whole number.',
+    date: 'Enter a valid date.',
+    weekend: 'Weekends are not available — pick a weekday.',
+    dateDisabled: 'This date is not available.',
+    fileType: 'This file type is not allowed.',
+    fileSize: 'This file is too large.',
+    fileCount: 'Too many files.',
+    generic: 'Please check this field.'
+  };
+
+  function validityMessage(input, messages) {
+    if (!input || !input.validity || input.validity.valid) return '';
+    var v = input.validity;
+    var map = messages || FIELD_MESSAGES;
+    var type = String(input.type || '').toLowerCase();
+    var key = '';
+    var vars = { min: input.getAttribute('min'), max: input.getAttribute('max'), step: input.getAttribute('step') };
+    if (v.valueMissing) key = 'required';
+    else if (v.typeMismatch) key = type === 'email' ? 'email' : (type === 'url' ? 'url' : 'generic');
+    else if (v.patternMismatch) key = 'pattern';
+    else if (v.rangeUnderflow) key = 'min';
+    else if (v.rangeOverflow) key = 'max';
+    else if (v.stepMismatch) key = 'step';
+    else if (v.tooShort) {
+      key = 'minlength';
+      vars.minlength = input.getAttribute('minlength');
+    } else if (v.tooLong) {
+      key = 'maxlength';
+      vars.maxlength = input.getAttribute('maxlength');
+    } else if (v.badInput || v.customError) key = 'badInput';
+    if (!key) return input.validationMessage || map.generic;
+    return fillTemplate(map[key] || FIELD_MESSAGES[key] || map.generic, vars);
+  }
+
+  /* ---------------- phone formatting ---------------- */
+
+  var PHONE_COUNTRIES = {
+    US: { flag: '🇺🇸', name: 'United States', dial: '1', mask: '(###) ###-####', groups: [3, 3, 4], min: 10, max: 10 },
+    CA: { flag: '🇨🇦', name: 'Canada', dial: '1', mask: '(###) ###-####', groups: [3, 3, 4], min: 10, max: 10 },
+    GB: { flag: '🇬🇧', name: 'United Kingdom', dial: '44', mask: '##### ######', groups: [5, 6], intlGroups: [4, 6], min: 10, max: 11 },
+    DE: { flag: '🇩🇪', name: 'Germany', dial: '49', mask: '#### #######', groups: [4, 7], min: 10, max: 11 },
+    FR: { flag: '🇫🇷', name: 'France', dial: '33', mask: '# ## ## ## ##', groups: [1, 2, 2, 2, 2], min: 9, max: 10 },
+    IN: { flag: '🇮🇳', name: 'India', dial: '91', mask: '##### #####', groups: [5, 5], min: 10, max: 10 },
+    PK: { flag: '🇵🇰', name: 'Pakistan', dial: '92', mask: '### #######', groups: [3, 7], min: 10, max: 10 },
+    AE: { flag: '🇦🇪', name: 'United Arab Emirates', dial: '971', mask: '## ### ####', groups: [2, 3, 4], min: 9, max: 9 },
+    SA: { flag: '🇸🇦', name: 'Saudi Arabia', dial: '966', mask: '## ### ####', groups: [2, 3, 4], min: 9, max: 9 },
+    AU: { flag: '🇦🇺', name: 'Australia', dial: '61', mask: '### ### ###', groups: [3, 3, 3], min: 9, max: 9 },
+    BR: { flag: '🇧🇷', name: 'Brazil', dial: '55', mask: '(##) #####-####', groups: [2, 5, 4], min: 10, max: 11 },
+    CN: { flag: '🇨🇳', name: 'China', dial: '86', mask: '### #### ####', groups: [3, 4, 4], min: 11, max: 11 },
+    JP: { flag: '🇯🇵', name: 'Japan', dial: '81', mask: '## #### ####', groups: [2, 4, 4], min: 10, max: 11 },
+    RU: { flag: '🇷🇺', name: 'Russia', dial: '7', mask: '### ###-##-##', groups: [3, 3, 2, 2], min: 10, max: 10 },
+    ZA: { flag: '🇿🇦', name: 'South Africa', dial: '27', mask: '## ### ####', groups: [2, 3, 4], min: 9, max: 9 },
+    NG: { flag: '🇳🇬', name: 'Nigeria', dial: '234', mask: '### ### ####', groups: [3, 3, 4], min: 10, max: 10 },
+    EG: { flag: '🇪🇬', name: 'Egypt', dial: '20', mask: '## #### ####', groups: [2, 4, 4], min: 10, max: 10 },
+    TR: { flag: '🇹🇷', name: 'Türkiye', dial: '90', mask: '### ### ## ##', groups: [3, 3, 2, 2], min: 10, max: 10 },
+    ID: { flag: '🇮🇩', name: 'Indonesia', dial: '62', mask: '### ### ####', groups: [3, 3, 4], min: 9, max: 12 },
+    MY: { flag: '🇲🇾', name: 'Malaysia', dial: '60', mask: '## ### ####', groups: [2, 3, 4], min: 9, max: 10 },
+    PH: { flag: '🇵🇭', name: 'Philippines', dial: '63', mask: '### ### ####', groups: [3, 3, 4], min: 10, max: 10 },
+    BD: { flag: '🇧🇩', name: 'Bangladesh', dial: '880', mask: '#### ######', groups: [4, 6], min: 10, max: 10 },
+    IT: { flag: '🇮🇹', name: 'Italy', dial: '39', mask: '### ### ####', groups: [3, 3, 4], min: 9, max: 10 },
+    ES: { flag: '🇪🇸', name: 'Spain', dial: '34', mask: '### ## ## ##', groups: [3, 2, 2, 2], min: 9, max: 9 },
+    MX: { flag: '🇲🇽', name: 'Mexico', dial: '52', mask: '## #### ####', groups: [2, 4, 4], min: 10, max: 10 },
+    AR: { flag: '🇦🇷', name: 'Argentina', dial: '54', mask: '## #### ####', groups: [2, 4, 4], min: 10, max: 10 },
+    NZ: { flag: '🇳🇿', name: 'New Zealand', dial: '64', mask: '## ### ####', groups: [2, 3, 4], min: 8, max: 10 },
+    SG: { flag: '🇸🇬', name: 'Singapore', dial: '65', mask: '#### ####', groups: [4, 4], min: 8, max: 8 },
+    HK: { flag: '🇭🇰', name: 'Hong Kong', dial: '852', mask: '#### ####', groups: [4, 4], min: 8, max: 8 },
+    KR: { flag: '🇰🇷', name: 'South Korea', dial: '82', mask: '## #### ####', groups: [2, 4, 4], min: 9, max: 10 },
+    TH: { flag: '🇹🇭', name: 'Thailand', dial: '66', mask: '## ### ####', groups: [2, 3, 4], min: 9, max: 9 },
+    VN: { flag: '🇻🇳', name: 'Vietnam', dial: '84', mask: '### ### ####', groups: [3, 3, 4], min: 9, max: 10 },
+    NL: { flag: '🇳🇱', name: 'Netherlands', dial: '31', mask: '# ## ## ## ##', groups: [1, 2, 2, 2, 2], min: 9, max: 9 },
+    BE: { flag: '🇧🇪', name: 'Belgium', dial: '32', mask: '### ## ## ##', groups: [3, 2, 2, 2], min: 9, max: 9 },
+    CH: { flag: '🇨🇭', name: 'Switzerland', dial: '41', mask: '## ### ## ##', groups: [2, 3, 2, 2], min: 9, max: 9 },
+    SE: { flag: '🇸🇪', name: 'Sweden', dial: '46', mask: '## ### ## ##', groups: [2, 3, 2, 2], min: 9, max: 9 },
+    NO: { flag: '🇳🇴', name: 'Norway', dial: '47', mask: '### ## ###', groups: [3, 2, 3], min: 8, max: 8 },
+    DK: { flag: '🇩🇰', name: 'Denmark', dial: '45', mask: '## ## ## ##', groups: [2, 2, 2, 2], min: 8, max: 8 },
+    FI: { flag: '🇫🇮', name: 'Finland', dial: '358', mask: '## ### ####', groups: [2, 3, 4], min: 9, max: 10 },
+    PL: { flag: '🇵🇱', name: 'Poland', dial: '48', mask: '### ### ###', groups: [3, 3, 3], min: 9, max: 9 },
+    PT: { flag: '🇵🇹', name: 'Portugal', dial: '351', mask: '### ### ###', groups: [3, 3, 3], min: 9, max: 9 },
+    IE: { flag: '🇮🇪', name: 'Ireland', dial: '353', mask: '## ### ####', groups: [2, 3, 4], min: 9, max: 9 },
+    GR: { flag: '🇬🇷', name: 'Greece', dial: '30', mask: '### ### ####', groups: [3, 3, 4], min: 10, max: 10 },
+    UA: { flag: '🇺🇦', name: 'Ukraine', dial: '380', mask: '## ### ####', groups: [2, 3, 4], min: 9, max: 9 },
+    IL: { flag: '🇮🇱', name: 'Israel', dial: '972', mask: '##-###-####', groups: [2, 3, 4], min: 9, max: 9 },
+    QA: { flag: '🇶🇦', name: 'Qatar', dial: '974', mask: '#### ####', groups: [4, 4], min: 8, max: 8 },
+    KW: { flag: '🇰🇼', name: 'Kuwait', dial: '965', mask: '#### ####', groups: [4, 4], min: 8, max: 8 },
+    BH: { flag: '🇧🇭', name: 'Bahrain', dial: '973', mask: '#### ####', groups: [4, 4], min: 8, max: 8 },
+    OM: { flag: '🇴🇲', name: 'Oman', dial: '968', mask: '#### ####', groups: [4, 4], min: 8, max: 8 }
+  };
+
+  var PHONE_DEFAULT_COUNTRIES = ['US', 'CA', 'GB', 'AU', 'DE', 'FR', 'IN', 'PK', 'AE', 'SA', 'BR', 'CN', 'JP', 'RU', 'ZA', 'NG', 'TR', 'ID', 'MY', 'PH', 'BD', 'ES', 'IT', 'MX', 'NL', 'PL', 'PT', 'SE', 'CH', 'IE'];
+  var PHONE_FORMATS = ['national', 'international', 'e164'];
+
+  function digitsOnly(value) {
+    return String(value === null || value === undefined ? '' : value).replace(/\D+/g, '');
+  }
+
+  function formatWithMask(digits, mask) {
+    var out = '';
+    var index = 0;
+    for (var i = 0; i < mask.length; i += 1) {
+      if (mask.charAt(i) === '#') {
+        if (index >= digits.length) break;
+        out += digits.charAt(index);
+        index += 1;
+      } else {
+        out += mask.charAt(i);
+      }
+    }
+    if (index < digits.length) out += digits.slice(index);
+    return out;
+  }
+
+  function groupDigits(digits, groups) {
+    var out = [];
+    var index = 0;
+    (groups || []).forEach(function (size) {
+      if (index < digits.length) {
+        out.push(digits.slice(index, index + size));
+        index += size;
+      }
+    });
+    if (index < digits.length) out.push(digits.slice(index));
+    return out;
+  }
+
+  function formatPhone(value, countryIso, format) {
+    var country = PHONE_COUNTRIES[countryIso] || PHONE_COUNTRIES.US;
+    var mode = PHONE_FORMATS.indexOf(String(format)) === -1 ? 'national' : String(format);
+    var digits = digitsOnly(value);
+    if (mode !== 'national' && /^\s*\+/.test(String(value || ''))) {
+      // a pasted +<dial> value is normalized to the selected country
+      var detected = detectPhoneCountry(value);
+      if (detected) digits = digits.slice(PHONE_COUNTRIES[detected].dial.length);
+    }
+    if (mode !== 'national' && digits.indexOf(country.dial) === 0 && digits.length > country.max) {
+      digits = digits.slice(country.dial.length);
+    }
+    if (mode !== 'national' && digits.charAt(0) === '0') digits = digits.slice(1);
+    digits = digits.slice(0, country.max);
+    if (!digits) return '';
+    if (mode === 'e164') return '+' + country.dial + digits;
+    if (mode === 'international') return '+' + country.dial + ' ' + groupDigits(digits, country.intlGroups || country.groups).join(' ');
+    return formatWithMask(digits, country.mask);
+  }
+
+  function phoneDigitsForCountry(value, countryIso, format) {
+    var country = PHONE_COUNTRIES[countryIso] || PHONE_COUNTRIES.US;
+    var digits = digitsOnly(value);
+    if (format !== 'national' && /^\s*\+/.test(String(value || ''))) {
+      var detected = detectPhoneCountry(value);
+      if (detected) digits = digits.slice(PHONE_COUNTRIES[detected].dial.length);
+    } else if (format !== 'national' && digits.indexOf(country.dial) === 0 && digits.length > country.max) {
+      digits = digits.slice(country.dial.length);
+    }
+    if (format !== 'national' && digits.charAt(0) === '0') digits = digits.slice(1);
+    return digits;
+  }
+
+  function detectPhoneCountry(value) {
+    var digits = digitsOnly(value);
+    if (!/^\s*\+/.test(String(value || ''))) return '';
+    var best = '';
+    Object.keys(PHONE_COUNTRIES).forEach(function (iso) {
+      var dial = PHONE_COUNTRIES[iso].dial;
+      if (digits.indexOf(dial) === 0 && dial.length > (PHONE_COUNTRIES[best] ? PHONE_COUNTRIES[best].dial.length : 0)) best = iso;
+    });
+    return best;
+  }
+
+  function digitsBefore(text, position) {
+    return (String(text).slice(0, position).match(/\d/g) || []).length;
+  }
+
+  function caretAfterDigits(text, count) {
+    if (count <= 0) return 0;
+    var seen = 0;
+    for (var i = 0; i < text.length; i += 1) {
+      if (/\d/.test(text.charAt(i))) {
+        seen += 1;
+        if (seen === count) return i + 1;
+      }
+    }
+    return text.length;
   }
 
   /* first non-empty value of any of `names`, walking up the tree */
@@ -1854,8 +2243,11 @@
    * ================================================================== */
 
   var VALIDATION_STATES = ['valid', 'invalid'];
-  var CHECKBOX_VARIANTS = ['default', 'switch', 'card'];
-  var RADIO_VARIANTS = ['stacked', 'inline', 'card'];
+  var CHECKBOX_VARIANTS = ['default', 'switch', 'card', 'button', 'minimal'];
+  var SWITCH_STYLES = ['ios', 'material', 'square', 'labeled', 'icon'];
+  var RADIO_VARIANTS = ['stacked', 'inline', 'card', 'button', 'tile'];
+  var FILE_VARIANTS = ['dropzone', 'button', 'avatar', 'gallery', 'compact'];
+  var RANGE_VARIANTS = ['default', 'gradient', 'stepped', 'minimal'];
 
   function textWithout(rootNode, skip) {
     var out = '';
@@ -1881,10 +2273,13 @@
     this.el = target;
     this.kind = kind;
     this.opts = options || {};
+    this.opts.messages = Object.assign({}, FIELD_MESSAGES, this.opts.messages || {});
     this.id = target.id || (target.id = uid('zf'));
     this.root = null;
     this.touched = false;
     this.validation = null;
+    this.errorMessage = null;
+    this.errorEl = null;
     this.destroyed = false;
     this._listeners = [];
     this._cleanups = [];
@@ -1959,13 +2354,101 @@
     return [this.el];
   };
 
-  /* mirror native constraint validity into classes and aria-invalid */
+  /* field-specific cross-field / format checks; subclasses override */
+  ZidanFieldBase.prototype._customError = function () {
+    return '';
+  };
+
+  ZidanFieldBase.prototype._messageFor = function (input) {
+    var message = validityMessage(input, this.opts.messages);
+    if (message) return message;
+    if (input && input.validationMessage) return input.validationMessage;
+    return this.opts.messages.generic || FIELD_MESSAGES.generic;
+  };
+
+  ZidanFieldBase.prototype._nativeError = function () {
+    var targets = this.validationTargets();
+    for (var i = 0; i < targets.length; i += 1) {
+      var input = targets[i];
+      if (input && input.validity && !input.validity.valid) return this._messageFor(input);
+    }
+    return '';
+  };
+
+  ZidanFieldBase.prototype._evaluateError = function () {
+    var custom = this._customError ? this._customError() : '';
+    if (custom) return typeof custom === 'string' ? custom : this.opts.messages.generic;
+    return this._nativeError();
+  };
+
+  ZidanFieldBase.prototype._syncDescribedBy = function () {
+    if (!this.el || !this.el.getAttribute) return;
+    var errorId = this.id + '-error';
+    var hint = this.root && this.root.querySelector ? this.root.querySelector('.zs-field__hint[id]') : null;
+    var hintId = hint ? hint.id : '';
+    var targets = this.validationTargets();
+    targets.forEach(function (input) {
+      if (!input || !input.getAttribute) return;
+      var current = (input.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+      var next = current.filter(function (id) { return id !== errorId && id !== hintId; });
+      if (hintId) next.push(hintId);
+      if (this.errorMessage) next.push(errorId);
+      if (next.length) input.setAttribute('aria-describedby', next.join(' '));
+      else input.removeAttribute('aria-describedby');
+    }, this);
+  };
+
+  ZidanFieldBase.prototype._renderError = function () {
+    if (!this.root) return;
+    if (!this.errorEl) {
+      this.errorEl = el('p', 'zs-field__error', {
+        id: this.id + '-error',
+        role: 'status',
+        'aria-live': 'polite'
+      });
+      this.root.appendChild(this.errorEl);
+    }
+    this.errorEl.textContent = this.errorMessage || '';
+    this.errorEl.hidden = !this.errorMessage;
+    this._syncDescribedBy();
+  };
+
+  ZidanFieldBase.prototype.setError = function (message) {
+    this.errorMessage = message || null;
+    if (this.errorMessage) this.validation = 'invalid';
+    else if (this.validation === 'invalid') this.validation = null;
+    var invalid = !!this.errorMessage || this.validation === 'invalid';
+    if (this.root) {
+      this.root.classList.toggle('zs-field--invalid', invalid);
+      this.root.classList.toggle('zs-field--valid', this.validation === 'valid' && !this.errorMessage);
+      if (invalid || this.validation) this.root.setAttribute('data-zs-validation', invalid ? 'invalid' : this.validation);
+      else this.root.removeAttribute('data-zs-validation');
+    }
+    this._renderError();
+    this.validationTargets().forEach(function (input) {
+      if (!input || !input.setAttribute) return;
+      if (invalid) input.setAttribute('aria-invalid', 'true');
+      else if (this.validation === 'valid') input.setAttribute('aria-invalid', 'false');
+      else input.removeAttribute('aria-invalid');
+    }, this);
+    this.emit('validation', { state: invalid ? 'invalid' : this.validation, message: this.errorMessage });
+    this.call('onValidation', { state: invalid ? 'invalid' : this.validation, message: this.errorMessage, instance: this });
+    return this;
+  };
+
+  ZidanFieldBase.prototype.clearError = function () {
+    return this.setError(null);
+  };
+
+  /* mirror native constraint validity + custom rules into classes and aria */
   ZidanFieldBase.prototype._bindValidity = function () {
     var self = this;
     this.validationTargets().forEach(function (input) {
       self.on(input, 'invalid', function () {
         self.touched = true;
-        self.setValidation('invalid');
+        var message = self._evaluateError();
+        if (message) self.setError(message);
+        else self.setValidation('invalid');
       });
       self.on(input, 'blur', function () {
         self.touched = true;
@@ -1978,6 +2461,11 @@
       global.setTimeout(function () {
         if (self.destroyed) return;
         self.touched = false;
+        self.errorMessage = null;
+        if (self.errorEl) {
+          self.errorEl.textContent = '';
+          self.errorEl.hidden = true;
+        }
         self.setValidation(null);
         self.update();
       }, 0);
@@ -1985,34 +2473,51 @@
     var preset = this.opts.validation || this.el.getAttribute('data-zidan-validation') ||
       this.el.getAttribute('data-zs-validation');
     if (preset === 'valid' || preset === 'invalid') this.setValidation(preset);
+    this._syncDescribedBy();
   };
 
   ZidanFieldBase.prototype._mirrorValidity = function () {
-    var target = this.el;
-    if (!target || !target.validity) return this;
-    if (target.validity.valid) {
-      if (this.validation === 'invalid') this.setValidation(null);
+    var error = this._evaluateError();
+    if (error) {
+      if (this.touched || this.opts.alwaysValidate) this.setError(error);
+      else this.setValidation('invalid');
       return this;
     }
-    if (this.touched || this.opts.alwaysValidate) this.setValidation('invalid');
+    if (this.errorMessage) this.setError(null);
+    if (this.validation === 'invalid') this.setValidation(null);
     return this;
+  };
+
+  ZidanFieldBase.prototype.validate = function () {
+    this.touched = true;
+    var error = this._evaluateError();
+    if (error) {
+      this.setError(error);
+      return false;
+    }
+    this.setError(null);
+    if (this.opts.showValidState) this.setValidation('valid');
+    return true;
   };
 
   ZidanFieldBase.prototype.setValidation = function (state) {
     this.validation = VALIDATION_STATES.indexOf(state) === -1 ? null : state;
+    var invalid = this.validation === 'invalid' || !!this.errorMessage;
     if (this.root) {
-      this.root.classList.toggle('zs-field--invalid', this.validation === 'invalid');
-      this.root.classList.toggle('zs-field--valid', this.validation === 'valid');
-      if (this.validation) this.root.setAttribute('data-zs-validation', this.validation);
+      this.root.classList.toggle('zs-field--invalid', invalid);
+      this.root.classList.toggle('zs-field--valid', this.validation === 'valid' && !this.errorMessage);
+      if (invalid) this.root.setAttribute('data-zs-validation', 'invalid');
+      else if (this.validation) this.root.setAttribute('data-zs-validation', this.validation);
       else this.root.removeAttribute('data-zs-validation');
     }
     this.validationTargets().forEach(function (input) {
-      if (state === 'invalid') input.setAttribute('aria-invalid', 'true');
-      else if (state === 'valid') input.setAttribute('aria-invalid', 'false');
+      if (!input || !input.setAttribute) return;
+      if (invalid) input.setAttribute('aria-invalid', 'true');
+      else if (this.validation === 'valid') input.setAttribute('aria-invalid', 'false');
       else input.removeAttribute('aria-invalid');
-    });
-    this.emit('validation', { state: this.validation });
-    this.call('onValidation', { state: this.validation, instance: this });
+    }, this);
+    this.emit('validation', { state: invalid ? 'invalid' : this.validation, message: this.errorMessage });
+    this.call('onValidation', { state: invalid ? 'invalid' : this.validation, message: this.errorMessage, instance: this });
     return this;
   };
 
@@ -2064,6 +2569,12 @@
       'default'
     );
     this.variant = variant;
+    var switchStyle = pickList(
+      this.opts.switchStyle || input.getAttribute('data-zidan-switch-style'),
+      SWITCH_STYLES,
+      'ios'
+    );
+    this.switchStyle = switchStyle;
 
     var originalParent = input.parentNode;
     var originalNext = input.nextSibling;
@@ -2082,6 +2593,7 @@
 
     var root = this._scope('checkbox');
     root.setAttribute('data-zs-variant', variant);
+    root.setAttribute('data-zs-switch-style', switchStyle);
     // mount outside the original <label>: it is removed once its text is moved
     var mountParent = wrappingLabel && wrappingLabel.parentNode ? wrappingLabel.parentNode : originalParent;
     var mountBefore = wrappingLabel && wrappingLabel.parentNode ? wrappingLabel : input;
@@ -2094,8 +2606,21 @@
     if (!wrappingLabel) check.setAttribute('for', this.id);
 
     var indicator = el('span', variant === 'switch' ? 'zs-switch-track' : 'zs-check-box', { 'aria-hidden': 'true' });
+    if (variant === 'switch') {
+      indicator.appendChild(el('span', 'zs-switch-on', { 'aria-hidden': 'true' },
+        this.opts.onLabel || input.getAttribute('data-zidan-on-label') || 'ON'));
+      indicator.appendChild(el('span', 'zs-switch-off', { 'aria-hidden': 'true' },
+        this.opts.offLabel || input.getAttribute('data-zidan-off-label') || 'OFF'));
+    }
     var text = el('span', 'zs-check-label');
     text.textContent = labelText || '';
+    var description = this.opts.description || input.getAttribute('data-zidan-description');
+    if (description) {
+      var desc = el('span', 'zs-check-desc');
+      desc.textContent = description;
+      text.appendChild(desc);
+      root.classList.add('zs-field--has-description');
+    }
 
     if (wrappingLabel) {
       Array.prototype.slice.call(check.childNodes).forEach(function (node) {
@@ -2184,8 +2709,24 @@
     return this.update();
   };
 
+  ZidanCheckbox.prototype.setChecked = function (on) {
+    this.el.checked = !!on;
+    this.el.indeterminate = false;
+    this.el.dispatchEvent(new Event('change', { bubbles: true }));
+    return this.update();
+  };
+
   ZidanCheckbox.prototype.isChecked = function () {
     return !!this.el.checked;
+  };
+
+  ZidanCheckbox.prototype._customError = function () {
+    if (typeof this.opts.validate === 'function') {
+      var result = this.opts.validate(this.el.checked, this);
+      if (result === false) return this.opts.messages.generic;
+      if (typeof result === 'string' && result) return result;
+    }
+    return '';
   };
 
   ZidanCheckbox.prototype._teardown = function () {
@@ -2199,6 +2740,7 @@
     ZidanFieldBase.call(this, target, options, 'radio-group');
     var variant = pickList(this.opts.variant || target.getAttribute('data-zidan-variant'), RADIO_VARIANTS, 'stacked');
     this.variant = variant;
+    this.deselectable = fieldBool(target, this.opts, 'deselectable', 'deselectable', false);
     this.root = target;
     addClass(target, 'zs-radio-group');
     target.setAttribute('data-zs-kind', 'radio-group');
@@ -2215,6 +2757,26 @@
       self.emit('change', { value: value });
       self.call('onChange', { value: value, instance: self });
     });
+    if (this.deselectable) {
+      this.on(target, 'mousedown', function (event) {
+        var node = event.target;
+        var input = node && node.closest ? node.closest('input[type="radio"]') : null;
+        if (!input && node && node.closest) {
+          var label = node.closest('label');
+          input = label && label.control && /^radio$/i.test(label.control.type) ? label.control : null;
+        }
+        self._deselectCandidate = input && input.checked ? input : null;
+      });
+      this.on(target, 'click', function () {
+        var candidate = self._deselectCandidate;
+        self._deselectCandidate = null;
+        if (!candidate || !candidate.checked) return;
+        candidate.checked = false;
+        self.update();
+        self.emit('change', { value: '' });
+        self.call('onChange', { value: '', instance: self });
+      });
+    }
     this.update();
     target.__zidanField = this;
     this.emit('init', { variant: variant });
@@ -2264,6 +2826,15 @@
         }
         if (!textWrapper.textContent.trim()) textWrapper.textContent = input.value;
         holder.appendChild(textWrapper);
+      }
+
+      var descText = (self.opts.descriptions && self.opts.descriptions[input.value]) ||
+        input.getAttribute('data-zidan-description');
+      if (descText && !textWrapper.querySelector('.zs-radio-desc')) {
+        var desc = el('span', 'zs-radio-desc');
+        desc.textContent = descText;
+        textWrapper.appendChild(desc);
+        holder.classList.add('zs-radio--has-description');
       }
 
       var dot = holder.querySelector('.zs-radio-dot');
@@ -2325,6 +2896,15 @@
     return this.update();
   };
 
+  ZidanRadioGroup.prototype._customError = function () {
+    if (typeof this.opts.validate === 'function') {
+      var result = this.opts.validate(this.getValue(), this);
+      if (result === false) return this.opts.messages.generic;
+      if (typeof result === 'string' && result) return result;
+    }
+    return '';
+  };
+
   /* ---------------- file upload ---------------- */
 
   function formatBytes(bytes) {
@@ -2350,6 +2930,17 @@
     });
   }
 
+  function fileKey(file) {
+    return [file.name, file.size, file.lastModified || 0, file.type || ''].join('|');
+  }
+
+  function uploadErrorText(err, fallback) {
+    if (err && typeof err === 'string') return err;
+    if (err && err.message) return err.message;
+    if (err && err.status) return 'Upload failed (HTTP ' + err.status + ').';
+    return fallback || 'Upload failed.';
+  }
+
   function ZidanFileUpload(target, options) {
     if (!(this instanceof ZidanFileUpload)) return new ZidanFileUpload(target, options);
     if (!/^file$/i.test(target.type)) {
@@ -2360,21 +2951,37 @@
     var input = target;
     var opts = this.opts;
 
+    var variant = pickList(
+      fieldOption(input, opts, 'fileVariant', 'file-variant',
+        fieldOption(input, opts, 'variant', 'variant', 'dropzone')),
+      FILE_VARIANTS, 'dropzone');
+
     var originalParent = input.parentNode;
-    var originalNext = input.nextSibling;
     var root = this._scope('file');
+    root.setAttribute('data-zs-file-variant', variant);
     originalParent.insertBefore(root, input);
 
-    var drop = doc.createElement('label');
-    drop.className = 'zs-file-drop';
+    var drop = el('label', 'zs-file-drop zs-file-drop--' + variant);
     drop.setAttribute('for', this.id);
 
+    var avatar = el('span', 'zs-file-avatar', { hidden: true });
+    var avatarImg = doc.createElement('img');
+    avatarImg.alt = '';
+    avatar.appendChild(avatarImg);
+
     var icon = el('span', 'zs-file-icon', { 'aria-hidden': 'true' });
-    var title = el('span', 'zs-file-drop-title', null,
-      opts.title || input.getAttribute('data-zidan-title') || 'Choose a file');
+    var iconSpec = fieldOption(input, opts, 'uploadIcon', 'upload-icon',
+      fieldOption(input, opts, 'icon', 'icon', 'upload'));
+    var glyph = iconNode(iconSpec, 'zs-file-icon-svg');
+    if (glyph) icon.appendChild(glyph);
+
+    var fallbackTitle = opts.title || input.getAttribute('data-zidan-title') ||
+      (variant === 'avatar' ? 'Upload an image' : (variant === 'gallery' ? 'Add images' : 'Choose a file'));
+    var title = el('span', 'zs-file-drop-title', null, fallbackTitle);
     var hint = el('span', 'zs-file-drop-hint', null,
       opts.dropHint || input.getAttribute('data-zidan-drop-hint') ||
-      (input.multiple ? 'or drag files here — multiple allowed' : 'or drag it here'));
+      (input.multiple ? 'or drop files here — multiple allowed' : 'or drop it here'));
+    drop.appendChild(avatar);
     drop.appendChild(icon);
     drop.appendChild(title);
     drop.appendChild(hint);
@@ -2394,15 +3001,38 @@
     root.appendChild(footer);
 
     var acceptHint = opts.accept || input.accept;
-    if (acceptHint) {
-      hint.textContent = hint.textContent + ' · ' + acceptHint;
-    }
+    if (acceptHint) hint.textContent = hint.textContent + ' · ' + acceptHint;
 
+    this.variant = variant;
     this.drop = drop;
     this.list = list;
     this.status = status;
     this.clearBtn = clearBtn;
+    this.titleEl = title;
+    this.hintEl = hint;
+    this._fallbackTitle = fallbackTitle;
+    this.avatarEl = avatar;
+    this.avatarImg = avatarImg;
+
+    this.uploadHandler = typeof opts.upload === 'function' ? opts.upload :
+      (typeof opts.uploadHandler === 'function' ? opts.uploadHandler : null);
+    this.uploadUrl = fieldOption(input, opts, 'uploadUrl', 'upload-url', '');
+    this.uploadField = fieldOption(input, opts, 'uploadField', 'upload-field', 'file');
+    this.withCredentials = fieldBool(input, opts, 'withCredentials', 'with-credentials', false);
+    this.uploadHeaders = opts.uploadHeaders || opts.headers || null;
+    this.simulateUpload = fieldBool(input, opts, 'simulateUpload', 'simulate-upload', false);
+    this.simulateDuration = Math.max(120, fieldNumber(input, opts, 'simulateDuration', 'simulate-duration', 900));
+    this.autoUpload = fieldBool(input, opts, 'autoUpload', 'auto-upload', true);
+    this.showFileMeta = fieldBool(input, opts, 'showFileMeta', 'show-file-meta', true);
+    this.showPreview = fieldBool(input, opts, 'showPreview', 'preview', true);
+    this.hasUploader = !!(this.uploadHandler || this.uploadUrl || this.simulateUpload);
+    root.setAttribute('data-zs-upload', this.hasUploader ? 'true' : 'false');
+
+    this._uploads = Object.create(null);
+    this._active = Object.create(null);
     this._urls = [];
+    this._renderQueued = false;
+    this.fileError = '';
     this._restoreInput = function () {
       var parent = root.parentNode || originalParent;
       parent.insertBefore(input, root.parentNode ? root : null);
@@ -2413,10 +3043,11 @@
     addClass(input, 'zs-file-input');
 
     this.on(input, 'change', function () {
-      self._validate();
+      var ok = self._validate();
       self._render();
       self.emit('change', { files: self.getFiles() });
       self.call('onChange', { files: self.getFiles(), instance: self });
+      if (ok && self.autoUpload && self.hasUploader) self.uploadAll();
     });
 
     var dragDepth = 0;
@@ -2438,17 +3069,23 @@
       if (!event.dataTransfer || !event.dataTransfer.files || !event.dataTransfer.files.length) return;
       var incoming = Array.prototype.slice.call(event.dataTransfer.files);
       if (!input.multiple) incoming = incoming.slice(0, 1);
-      self._applyFiles(incoming, true);
+      self.addFiles(incoming);
     });
 
-    self.on(clearBtn, 'click', function () {
-      input.value = '';
-      self._validate();
-      self._render();
-      self.emit('change', { files: [] });
-    });
+    self.on(clearBtn, 'click', function () { self.clear(); });
 
     this._bindValidity();
+    this.on(this.formEl, 'reset', function () {
+      global.setTimeout(function () {
+        if (self.destroyed) return;
+        self.cancelAll();
+        self._uploads = Object.create(null);
+        self.fileError = '';
+        if (input.setCustomValidity) input.setCustomValidity('');
+        self._render();
+      }, 0);
+    });
+
     input.__zidanField = this;
     this._render();
     this.emit('init', {});
@@ -2462,76 +3099,234 @@
     return this.el.files ? Array.prototype.slice.call(this.el.files) : [];
   };
 
+  ZidanFileUpload.prototype.getUploadState = function () {
+    var self = this;
+    return this.getFiles().map(function (file) {
+      var state = self._stateFor(file, false) || { status: 'idle', progress: 0, error: '', result: null };
+      return {
+        file: file,
+        name: file.name,
+        size: file.size,
+        status: state.status,
+        progress: state.progress,
+        error: state.error,
+        result: state.result
+      };
+    });
+  };
+
+  ZidanFileUpload.prototype._stateFor = function (file, create) {
+    var key = fileKey(file);
+    var state = this._uploads[key];
+    if (!state && create) {
+      state = this._uploads[key] = {
+        status: 'idle', progress: 0, error: '', result: null
+      };
+    }
+    return state;
+  };
+
+  ZidanFileUpload.prototype._setFiles = function (files) {
+    try {
+      var Ctor = typeof DataTransfer !== 'undefined' ? DataTransfer : global.DataTransfer;
+      if (!Ctor) return false;
+      var dt = new Ctor();
+      files.forEach(function (file) { dt.items.add(file); });
+      this.el.files = dt.files;
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  /* keeps native input.files authoritative; `source: 'user'` mirrors a pick/drop */
   ZidanFileUpload.prototype._applyFiles = function (files, fromDrop) {
-    var dt = new DataTransfer();
-    files.forEach(function (file) { dt.items.add(file); });
-    this.el.files = dt.files;
+    if (!this._setFiles(files)) {
+      this.emit('error', { error: new Error('This browser cannot assign files programmatically.'), action: 'setFiles' });
+      return this;
+    }
     if (fromDrop) {
-      this.el.dispatchEvent(new Event('change', { bubbles: true }));
+      try { this.el.dispatchEvent(new Event('change', { bubbles: true })); } catch (err) { /* old browsers */ }
     } else {
       this._validate();
       this._render();
     }
+    return this;
   };
 
-  ZidanFileUpload.prototype._validate = function () {
+  ZidanFileUpload.prototype.addFiles = function (files) {
+    var incoming = files && files.length !== undefined ? Array.prototype.slice.call(files) : toArray(files);
+    if (!incoming.length) return this;
+    var current = this.el.multiple ? this.getFiles() : [];
+    var seen = Object.create(null);
+    var next = current.concat(incoming).filter(function (file) {
+      var key = fileKey(file);
+      if (seen[key]) return false;
+      seen[key] = true;
+      return true;
+    });
+    if (!this.el.multiple) next = next.slice(0, 1);
+    if (!this._setFiles(next)) {
+      this.emit('error', { error: new Error('This browser cannot assign files programmatically.'), action: 'addFiles' });
+      return this;
+    }
+    try { this.el.dispatchEvent(new Event('change', { bubbles: true })); } catch (err) { /* old browsers */ }
+    return this;
+  };
+
+  ZidanFileUpload.prototype.replaceFiles = function (files) {
+    return this._applyFiles(files && files.length !== undefined ? Array.prototype.slice.call(files) : toArray(files), true);
+  };
+
+  ZidanFileUpload.prototype.removeFile = function (target) {
+    var files = this.getFiles();
+    var index = typeof target === 'number' ? target : files.indexOf(target);
+    if (index === -1 || !files[index]) return this;
+    var file = files[index];
+    this.cancelUpload(file);
+    delete this._uploads[fileKey(file)];
+    var next = files.slice();
+    next.splice(index, 1);
+    this._setFiles(next);
+    this._validate();
+    this._render();
+    this.emit('change', { files: next });
+    this.emit('remove', { file: file, index: index });
+    this.call('onChange', { files: next, instance: this });
+    this.call('onRemove', { file: file, index: index, instance: this });
+    return this;
+  };
+
+  ZidanFileUpload.prototype.clear = function () {
+    this.cancelAll();
+    this._uploads = Object.create(null);
+    this.fileError = '';
+    this.el.value = '';
+    if (this.el.setCustomValidity) this.el.setCustomValidity('');
+    this._validate();
+    this._render();
+    this.emit('change', { files: [] });
+    this.emit('clear', {});
+    this.call('onChange', { files: [], instance: this });
+    return this;
+  };
+
+  ZidanFileUpload.prototype._limits = function () {
     var input = this.el;
     var opts = this.opts;
-    var files = this.getFiles();
     var maxFiles = parseInt(opts.maxFiles || input.getAttribute('data-zidan-max-files'), 10);
     var maxSize = parseInt(opts.maxSize || input.getAttribute('data-zidan-max-size'), 10);
     if (!(maxSize > 0)) {
       var sizeMb = opts.maxSizeMB;
-      if (sizeMb === undefined || sizeMb === null || sizeMb === '') {
-        sizeMb = input.getAttribute('data-zidan-max-size-mb');
-      }
+      if (sizeMb === undefined || sizeMb === null || sizeMb === '') sizeMb = input.getAttribute('data-zidan-max-size-mb');
       if (sizeMb !== null && sizeMb !== undefined && sizeMb !== '') {
         var sizeMbValue = parseFloat(sizeMb);
         if (sizeMbValue > 0) maxSize = Math.round(sizeMbValue * 1024 * 1024);
       }
     }
-    var accept = opts.accept || input.accept;
+    return {
+      maxFiles: maxFiles > 0 ? maxFiles : 0,
+      maxSize: maxSize > 0 ? maxSize : 0,
+      accept: opts.accept || input.accept || ''
+    };
+  };
+
+  ZidanFileUpload.prototype._customError = function () {
+    return this.fileError || '';
+  };
+
+  ZidanFileUpload.prototype._validate = function () {
+    var input = this.el;
+    var messages = this.opts.messages;
+    var limits = this._limits();
+    var files = this.getFiles();
     var error = '';
 
-    if (maxFiles && files.length > maxFiles) {
-      error = 'Too many files — ' + maxFiles + ' maximum.';
-      files = files.slice(0, maxFiles);
-      this._applyFiles(files, false);
+    if (limits.maxFiles && files.length > limits.maxFiles) {
+      error = fillTemplate(messages.fileCount, { max: limits.maxFiles });
+      files = files.slice(0, limits.maxFiles);
+      this._setFiles(files);
     }
-    if (!error && maxSize) {
+    if (!error && limits.maxSize) {
       for (var i = 0; i < files.length; i += 1) {
-        if (files[i].size > maxSize) {
-          error = '"' + files[i].name + '" is ' + formatBytes(files[i].size) + ' — limit ' + formatBytes(maxSize) + '.';
+        if (files[i].size > limits.maxSize) {
+          error = fillTemplate(messages.fileSize, {
+            name: files[i].name,
+            size: formatBytes(files[i].size),
+            limit: formatBytes(limits.maxSize)
+          });
           break;
         }
       }
     }
-    if (!error && accept) {
+    if (!error && limits.accept) {
       for (var j = 0; j < files.length; j += 1) {
-        if (!matchesAccept(files[j], accept)) {
-          error = '"' + files[j].name + '" is not an allowed type (' + accept + ').';
+        if (!matchesAccept(files[j], limits.accept)) {
+          error = fillTemplate(messages.fileType, { name: files[j].name, accept: limits.accept });
           break;
         }
       }
     }
 
-    this.root.classList.toggle('zs-field--invalid', !!error);
-    if (error) this.el.setAttribute('aria-invalid', 'true');
-    else if (this.validation !== 'invalid') this.el.removeAttribute('aria-invalid');
-    this.drop.classList.toggle('zs-file-drop--invalid', !!error);
-    this.status.textContent = error || '';
-    this.status.classList.toggle('zs-file-status--error', !!error);
-    this.emit('validation', { state: error ? 'invalid' : this.validation, message: error });
-    return !error;
+    this.fileError = error;
+    if (input.setCustomValidity) input.setCustomValidity(error || '');
+    var shown = error || this._nativeError();
+    if (shown) this.setError(shown);
+    else if (this.errorMessage) this.setError(null);
+    this.root.classList.toggle('zs-field--filled', files.length > 0);
+    this.drop.classList.toggle('zs-file-drop--invalid', !!shown);
+    this._renderStatus();
+    return !shown;
   };
 
   ZidanFileUpload.prototype._sync = function () {
     this._render();
   };
 
+  ZidanFileUpload.prototype._queueRender = function () {
+    var self = this;
+    if (this._renderQueued || this.destroyed) return;
+    this._renderQueued = true;
+    var run = function () {
+      self._renderQueued = false;
+      if (!self.destroyed) self._render();
+    };
+    if (global.requestAnimationFrame) global.requestAnimationFrame(run);
+    else global.setTimeout(run, 32);
+  };
+
+  ZidanFileUpload.prototype._renderStatus = function () {
+    var files = this.getFiles();
+    var states = this.getUploadState();
+    var total = files.reduce(function (sum, file) { return sum + file.size; }, 0);
+    var uploading = states.filter(function (state) { return state.status === 'uploading'; });
+    var failed = states.filter(function (state) { return state.status === 'error'; });
+    var done = states.filter(function (state) { return state.status === 'done'; });
+    var text = '';
+
+    if (this.fileError) {
+      text = this.fileError;
+    } else if (files.length) {
+      text = files.length + (files.length === 1 ? ' file selected' : ' files selected') + ' · ' + formatBytes(total);
+      if (uploading.length) {
+        var percent = Math.round(uploading.reduce(function (sum, state) { return sum + state.progress; }, 0) / uploading.length);
+        text += ' · Uploading ' + percent + '%';
+      } else if (failed.length) {
+        text += ' · ' + failed.length + ' failed';
+      } else if (done.length === files.length && this.hasUploader) {
+        text += ' · Uploaded';
+      }
+    }
+
+    this.status.textContent = text;
+    this.status.classList.toggle('zs-file-status--error', !!this.fileError);
+    this.status.classList.toggle('zs-file-status--success', !this.fileError && files.length > 0 && done.length === files.length && this.hasUploader);
+  };
+
   ZidanFileUpload.prototype._render = function () {
     var self = this;
     var files = this.getFiles();
+    var opts = this.opts;
     // detach first, then revoke a tick later: revoking a blob that a live
     // <img> still points at (or that is mid-decode) makes the browser raise a
     // failed-resource error
@@ -2541,14 +3336,28 @@
     this.list.hidden = files.length === 0;
     this.clearBtn.hidden = files.length === 0;
     this.root.classList.toggle('zs-field--filled', files.length > 0);
-    if (!this.status.textContent) {
-      this.status.textContent = files.length
-        ? files.length + (files.length === 1 ? ' file selected' : ' files selected') + ' · ' + formatBytes(files.reduce(function (total, file) { return total + file.size; }, 0))
-        : '';
+    this.drop.classList.toggle('zs-file-drop--has-files', files.length > 0);
+
+    var previewFile = this.showPreview ? files.filter(function (file) { return /^image\//.test(file.type); })[0] : null;
+    if (previewFile) {
+      var previewUrl = URL.createObjectURL(previewFile);
+      this._urls.push(previewUrl);
+      this.avatarImg.src = previewUrl;
+      this.avatarEl.hidden = false;
+      this.drop.classList.add('zs-file-drop--has-preview');
+      this.titleEl.textContent = opts.replaceTitle || 'Change image';
+    } else {
+      this.avatarImg.removeAttribute('src');
+      this.avatarEl.hidden = true;
+      this.drop.classList.remove('zs-file-drop--has-preview');
+      this.titleEl.textContent = this._fallbackTitle;
     }
 
     files.forEach(function (file, index) {
+      var state = self._stateFor(file, false) || { status: 'idle', progress: 0, error: '', result: null };
       var item = el('li', 'zs-file-item');
+      item.setAttribute('data-zs-upload-state', state.status);
+
       var thumb = el('span', 'zs-file-thumb');
       if (/^image\//.test(file.type)) {
         var url = URL.createObjectURL(file);
@@ -2560,36 +3369,316 @@
       } else {
         thumb.textContent = (fileExtension(file.name) || 'file').replace('.', '').slice(0, 4).toUpperCase();
       }
+
       var meta = el('span', 'zs-file-info');
       var name = el('span', 'zs-file-name', null, file.name);
-      var size = el('span', 'zs-file-size', null, formatBytes(file.size) + (file.type ? ' · ' + file.type : ''));
       meta.appendChild(name);
-      meta.appendChild(size);
+      if (self.showFileMeta) {
+        var sizeText = formatBytes(file.size) + (file.type ? ' · ' + file.type : '');
+        meta.appendChild(el('span', 'zs-file-size', null, sizeText));
+      }
 
-      var remove = el('button', 'zs-file-remove', {
-        type: 'button',
-        'aria-label': 'Remove ' + file.name
-      });
+      if (self.hasUploader) {
+        var stateLine = el('span', 'zs-file-upload-state');
+        if (state.status === 'uploading') {
+          stateLine.textContent = fillTemplate(opts.progressTemplate || 'Uploading {percent}%', { percent: state.progress });
+          var bar = el('span', 'zs-file-progress');
+          bar.setAttribute('role', 'progressbar');
+          bar.setAttribute('aria-valuemin', '0');
+          bar.setAttribute('aria-valuemax', '100');
+          bar.setAttribute('aria-valuenow', String(state.progress));
+          bar.setAttribute('aria-label', 'Upload progress for ' + file.name);
+          var fill = el('span', 'zs-file-progress-bar');
+          fill.style.width = state.progress + '%';
+          bar.appendChild(fill);
+          stateLine.appendChild(bar);
+        } else if (state.status === 'done') {
+          stateLine.textContent = opts.uploadedLabel || 'Uploaded';
+        } else if (state.status === 'error') {
+          stateLine.textContent = (opts.failedLabel || 'Upload failed') + (state.error ? ' — ' + state.error : '');
+        } else if (state.status === 'canceled') {
+          stateLine.textContent = opts.canceledLabel || 'Upload canceled';
+        }
+        if (stateLine.textContent) meta.appendChild(stateLine);
+      }
+
+      var actions = el('span', 'zs-file-actions');
+      if (state.status === 'uploading') {
+        var cancel = el('button', 'zs-file-cancel', { type: 'button', 'aria-label': 'Cancel upload of ' + file.name });
+        cancel.textContent = opts.cancelLabel || 'Cancel';
+        self.on(cancel, 'click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          self.cancelUpload(file);
+        });
+        actions.appendChild(cancel);
+      } else if (state.status === 'error' || state.status === 'canceled') {
+        var retry = el('button', 'zs-file-retry', { type: 'button', 'aria-label': 'Retry upload of ' + file.name });
+        retry.textContent = opts.retryLabel || 'Retry';
+        self.on(retry, 'click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          self.retryUpload(file);
+        });
+        actions.appendChild(retry);
+      }
+
+      var remove = el('button', 'zs-file-remove', { type: 'button', 'aria-label': 'Remove ' + file.name });
       remove.textContent = '\u00d7';
-      self.on(remove, 'click', function () {
-        var next = self.getFiles().filter(function (candidate, position) { return position !== index; });
-        self._applyFiles(next, false);
-        self.emit('remove', { file: file });
-        self.call('onRemove', { file: file, instance: self });
+      self.on(remove, 'click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        self.removeFile(file);
       });
+      actions.appendChild(remove);
 
       item.appendChild(thumb);
       item.appendChild(meta);
-      item.appendChild(remove);
+      item.appendChild(actions);
       self.list.appendChild(item);
+
+      if (typeof opts.renderFile === 'function') {
+        try {
+          opts.renderFile(item, {
+            file: file,
+            index: index,
+            state: state,
+            field: self
+          });
+        } catch (err) {
+          self.emit('error', { error: err, callback: 'renderFile' });
+        }
+      }
     });
+
+    this._renderStatus();
   };
 
-  ZidanFileUpload.prototype.clear = function () {
-    this.el.value = '';
-    this._validate();
+  ZidanFileUpload.prototype.setVariant = function (name) {
+    var next = pickList(name, FILE_VARIANTS, this.variant);
+    if (next === this.variant) return this;
+    this.variant = next;
+    FILE_VARIANTS.forEach(function (variant) { this.drop.classList.remove('zs-file-drop--' + variant); }, this);
+    this.drop.classList.add('zs-file-drop--' + next);
+    this.root.setAttribute('data-zs-file-variant', next);
     this._render();
     return this;
+  };
+
+  ZidanFileUpload.prototype.setUploader = function (source) {
+    if (typeof source === 'function') {
+      this.uploadHandler = source;
+      this.uploadUrl = '';
+    } else {
+      this.uploadHandler = null;
+      this.uploadUrl = source ? String(source) : '';
+    }
+    this.hasUploader = !!(this.uploadHandler || this.uploadUrl || this.simulateUpload);
+    this.root.setAttribute('data-zs-upload', this.hasUploader ? 'true' : 'false');
+    this._render();
+    return this;
+  };
+
+  ZidanFileUpload.prototype._formData = function (file) {
+    var data = new FormData();
+    data.append(this.uploadField, file, file.name);
+    var extra = typeof this.opts.uploadData === 'function' ? this.opts.uploadData(file, this) : this.opts.uploadData;
+    if (extra && typeof extra === 'object') {
+      Object.keys(extra).forEach(function (key) {
+        var value = extra[key];
+        if (value !== undefined && value !== null) data.append(key, value);
+      });
+    }
+    return data;
+  };
+
+  ZidanFileUpload.prototype.uploadAll = function () {
+    var self = this;
+    if (!this.hasUploader) return this;
+    if (!this._validate()) return this;
+    this.getFiles().forEach(function (file) { self.uploadFile(file); });
+    return this;
+  };
+
+  ZidanFileUpload.prototype.uploadFile = function (file) {
+    var self = this;
+    var key = fileKey(file);
+    var state = this._stateFor(file, true);
+    if (state.status === 'uploading' || state.status === 'done') return this;
+
+    state.status = 'uploading';
+    state.progress = 0;
+    state.error = '';
+    state.result = null;
+    this._queueRender();
+    this.emit('upload-start', { file: file, name: file.name, size: file.size });
+    this.call('onUploadStart', { file: file, name: file.name, size: file.size, instance: this });
+
+    if (this.uploadHandler) {
+      var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      this._active[key] = {
+        type: 'handler',
+        abort: function () { if (controller) controller.abort(); }
+      };
+      var context = {
+        file: file,
+        field: this,
+        formData: this._formData(file),
+        signal: controller ? controller.signal : null,
+        onProgress: function (percent) { self._setProgress(file, percent); },
+        complete: function (value) { self._finish(file, value); },
+        fail: function (err) { self._fail(file, err); }
+      };
+      var result;
+      try {
+        result = this.uploadHandler(file, context);
+      } catch (err) {
+        this._fail(file, err);
+        return this;
+      }
+      if (result && typeof result.then === 'function') {
+        result.then(function (value) {
+          self._finish(file, value);
+        }, function (err) {
+          if (err && (err.name === 'AbortError' || err.aborted)) self._canceledUpload(file);
+          else self._fail(file, err);
+        });
+      } else if (result !== undefined) {
+        this._finish(file, result);
+      }
+      // returning nothing means the handler will call context.complete/fail
+      return this;
+    }
+
+    if (this.uploadUrl) {
+      var xhr = new global.XMLHttpRequest();
+      this._active[key] = {
+        type: 'xhr',
+        abort: function () { try { xhr.abort(); } catch (err) { /* already done */ } }
+      };
+      xhr.open('POST', this.uploadUrl, true);
+      if (this.withCredentials) xhr.withCredentials = true;
+      var headers = typeof this.uploadHeaders === 'function' ? this.uploadHeaders(file, this) : this.uploadHeaders;
+      if (headers && typeof headers === 'object') {
+        Object.keys(headers).forEach(function (name) { xhr.setRequestHeader(name, headers[name]); });
+      }
+      xhr.upload.onprogress = function (event) {
+        if (!event.lengthComputable) return;
+        self._setProgress(file, Math.min(99, Math.round((event.loaded / event.total) * 100)));
+      };
+      xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          var body = xhr.responseText;
+          try { body = JSON.parse(body); } catch (err) { /* plain text response */ }
+          self._finish(file, body);
+        } else {
+          self._fail(file, { status: xhr.status, message: 'Upload failed (HTTP ' + xhr.status + ').' });
+        }
+      };
+      xhr.onerror = function () { self._fail(file, { message: 'Network error while uploading.' }); };
+      xhr.onabort = function () { self._canceledUpload(file); };
+      xhr.send(this._formData(file));
+      return this;
+    }
+
+    if (this.simulateUpload) {
+      var started = Date.now();
+      var timer = null;
+      var tick = function () {
+        if (!self._uploads[key] || state.status !== 'uploading') return;
+        var percent = Math.min(99, Math.round(((Date.now() - started) / self.simulateDuration) * 100));
+        self._setProgress(file, percent);
+        if (percent >= 99) {
+          delete self._active[key];
+          self._finish(file, { simulated: true });
+        } else {
+          timer = global.setTimeout(tick, 40);
+        }
+      };
+      this._active[key] = { type: 'simulation', abort: function () { if (timer) global.clearTimeout(timer); } };
+      timer = global.setTimeout(tick, 40);
+      return this;
+    }
+
+    state.status = 'idle';
+    this._queueRender();
+    return this;
+  };
+
+  ZidanFileUpload.prototype._setProgress = function (file, percent) {
+    var state = this._stateFor(file, false);
+    if (!state || state.status !== 'uploading') return;
+    var value = clamp(Math.round(Number(percent) || 0), 0, 99);
+    if (value === state.progress) return;
+    state.progress = value;
+    this._queueRender();
+    this.emit('upload-progress', { file: file, progress: value, name: file.name });
+    this.call('onUploadProgress', { file: file, progress: value, name: file.name, instance: this });
+  };
+
+  ZidanFileUpload.prototype._finish = function (file, result) {
+    var state = this._stateFor(file, false);
+    if (!state || state.status !== 'uploading') return;
+    delete this._active[fileKey(file)];
+    state.status = 'done';
+    state.progress = 100;
+    state.result = result === undefined ? null : result;
+    this._queueRender();
+    this.emit('upload-success', { file: file, name: file.name, result: state.result });
+    this.call('onUploadSuccess', { file: file, name: file.name, result: state.result, instance: this });
+    this.call('onUpload', { file: file, name: file.name, result: state.result, instance: this });
+  };
+
+  ZidanFileUpload.prototype._fail = function (file, err) {
+    var state = this._stateFor(file, false);
+    if (!state || state.status !== 'uploading') return;
+    delete this._active[fileKey(file)];
+    state.status = 'error';
+    state.error = uploadErrorText(err, this.opts.messages.upload || 'Upload failed.');
+    this._queueRender();
+    this.emit('upload-error', { file: file, name: file.name, error: err, message: state.error });
+    this.call('onUploadError', { file: file, name: file.name, error: err, message: state.error, instance: this });
+  };
+
+  ZidanFileUpload.prototype._canceledUpload = function (file) {
+    var state = this._stateFor(file, false);
+    if (!state || state.status !== 'uploading') return;
+    delete this._active[fileKey(file)];
+    state.status = 'canceled';
+    state.progress = 0;
+    state.error = '';
+    this._queueRender();
+    this.emit('upload-cancel', { file: file, name: file.name });
+    this.call('onUploadCancel', { file: file, name: file.name, instance: this });
+  };
+
+  ZidanFileUpload.prototype.cancelUpload = function (file) {
+    var key = fileKey(file);
+    var active = this._active[key];
+    if (active) {
+      try { active.abort(); } catch (err) { /* already stopped */ }
+      delete this._active[key];
+    }
+    this._canceledUpload(file);
+    return this;
+  };
+
+  ZidanFileUpload.prototype.cancelAll = function () {
+    var self = this;
+    Object.keys(this._active).forEach(function (key) {
+      try { self._active[key].abort(); } catch (err) { /* already stopped */ }
+      delete self._active[key];
+    });
+    return this;
+  };
+
+  ZidanFileUpload.prototype.retryUpload = function (file) {
+    var state = this._stateFor(file, false);
+    if (!state) return this;
+    state.status = 'idle';
+    state.progress = 0;
+    state.error = '';
+    return this.uploadFile(file);
   };
 
   ZidanFileUpload.prototype._revokeLater = function (urls) {
@@ -2602,6 +3691,8 @@
   };
 
   ZidanFileUpload.prototype._teardown = function () {
+    this.cancelAll();
+    this._uploads = Object.create(null);
     this._revokeLater(this._urls);
     this._urls = [];
     if (this._restoreInput) this._restoreInput();
@@ -2610,6 +3701,15 @@
   /* ---------------- text inputs & textarea ---------------- */
 
   var TEXT_TYPES = ['text', 'email', 'password', 'number', 'tel', 'url', 'search', 'date', 'time', 'datetime-local', 'month', 'week', 'range', 'color'];
+  var PICKER_TYPES = ['date', 'time', 'datetime-local', 'month', 'week', 'color'];
+  var STEPPER_MODES = ['stacked', 'split', 'inline'];
+
+  function decimalsOf(number) {
+    var text = String(number);
+    if (/e-/i.test(text)) return 10;
+    var dot = text.indexOf('.');
+    return dot === -1 ? 0 : Math.min(10, text.length - dot - 1);
+  }
 
   function ZidanTextField(target, options) {
     if (!(this instanceof ZidanTextField)) return new ZidanTextField(target, options);
@@ -2625,9 +3725,10 @@
     var input = target;
     var opts = this.opts;
     var type = isTextarea ? 'textarea' : String(input.type).toLowerCase();
+    var isRange = type === 'range';
+    var isPicker = PICKER_TYPES.indexOf(type) !== -1;
 
     var originalParent = input.parentNode;
-    var originalNext = input.nextSibling;
     var externalLabel = input.labels && input.labels[0] ? input.labels[0] : null;
     if (externalLabel && externalLabel.closest && externalLabel.closest('.zs-field')) externalLabel = null;
     var labelText = opts.label || input.getAttribute('data-zidan-label') ||
@@ -2658,12 +3759,140 @@
     root.appendChild(shell);
     if (floating && label) shell.appendChild(label);
 
+    /* ---------- phone country selector & formatting ---------- */
+    var phoneEnabled = type === 'tel' && (opts.phone || input.hasAttribute('data-zidan-phone'));
+    this.phone = null;
+    if (phoneEnabled) {
+      var phoneCfg = opts.phone && typeof opts.phone === 'object' ? opts.phone : {};
+      var phoneCountry = String(phoneCfg.country || fieldOption(input, opts, 'phoneCountry', 'phone-country', 'US')).toUpperCase();
+      if (!PHONE_COUNTRIES[phoneCountry]) phoneCountry = 'US';
+      var phoneFormat = String(phoneCfg.format || fieldOption(input, opts, 'phoneFormat', 'phone-format', 'national')).toLowerCase();
+      if (PHONE_FORMATS.indexOf(phoneFormat) === -1) phoneFormat = 'national';
+      var showCountry = phoneCfg.showCountry !== undefined ? !!phoneCfg.showCountry : fieldBool(input, opts, 'phoneCountrySelect', 'phone-country-select', true);
+      var countryList = phoneCfg.countries || fieldList(input, opts, 'phoneCountries', 'phone-countries', PHONE_DEFAULT_COUNTRIES);
+      var countrySelect = null;
+      if (showCountry) {
+        countrySelect = el('select', 'zs-phone-country', { 'aria-label': opts.phoneCountryLabel || 'Country code' });
+        countryList.forEach(function (iso) {
+          iso = String(iso).toUpperCase();
+          var country = PHONE_COUNTRIES[iso];
+          if (!country) return;
+          var optionNode = el('option', null, { value: iso },
+            (country.flag ? country.flag + ' ' : '') + iso + ' +' + country.dial);
+          countrySelect.appendChild(optionNode);
+        });
+        countrySelect.value = phoneCountry;
+        shell.appendChild(countrySelect);
+        this.on(countrySelect, 'change', function () { self.setPhoneCountry(countrySelect.value); });
+      }
+      this.phone = {
+        country: phoneCountry,
+        format: phoneFormat,
+        select: countrySelect,
+        validate: phoneCfg.validate !== false,
+        countries: countryList.slice()
+      };
+      root.classList.add('zs-field--phone');
+
+      if (input.value) {
+        var detected = detectPhoneCountry(input.value);
+        if (detected && !phoneCfg.country && !input.getAttribute('data-zidan-phone-country')) {
+          this.phone.country = detected;
+          if (countrySelect) countrySelect.value = detected;
+        }
+        this._applyPhoneFormat(false);
+      }
+      this.on(input, 'input', function () { self._applyPhoneFormat(true); });
+      this.on(input, 'focus', function () { self._applyPhoneFormat(true); });
+      this.on(input, 'blur', function () { self._applyPhoneFormat(false); });
+    }
+
+    /* ---------- icons ---------- */
+    var iconSpec = opts.icon || input.getAttribute('data-zidan-icon') || null;
+    var autoIcon = fieldBool(input, opts, 'autoIcon', 'auto-icon', false);
+    if (iconSpec === 'auto') {
+      iconSpec = null;
+      autoIcon = true;
+    }
+    if (!iconSpec && autoIcon) iconSpec = iconForType(type);
+    var iconPosition = String(fieldOption(input, opts, 'iconPosition', 'icon-position', 'left')).toLowerCase() === 'right' ? 'right' : 'left';
+    var iconClickable = fieldBool(input, opts, 'iconClickable', 'icon-clickable', false);
+    var iconLabel = opts.iconLabel || input.getAttribute('data-zidan-icon-label') || '';
+    var iconControl = null;
+    if (iconSpec) {
+      var iconContent = iconNode(iconSpec, 'zs-input-icon-glyph') || iconNode('info', 'zs-input-icon-glyph');
+      var clickable = iconClickable || isPicker;
+      if (clickable) {
+        iconControl = el('button', 'zs-input-icon zs-input-icon--action', {
+          type: 'button',
+          'aria-label': iconLabel || (isPicker ? 'Open ' + type.replace('-', ' ') + ' picker' : 'Field action')
+        });
+        if (iconContent) iconControl.appendChild(iconContent);
+        this.on(iconControl, 'click', function (event) {
+          event.preventDefault();
+          if (isPicker) self.openPicker();
+          self.emit('icon-click', { icon: iconSpec, position: iconPosition });
+          self.call('onIconClick', { icon: iconSpec, position: iconPosition, instance: self });
+        });
+      } else {
+        iconControl = el('span', 'zs-input-icon', iconLabel ? null : { 'aria-hidden': 'true' });
+        if (iconLabel) {
+          iconControl.setAttribute('role', 'img');
+          iconControl.setAttribute('aria-label', iconLabel);
+        }
+        if (iconContent) iconControl.appendChild(iconContent);
+      }
+      root.classList.add('zs-field--icon-' + iconPosition);
+      this.icon = iconControl;
+      if (iconPosition === 'left') {
+        if (this.phone && this.phone.select) shell.insertBefore(iconControl, this.phone.select);
+        else shell.appendChild(iconControl);
+      }
+    }
+
     var prefixText = opts.prefix || input.getAttribute('data-zidan-prefix');
     if (prefixText) {
       shell.appendChild(el('span', 'zs-input-prefix', { 'aria-hidden': 'true' }, prefixText));
     }
 
-    shell.appendChild(input);
+    /* ---------- native control (optionally wrapped by range chrome) ---------- */
+    var rangeWrap = null;
+    var rangeBubble = null;
+    var rangeTicksEl = null;
+    var rangeScale = null;
+    if (isRange) {
+      var rangeVariant = pickList(fieldOption(input, opts, 'rangeVariant', 'range-variant', 'default'), RANGE_VARIANTS, 'default');
+      var rangeBubbleOn = fieldBool(input, opts, 'rangeBubble', 'range-bubble', true);
+      var rangeScaleOn = fieldBool(input, opts, 'rangeMinMax', 'range-minmax', true);
+      rangeWrap = el('div', 'zs-range');
+      rangeWrap.setAttribute('data-zs-range', rangeVariant);
+      if (rangeBubbleOn) {
+        rangeBubble = el('output', 'zs-range-bubble', { for: this.id, 'aria-hidden': 'true' });
+        rangeWrap.appendChild(rangeBubble);
+      }
+      rangeWrap.appendChild(input);
+      rangeTicksEl = el('div', 'zs-range-ticks', { 'aria-hidden': 'true' });
+      rangeWrap.appendChild(rangeTicksEl);
+      if (rangeScaleOn) {
+        rangeScale = el('div', 'zs-range-scale');
+        rangeScale.appendChild(el('span', 'zs-range-min'));
+        rangeScale.appendChild(el('span', 'zs-range-max'));
+        rangeWrap.appendChild(rangeScale);
+      }
+      shell.appendChild(rangeWrap);
+      shell.classList.add('zs-input-shell--range');
+      this.range = rangeWrap;
+      this.rangeBubble = rangeBubble;
+      this.rangeTicksEl = rangeTicksEl;
+      this.rangeScale = rangeScale;
+      this.rangeFormat = opts.rangeFormat || input.getAttribute('data-zidan-range-format') || null;
+      this.rangeTicksOption = fieldOption(input, opts, 'rangeTicks', 'range-ticks', 0);
+      this.rangeTickLabels = fieldBool(input, opts, 'rangeTickLabels', 'range-tick-labels', false);
+      this.rangeLabelMap = opts.rangeLabels || null;
+      this.rangeSignature = '';
+    } else {
+      shell.appendChild(input);
+    }
 
     var suffixText = opts.suffix || input.getAttribute('data-zidan-suffix');
     if (suffixText) {
@@ -2712,6 +3941,138 @@
       });
     }
 
+    /* ---------- number stepper ---------- */
+    var stepperEnabled = false;
+    var stepperRaw = opts.stepper !== undefined && opts.stepper !== null
+      ? opts.stepper
+      : input.getAttribute('data-zidan-stepper');
+    if (type === 'number' && stepperRaw !== null && stepperRaw !== undefined && stepperRaw !== '' &&
+      stepperRaw !== false && stepperRaw !== 'false') {
+      stepperEnabled = true;
+    }
+    this.stepper = null;
+    var stepperContainer = null;
+    if (stepperEnabled) {
+      var stepperMode = typeof stepperRaw === 'string' && stepperRaw !== 'true'
+        ? pickList(stepperRaw, STEPPER_MODES, 'stacked')
+        : 'stacked';
+      var stepperPosition = String(fieldOption(input, opts, 'stepperPosition', 'stepper-position', 'right')).toLowerCase() === 'left' ? 'left' : 'right';
+      var stepperWrap = fieldBool(input, opts, 'stepperWrap', 'stepper-wrap', false);
+      var stepperLongPress = fieldBool(input, opts, 'stepperLongPress', 'stepper-long-press', true);
+      var stepperDelay = fieldNumber(input, opts, 'stepperDelay', 'stepper-delay', 420);
+      var stepperInterval = fieldNumber(input, opts, 'stepperInterval', 'stepper-interval', 90);
+      var minusLabel = opts.stepperDownLabel || fieldOption(input, opts, 'stepperDownLabel', 'stepper-down-label', 'Decrease value');
+      var plusLabel = opts.stepperUpLabel || fieldOption(input, opts, 'stepperUpLabel', 'stepper-up-label', 'Increase value');
+
+      var makeStepButton = function (direction) {
+        var isUp = direction > 0;
+        var button = el('button', 'zs-stepper-btn zs-stepper-btn--' + (isUp ? 'up' : 'down'), {
+          type: 'button',
+          'aria-label': isUp ? plusLabel : minusLabel,
+          'data-zs-step': direction
+        });
+        var glyph = iconNode(isUp ? 'plus' : 'minus', 'zs-stepper-glyph');
+        if (glyph) button.appendChild(glyph);
+        else button.textContent = isUp ? '+' : '\u2212';
+
+        var holdTimer = null;
+        var holdInterval = null;
+        var stopHold = function () {
+          if (holdTimer) global.clearTimeout(holdTimer);
+          if (holdInterval) global.clearInterval(holdInterval);
+          holdTimer = null;
+          holdInterval = null;
+        };
+        var startHold = function (event) {
+          if (event.button !== undefined && event.button !== 0) return;
+          event.preventDefault();
+          self._stepBy(direction);
+          if (!stepperLongPress) return;
+          holdTimer = global.setTimeout(function () {
+            holdInterval = global.setInterval(function () { self._stepBy(direction); }, stepperInterval);
+          }, stepperDelay);
+        };
+        self.on(button, 'pointerdown', startHold);
+        self.on(button, 'mousedown', function (event) {
+          // pointerdown is the primary path; mousedown keeps very old engines working
+          if (typeof global.PointerEvent === 'undefined') startHold(event);
+        });
+        ['pointerup', 'pointercancel', 'pointerleave', 'mouseup', 'mouseleave', 'blur'].forEach(function (typeName) {
+          self.on(button, typeName, stopHold);
+        });
+        self.on(button, 'keydown', function (event) {
+          if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return;
+          event.preventDefault();
+          self._stepBy(direction);
+        });
+        return button;
+      };
+
+      var minusButton = makeStepButton(-1);
+      var plusButton = makeStepButton(1);
+      this.stepper = {
+        mode: stepperMode,
+        position: stepperPosition,
+        wrap: stepperWrap,
+        minus: minusButton,
+        plus: plusButton
+      };
+      root.classList.add('zs-field--stepper', 'zs-field--stepper-' + stepperMode);
+      if (stepperMode === 'split') {
+        // minus sits before the field, plus after it
+        shell.insertBefore(minusButton, iconPosition === 'left' && iconControl ? iconControl.nextSibling : input);
+        shell.appendChild(plusButton);
+      } else {
+        stepperContainer = el('span', 'zs-stepper zs-stepper--' + stepperMode, { role: 'group', 'aria-label': 'Number stepper' });
+        if (stepperMode === 'stacked') {
+          stepperContainer.appendChild(plusButton);
+          stepperContainer.appendChild(minusButton);
+        } else {
+          stepperContainer.appendChild(minusButton);
+          stepperContainer.appendChild(plusButton);
+        }
+        if (stepperPosition === 'left') shell.insertBefore(stepperContainer, iconPosition === 'left' && iconControl ? iconControl.nextSibling : shell.firstChild);
+        else shell.appendChild(stepperContainer);
+      }
+      addClass(input, 'zs-input-native--stepper');
+    }
+
+    /* ---------- explicit picker button ---------- */
+    var pickerButton = fieldBool(input, opts, 'pickerButton', 'picker-button', false);
+    if (isPicker && pickerButton && !iconControl) {
+      var pickerIcon = opts.pickerIcon || fieldOption(input, opts, 'pickerIcon', 'picker-icon', iconForType(type) || 'calendar');
+      var pickerControl = el('button', 'zs-input-icon zs-input-icon--action zs-input-picker', {
+        type: 'button',
+        'aria-label': opts.pickerLabel || ('Open ' + type.replace('-', ' ') + ' picker')
+      });
+      var pickerGlyph = iconNode(pickerIcon, 'zs-input-icon-glyph');
+      if (pickerGlyph) pickerControl.appendChild(pickerGlyph);
+      shell.appendChild(pickerControl);
+      this.on(pickerControl, 'click', function (event) {
+        event.preventDefault();
+        self.openPicker();
+      });
+      this.pickerButton = pickerControl;
+      root.classList.add('zs-field--custom-picker');
+    } else if (isPicker && iconControl) {
+      root.classList.add('zs-field--custom-picker');
+    }
+
+    /* right-positioned icon is appended after all actions */
+    if (iconControl && iconPosition === 'right') {
+      if (isRange) shell.insertBefore(iconControl, rangeWrap.nextSibling);
+      else shell.appendChild(iconControl);
+    }
+
+    var showValidationIcon = fieldBool(input, opts, 'validationIcon', 'validation-icon', false);
+    if (showValidationIcon) {
+      var validIcon = iconNode('check', 'zs-input-validation zs-input-validation--valid');
+      var invalidIcon = iconNode('alert', 'zs-input-validation zs-input-validation--invalid');
+      if (validIcon) shell.appendChild(validIcon);
+      if (invalidIcon) shell.appendChild(invalidIcon);
+      root.classList.add('zs-field--validation-icon');
+    }
+
     var hintText = opts.hint || input.getAttribute('data-zidan-hint');
     var counterMax = parseInt(opts.counter, 10) ||
       parseInt(input.getAttribute('data-zidan-counter'), 10) ||
@@ -2727,10 +4088,6 @@
         meta.appendChild(counter);
       }
       root.appendChild(meta);
-      if (hintText) {
-        input.setAttribute('aria-describedby', this.id + '-hint');
-        this._cleanups.push(function () { input.removeAttribute('aria-describedby'); });
-      }
     }
 
     this.label = label;
@@ -2741,26 +4098,31 @@
     this._restoreInput = function () {
       var parent = root.parentNode || originalParent;
       parent.insertBefore(input, root.parentNode ? root : null);
-      input.classList.remove('zs-input-native');
+      input.classList.remove('zs-input-native', 'zs-input-native--stepper');
     };
 
     addClass(input, 'zs-input-native');
     addClass(root, 'zs-field--' + layout);
 
     var outputSelector = opts.output || input.getAttribute('data-zidan-output');
-    if (type === 'range' && outputSelector) {
+    if (isRange && outputSelector) {
       var out = doc.querySelector(outputSelector);
       if (out) {
-        var syncOut = function () {
-          out.textContent = input.value;
-          out.value = input.value;
-        };
-        syncOut();
-        this.on(input, 'input', syncOut);
+        this.rangeOutput = out;
       }
     }
 
-    this.on(input, 'input', function () { self.update(); });
+    var previousValue = input.value;
+    this.on(input, 'input', function () {
+      var current = input.value;
+      self._syncRangeOutput(current);
+      self.update();
+      if (current !== previousValue) {
+        previousValue = current;
+        self.emit('input', { value: current });
+        self.call('onInput', { value: current, instance: self });
+      }
+    });
     this.on(input, 'change', function () {
       self.update();
       self.emit('change', { value: input.value });
@@ -2772,13 +4134,283 @@
     this._bindValidity();
     input.__zidanField = this;
     this.update();
-    this.emit('init', { type: type });
+    this._syncRangeOutput(input.value);
+    this.emit('init', { type: type, stepper: !!this.stepper, phone: !!this.phone, range: !!this.range });
     this.call('onInit', { instance: this, type: type });
     ZidanForm._register(this);
   }
 
   ZidanTextField.prototype = Object.create(ZidanFieldBase.prototype);
   ZidanTextField.prototype.constructor = ZidanTextField;
+
+  // phone/date/custom rules must also block native form submission
+  ZidanTextField.prototype._mirrorValidity = function () {
+    var input = this.el;
+    if (input.setCustomValidity) {
+      var custom = this._customError();
+      var message = typeof custom === 'string' ? custom : (custom ? this.opts.messages.generic : '');
+      if (input.__zidanCustomError !== message) {
+        input.setCustomValidity(message);
+        input.__zidanCustomError = message;
+      }
+    }
+    return ZidanFieldBase.prototype._mirrorValidity.call(this);
+  };
+
+  ZidanTextField.prototype._formatRangeValue = function (value) {
+    var formatter = this.rangeFormat;
+    if (typeof formatter === 'function') {
+      try { return String(formatter(value, this)); } catch (err) { return String(value); }
+    }
+    if (typeof formatter === 'string' && formatter) {
+      if (formatter.indexOf('%s') !== -1) return formatter.replace('%s', String(value));
+      return fillTemplate(formatter, {
+        value: value,
+        min: this.el.min,
+        max: this.el.max
+      });
+    }
+    return String(value);
+  };
+
+  ZidanTextField.prototype._rangeBounds = function () {
+    var input = this.el;
+    var min = parseFloat(input.min);
+    var max = parseFloat(input.max);
+    if (!isFinite(min)) min = 0;
+    if (!isFinite(max)) max = 100;
+    return { min: min, max: max };
+  };
+
+  ZidanTextField.prototype._renderRangeTicks = function () {
+    if (!this.rangeTicksEl) return;
+    var bounds = this._rangeBounds();
+    var option = this.rangeTicksOption;
+    var values = [];
+    if (Array.isArray(option)) values = option.map(Number).filter(function (n) { return isFinite(n); });
+    else {
+      var count = parseInt(option, 10);
+      if (!(count > 1)) return;
+      for (var i = 0; i < count; i += 1) values.push(bounds.min + ((bounds.max - bounds.min) * i) / (count - 1));
+    }
+    this.rangeTicksEl.textContent = '';
+    values.forEach(function (value) {
+      var pct = bounds.max > bounds.min ? (value - bounds.min) / (bounds.max - bounds.min) : 0;
+      var tick = el('span', 'zs-range-tick');
+      tick.style.left = (clamp(pct, 0, 1) * 100).toFixed(2) + '%';
+      if (this.rangeTickLabels) {
+        var label = this.rangeLabelMap && this.rangeLabelMap[value] !== undefined
+          ? this.rangeLabelMap[value]
+          : this._formatRangeValue(value);
+        tick.textContent = label;
+        tick.classList.add('zs-range-tick--labeled');
+      }
+      this.rangeTicksEl.appendChild(tick);
+    }, this);
+  };
+
+  ZidanTextField.prototype._syncRange = function (value) {
+    if (!this.range) return;
+    var bounds = this._rangeBounds();
+    var numeric = parseFloat(value);
+    if (!isFinite(numeric)) numeric = bounds.min;
+    var pct = bounds.max > bounds.min ? (numeric - bounds.min) / (bounds.max - bounds.min) : 0;
+    pct = clamp(pct, 0, 1);
+    this.range.style.setProperty('--zs-range-pct', pct.toFixed(4));
+    this.range.style.setProperty('--zs-range-fill', (pct * 100).toFixed(2) + '%');
+    if (this.rangeBubble) this.rangeBubble.textContent = this._formatRangeValue(numeric);
+    if (this.rangeScale) {
+      this.rangeScale.firstChild.textContent = this._formatRangeValue(bounds.min);
+      this.rangeScale.lastChild.textContent = this._formatRangeValue(bounds.max);
+    }
+    var signature = [bounds.min, bounds.max, this.el.step, JSON.stringify(this.rangeTicksOption), this.rangeTickLabels].join('|');
+    if (signature !== this.rangeSignature) {
+      this.rangeSignature = signature;
+      this._renderRangeTicks();
+    }
+  };
+
+  ZidanTextField.prototype._syncRangeOutput = function (value) {
+    if (this.range) this._syncRange(value);
+    if (this.rangeOutput) {
+      this.rangeOutput.textContent = value;
+      this.rangeOutput.value = value;
+    }
+  };
+
+  ZidanTextField.prototype._applyPhoneFormat = function (preserveCaret) {
+    if (!this.phone) return this;
+    var input = this.el;
+    var raw = input.value;
+    if (!digitsOnly(raw)) {
+      if (raw && /\+/.test(raw)) input.value = '+';
+      return this;
+    }
+    var caret = null;
+    var digitCount = 0;
+    var dialLength = this.phone.format === 'national'
+      ? 0
+      : String((PHONE_COUNTRIES[this.phone.country] || PHONE_COUNTRIES.US).dial).length;
+    if (preserveCaret && typeof input.selectionStart === 'number') {
+      caret = input.selectionStart;
+      digitCount = digitsBefore(raw, caret);
+      if (/^\s*\+/.test(raw)) digitCount = Math.max(0, digitCount - dialLength);
+    }
+    var formatted = formatPhone(raw, this.phone.country, this.phone.format);
+    if (formatted === input.value) return this;
+    input.value = formatted;
+    if (preserveCaret && caret !== null) {
+      var targetDigits = digitCount + (formatted.charAt(0) === '+' ? dialLength : 0);
+      var position = caretAfterDigits(formatted, targetDigits);
+      try { input.setSelectionRange(position, position); } catch (err) { /* unsupported */ }
+    }
+    return this;
+  };
+
+  ZidanTextField.prototype._stepBy = function (direction, times) {
+    var input = this.el;
+    if (!this.stepper || !direction || input.disabled || input.readOnly) return this;
+    var count = Math.max(1, parseInt(times, 10) || 1);
+    var step = parseFloat(this.opts.stepperStep || input.step);
+    if (!isFinite(step) || step <= 0) step = 1;
+    var bounds = this._rangeBounds();
+    var min = parseFloat(input.min);
+    var max = parseFloat(input.max);
+    var hasValue = input.value !== '' && isFinite(parseFloat(input.value));
+    var current = hasValue ? parseFloat(input.value) : (isFinite(min) ? min : 0);
+    var next;
+    if (!hasValue && direction > 0 && isFinite(min)) next = min;
+    else next = current + direction * step * count;
+    if (this.stepper.wrap && isFinite(min) && isFinite(max)) {
+      var span = max - min;
+      while (next > max) next -= span || step;
+      while (next < min) next += span || step;
+    } else {
+      if (isFinite(min)) next = Math.max(min, next);
+      if (isFinite(max)) next = Math.min(max, next);
+    }
+    var decimals = Math.max(decimalsOf(step), decimalsOf(next));
+    var value = String(parseFloat(next.toFixed(Math.min(10, decimals))));
+    if (value === input.value) {
+      this._sync();
+      return this;
+    }
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    this.emit('step', { value: value, direction: direction, step: step });
+    this.call('onStep', { value: value, direction: direction, instance: this });
+    return this;
+  };
+
+  ZidanTextField.prototype.stepUp = function (times) {
+    return this._stepBy(1, times);
+  };
+
+  ZidanTextField.prototype.stepDown = function (times) {
+    return this._stepBy(-1, times);
+  };
+
+  ZidanTextField.prototype.setStepper = function (enabled) {
+    var input = this.el;
+    if (enabled) input.setAttribute('data-zidan-stepper', 'true');
+    else input.removeAttribute('data-zidan-stepper');
+    return this;
+  };
+
+  ZidanTextField.prototype.openPicker = function () {
+    var input = this.el;
+    try {
+      if (typeof input.showPicker === 'function') input.showPicker();
+      else if (input.focus) input.focus();
+    } catch (err) {
+      if (input.focus) input.focus();
+    }
+    this.emit('picker', { type: this.el.type });
+    this.call('onPicker', { type: this.el.type, instance: this });
+    return this;
+  };
+
+  ZidanTextField.prototype.showPicker = function () {
+    return this.openPicker();
+  };
+
+  ZidanTextField.prototype.getPhoneCountry = function () {
+    return this.phone ? this.phone.country : '';
+  };
+
+  ZidanTextField.prototype.setPhoneCountry = function (iso) {
+    if (!this.phone) return this;
+    iso = String(iso || '').toUpperCase();
+    if (!PHONE_COUNTRIES[iso]) return this;
+    this.phone.country = iso;
+    if (this.phone.select) this.phone.select.value = iso;
+    this._applyPhoneFormat(false);
+    this.update();
+    this.emit('phone-country', { country: iso });
+    this.call('onPhoneCountry', { country: iso, instance: this });
+    return this;
+  };
+
+  ZidanTextField.prototype.setPhoneFormat = function (format) {
+    if (!this.phone) return this;
+    var mode = String(format || '').toLowerCase();
+    if (PHONE_FORMATS.indexOf(mode) === -1) return this;
+    this.phone.format = mode;
+    this._applyPhoneFormat(false);
+    this.update();
+    this.emit('phone-format', { format: mode });
+    this.call('onPhoneFormat', { format: mode, instance: this });
+    return this;
+  };
+
+  ZidanTextField.prototype.formatPhone = function (value) {
+    if (!this.phone) return String(value === undefined ? this.el.value : value);
+    return formatPhone(value === undefined ? this.el.value : value, this.phone.country, this.phone.format);
+  };
+
+  ZidanTextField.prototype._customError = function () {
+    var input = this.el;
+    var opts = this.opts;
+    var messages = opts.messages;
+
+    if (this.phone && this.phone.validate && input.value) {
+      var country = PHONE_COUNTRIES[this.phone.country];
+      var digits = phoneDigitsForCountry(input.value, this.phone.country, this.phone.format);
+      if (digits && (digits.length < country.min || digits.length > country.max)) {
+        return fillTemplate(messages.phone, { country: country.name, min: country.min, max: country.max });
+      }
+    }
+
+    if (input.type === 'date' && input.value) {
+      var weekend = fieldBool(input, opts, 'disableWeekends', 'disable-weekends', false);
+      var disabledDates = opts.disabledDates || input.getAttribute('data-zidan-disabled-dates');
+      var date = new Date(input.value + 'T00:00:00');
+      if (!isNaN(date.getTime())) {
+        if (weekend && (date.getDay() === 0 || date.getDay() === 6)) return messages.weekend;
+        var blocked = false;
+        if (typeof disabledDates === 'function') {
+          try { blocked = disabledDates(input.value, date, this) === true; } catch (err) { blocked = false; }
+        } else if (disabledDates) {
+          var list = Array.isArray(disabledDates) ? disabledDates : String(disabledDates).split(',').map(function (item) { return item.trim(); });
+          blocked = list.indexOf(input.value) !== -1;
+        }
+        if (blocked) return messages.dateDisabled;
+      }
+      if (typeof opts.validateDate === 'function') {
+        var dateResult = opts.validateDate(input.value, date, this);
+        if (dateResult === false) return messages.date;
+        if (typeof dateResult === 'string' && dateResult) return dateResult;
+      }
+    }
+
+    if (typeof opts.validate === 'function') {
+      var result = opts.validate(input.value, this);
+      if (result === false) return messages.generic;
+      if (typeof result === 'string' && result) return result;
+    }
+    return '';
+  };
 
   ZidanTextField.prototype._sync = function () {
     var input = this.el;
@@ -2793,6 +4425,16 @@
       this.counter.textContent = length + ' / ' + this.counterMax;
       this.counter.classList.toggle('zs-counter--limit', length >= this.counterMax);
     }
+    if (this.range) this._syncRange(value);
+    if (this.stepper) {
+      var min = parseFloat(input.min);
+      var max = parseFloat(input.max);
+      var current = parseFloat(value);
+      if (!isFinite(current)) current = isFinite(min) ? min : 0;
+      var blocked = !!input.disabled || !!input.readOnly;
+      this.stepper.minus.disabled = blocked || (!this.stepper.wrap && isFinite(min) && current <= min);
+      this.stepper.plus.disabled = blocked || (!this.stepper.wrap && isFinite(max) && current >= max);
+    }
   };
 
   ZidanTextField.prototype.getValue = function () {
@@ -2801,6 +4443,7 @@
 
   ZidanTextField.prototype.setValue = function (value) {
     this.el.value = value === null || value === undefined ? '' : String(value);
+    if (this.phone) this._applyPhoneFormat(false);
     return this.update();
   };
 
@@ -2949,6 +4592,24 @@
 
   ZidanForm.api = null;
 
+  /* registries, presets and helpers shared by every field type */
+  ZidanForm.registerIcon = registerIcon;
+  ZidanForm.icons = ICON_REGISTRY;
+  ZidanForm.phoneCountries = PHONE_COUNTRIES;
+  ZidanForm.phoneFormats = PHONE_FORMATS.slice();
+  ZidanForm.formatPhone = formatPhone;
+  ZidanForm.detectPhoneCountry = detectPhoneCountry;
+  ZidanForm.messages = FIELD_MESSAGES;
+  ZidanForm.variants = {
+    checkbox: CHECKBOX_VARIANTS.slice(),
+    switch: SWITCH_STYLES.slice(),
+    radio: RADIO_VARIANTS.slice(),
+    file: FILE_VARIANTS.slice(),
+    range: RANGE_VARIANTS.slice()
+  };
+  ZidanForm.stepperModes = STEPPER_MODES.slice();
+  ZidanForm.fieldLayouts = FIELD_LAYOUTS.slice();
+
   /* static helpers */
   ZidanSelect.version = VERSION;
   ZidanSelect.__zidanSelectGuard = VERSION;
@@ -3038,7 +4699,10 @@
     zidanSelect: zidanSelect,
     zidanField: zidanField,
     initZidanSelects: initZidanSelects,
-    initZidanForms: initZidanForms
+    initZidanForms: initZidanForms,
+    registerIcon: registerIcon,
+    formatPhone: formatPhone,
+    detectPhoneCountry: detectPhoneCountry
   };
 
   ZidanForm.api = api;
