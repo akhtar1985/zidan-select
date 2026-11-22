@@ -83,7 +83,7 @@ Both theme stylesheets keep the token set, the five preset themes (`default`, `m
 adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
 as in the full build.
 
-Approximate v2.2.0 sizes: select ≈95 kB JS + 12 kB core + 32 kB theme; file ≈76 kB JS +
+Approximate v2.2.1 sizes: select ≈95 kB JS + 12 kB core + 32 kB theme; file ≈76 kB JS +
 9 kB core + 35 kB theme, against ≈194 kB JS + 36 kB core + 47 kB theme for the full build.
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
