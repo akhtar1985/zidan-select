@@ -102,9 +102,10 @@
     .sp-section { margin-top: 42px; }
     .sp-section h2 { margin: 0 0 6px; font-size: 1.3rem; letter-spacing: -0.01em; }
     .sp-section > p { margin: 0 0 18px; color: var(--sp-muted); max-width: 75ch; }
-    .sp-grid { display: grid; gap: 16px; }
+    .sp-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
     @media (min-width: 760px) { .sp-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     .sp-card {
+      min-width: 0;
       background: var(--sp-card); border: 1px solid var(--sp-line); border-radius: 16px; padding: 18px;
     }
     .sp-card h3 { margin: 0 0 8px; font-size: 0.95rem; }
