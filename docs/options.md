@@ -14,7 +14,9 @@ passed to `initZidanSelects()` / `initZidanForms()` / `zidanSelect()` / `zidanFi
 ## Direct init by ID or class
 
 The first argument of `zidanSelect()` accepts a CSS selector, an element, or a NodeList. Plain
-selects are not auto-initialised, so you can enhance exactly the field you want:
+selects are not auto-initialised, so you can enhance exactly the field you want. For complete
+copy-paste pages (static HTML, WordPress, page builders) see the
+[static HTML & WordPress cookbook](html-and-wordpress.md).
 
 ```html
 <select id="mymov">…</select>
@@ -402,7 +404,7 @@ const upload = zidanField('#files', {
   replaceTitle: 'Change image',
 
   /* Upload pipeline */
-  // upload: function (context) { … },       // custom uploader, contract below
+  // upload: function (file, context) { … }, // custom uploader, contract below
   // uploadUrl: '/api/files',                // or XHR endpoint
   uploadField: 'file',
   // uploadData: function (file, field) { return { folder: 'avatars' }; },
@@ -434,7 +436,8 @@ Custom uploader contract:
 
 ```js
 zidanField('#files', {
-  upload(context) {
+  upload(file, context) {
+    // file: the File being uploaded
     // context: { file, field, formData, signal, onProgress, complete, fail }
     const xhr = new XMLHttpRequest();
     // ...or return a promise / call context.complete(result) / context.fail(error)
@@ -513,11 +516,49 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `fetchOptions(query, signal)` | — | Return a promise of items; an `AbortController` signal is provided. |
+| `fetchOptions(query, signal, context)` | — | Return an array of items, or a page `{ items, hasMore }` (or `{ items, total }`). `signal` aborts stale requests; `context` is `{ page, pageSize, append, instance }`. |
+| `fetchPageSize` | `0` | Page size handed to `fetchOptions`. `0` keeps the legacy single-request behaviour. |
+| `autoLoadMore` | `true` | Scrolling near the dropdown bottom fetches the next page automatically. |
+| `loadMoreText` | `Load more` | Label of the footer button rendered while `hasMore` is true. |
+| `cacheResults` | `true` | Cache pages per query + page. Clear with `select.clearCache()`. |
+| `onLoadMore` | — | Called when a follow-up page starts loading: `{ page, query, instance }`. |
 | `debounce` | `250` | Async debounce in ms. |
 | `minChars` | `0` | Characters before fetching. |
 | `allowFreeText` | tags only | Allow values not in the list. |
 | `searchValues` | `true` | Match against values as well as labels. |
+
+Remote results are **not** filtered again on the client, so a server that already applied
+the query is never double-filtered. Use `renderOption` for custom rows; keep values stable
+across pages so the merge can de-duplicate them.
+
+```js
+const users = zidanSelect('#owner', {
+  mode: 'combobox',
+  fetchPageSize: 20,
+  fetchOptions: async (query, signal, { page, pageSize }) => {
+    const res = await fetch('/api/users?q=' + encodeURIComponent(query)
+      + '&page=' + page + '&size=' + pageSize, { signal });
+    const data = await res.json();
+    return {
+      items: data.rows.map(u => ({ value: u.id, label: u.name })),
+      hasMore: data.page + 1 < data.pages
+    };
+  },
+  onLoadMore: ({ page }) => console.log('loaded page', page)
+});
+
+users.loadMore();                 // manual next page
+users.hasMoreResults();           // boolean
+users.getAsyncState();            // { query, page, hasMore, loading, fetchingMore, error }
+users.refreshOptions();           // clears the cache and refetches page 0
+users.clearCache();               // drop cached pages only
+```
+
+`fetchOptions` may also reject: the current list stays on screen, the footer shows the error
+and clicking it retries. Appended fetches emit `zidan:load-more` with `{ page, query }`;
+failures emit the usual `zidan:error`.
+
+The cache size is global: `ZidanSelect.cacheLimit = 50` pages (least-recently-used eviction).
 
 ### Tags
 
@@ -545,7 +586,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 
 ### Select callbacks
 
-`onInit`, `onChange`, `onSelect`, `onOpen`, `onClose`, `onTagAdd`, `onTagRemove`, `onError`.
+`onInit`, `onChange`, `onSelect`, `onOpen`, `onClose`, `onTagAdd`, `onTagRemove`, `onLoadMore`, `onError`.
 Every callback receives a single payload object with `instance` and the relevant value(s).
 
 ### Every select option in one object
@@ -591,10 +632,14 @@ const picker = zidanSelect('#mymov', {
   clearText: 'Clear selection',
 
   /* Combobox / async */
-  // fetchOptions: function (query, signal) {
-  //   return fetch('/api/movies?q=' + encodeURIComponent(query), { signal: signal })
-  //     .then(function (response) { return response.json(); });
+  // fetchOptions: function (query, signal, context) {
+  //   return fetch('/api/movies?q=' + encodeURIComponent(query) + '&page=' + context.page, { signal: signal })
+  //     .then(function (response) { return response.json(); }); // items[] or { items, hasMore }
   // },
+  fetchPageSize: 0,                 // >0 enables paged responses, load-more and scroll auto-load
+  autoLoadMore: true,
+  cacheResults: true,               // ZidanSelect.cacheLimit = 50 pages, LRU
+  loadMoreText: 'Load more',
   debounce: 250,                    // ms
   minChars: 0,
   searchValues: true,               // match labels and values
@@ -618,11 +663,14 @@ const picker = zidanSelect('#mymov', {
   // validateTag: function (tag) { return tag.length <= 24 || 'Use 24 characters or fewer'; },
   // formatTag: function (tag) { return tag.toUpperCase(); },
 
-  /* Callbacks — also: onSelect, onOpen, onClose, onTagAdd, onTagRemove, onError */
+  /* Callbacks — also: onSelect, onOpen, onClose, onTagAdd, onTagRemove, onLoadMore, onError */
   onInit: function (event) { console.log('init', event.instance); },
   onChange: function (event) { console.log('value', event.value); }
 });
 ```
+
+Methods for paged data: `loadMore()`, `hasMoreResults()`, `getAsyncState()`,
+`refreshOptions()`, `clearCache()`.
 
 Data attributes remain available as a 1:1 fallback; the tables above list the matching
 `data-zidan-*` name for each option, and `data-zidan-options` accepts any literal-value subset

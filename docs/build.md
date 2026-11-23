@@ -86,21 +86,21 @@ npm run build
 Without esbuild the build still succeeds and prints that minification was skipped. Add
 `dist/` to `.gitignore`; it is regenerated at publish time.
 
-### Minified CDN URLs
+### Minified files
 
-You do not need esbuild to ship minified files from a CDN. jsDelivr generates `.min.*` on
-request from the published sources, so these URLs track the pinned version even though the npm
-tarball only contains the readable files:
+`npm run build` emits minified copies next to every bundle with esbuild:
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | `/zidan-form.min.js` | `/plugin-core.min.css` | `/plugin-theme.min.css` |
+| Full | `/dist/zidan-form.min.js` | `/dist/plugin-core.min.css` | `/dist/plugin-theme.min.css` |
 | Select-only | `/dist/select/zidan-select.min.js` | `/dist/select/plugin-select-core.min.css` | `/dist/select/plugin-select-theme.min.css` |
 | File-only | `/dist/file/zidan-file.min.js` | `/dist/file/plugin-file-core.min.css` | `/dist/file/plugin-file-theme.min.css` |
 
-Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.2.4` to each path. Check the three you use
-with `curl -I` before changing a version, then update the URLs in the README, the demo build
-cards and the playground in the same commit.
+Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.3.0` to each path (or your own origin).
+These are real files in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes;
+jsDelivr additionally auto-minifies the readable root files, but do not rely on that trick.
+Check the three you use with `curl -I` before changing a version, then update the URLs in the
+README, the demo build cards and the playground in the same commit.
 
 ## Select-only and file-only builds
 
@@ -119,8 +119,9 @@ Both theme stylesheets keep the token set, the five preset themes (`default`, `m
 adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
 as in the full build.
 
-Approximate v2.2.4 sizes: select ≈95 kB JS + 12 kB core + 32 kB theme; file ≈76 kB JS +
-9 kB core + 35 kB theme, against ≈194 kB JS + 36 kB core + 47 kB theme for the full build.
+Approximate v2.3.0 sizes (readable → minified): select ≈104 → 62 kB JS, 12 → 9 kB core CSS,
+32 → 27 kB theme; file ≈82 → 49 kB JS, 9 → 7 kB core, 34 → 29 kB theme; full ≈208 → 123 kB
+JS, 38 → 29 kB core, 47 → 39 kB theme.
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their

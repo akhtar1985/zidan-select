@@ -19,6 +19,10 @@ same two stylesheets.
 | Text input utilities | **Clear, reveal, prefix/suffix, counter, floating labels** | — | — | — | — | Markup (`input-group`) |
 | Date/time picker customization | **Icon as picker button, left/right, labels, date rules** | — | — | — | — | — |
 | Built-in validation rules | **Every type, weekend/blocked dates, validation icons** | — | — | — | — | Styles only |
+| Async field validation | **Promise rules, pending state, abort, stale guards** | — | — | — | — | — |
+| Remote paginated options | **Paged, cached, load-more + scroll auto-load** | AJAX adapter | — | `load()` callback | — | — |
+| RTL | **Logical properties, mirrored transforms** | Yes | Yes | Yes | Partial | Yes |
+| TypeScript declarations | **Full build + both subsets** | Community | Bundled | Bundled | Bundled | Bundled |
 | Checkbox / switch / radio UI | **Built in** | — | — | — | — | Native only |
 | Native `value` / `checked` / `files` kept | **Yes** | Yes | Yes | Yes | Yes | Yes |
 | No-JS init by ID, class or JSON | **Config targets, marker classes, `data-zidan-options` JSON** | JS selector | JS selector | JS selector | JS selector | JS selector |
@@ -28,7 +32,7 @@ same two stylesheets.
 | CSS-framework adapters | **Bootstrap, Tailwind, Bulma, Foundation** | — | — | — | — | n/a |
 | Validation coexistence tests | **jQuery Validation, JustValidate, Parsley, native** | — | — | — | — | Native + framework |
 | Framework support | **React, Next.js, Vue, Svelte, Angular guides** | Community wrappers | Community wrappers | Community wrappers | Community wrappers | Framework kits |
-| Weight | ~3,000 lines, one JS file | larger, plus jQuery | moderate | moderate | small | large (whole framework) |
+| Weight | ~5,300 lines, one JS file | larger, plus jQuery | moderate | moderate | small | large (whole framework) |
 
 Feature claims above describe each project's *core* package. Plugins and community add-ons can
 close some gaps — check the other project's current docs before deciding.
@@ -44,9 +48,9 @@ close some gaps — check the other project's current docs before deciding.
   jQuery Validation's `:hidden` ignore keep working.
 - **Structure and skin are separate.** `plugin-core.css` has no colours; teams can ship a brand
   theme in `plugin-theme.css` or their own file without forking layout code.
-- **Works with the validators you already use.** Documented and tested alongside native HTML5,
-  jQuery Validation, JustValidate and Parsley, including `aria-invalid` sync and double-submit
-  guards.
+- **Works with the validators you already use.** Documented and covered by the jsdom test
+  suite alongside native HTML5, jQuery Validation, JustValidate and Parsley, including
+  `aria-invalid` sync, async rules and double-submit guards.
 - **Matches your CSS framework.** Standalone, Bootstrap 5, Tailwind, Bulma and Foundation
   adapters are selected per instance or inherited from an ancestor / `<html>`.
 - **Opt-in, reversible.** Only `data-zidan*` controls are touched, and `destroy()` restores the
@@ -55,8 +59,9 @@ close some gaps — check the other project's current docs before deciding.
 
 ## Trade-offs to know
 
-- **Not a data-grid or remote-search platform.** Select2 and Tom Select have larger plugin
-  ecosystems for AJAX pagination and complex tag workflows.
+- **Not a data-grid or tokenization platform.** Select2 and Tom Select still have larger
+  plugin ecosystems for drag-reorder tag editors, data grids and query builders. ZidanForm's
+  remote loading covers cached, load-more lists with request aborting, not a full query DSL.
 - **Smaller community.** Fewer Stack Overflow answers and third-party themes than Select2 or
   Bootstrap.
 - **No framework components.** React/Vue/Angular integration is lifecycle wiring around the

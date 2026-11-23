@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.2.4 — plugin-core.css
+ * ZidanForm v2.3.0 — plugin-core.css
  * Structure and mechanics only: layout, positioning, visibility, focus
  * plumbing and accessible native-input handling. No colours, borders colours,
  * shadows or decorative skin — load plugin-theme.css (or your own theme) for
@@ -301,7 +301,7 @@
   flex: 0 0 auto;
   width: 14px;
   height: 14px;
-  margin-left: auto;
+  margin-inline-start: auto;
   background-color: currentColor;
   -webkit-mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
   mask: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3.2L13 5' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
@@ -336,6 +336,25 @@
 
 @keyframes zs-spin {
   to { transform: rotate(360deg); }
+}
+
+.zs-root .zs-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-top: 1px solid transparent;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.zs-root .zs-more[disabled] {
+  cursor: default;
 }
 
 @media (max-width: 480px) {
@@ -378,7 +397,7 @@
 
 .zs-root[data-zs-layout="floating-label"] .zs-label {
   position: absolute;
-  left: calc(var(--zs-padding-x, 12px) + 1px);
+  inset-inline-start: calc(var(--zs-padding-x, 12px) + 1px);
   top: 50%;
   margin: 0;
   padding: 0 4px;
@@ -472,9 +491,35 @@
    ================================================================== */
 
 .zs-field {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--zs-field-gap, 6px);
+}
+
+.zs-field--pending::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  inset-inline-end: 0;
+  width: 0.85em;
+  height: 0.85em;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 50%;
+  animation: zs-field-spin 0.7s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes zs-field-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zs-field--pending::after {
+    animation-duration: 2s;
+  }
 }
 
 .zs-field[data-zs-layout="inline"] {
@@ -514,7 +559,7 @@
 }
 
 .zs-counter {
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -629,7 +674,7 @@
   content: "";
   position: absolute;
   top: 50%;
-  left: 2px;
+  inset-inline-start: 2px;
   width: calc(var(--zs-switch-height, 22px) - 6px);
   height: calc(var(--zs-switch-height, 22px) - 6px);
   transform: translateY(-50%);
@@ -656,11 +701,11 @@
 }
 
 .zs-switch-on {
-  left: 5px;
+  inset-inline-start: 5px;
 }
 
 .zs-switch-off {
-  right: 5px;
+  inset-inline-end: 5px;
 }
 
 .zs-check--checked .zs-switch-on {
@@ -680,7 +725,7 @@
 .zs-field[data-zs-switch-style="material"] .zs-switch-track::after {
   width: 22px;
   height: 22px;
-  left: -2px;
+  inset-inline-start: -2px;
   border-radius: 50%;
 }
 
@@ -728,6 +773,33 @@
 .zs-field[data-zs-switch-style="icon"] .zs-switch-off::before {
   content: "\2715";
   font-size: 0.625rem;
+}
+
+/* right-to-left: the knob travels from the inline start towards the inline end */
+[dir="rtl"] .zs-check--checked .zs-switch-track::after {
+  transform: translate(calc(-1 * (var(--zs-switch-width, 40px) - var(--zs-switch-height, 22px))), -50%);
+}
+
+[dir="rtl"] .zs-field[data-zs-switch-style="material"] .zs-check--checked .zs-switch-track::after {
+  transform: translate(-26px, -50%);
+}
+
+[dir="rtl"] .zs-field[data-zs-switch-style="labeled"] .zs-check--checked .zs-switch-track::after,
+[dir="rtl"] .zs-field[data-zs-switch-style="icon"] .zs-check--checked .zs-switch-track::after {
+  transform: translate(-32px, -50%);
+}
+
+.zs-field[dir="rtl"] .zs-check--checked .zs-switch-track::after {
+  transform: translate(calc(-1 * (var(--zs-switch-width, 40px) - var(--zs-switch-height, 22px))), -50%);
+}
+
+.zs-field[dir="rtl"][data-zs-switch-style="material"] .zs-check--checked .zs-switch-track::after {
+  transform: translate(-26px, -50%);
+}
+
+.zs-field[dir="rtl"][data-zs-switch-style="labeled"] .zs-check--checked .zs-switch-track::after,
+.zs-field[dir="rtl"][data-zs-switch-style="icon"] .zs-check--checked .zs-switch-track::after {
+  transform: translate(-32px, -50%);
 }
 
 /* card variant */
@@ -1013,7 +1085,7 @@
 }
 
 .zs-file-clear {
-  margin-left: auto;
+  margin-inline-start: auto;
   padding: 2px 8px;
   border-width: 1px;
   border-style: solid;
@@ -1036,7 +1108,7 @@
   gap: 8px;
   min-height: 0;
   padding: 10px 14px;
-  text-align: left;
+  text-align: start;
   border-style: solid;
 }
 
@@ -1053,7 +1125,7 @@
 
 .zs-field--file .zs-file-drop--button .zs-file-drop-hint,
 .zs-field--file .zs-file-drop--compact .zs-file-drop-hint {
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .zs-field--file .zs-file-drop--avatar {
@@ -1344,8 +1416,8 @@ textarea.zs-input-native {
   color: inherit;
   background: transparent;
   border: 0;
-  border-right-width: 1px;
-  border-right-style: solid;
+  border-inline-end-width: 1px;
+  border-inline-end-style: solid;
   cursor: pointer;
 }
 
@@ -1456,6 +1528,7 @@ textarea.zs-input-native {
 
 .zs-range-tick {
   position: absolute;
+  inset-inline-start: var(--zs-range-tick-pct, 0);
   top: 0;
   width: 2px;
   height: 6px;
@@ -1482,7 +1555,7 @@ textarea.zs-input-native {
 .zs-range-bubble {
   position: absolute;
   top: 0;
-  left: calc(var(--zs-range-pct, 0) * 100%);
+  inset-inline-start: calc(var(--zs-range-pct, 0) * 100%);
   min-width: 28px;
   padding: 1px 6px;
   text-align: center;
@@ -1493,6 +1566,24 @@ textarea.zs-input-native {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   pointer-events: none;
+}
+
+[dir="rtl"] .zs-range-tick,
+[dir="rtl"] .zs-range-tick--labeled {
+  transform: translateX(50%);
+}
+
+[dir="rtl"] .zs-range-bubble {
+  transform: translateX(50%);
+}
+
+.zs-field[dir="rtl"] .zs-range-tick,
+.zs-field[dir="rtl"] .zs-range-tick--labeled {
+  transform: translateX(50%);
+}
+
+.zs-field[dir="rtl"] .zs-range-bubble {
+  transform: translateX(50%);
 }
 
 /* validation state icons */
@@ -1524,7 +1615,7 @@ textarea.zs-input-native {
 .zs-field[data-zs-layout="floating"] .zs-field__label,
 .zs-field[data-zs-layout="outlined"] .zs-field__label {
   position: absolute;
-  left: calc(var(--zs-padding-x, 12px) + 2px);
+  inset-inline-start: calc(var(--zs-padding-x, 12px) + 2px);
   top: 50%;
   margin: 0;
   padding: 0 4px;

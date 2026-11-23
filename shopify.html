@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="modern">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZidanForm on Shopify — product page demo</title>
+  <meta name="description" content="A mock Shopify product page built with ZidanForm: variant combobox, quantity stepper, gift-wrap switch, tile radios, personalisation field and upload dropzone — plus the Liquid snippets to install it in a theme.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/shopify.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ZidanForm on Shopify — product page demo">
+  <meta property="og:description" content="Mock Shopify product form with variant combobox, quantity stepper, file upload and Liquid install snippets.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/shopify.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="plugin-core.css">
+  <link rel="stylesheet" href="plugin-theme.css">
+  <style>
+    :root {
+      --sp-bg: #f7f5f1;
+      --sp-card: #ffffff;
+      --sp-ink: #17181c;
+      --sp-muted: #6b6f76;
+      --sp-line: #e5e1da;
+      --sp-accent: #1f6f4a;
+      --sp-accent-soft: #e6f2ec;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--sp-bg);
+      color: var(--sp-ink);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.55;
+    }
+    a { color: var(--sp-accent); }
+    .sp-header {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 16px 24px; border-bottom: 1px solid var(--sp-line);
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .sp-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; text-decoration: none; color: inherit; }
+    .sp-brand span.mark {
+      width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
+      background: var(--sp-ink); color: #fff; font-size: 0.95rem;
+    }
+    .sp-brand small { display: block; font-weight: 500; color: var(--sp-muted); font-size: 0.72rem; }
+    .sp-nav { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.88rem; }
+    .sp-nav a { text-decoration: none; color: var(--sp-muted); }
+    .sp-nav a:hover { color: var(--sp-ink); }
+    .sp-nav a[aria-current="page"] { color: var(--sp-ink); font-weight: 600; }
+    .sp-main { max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
+    .sp-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; margin: 0 0 10px;
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--sp-accent); font-weight: 700;
+    }
+    .sp-eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .sp-hero h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.02em; }
+    .sp-hero p { margin: 0 0 24px; color: var(--sp-muted); max-width: 70ch; }
+    .sp-product {
+      display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr);
+      background: var(--sp-card); border: 1px solid var(--sp-line);
+      border-radius: 20px; padding: 20px; box-shadow: 0 14px 40px rgba(23, 24, 28, 0.06);
+    }
+    @media (min-width: 820px) { .sp-product { grid-template-columns: 1.05fr 1fr; padding: 26px; } }
+    .sp-shot {
+      border-radius: 14px; overflow: hidden; background:
+        radial-gradient(circle at 30% 20%, #dfeae3, transparent 55%),
+        linear-gradient(140deg, #e9e4da 0%, #f4efe7 55%, #e2ddd2 100%);
+      min-height: 320px; display: grid; place-items: center; padding: 24px;
+    }
+    .sp-shot svg { width: min(78%, 300px); height: auto; }
+    .sp-thumbs { display: flex; gap: 8px; margin-top: 12px; }
+    .sp-thumbs span {
+      flex: 1; aspect-ratio: 1; border-radius: 9px; border: 1px solid var(--sp-line);
+      background: linear-gradient(140deg, #f2ede4, #e6e0d4);
+    }
+    .sp-thumbs span:first-child { box-shadow: inset 0 0 0 2px var(--sp-accent); }
+    .sp-title { margin: 0 0 4px; font-size: 1.35rem; letter-spacing: -0.01em; }
+    .sp-price { margin: 0 0 4px; font-size: 1.1rem; font-weight: 700; }
+    .sp-price s { color: var(--sp-muted); font-weight: 400; margin-left: 8px; font-size: 0.9rem; }
+    .sp-stock {
+      display: inline-block; margin: 0 0 18px; padding: 3px 10px; border-radius: 999px;
+      background: var(--sp-accent-soft); color: var(--sp-accent); font-size: 0.76rem; font-weight: 600;
+    }
+    .sp-field { margin: 0 0 16px; }
+    .sp-field > label.sp-label { display: block; margin-bottom: 6px; font-size: 0.82rem; font-weight: 600; }
+    .sp-fieldset { border: 0; padding: 0; margin: 0 0 16px; }
+    .sp-fieldset legend { padding: 0; margin-bottom: 6px; font-size: 0.82rem; font-weight: 600; }
+    .sp-button {
+      width: 100%; padding: 14px 18px; border: 0; border-radius: 12px; cursor: pointer;
+      background: var(--sp-ink); color: #fff; font-size: 0.95rem; font-weight: 700;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .sp-button:hover { background: #000; transform: translateY(-1px); }
+    .sp-note { margin: 10px 0 0; font-size: 0.78rem; color: var(--sp-muted); }
+    .sp-payload {
+      margin: 14px 0 0; padding: 12px 14px; border-radius: 10px; background: #101216; color: #d7f5e3;
+      font: 0.78rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+      max-height: 220px; overflow: auto; white-space: pre-wrap;
+    }
+    .sp-section { margin-top: 42px; }
+    .sp-section h2 { margin: 0 0 6px; font-size: 1.3rem; letter-spacing: -0.01em; }
+    .sp-section > p { margin: 0 0 18px; color: var(--sp-muted); max-width: 75ch; }
+    .sp-grid { display: grid; gap: 16px; }
+    @media (min-width: 760px) { .sp-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .sp-card {
+      background: var(--sp-card); border: 1px solid var(--sp-line); border-radius: 16px; padding: 18px;
+    }
+    .sp-card h3 { margin: 0 0 8px; font-size: 0.95rem; }
+    .sp-card p { margin: 0 0 12px; color: var(--sp-muted); font-size: 0.84rem; }
+    .sp-card ol { margin: 0; padding-left: 18px; color: var(--sp-muted); font-size: 0.84rem; }
+    .sp-snippet { position: relative; margin: 0; }
+    .sp-snippet pre {
+      margin: 0; padding: 14px 14px; border-radius: 11px; background: #0f1115; color: #e7e9ee;
+      font: 0.76rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+      overflow: auto; max-height: 340px;
+    }
+    .sp-copy {
+      position: absolute; top: 8px; right: 8px; padding: 4px 9px; border-radius: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.22); background: rgba(255, 255, 255, 0.08);
+      color: #fff; font-size: 0.7rem; cursor: pointer;
+    }
+    .sp-copy:hover { background: rgba(255, 255, 255, 0.18); }
+    .sp-limits { display: grid; gap: 12px; }
+    @media (min-width: 760px) { .sp-limits { grid-template-columns: 1fr 1fr; } }
+    .sp-limits article { border-radius: 14px; padding: 16px 18px; border: 1px solid var(--sp-line); background: var(--sp-card); }
+    .sp-limits h3 { margin: 0 0 8px; font-size: 0.92rem; }
+    .sp-limits ul { margin: 0; padding-left: 18px; font-size: 0.84rem; color: var(--sp-muted); }
+    .sp-limits .yes h3 { color: var(--sp-accent); }
+    .sp-limits .no { background: #fff8ec; border-color: #f0e2c6; }
+    .sp-limits .no h3 { color: #9a6b14; }
+    .sp-footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--sp-line); color: var(--sp-muted); font-size: 0.82rem; }
+    .sp-footer a { color: inherit; }
+    .sp-skip {
+      position: absolute; left: -999px; top: 0; padding: 10px 14px; background: #fff; z-index: 10;
+    }
+    .sp-skip:focus { left: 12px; top: 12px; }
+  </style>
+</head>
+<body>
+  <a class="sp-skip" href="#product">Skip to product</a>
+
+  <header class="sp-header">
+    <a class="sp-brand" href="index.html">
+      <span class="mark" aria-hidden="true">Z</span>
+      <span>
+        ZidanForm
+        <small>Shopify demo · mock storefront</small>
+      </span>
+    </a>
+    <nav class="sp-nav" aria-label="Demos">
+      <a href="index.html">Main demo</a>
+      <a href="playground.html">Playground</a>
+      <a href="shopify.html" aria-current="page">Shopify</a>
+      <a href="docs/">Docs</a>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+    </nav>
+  </header>
+
+  <main class="sp-main">
+    <div class="sp-hero">
+      <p class="sp-eyebrow">Shopify theme demo</p>
+      <h1>A product page your theme could ship today</h1>
+      <p>
+        This page is plain HTML styled like a storefront. In a real theme the same markup lives in
+        a Liquid section, and the three files load through <code>asset_url</code> — no app and no
+        checkout override. (File uploads are the exception: they need an app proxy, covered
+        below.) Shopify does not allow custom scripts on the checkout, so cart, product, contact
+        and newsletter forms are the targets.
+      </p>
+    </div>
+
+    <div class="sp-product" id="product">
+      <div>
+        <div class="sp-shot" role="img" aria-label="Framed portrait poster product illustration">
+          <svg viewBox="0 0 240 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="14" y="14" width="212" height="272" rx="6" fill="#2f3a33"/>
+            <rect x="26" y="26" width="188" height="248" rx="3" fill="#f6f2ea"/>
+            <circle cx="120" cy="112" r="38" fill="#1f6f4a" opacity="0.85"/>
+            <path d="M70 250c8-52 34-78 50-78s42 26 50 78" fill="#1f6f4a" opacity="0.85"/>
+            <path d="M92 96c10-16 46-16 56 0" stroke="#f6f2ea" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sp-thumbs" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+
+      <div>
+        <h2 class="sp-title">Custom Portrait Poster</h2>
+        <p class="sp-price">$64.00 <s>$79.00</s></p>
+        <span class="sp-stock">In stock · ships in 3–5 days</span>
+
+        <form class="zidan-form" id="product-form" method="post" action="#" enctype="multipart/form-data" novalidate>
+          <div class="sp-field">
+            <label class="sp-label" for="size">Size</label>
+            <select id="size" name="id" class="zidan-select"
+                    data-zidan-options='{"mode":"combobox","placeholder":"Choose a size…"}' required>
+              <option value="">Choose a size…</option>
+              <option value="1001">A3 — 29.7 × 42 cm</option>
+              <option value="1002">A2 — 42 × 59.4 cm</option>
+              <option value="1003">A1 — 59.4 × 84.1 cm</option>
+              <option value="1004">60 × 90 cm</option>
+            </select>
+          </div>
+
+          <div class="sp-field">
+            <label class="sp-label" for="frame">Frame</label>
+            <select id="frame" name="properties[Frame]" class="zidan-select">
+              <option value="none">No frame</option>
+              <option value="oak">Natural oak</option>
+              <option value="black">Matte black</option>
+            </select>
+          </div>
+
+          <fieldset class="sp-fieldset zidan-field" data-zidan="radio-group" data-zidan-variant="tile">
+            <legend>Finish</legend>
+            <label><input type="radio" name="properties[Finish]" value="matte" checked> Matte</label>
+            <label><input type="radio" name="properties[Finish]" value="gloss"> Gloss</label>
+            <label><input type="radio" name="properties[Finish]" value="canvas"> Canvas</label>
+          </fieldset>
+
+          <div class="sp-field">
+            <label class="sp-label" for="quantity">Quantity</label>
+            <input id="quantity" type="number" name="quantity" value="1" min="1" max="20"
+                   data-zidan="input" data-zidan-stepper="stacked">
+          </div>
+
+          <div class="sp-field">
+            <label class="sp-label" for="engraving">Personalisation</label>
+            <input id="engraving" type="text" name="properties[Engraving]" maxlength="40"
+                   placeholder="Name or short message"
+                   data-zidan="input" data-zidan-counter="40" data-zidan-clear>
+          </div>
+
+          <div class="sp-field">
+            <label class="sp-label" for="artwork">Artwork upload</label>
+            <input id="artwork" type="file" name="properties[Artwork]" accept="image/*,.pdf"
+                   data-zidan="file" data-zidan-max-files="1" data-zidan-max-size-mb="8"
+                   data-zidan-title="Drop your artwork here"
+                   data-zidan-hint="Demo upload only. On Shopify, files need an app proxy — the hidden field pattern below shows how."
+                   data-zidan-simulate-upload="true">
+          </div>
+
+          <div class="sp-field">
+            <label>
+              <input type="checkbox" name="properties[Gift wrap]" value="Yes"
+                     data-zidan="checkbox" data-zidan-variant="switch"
+                     data-zidan-label="Gift wrap (+$4)">
+            </label>
+          </div>
+
+          <button class="sp-button" type="submit">Add to cart</button>
+          <p class="sp-note">
+            Demo only — the button captures the form instead of posting. In a theme this is a real
+            <code>form 'product'</code> or <code>/cart/add</code> submission.
+          </p>
+          <pre class="sp-payload" id="cart-payload" hidden aria-live="polite"></pre>
+        </form>
+      </div>
+    </div>
+
+    <section class="sp-section" aria-labelledby="install-title">
+      <h2 id="install-title">Install it in a Shopify theme</h2>
+      <p>
+        Upload the three files to the theme's <strong>Assets</strong> folder (Online Store → Themes
+        → Edit code, or <code>shopify theme push</code>), then reference them in
+        <code>layout/theme.liquid</code>. <code>asset_url</code> serves them from Shopify's CDN.
+        Place the CSS after the theme's base stylesheet so your overrides still win.
+      </p>
+      <div class="sp-grid cols-3">
+        <div class="sp-card">
+          <h3>1. theme.liquid</h3>
+          <p>Add the stylesheets and the script (defer keeps first paint fast).</p>
+          <div class="sp-snippet">
+            <button class="sp-copy" type="button" data-copy="liquid-head">Copy</button>
+            <pre id="liquid-head">{{ 'plugin-core.css' | asset_url | stylesheet_tag }}
+{{ 'plugin-theme.css' | asset_url | stylesheet_tag }}
+&lt;script src="{{ 'zidan-form.js' | asset_url }}" defer&gt;&lt;/script&gt;</pre>
+          </div>
+        </div>
+        <div class="sp-card">
+          <h3>2. Product section</h3>
+          <p>Liquid renders the variants; ZidanForm only upgrades the control.</p>
+          <div class="sp-snippet">
+            <button class="sp-copy" type="button" data-copy="liquid-product">Copy</button>
+            <pre id="liquid-product">&lt;form action="{{ routes.cart_add_url }}" method="post" class="zidan-form"&gt;
+  &lt;input type="hidden" name="form_type" value="product"&gt;
+  &lt;input type="hidden" name="utf8" value="✓"&gt;
+
+  &lt;select id="variant-select" name="id" class="zidan-select"
+          data-zidan-options='{"mode":"combobox"}'&gt;
+    {% for variant in product.variants %}
+      &lt;option value="{{ variant.id }}"
+        {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+        {% unless variant.available %}disabled{% endunless %}&gt;
+        {{ variant.title }} — {{ variant.price | money }}
+      &lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+
+  &lt;input type="number" name="quantity" value="1" min="1"
+         data-zidan="input" data-zidan-stepper="stacked"&gt;
+
+  &lt;button type="submit" name="add"&gt;Add to cart&lt;/button&gt;
+&lt;/form&gt;</pre>
+          </div>
+        </div>
+        <div class="sp-card">
+          <h3>3. Theme setting</h3>
+          <p>Expose the field theme in the theme editor with a section setting.</p>
+          <div class="sp-snippet">
+            <button class="sp-copy" type="button" data-copy="liquid-schema">Copy</button>
+            <pre id="liquid-schema">{% schema %}
+{
+  "name": "ZidanForm style",
+  "settings": [
+    {
+      "type": "select",
+      "id": "zidan_theme",
+      "label": "Field theme",
+      "options": [
+        {"value": "default", "label": "Default"},
+        {"value": "modern", "label": "Modern"},
+        {"value": "minimal", "label": "Minimal"},
+        {"value": "dark", "label": "Dark"},
+        {"value": "glass", "label": "Glass"}
+      ],
+      "default": "modern"
+    }
+  ]
+}
+{% endschema %}
+
+&lt;div data-zidan-theme="{{ section.settings.zidan_theme }}"&gt;
+  {% comment %} your form markup {% endcomment %}
+&lt;/div&gt;</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sp-section" aria-labelledby="limits-title">
+      <h2 id="limits-title">What Shopify allows</h2>
+      <p>Storefront themes are fully editable; the checkout is not.</p>
+      <div class="sp-limits">
+        <article class="yes">
+          <h3>Works in theme templates</h3>
+          <ul>
+            <li>Product forms: variant selects, quantity, line-item properties</li>
+            <li>Contact, newsletter and cart-note forms</li>
+            <li>Dawn-style themes: the real <code>&lt;select&gt;</code> keeps firing <code>change</code>, so price and availability stay in sync</li>
+            <li>Five themes and framework adapters through one data attribute</li>
+          </ul>
+        </article>
+        <article class="no">
+          <h3>Not available</h3>
+          <ul>
+            <li><strong>Checkout</strong> — custom scripts are blocked; use Checkout UI Extensions instead</li>
+            <li><strong>Shopify admin</strong> — Polaris is the UI kit there</li>
+            <li><strong>File uploads to cart/order</strong> — upload through an app proxy, then store the URL in a line-item property or cart attribute</li>
+            <li>Dawn's built-in variant picker owns its markup; replace it (or skip it) rather than layering both</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <footer class="sp-footer">
+      <p>
+        Back to <a href="index.html">the full demo</a>, <a href="playground.html">the playground</a>
+        or <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/html-and-wordpress.md">the static HTML &amp; WordPress cookbook</a>
+        (includes the Shopify section). Source:
+        <a href="https://github.com/akhtar1985/zidan-select">github.com/akhtar1985/zidan-select</a>.
+      </p>
+    </footer>
+  </main>
+
+  <script src="zidan-form.js"></script>
+  <script>
+    (function () {
+      var form = document.getElementById('product-form');
+      var payload = document.getElementById('cart-payload');
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var lines = [];
+        new FormData(form).forEach(function (value, key) {
+          if (typeof File !== 'undefined' && value instanceof File) {
+            if (!value.name && !value.size) return;   // untouched file input
+            value = 'File: ' + value.name + ' (' + value.size + ' bytes)';
+          }
+          lines.push(key + ' = ' + value);
+        });
+        payload.hidden = false;
+        payload.textContent = 'POST /cart/add\n' + lines.join('\n');
+      });
+
+      Array.prototype.forEach.call(document.querySelectorAll('.sp-copy'), function (button) {
+        button.addEventListener('click', function () {
+          var source = document.getElementById(button.getAttribute('data-copy'));
+          if (!source) return;
+          var text = source.textContent;
+          var done = function (ok) {
+            button.textContent = ok ? 'Copied' : 'Select manually';
+            setTimeout(function () { button.textContent = 'Copy'; }, 1600);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+          } else {
+            done(false);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

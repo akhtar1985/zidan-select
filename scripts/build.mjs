@@ -100,6 +100,7 @@ const variants = [
     dir: 'select',
     js: 'zidan-select.js',
     mjs: 'zidan-select.mjs',
+    dts: 'zidan-select.d.ts',
     core: 'plugin-select-core.css',
     theme: 'plugin-select-theme.css',
     jsSections: ['shared', 'shared2', 'select-defaults', 'select', 'factory'],
@@ -147,12 +148,47 @@ export const zidanSelect = core.zidanSelect;
 export const initZidanSelects = core.initZidanSelects;
 export const registerIcon = core.registerIcon;
 export default ZidanForm;
+`,
+    typesSource: `/**
+ * ZidanForm Select-only v${version} — type definitions.
+ * ${repo}
+ */
+export {
+  ZidanForm,
+  ZidanSelect,
+  zidanSelect,
+  initZidanSelects,
+  registerIcon
+} from '../../zidan-form';
+export type {
+  SelectMode,
+  SelectLayout,
+  Framework,
+  Theme,
+  Scrollbar,
+  ValidationState,
+  SelectItem,
+  SelectGroup,
+  SelectItemInput,
+  FetchContext,
+  FetchPage,
+  FetchResult,
+  FetchOptions,
+  SelectCallbacks,
+  SelectOptions,
+  SelectAsyncState,
+  ZidanFormStatic,
+  AutoInitTarget,
+  AutoInitConfig
+} from '../../zidan-form';
+export { default } from '../../zidan-form';
 `
   },
   {
     dir: 'file',
     js: 'zidan-file.js',
     mjs: 'zidan-file.mjs',
+    dts: 'zidan-file.d.ts',
     core: 'plugin-file-core.css',
     theme: 'plugin-file-theme.css',
     jsSections: ['shared', 'shared2', 'fields', 'file', 'factory'],
@@ -200,6 +236,39 @@ export const zidanField = core.zidanField;
 export const initZidanForms = core.initZidanForms;
 export const registerIcon = core.registerIcon;
 export default ZidanForm;
+`,
+    typesSource: `/**
+ * ZidanForm File-only v${version} — type definitions.
+ * ${repo}
+ */
+export {
+  ZidanForm,
+  ZidanFileUpload,
+  ZidanFieldBase,
+  zidanField,
+  initZidanForms,
+  registerIcon
+} from '../../zidan-form';
+export type {
+  Framework,
+  Theme,
+  FieldLayout,
+  ValidationState,
+  AsyncValidationContext,
+  AsyncRuleResult,
+  RuleResult,
+  FieldRule,
+  FieldMessages,
+  FieldOptions,
+  FileFieldOptions,
+  UploadContext,
+  UploadHandler,
+  UploadState,
+  ZidanFormStatic,
+  AutoInitTarget,
+  AutoInitConfig
+} from '../../zidan-form';
+export { default } from '../../zidan-form';
 `
   }
 ];
@@ -235,6 +304,7 @@ for (const variant of variants) {
   const jsPath = path.join(dir, variant.js);
   await fs.writeFile(jsPath, script, 'utf8');
   await fs.writeFile(path.join(dir, variant.mjs), variant.mjsSource, 'utf8');
+  await fs.writeFile(path.join(dir, variant.dts), variant.typesSource, 'utf8');
   await fs.writeFile(path.join(dir, variant.core), core, 'utf8');
   await fs.writeFile(path.join(dir, variant.theme), theme, 'utf8');
 
@@ -261,11 +331,31 @@ try {
       logLevel: 'silent'
     });
   }
+  for (const variant of variants) {
+    const dir = path.join(dist, variant.dir);
+    await esbuild.build({
+      entryPoints: [path.join(dir, variant.js)],
+      outfile: path.join(dir, variant.js.replace(/\.js$/, '.min.js')),
+      bundle: false,
+      minify: true,
+      target: ['es2019'],
+      legalComments: 'inline',
+      logLevel: 'silent'
+    });
+    for (const css of [variant.core, variant.theme]) {
+      await esbuild.build({
+        entryPoints: [path.join(dir, css)],
+        outfile: path.join(dir, css.replace(/\.css$/, '.min.css')),
+        minify: true,
+        logLevel: 'silent'
+      });
+    }
+  }
   minified = true;
 } catch (err) {
   if (err && err.code !== 'ERR_MODULE_NOT_FOUND') throw err;
 }
 
 console.log('built dist/ (' + assets.length + ' files + CJS entry)');
-console.log('built subset bundles: select/ (4 files), file/ (4 files)');
-console.log(minified ? 'minified copies written with esbuild' : 'esbuild not installed — skipped minified copies');
+console.log('built subset bundles: select/ (5 files), file/ (5 files)');
+console.log(minified ? 'minified copies written with esbuild (full + both subsets)' : 'esbuild not installed — skipped minified copies');

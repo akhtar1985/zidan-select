@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.2.4
+ * ZidanForm v2.3.0
  * Zero-dependency form enhancement library: select / combobox / tags,
  * checkboxes, switches, radio groups, file upload with drag & drop and
  * upload progress, text / number / phone / date / range inputs and textarea.
@@ -32,7 +32,7 @@
 })(typeof window !== 'undefined' ? window : this, function (global) {
   'use strict';
 
-  var VERSION = '2.2.4';
+  var VERSION = '2.3.0';
 
   // Loading the file twice (classic script + module wrapper, or two bundles)
   // must not replace the classes and orphan the live instances.
@@ -95,6 +95,24 @@
   function toArray(value) {
     if (value === null || value === undefined || value === '') return [];
     return Array.isArray(value) ? value.slice() : [value];
+  }
+
+  function isThenable(value) {
+    return !!(value && (typeof value === 'object' || typeof value === 'function') && typeof value.then === 'function');
+  }
+
+  /* true when the element renders right-to-left, following the nearest dir attribute */
+  function isRtl(element) {
+    if (!element) return false;
+    var host = element.closest ? element.closest('[dir]') : null;
+    var dir = host ? host.getAttribute('dir') : '';
+    if (!dir && doc && doc.documentElement) dir = doc.documentElement.getAttribute('dir') || '';
+    if (dir) return String(dir).toLowerCase() === 'rtl';
+    try {
+      return !!(global.getComputedStyle && global.getComputedStyle(element).direction === 'rtl');
+    } catch (err) {
+      return false;
+    }
   }
 
   function isElement(value) {
@@ -292,9 +310,9 @@
   }
 
   function registerIcon(name, markup) {
-    if (!name || typeof markup !== 'string') return ZidanSelect;
-    ICON_REGISTRY[String(name)] = markup;
-    return ZidanSelect;
+    if (typeof ZidanSelect !== 'undefined' && (!name || typeof markup !== 'string')) return ZidanSelect;
+    if (name && typeof markup === 'string') ICON_REGISTRY[String(name)] = markup;
+    return typeof ZidanSelect !== 'undefined' ? ZidanSelect : ZidanForm;
   }
 
   /* ---------------- field options (JS options + data-* attributes) ---------------- */
@@ -352,6 +370,7 @@
     fileType: 'This file type is not allowed.',
     fileSize: 'This file is too large.',
     fileCount: 'Too many files.',
+    pending: 'Checking…',
     generic: 'Please check this field.'
   };
 
@@ -377,6 +396,20 @@
     } else if (v.badInput || v.customError) key = 'badInput';
     if (!key) return input.validationMessage || map.generic;
     return fillTemplate(map[key] || FIELD_MESSAGES[key] || map.generic, vars);
+  }
+
+  var NATIVE_VALIDITY_FLAGS = ['valueMissing', 'typeMismatch', 'patternMismatch', 'rangeUnderflow',
+    'rangeOverflow', 'stepMismatch', 'tooShort', 'tooLong', 'badInput', 'fileMissing'];
+
+  /* customError is the library mirroring its own message onto the input, so re-reading it
+     would turn a pending/custom check into a phantom native constraint failure */
+  function hasNativeValidityError(input) {
+    var v = input && input.validity;
+    if (!v) return false;
+    for (var i = 0; i < NATIVE_VALIDITY_FLAGS.length; i += 1) {
+      if (v[NATIVE_VALIDITY_FLAGS[i]]) return true;
+    }
+    return false;
   }
 
   /* @zidan-build:phone */
@@ -616,6 +649,10 @@
     minChars: 0,
     allowFreeText: false,
     searchValues: true,
+    fetchPageSize: 0,          // >0 enables paged fetchOptions({items, hasMore})
+    autoLoadMore: true,
+    cacheResults: true,
+    loadMoreText: 'Load more',
     /* tags */
     maxTags: Infinity,
     minTagLength: 1,
@@ -644,6 +681,7 @@
     onClose: null,
     onTagAdd: null,
     onTagRemove: null,
+    onLoadMore: null,
     onError: null
   };
 
@@ -684,6 +722,14 @@
     this.rendered = [];
     this.listeners = new Map();
     this.asyncController = null;
+    this.asyncItems = null;
+    this.asyncQuery = '';
+    this.asyncPage = 0;
+    this.hasMore = false;
+    this.fetchingMore = false;
+    this.loadMoreError = null;
+    this._fetchCache = Object.create(null);
+    this._cacheKeys = [];
     this.timer = null;
     this.savedInputText = '';
     this.disabled_ = !!this.opts.disabled;
@@ -760,6 +806,10 @@
     merged.validation = pick('validation', d.zidanValidation || null);
     merged.options = pick('options', null);
     merged.suggestions = pick('suggestions', null);
+    merged.fetchPageSize = pick('fetchPageSize', d.zidanFetchPageSize ? parseInt(d.zidanFetchPageSize, 10) || 0 : DEFAULTS.fetchPageSize);
+    merged.autoLoadMore = pick('autoLoadMore', readBoolAttr(d.zidanAutoLoadMore, DEFAULTS.autoLoadMore));
+    merged.cacheResults = pick('cacheResults', readBoolAttr(d.zidanCacheResults, DEFAULTS.cacheResults));
+    merged.loadMoreText = pick('loadMoreText', d.zidanLoadMoreText || DEFAULTS.loadMoreText);
 
     // carry over every explicitly-passed option (callbacks, custom classes, ...)
     Object.keys(options).forEach(function (key) {
@@ -906,6 +956,7 @@
     rootEl.setAttribute('data-zs-framework', this.framework);
     rootEl.setAttribute('data-zs-mode', this.mode);
     rootEl.setAttribute('data-zs-scrollbar', opts.scrollbar || 'default');
+    if (isRtl(this.el)) rootEl.setAttribute('dir', 'rtl');
     rootEl.classList.add('zs-root--' + this.mode);
     if (this.mode === 'tags') rootEl.classList.add('zs-root--multiple');
     if (opts.multiple && this.mode === 'select') rootEl.classList.add('zs-root--multiple');
@@ -1341,8 +1392,11 @@
     var query = this.query.trim();
     var source = this._sourceItems();
     var isCaseSensitive = !!this.opts.caseSensitive;
+    var remote = typeof this.opts.fetchOptions === 'function' && !!this.asyncItems;
 
     if (!query) return source.slice();
+    // the server already filtered this page; only an explicit filterOption re-checks it
+    if (remote && typeof this.opts.filterOption !== 'function') return source.slice();
 
     return source.filter(function (item) {
       if (typeof self.opts.filterOption === 'function') {
@@ -1440,6 +1494,20 @@
           self.dropdown.appendChild(option);
         });
       }
+
+      if (this.hasMore) {
+        var more = el('button', 'zs-more', { type: 'button' });
+        if (this.fetchingMore) {
+          more.appendChild(el('span', 'zs-spinner', { 'aria-hidden': 'true' }));
+          more.appendChild(el('span', null, null, this.opts.loadingText || 'Loading…'));
+          more.disabled = true;
+          more.setAttribute('aria-busy', 'true');
+        } else {
+          more.textContent = this.loadMoreError || this.opts.loadMoreText;
+          if (this.loadMoreError) more.classList.add('zs-more--error');
+        }
+        this.dropdown.appendChild(more);
+      }
     }
 
     this.dropdown.scrollTop = scrollTop;
@@ -1493,6 +1561,8 @@
     this.opened = true;
     this.query = '';
     this.activeIndex = -1;
+    this.loadMoreError = null;
+    this.fetchingMore = false;
     if (this.mode === 'combobox' || (this.mode === 'select' && this.opts.searchable)) {
       this.savedInputText = this.input.value;
     }
@@ -1504,7 +1574,7 @@
     this.emit('open', { instance: this });
     this.call('onOpen', { instance: this });
 
-    if (typeof this.opts.fetchOptions === 'function' && !this.asyncItems) {
+    if (typeof this.opts.fetchOptions === 'function' && (!this.asyncItems || this.asyncQuery !== '')) {
       this._fetch('');
     } else if (this.mode !== 'tags') {
       var first = this._firstEnabledIndex();
@@ -1532,6 +1602,15 @@
     this.dropdown.removeAttribute('data-zs-visible');
     this.activeIndex = -1;
     this.query = '';
+    if (typeof this.opts.fetchOptions === 'function') {
+      if (this.asyncController) {
+        this.asyncController.abort();
+        this.asyncController = null;
+      }
+      this.loading = false;
+      this.fetchingMore = false;
+      this.loadMoreError = null;
+    }
     this._render();
     this.emit('close', { instance: this });
     this.call('onClose', { instance: this });
@@ -1601,54 +1680,205 @@
 
   /* ---------------- async loading ---------------- */
 
-  ZidanSelect.prototype._fetch = function (query) {
+  ZidanSelect.prototype._cacheKey = function (query, page) {
+    return query + '\u0000' + page;
+  };
+
+  ZidanSelect.prototype._cacheGet = function (query, page) {
+    if (!this.opts.cacheResults) return null;
+    var key = this._cacheKey(query, page);
+    var entry = this._fetchCache[key];
+    if (!entry) return null;
+    var index = this._cacheKeys.indexOf(key);
+    if (index !== -1) {
+      this._cacheKeys.splice(index, 1);
+      this._cacheKeys.push(key);
+    }
+    return entry;
+  };
+
+  ZidanSelect.prototype._cacheSet = function (query, page, entry) {
+    if (!this.opts.cacheResults) return;
+    var key = this._cacheKey(query, page);
+    this._fetchCache[key] = entry;
+    var index = this._cacheKeys.indexOf(key);
+    if (index !== -1) this._cacheKeys.splice(index, 1);
+    this._cacheKeys.push(key);
+    var limit = ZidanSelect.cacheLimit || 50;
+    while (this._cacheKeys.length > limit) {
+      delete this._fetchCache[this._cacheKeys.shift()];
+    }
+  };
+
+  ZidanSelect.prototype.clearCache = function () {
+    this._fetchCache = Object.create(null);
+    this._cacheKeys = [];
+    return this;
+  };
+
+  ZidanSelect.prototype._readFetchPayload = function (result, page, pageSize) {
+    var rows = result;
+    var hasMore = false;
+    if (result && !Array.isArray(result) && typeof result === 'object') {
+      rows = result.items || result.options || result.results || [];
+      if (result.hasMore !== undefined) {
+        hasMore = !!result.hasMore;
+      } else if (result.total !== undefined && pageSize > 0) {
+        hasMore = (page + 1) * pageSize < Number(result.total);
+      } else if (pageSize > 0) {
+        hasMore = toArray(rows).length >= pageSize;
+      }
+    } else if (pageSize > 0) {
+      hasMore = toArray(rows).length >= pageSize;
+    }
+    return { items: this._normalizeItems(rows), hasMore: hasMore };
+  };
+
+  ZidanSelect.prototype._applyCachedPage = function (query, page, append) {
+    var cached = this._cacheGet(query, page);
+    if (!cached) return false;
+    this.loading = false;
+    this.fetchingMore = false;
+    this.loadMoreError = null;
+    this.error = null;
+    this.asyncQuery = query;
+    this.asyncPage = page;
+    this.asyncItems = append ? (this.asyncItems || []).concat(cached.items) : cached.items.slice();
+    this.hasMore = !!cached.hasMore;
+    if (!append) this.activeIndex = -1;
+    this._renderDropdown();
+    return true;
+  };
+
+  /* page 0 replaces the result set; later pages append (remote pagination) */
+  ZidanSelect.prototype._fetch = function (query, page, append) {
     var self = this;
-    if (typeof this.opts.fetchOptions !== 'function') return;
+    if (typeof this.opts.fetchOptions !== 'function') return Promise.resolve([]);
     query = query === undefined || query === null ? '' : String(query);
+    page = page === undefined || page === null ? 0 : parseInt(page, 10) || 0;
+    append = !!append;
+    if (append && (this.loading || this.fetchingMore || !this.hasMore)) return Promise.resolve([]);
+
+    var cached = this._cacheGet(query, page);
+    if (cached && (append ? this.hasMore : true)) {
+      if (this.asyncController) this.asyncController.abort();
+      this.asyncController = null;
+      this._applyCachedPage(query, page, append);
+      return Promise.resolve(this._visibleItems());
+    }
 
     if (this.asyncController) this.asyncController.abort();
     var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
     this.asyncController = controller;
-    this.loading = true;
+    this.loading = !append;
+    this.fetchingMore = append;
     this.error = null;
+    this.loadMoreError = null;
+    if (!append) {
+      this.hasMore = false;
+      this.asyncPage = 0;
+      this.announce(this.opts.loadingText);
+    }
     this._renderDropdown();
-    this.announce(this.opts.loadingText);
 
+    var settleFetch;
+    var fetchPromise = new Promise(function (resolve) { settleFetch = resolve; });
+    if (controller && controller.signal.addEventListener) {
+      controller.signal.addEventListener('abort', function () { settleFetch([]); });
+    }
+
+    if (append) {
+      this.emit('load-more', { page: page, query: query, instance: this });
+      this.call('onLoadMore', { page: page, query: query, instance: this });
+    }
+
+    var pageSize = this.opts.fetchPageSize > 0 ? this.opts.fetchPageSize : 0;
     var done = function (result) {
+      if (controller && controller.signal.aborted) return;
       self.loading = false;
-      self.asyncItems = self._normalizeItems(result || []);
-      self.activeIndex = -1;
+      self.fetchingMore = false;
+      self.loadMoreError = null;
+      self.error = null;
+      var payload = self._readFetchPayload(result, page, pageSize);
+      self.asyncQuery = query;
+      self.asyncPage = page;
+      self.asyncItems = append ? (self.asyncItems || []).concat(payload.items) : payload.items;
+      self.hasMore = payload.hasMore;
+      self._cacheSet(query, page, { items: payload.items, hasMore: payload.hasMore });
+      if (!append) self.activeIndex = -1;
       self._renderDropdown();
       var count = self._visibleItems().length;
       self.announce(count + ' result' + (count === 1 ? '' : 's'));
+      settleFetch(self._visibleItems());
     };
     var fail = function (err) {
+      if (err && err.name === 'AbortError') {
+        settleFetch([]);
+        return;
+      }
+      if (controller && controller.signal.aborted) {
+        settleFetch([]);
+        return;
+      }
+      var message = (err && err.message) || 'Unable to load options.';
       self.loading = false;
-      self.error = { message: (err && err.message) || 'Unable to load options.' };
-      self.emit('error', { error: err, message: self.error.message, instance: self });
-      self.call('onError', { error: err, message: self.error.message, instance: self });
+      self.fetchingMore = false;
+      if (append) self.loadMoreError = message;
+      else self.error = { message: message };
+      self.emit('error', { error: err, message: message, instance: self });
+      self.call('onError', { error: err, message: message, instance: self });
       self._renderDropdown();
+      settleFetch([]);
     };
 
     try {
-      var result = this.opts.fetchOptions(query, controller ? controller.signal : undefined);
+      var result = this.opts.fetchOptions(query, controller ? controller.signal : undefined, {
+        page: page,
+        pageSize: pageSize,
+        append: append,
+        instance: this
+      });
       if (result && typeof result.then === 'function') {
-        result.then(function (data) {
-          if (controller && controller.signal.aborted) return;
-          done(data);
-        }).catch(function (err) {
-          if (err && err.name === 'AbortError') return;
-          if (controller && controller.signal.aborted) return;
-          fail(err);
-        });
+        result.then(done).catch(fail);
       } else {
         done(result);
       }
     } catch (err) {
-      if (err && err.name === 'AbortError') return;
       fail(err);
     }
-    void self;
+    return fetchPromise;
+  };
+
+  ZidanSelect.prototype.loadMore = function () {
+    if (typeof this.opts.fetchOptions !== 'function') return this;
+    if (this.loading || this.fetchingMore || !this.hasMore) return this;
+    return this._fetch(this.asyncQuery || this.query || '', this.asyncPage + 1, true);
+  };
+
+  ZidanSelect.prototype.hasMoreResults = function () {
+    return !!this.hasMore;
+  };
+
+  ZidanSelect.prototype.getAsyncState = function () {
+    return {
+      query: this.asyncQuery,
+      page: this.asyncPage,
+      hasMore: !!this.hasMore,
+      loading: !!this.loading,
+      fetchingMore: !!this.fetchingMore,
+      error: this.error ? this.error.message : null
+    };
+  };
+
+  ZidanSelect.prototype.refreshOptions = function () {
+    this.clearCache();
+    if (typeof this.opts.fetchOptions !== 'function') return this;
+    this.asyncItems = null;
+    this.asyncQuery = '';
+    this.asyncPage = 0;
+    this.hasMore = false;
+    if (this.opened) return this._fetch(this.query, 0, false);
+    return this;
   };
 
   /* ---------------- tags ---------------- */
@@ -2005,6 +2235,13 @@
     };
 
     this.onDropdownClick = function (event) {
+      var more = event.target.closest ? event.target.closest('.zs-more') : null;
+      if (more) {
+        event.preventDefault();
+        event.stopPropagation();
+        self.loadMore();
+        return;
+      }
       var option = event.target.closest ? event.target.closest('[data-zs-option]') : null;
       if (!option) return;
       event.preventDefault();
@@ -2028,6 +2265,13 @@
       if (self.opened) self._position();
     };
 
+    this.onDropdownScroll = function () {
+      if (!self.opts.autoLoadMore || !self.opened || !self.hasMore) return;
+      if (self.loading || self.fetchingMore) return;
+      var node = self.dropdown;
+      if (node.scrollTop + node.clientHeight >= node.scrollHeight - 24) self.loadMore();
+    };
+
     this.debouncedFetch = debounce(function (query) { self._fetch(query); }, this.opts.debounce);
 
     if (this.el && this.el.addEventListener) {
@@ -2048,6 +2292,7 @@
     this.clearBtn.addEventListener('click', this.onClearClick);
     this.dropdown.addEventListener('mousedown', this.onDropdownMouseDown);
     this.dropdown.addEventListener('click', this.onDropdownClick);
+    this.dropdown.addEventListener('scroll', this.onDropdownScroll);
     doc.addEventListener('pointerdown', this.onDocumentPointerDown, true);
     global.addEventListener('resize', this.onWindowResize);
   };
@@ -2135,6 +2380,10 @@
       }
     }
     this.asyncItems = null;
+    this.asyncPage = 0;
+    this.hasMore = false;
+    this.loadMoreError = null;
+    this.clearCache();
     this.activeIndex = -1;
     this._render();
     this._syncNative();
@@ -2267,6 +2516,7 @@
 
     if (this.debouncedFetch) this.debouncedFetch.cancel();
     if (this.asyncController) this.asyncController.abort();
+    this.clearCache();
     if (this.resizeObserver) this.resizeObserver.disconnect();
     if (this.form && this.onFormReset) this.form.removeEventListener('reset', this.onFormReset);
 
@@ -2351,6 +2601,9 @@
     this.validation = null;
     this.errorMessage = null;
     this.errorEl = null;
+    this.pending = false;
+    this._asyncToken = 0;
+    this._asyncController = null;
     this.destroyed = false;
     this._listeners = [];
     this._cleanups = [];
@@ -2391,6 +2644,7 @@
     root.id = this.id + '-field';
     root.setAttribute('data-zs-kind', kind);
     root.classList.add('zs-field--' + kind);
+    if (isRtl(this.el)) root.setAttribute('dir', 'rtl');
     this._applyScope(root);
     this.root = root;
     return root;
@@ -2441,15 +2695,116 @@
     var targets = this.validationTargets();
     for (var i = 0; i < targets.length; i += 1) {
       var input = targets[i];
-      if (input && input.validity && !input.validity.valid) return this._messageFor(input);
+      if (hasNativeValidityError(input)) return this._messageFor(input);
     }
     return '';
   };
 
-  ZidanFieldBase.prototype._evaluateError = function () {
+  /* subclasses forward this context to async validators so they can abort */
+  ZidanFieldBase.prototype._asyncSignal = function () {
+    return this._asyncController ? this._asyncController.signal : undefined;
+  };
+
+  ZidanFieldBase.prototype._asyncContext = function () {
+    return { signal: this._asyncSignal(), field: this, instance: this };
+  };
+
+  /* text inputs override this to block form submission while pending/invalid */
+  ZidanFieldBase.prototype._setCustomValidity = function () {};
+
+  ZidanFieldBase.prototype._abortAsync = function () {
+    this._asyncToken += 1;
+    if (this._asyncController) {
+      try { this._asyncController.abort(); } catch (err) { /* already settled */ }
+      this._asyncController = null;
+    }
+  };
+
+  /* returns { pending: promise } for async checks, otherwise { error, custom } */
+  ZidanFieldBase.prototype._evaluate = function () {
+    this._abortAsync();
+    if (typeof AbortController !== 'undefined') this._asyncController = new AbortController();
     var custom = this._customError ? this._customError() : '';
-    if (custom) return typeof custom === 'string' ? custom : this.opts.messages.generic;
-    return this._nativeError();
+    if (isThenable(custom)) return { pending: custom };
+    this._asyncController = null;
+    if (custom) {
+      return { error: typeof custom === 'string' ? custom : this.opts.messages.generic, custom: true };
+    }
+    var native = this._nativeError();
+    return native ? { error: native, custom: false } : {};
+  };
+
+  ZidanFieldBase.prototype._applyValidity = function (message, show, custom) {
+    this._setCustomValidity(message && custom ? message : '');
+    if (message) {
+      if (show) this.setError(message);
+      else this.setValidation('invalid');
+      return this;
+    }
+    if (this.errorMessage) this.setError(null);
+    if (this.validation === 'invalid') this.setValidation(null);
+    return this;
+  };
+
+  ZidanFieldBase.prototype._setPending = function (on) {
+    on = !!on;
+    this.pending = on;
+    if (this.root) {
+      this.root.classList.toggle('zs-field--pending', on);
+      if (on) {
+        this.root.setAttribute('data-zs-validation', 'pending');
+      } else if (this.root.getAttribute('data-zs-validation') === 'pending') {
+        this.root.removeAttribute('data-zs-validation');
+      }
+    }
+    this.validationTargets().forEach(function (input) {
+      if (!input || !input.setAttribute) return;
+      if (on) input.setAttribute('aria-busy', 'true');
+      else input.removeAttribute('aria-busy');
+    }, this);
+    if (on) {
+      if (this.errorMessage) this.setError(null);
+      this._setCustomValidity(this.opts.messages.pending || FIELD_MESSAGES.pending);
+    } else {
+      this._setCustomValidity('');
+    }
+    return this;
+  };
+
+  ZidanFieldBase.prototype._runAsync = function (promise) {
+    var self = this;
+    if (self.destroyed) return Promise.resolve(false);
+    var token = self._asyncToken;
+    self._setPending(true);
+    return Promise.resolve(promise).then(function (value) {
+      if (self.destroyed || token !== self._asyncToken) return false;
+      self._asyncController = null;
+      self._setPending(false);
+      var message = '';
+      if (value === false) message = self.opts.messages.generic;
+      else if (typeof value === 'string') message = value;
+      else if (value instanceof Error) message = value.message || self.opts.messages.generic;
+      self._applyValidity(message, self.touched || self.opts.alwaysValidate || !!message, true);
+      if (!message && self.opts.showValidState) self.setValidation('valid');
+      self.emit('async-validation', { valid: !message, message: message });
+      return !message;
+    }, function (err) {
+      if (self.destroyed || token !== self._asyncToken || (err && err.name === 'AbortError')) return false;
+      self._asyncController = null;
+      self._setPending(false);
+      var message = (err && (err.message || err.error)) || self.opts.messages.generic;
+      if (typeof message !== 'string') message = self.opts.messages.generic;
+      self._applyValidity(message, true, true);
+      self.emit('async-validation', { valid: false, message: message, error: err });
+      return false;
+    });
+  };
+
+  /* convenience: resolves with the async result, false when sync-invalid, true when sync-valid */
+  ZidanFieldBase.prototype.checkAsync = function () {
+    var result = this._evaluate();
+    if (result.pending) return this._runAsync(result.pending);
+    return Promise.resolve(!result.error);
   };
 
   ZidanFieldBase.prototype._syncDescribedBy = function () {
@@ -2517,8 +2872,12 @@
     this.validationTargets().forEach(function (input) {
       self.on(input, 'invalid', function () {
         self.touched = true;
-        var message = self._evaluateError();
-        if (message) self.setError(message);
+        var result = self._evaluate();
+        if (result.pending) {
+          self._runAsync(result.pending);
+          return;
+        }
+        if (result.error) self.setError(result.error);
         else self.setValidation('invalid');
       });
       self.on(input, 'blur', function () {
@@ -2531,8 +2890,10 @@
     this.on(this.formEl, 'reset', function () {
       global.setTimeout(function () {
         if (self.destroyed) return;
+        self._abortAsync();
         self.touched = false;
         self.errorMessage = null;
+        self._setPending(false);
         if (self.errorEl) {
           self.errorEl.textContent = '';
           self.errorEl.hidden = true;
@@ -2548,25 +2909,27 @@
   };
 
   ZidanFieldBase.prototype._mirrorValidity = function () {
-    var error = this._evaluateError();
-    if (error) {
-      if (this.touched || this.opts.alwaysValidate) this.setError(error);
-      else this.setValidation('invalid');
+    var result = this._evaluate();
+    if (result.pending) {
+      this._runAsync(result.pending);
       return this;
     }
-    if (this.errorMessage) this.setError(null);
-    if (this.validation === 'invalid') this.setValidation(null);
+    if (this.pending) this._setPending(false);
+    this._applyValidity(result.error || '', this.touched || this.opts.alwaysValidate, result.custom);
     return this;
   };
 
+  /* returns a boolean for sync rules and a Promise<boolean> when an async rule runs */
   ZidanFieldBase.prototype.validate = function () {
     this.touched = true;
-    var error = this._evaluateError();
-    if (error) {
-      this.setError(error);
+    var result = this._evaluate();
+    if (result.pending) return this._runAsync(result.pending);
+    if (this.pending) this._setPending(false);
+    if (result.error) {
+      this._applyValidity(result.error, true, result.custom);
       return false;
     }
-    this.setError(null);
+    this._applyValidity('', true, false);
     if (this.opts.showValidState) this.setValidation('valid');
     return true;
   };
@@ -2594,6 +2957,10 @@
 
   ZidanFieldBase.prototype.getValidation = function () {
     return this.validation;
+  };
+
+  ZidanFieldBase.prototype.isPending = function () {
+    return this.pending;
   };
 
   ZidanFieldBase.prototype.getValue = function () {
@@ -2650,6 +3017,7 @@
   ZidanFieldBase.prototype.destroy = function () {
     if (this.destroyed) return this;
     this.destroyed = true;
+    this._abortAsync();
     this._listeners.forEach(function (entry) {
       entry[0].removeEventListener(entry[1], entry[2], entry[3]);
     });
@@ -2835,9 +3203,10 @@
 
   ZidanCheckbox.prototype._customError = function () {
     if (typeof this.opts.validate === 'function') {
-      var result = this.opts.validate(this.el.checked, this);
+      var result = this.opts.validate(this.el.checked, this, this._asyncContext());
       if (result === false) return this.opts.messages.generic;
       if (typeof result === 'string' && result) return result;
+      if (isThenable(result)) return result;
     }
     return '';
   };
@@ -3012,9 +3381,10 @@
 
   ZidanRadioGroup.prototype._customError = function () {
     if (typeof this.opts.validate === 'function') {
-      var result = this.opts.validate(this.getValue(), this);
+      var result = this.opts.validate(this.getValue(), this, this._asyncContext());
       if (result === false) return this.opts.messages.generic;
       if (typeof result === 'string' && result) return result;
+      if (isThenable(result)) return result;
     }
     return '';
   };
@@ -3346,8 +3716,19 @@
     };
   };
 
+  ZidanFileUpload.prototype._setCustomValidity = function (message) {
+    if (this.el && this.el.setCustomValidity) this.el.setCustomValidity(message || '');
+  };
+
   ZidanFileUpload.prototype._customError = function () {
-    return this.fileError || '';
+    if (this.fileError) return this.fileError;
+    if (typeof this.opts.validate === 'function') {
+      var result = this.opts.validate(this.getFiles(), this, this._asyncContext());
+      if (result === false) return this.opts.messages.generic;
+      if (typeof result === 'string' && result) return result;
+      if (isThenable(result)) return result;
+    }
+    return '';
   };
 
   ZidanFileUpload.prototype._validate = function () {
@@ -3384,7 +3765,9 @@
     }
 
     this.fileError = error;
-    if (input.setCustomValidity) input.setCustomValidity(error || '');
+    if (input.setCustomValidity) {
+      input.setCustomValidity(this.pending ? (messages.pending || FIELD_MESSAGES.pending) : (error || ''));
+    }
     var shown = error || this._nativeError();
     if (shown) this.setError(shown);
     else if (this.errorMessage) this.setError(null);
@@ -3611,6 +3994,14 @@
     var self = this;
     if (!this.hasUploader) return this;
     if (!this._validate()) return this;
+    var check = this.validate();
+    if (isThenable(check)) {
+      return check.then(function (valid) {
+        if (valid && !self.destroyed) self.getFiles().forEach(function (file) { self.uploadFile(file); });
+        return valid;
+      });
+    }
+    if (!check) return this;
     this.getFiles().forEach(function (file) { self.uploadFile(file); });
     return this;
   };
@@ -4260,17 +4651,13 @@
   ZidanTextField.prototype.constructor = ZidanTextField;
 
   // phone/date/custom rules must also block native form submission
-  ZidanTextField.prototype._mirrorValidity = function () {
+  ZidanTextField.prototype._setCustomValidity = function (message) {
     var input = this.el;
-    if (input.setCustomValidity) {
-      var custom = this._customError();
-      var message = typeof custom === 'string' ? custom : (custom ? this.opts.messages.generic : '');
-      if (input.__zidanCustomError !== message) {
-        input.setCustomValidity(message);
-        input.__zidanCustomError = message;
-      }
+    if (!input.setCustomValidity) return;
+    if (input.__zidanCustomError !== message) {
+      input.setCustomValidity(message);
+      input.__zidanCustomError = message;
     }
-    return ZidanFieldBase.prototype._mirrorValidity.call(this);
   };
 
   ZidanTextField.prototype._formatRangeValue = function (value) {
@@ -4313,7 +4700,7 @@
     values.forEach(function (value) {
       var pct = bounds.max > bounds.min ? (value - bounds.min) / (bounds.max - bounds.min) : 0;
       var tick = el('span', 'zs-range-tick');
-      tick.style.left = (clamp(pct, 0, 1) * 100).toFixed(2) + '%';
+      tick.style.setProperty('--zs-range-tick-pct', (clamp(pct, 0, 1) * 100).toFixed(2) + '%');
       if (this.rangeTickLabels) {
         var label = this.rangeLabelMap && this.rangeLabelMap[value] !== undefined
           ? this.rangeLabelMap[value]
@@ -4514,16 +4901,18 @@
         if (blocked) return messages.dateDisabled;
       }
       if (typeof opts.validateDate === 'function') {
-        var dateResult = opts.validateDate(input.value, date, this);
+        var dateResult = opts.validateDate(input.value, date, this, this._asyncContext());
         if (dateResult === false) return messages.date;
         if (typeof dateResult === 'string' && dateResult) return dateResult;
+        if (isThenable(dateResult)) return dateResult;
       }
     }
 
     if (typeof opts.validate === 'function') {
-      var result = opts.validate(input.value, this);
+      var result = opts.validate(input.value, this, this._asyncContext());
       if (result === false) return messages.generic;
       if (typeof result === 'string' && result) return result;
+      if (isThenable(result)) return result;
     }
     return '';
   };
@@ -4753,6 +5142,7 @@
     ZidanSelect.frameworks = FRAMEWORKS.slice();
     ZidanSelect.scrollbars = SCROLLBARS.slice();
     ZidanSelect.defaults = DEFAULTS;
+    ZidanSelect.cacheLimit = 50;
     ZidanSelect.get = function (target) {
       var element = typeof target === 'string' ? doc.querySelector(target) : target;
       if (!isElement(element)) return null;

@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.2.4 — plugin-theme.css
+ * ZidanForm v2.3.0 — plugin-theme.css
  * Design tokens, paint, state colours, preset themes (default, modern,
  * minimal, dark, glass), the five select layouts and framework adapters
  * (bootstrap, tailwind, bulma, foundation).
@@ -103,7 +103,8 @@
   /* range */
   --zs-range-track: #e7eaf0;
   --zs-range-fill: var(--zs-primary);
-  --zs-range-gradient: linear-gradient(90deg, #f59e0b, #ef4444, #8b5cf6);
+  --zs-range-angle: 90deg;
+  --zs-range-gradient: linear-gradient(var(--zs-range-angle, 90deg), #f59e0b, #ef4444, #8b5cf6);
   --zs-range-thumb-bg: #ffffff;
   --zs-range-thumb-border: var(--zs-primary);
   --zs-range-tick: #c3c9d2;
@@ -132,6 +133,15 @@
   --zs-z-index: 1055;
   --zs-disabled-opacity: 0.55;
   --zs-shadow: none;
+}
+
+[dir="rtl"] .zs-root,
+[dir="rtl"] .zs-field,
+[dir="rtl"] .zs-radio-group,
+.zs-root[dir="rtl"],
+.zs-field[dir="rtl"],
+.zs-radio-group[dir="rtl"] {
+  --zs-range-angle: 270deg;
 }
 
 /* @zidan-build:select-paint */
@@ -279,6 +289,19 @@
 .zs-root .zs-spinner {
   border-color: var(--zs-border-color);
   border-top-color: var(--zs-primary);
+}
+
+.zs-root .zs-more {
+  border-top-color: var(--zs-border-color);
+  color: var(--zs-primary);
+}
+
+.zs-root .zs-more:hover:not([disabled]) {
+  background: var(--zs-primary-soft);
+}
+
+.zs-root .zs-more--error {
+  color: var(--zs-border-color-invalid);
 }
 
 /* floating label mask */
@@ -883,6 +906,12 @@
   color: var(--zs-border-color-invalid);
 }
 
+/* async validation spinner */
+.zs-field--pending::after {
+  border-color: var(--zs-border-color);
+  border-inline-end-color: var(--zs-primary);
+}
+
 .zs-check-desc,
 .zs-radio-desc {
   color: var(--zs-text-muted);
@@ -912,7 +941,7 @@
 
 /* phone */
 .zs-phone-country {
-  border-right-color: var(--zs-phone-border);
+  border-inline-end-color: var(--zs-phone-border);
 }
 
 .zs-phone-country:focus-visible {
@@ -951,7 +980,7 @@
   height: 6px;
   border-radius: 999px;
   background:
-    linear-gradient(to right,
+    linear-gradient(var(--zs-range-angle, 90deg),
       var(--zs-range-fill) 0 var(--zs-range-fill),
       var(--zs-range-track) var(--zs-range-fill) 100%);
 }
@@ -1506,13 +1535,14 @@
   background-image: none;
   appearance: none;
   -webkit-appearance: none;
-  padding-right: var(--zs-padding-x);
+  padding-inline-end: var(--zs-padding-x);
 }
 
 .zs-root[data-zs-framework="bootstrap"] .zs-chip {
   font-size: 0.8125rem;
   font-weight: 500;
-  padding: 0.2rem 0.4rem 0.2rem 0.55rem;
+  padding-block: 0.2rem;
+  padding-inline: 0.55rem 0.4rem;
 }
 
 .zs-root[data-zs-framework="bootstrap"] .zs-chip.badge {

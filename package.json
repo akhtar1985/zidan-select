@@ -1,6 +1,6 @@
 {
   "name": "zidan-select",
-  "version": "2.2.4",
+  "version": "2.3.0",
   "description": "Zero-dependency form enhancement library: select/combobox/tags, checkboxes, switches, radio groups, drag & drop file upload with progress, text/number/phone/date/range inputs and textarea with input icons and steppers. Split core/theme CSS, 5 themes, 11 layouts, framework adapters. Load only the select-only or file-only build if that is all you need, or the full form bundle to enhance every input at once.",
   "keywords": [
     "select",
@@ -36,31 +36,44 @@
   },
   "main": "zidan-form.js",
   "module": "zidan-form.mjs",
+  "types": "zidan-form.d.ts",
   "unpkg": "zidan-form.js",
   "jsdelivr": "zidan-form.js",
   "style": "plugin-theme.css",
   "exports": {
     ".": {
+      "types": "./zidan-form.d.ts",
       "import": "./zidan-form.mjs",
       "require": "./zidan-form.js",
       "default": "./zidan-form.js"
     },
     "./select": {
+      "types": "./dist/select/zidan-select.d.ts",
       "import": "./dist/select/zidan-select.mjs",
       "require": "./dist/select/zidan-select.js",
       "default": "./dist/select/zidan-select.js"
     },
+    "./select/min": "./dist/select/zidan-select.min.js",
     "./select/css/core": "./dist/select/plugin-select-core.css",
     "./select/css/theme": "./dist/select/plugin-select-theme.css",
+    "./select/css/core.min": "./dist/select/plugin-select-core.min.css",
+    "./select/css/theme.min": "./dist/select/plugin-select-theme.min.css",
     "./file": {
+      "types": "./dist/file/zidan-file.d.ts",
       "import": "./dist/file/zidan-file.mjs",
       "require": "./dist/file/zidan-file.js",
       "default": "./dist/file/zidan-file.js"
     },
+    "./file/min": "./dist/file/zidan-file.min.js",
     "./file/css/core": "./dist/file/plugin-file-core.css",
     "./file/css/theme": "./dist/file/plugin-file-theme.css",
+    "./file/css/core.min": "./dist/file/plugin-file-core.min.css",
+    "./file/css/theme.min": "./dist/file/plugin-file-theme.min.css",
+    "./min": "./dist/zidan-form.min.js",
     "./css/core": "./plugin-core.css",
     "./css/theme": "./plugin-theme.css",
+    "./css/core.min": "./dist/plugin-core.min.css",
+    "./css/theme.min": "./dist/plugin-theme.min.css",
     "./core.css": "./plugin-core.css",
     "./theme.css": "./plugin-theme.css",
     "./package.json": "./package.json"
@@ -68,6 +81,7 @@
   "files": [
     "zidan-form.js",
     "zidan-form.mjs",
+    "zidan-form.d.ts",
     "plugin-core.css",
     "plugin-theme.css",
     "dist",
@@ -86,6 +100,7 @@
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs",
     "test": "node scripts/test.mjs",
+    "types": "tsc -p tsconfig.types.json",
     "lint": "node --check zidan-form.js && node --check demo.js && node --check playground.js && node --check zidan-form.mjs"
   },
   "engines": {
@@ -93,5 +108,10 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.5",
+    "jsdom": "^24.1.3",
+    "typescript": "^5.9.3"
   }
 }

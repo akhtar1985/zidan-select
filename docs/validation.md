@@ -16,7 +16,8 @@ native validation, `FormData` and third-party validators keep working.
 | `input.setCustomValidity()` | plugin | phone length, weekends, blocked dates, custom `validate`, file limits |
 | `aria-invalid` | plugin (`setValidation`) or your validator | screen readers and CSS |
 | `.zs-field--invalid` / `.zs-field--valid` | plugin | theme states |
-| `data-zs-validation="valid\|invalid"` | plugin | attribute-based styling |
+| `.zs-field--pending` / `aria-busy` | plugin | in-flight async rule |
+| `data-zs-validation="valid\|invalid\|pending"` | plugin | attribute-based styling |
 
 The plugin marks a field invalid when:
 
@@ -62,6 +63,40 @@ Object.assign(ZidanForm.messages, {
   fileSize: '“{name}” is {size}; the limit is {limit}.'
 });
 ```
+
+## Async rules
+
+`validate` and `validateDate` may return a Promise. The field then:
+
+1. shows a `.zs-field--pending` spinner and `aria-busy="true"`,
+2. writes `messages.pending` (`Checking…`) into native validity, so `form.checkValidity()`
+   and any submit handler wait for the answer,
+3. aborts the previous request when the value changes and ignores stale resolutions,
+4. resolves `validate()` to `true`/`false` instead of a boolean,
+5. emits `zidan:async-validation` with `{ valid, message }`.
+
+Validators receive an `AbortSignal` as their third argument (after `value`/`checked` and the
+field) and may reject — the rejection message is shown as the error.
+
+```js
+const email = zidanField('#email', {
+  alwaysValidate: true,
+  showValidState: true,
+  validate: async (value, field, { signal }) => {
+    if (!value) return true;
+    const res = await fetch('/api/check-email?e=' + encodeURIComponent(value), { signal });
+    const { taken } = await res.json();
+    return taken ? 'This address is already registered.' : true;
+  }
+});
+
+await email.validate();      // Promise<boolean>
+email.isPending();           // true while the request is in flight
+```
+
+Submission is blocked while pending because the native control carries the pending message;
+listen for `zidan:async-validation` if you need your own spinner or toast. `destroy()` aborts
+any in-flight check, and `field.reset()` clears the pending state.
 
 ## The hidden-input trap
 

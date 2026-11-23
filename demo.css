@@ -1096,6 +1096,62 @@ fieldset.demo-fieldset {
   background: var(--accent-soft);
 }
 
+/* API lab */
+.lab-coverage {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.lab-coverage li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.85rem;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.lab-coverage .is-ok {
+  color: #067647;
+  font-weight: 650;
+}
+
+.lab-coverage .is-missing {
+  color: #b42318;
+  font-weight: 650;
+}
+
+.lab-log {
+  max-height: 300px;
+}
+
+.lab-results .is-fail b {
+  color: #ff9e9e;
+}
+
+.lab-method-title {
+  margin: 18px 0 8px;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lab-method-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lab-method-btn {
+  padding: 6px 10px;
+  font-size: 0.78rem;
+}
+
+
 
 .theme-preview[data-zs-theme="dark"] {
   background: #0f131c;

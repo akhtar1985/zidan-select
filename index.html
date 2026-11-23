@@ -105,6 +105,7 @@
     </a>
     <nav class="header-nav" aria-label="Project links">
       <a href="playground.html">Playground</a>
+      <a href="shopify.html">Shopify demo</a>
       <a href="#builds">Builds</a>
       <a href="#compare">Compare</a>
       <a href="#faq">FAQ</a>
@@ -124,7 +125,7 @@
 
   <main id="demo-app" class="wrap">
     <section class="hero">
-      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.2 · zero dependencies · full or subset builds</p>
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.3 · zero dependencies · full or subset builds</p>
       <h1>Every form control, <span>one small library</span>.</h1>
       <p>
         ZidanForm upgrades native inputs in place — select, checkbox, switch, radio, file upload
@@ -176,64 +177,64 @@
           <a class="build-pick" href="#build-select">
             <strong>Only custom select dropdowns</strong>
             <span>Load the select-only JS plus its core and theme CSS. The rest of the page stays untouched — no full bundle.</span>
-            <em>≈95 kB JS</em>
+            <em>≈104 kB JS</em>
           </a>
           <a class="build-pick" href="#build-file">
             <strong>Only file uploads</strong>
             <span>Load the file-only JS plus its core and theme CSS and leave every other input as it is.</span>
-            <em>≈76 kB JS</em>
+            <em>≈82 kB JS</em>
           </a>
           <a class="build-pick" href="#build-full">
             <strong>Every input in the form</strong>
             <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
-            <em>≈194 kB JS</em>
+            <em>≈208 kB JS</em>
           </a>
         </div>
       </div>
       <div class="grid-3">
         <article class="card build-card" id="build-full">
-          <h3>Full build <span class="build-size">≈194 kB JS</span></h3>
+          <h3>Full build <span class="build-size">≈208 kB JS</span></h3>
           <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
           <p class="build-direct">
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/zidan-form.js">JS</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/zidan-form.min.js">JS min</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-core.css">core CSS</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-theme.css">theme CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/zidan-form.js">JS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/zidan-form.min.js">JS min</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/plugin-core.css">core CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/plugin-theme.css">theme CSS</a>
           </p>
           <div class="snippet-block snippet-block--inline">
-            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-core.min.css"&gt;
-&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-theme.min.css"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/zidan-form.min.js"&gt;&lt;/script&gt;</code></pre>
+            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/plugin-core.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/plugin-theme.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/zidan-form.min.js"&gt;&lt;/script&gt;</code></pre>
           </div>
         </article>
         <article class="card build-card" id="build-select">
-          <h3>Select-only <span class="build-size">≈95 kB JS</span></h3>
+          <h3>Select-only <span class="build-size">≈104 kB JS</span></h3>
           <p>Select, combobox, tags and multi-select — everything the select family needs.</p>
           <p class="build-direct">
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.js">JS</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.min.js">JS min</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-core.css">core CSS</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-theme.css">theme CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.js">JS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.min.js">JS min</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-core.css">core CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-theme.css">theme CSS</a>
           </p>
           <div class="snippet-block snippet-block--inline">
-            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-core.min.css"&gt;
-&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-theme.min.css"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.min.js"&gt;&lt;/script&gt;</code></pre>
+            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-core.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-theme.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.min.js"&gt;&lt;/script&gt;</code></pre>
           </div>
         </article>
         <article class="card build-card" id="build-file">
-          <h3>File-only <span class="build-size">≈76 kB JS</span></h3>
+          <h3>File-only <span class="build-size">≈82 kB JS</span></h3>
           <p>Dropzone, picker and inline file upload with progress, cancel and previews.</p>
           <p class="build-direct">
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.js">JS</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.min.js">JS min</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-core.css">core CSS</a>
-            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-theme.css">theme CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.js">JS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.min.js">JS min</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-core.css">core CSS</a>
+            <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-theme.css">theme CSS</a>
           </p>
           <div class="snippet-block snippet-block--inline">
-            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-core.min.css"&gt;
-&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-theme.min.css"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.min.js"&gt;&lt;/script&gt;</code></pre>
+            <pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-core.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-theme.min.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.min.js"&gt;&lt;/script&gt;</code></pre>
           </div>
         </article>
       </div>
@@ -322,6 +323,7 @@
         <button type="button" role="tab" id="tab-check" aria-controls="panel-check" aria-selected="false" tabindex="-1" data-tab="check">Checkbox &amp; Radio</button>
         <button type="button" role="tab" id="tab-file" aria-controls="panel-file" aria-selected="false" tabindex="-1" data-tab="file">File upload</button>
         <button type="button" role="tab" id="tab-inputs" aria-controls="panel-inputs" aria-selected="false" tabindex="-1" data-tab="inputs">Inputs &amp; textarea</button>
+        <button type="button" role="tab" id="tab-lab" aria-controls="panel-lab" aria-selected="false" tabindex="-1" data-tab="lab">API lab</button>
         <button type="button" role="tab" id="tab-themes" aria-controls="panel-themes" aria-selected="false" tabindex="-1" data-tab="themes">Theme showcase</button>
       </div>
 
@@ -588,9 +590,10 @@ window.ZIDAN_FORM_CONFIG = { targets: ['#cms-country'] };</code></pre>
   loadingText: 'Searching…',
   clearText: 'Clear selection',
 
-  /* Async combobox */
-  // fetchOptions: function (query, signal) {
-  //   return fetch('/api/movies?q=' + encodeURIComponent(query), { signal: signal })
+  /* Async combobox — return items, or { items, hasMore } for pagination */
+  // fetchPageSize: 10,
+  // fetchOptions: function (query, signal, context) {
+  //   return fetch('/api/movies?q=' + encodeURIComponent(query) + '&page=' + context.page, { signal: signal })
   //     .then(function (response) { return response.json(); });
   // },
   debounce: 250,
@@ -623,6 +626,25 @@ window.ZIDAN_FORM_CONFIG = { targets: ['#cms-country'] };</code></pre>
                 <p class="direct-hint">Ctrl/⌘ + Enter runs the code. The select-only build accepts
                   the same object; load that build <em>instead of</em> the full bundle, never both.</p>
               </div>
+            </div>
+          </div>
+          <div class="card" id="remote-demo" style="grid-column:1 / -1">
+            <h3>Remote pagination &amp; cache</h3>
+            <p>Simulated server with 47 people, five per page. Open the list, scroll to the bottom
+              or press <strong>Load more</strong>; typing filters on the “server” and pages are
+              cached until you call <code>clearCache()</code> or <code>refreshOptions()</code>.</p>
+            <select id="remote-people" name="owner"></select>
+            <p id="remote-status" class="direct-hint" aria-live="polite">Open the list to load page 1.</p>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>zidanSelect('#owner', {
+  fetchPageSize: 5,
+  fetchOptions: (query, signal, { page, pageSize }) =>
+    fetch('/api/people?q=' + encodeURIComponent(query) + '&amp;page=' + page, { signal })
+      .then(r =&gt; r.json())          // { items: [{ value, label }], hasMore }
+});
+
+owner.loadMore();          owner.hasMoreResults();
+owner.getAsyncState();     owner.refreshOptions();   owner.clearCache();</code></pre>
             </div>
           </div>
         </div>
@@ -958,6 +980,152 @@ window.ZIDAN_FORM_CONFIG = {
 };</code></pre>
             </div>
           </div>
+          <div class="card" id="async-validation-demo" style="grid-column:1 / -1">
+            <h3>Async validation</h3>
+            <p>When <code>validate</code> returns a Promise the field shows a spinner, sets
+              <code>aria-busy</code>, writes the pending message into native validity (so submit
+              waits), aborts stale requests and ignores late answers. Try
+              <code>ada@example.com</code> or <code>grace@example.com</code> — the fake server
+              checks for 900 ms.</p>
+            <form id="async-form" novalidate style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+              <input id="async-email" type="email" name="email" autocomplete="email" style="flex:1 1 240px">
+              <button type="submit" class="btn btn-primary">Check &amp; submit</button>
+            </form>
+            <p id="async-result" class="direct-hint" aria-live="polite"></p>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>zidanField('#email', {
+  validate: async (value, field, { signal }) =&gt; {
+    const res = await fetch('/api/check-email?e=' + encodeURIComponent(value), { signal });
+    const { taken } = await res.json();
+    return taken ? 'This address is already registered.' : true;
+  }
+});
+// field.validate() resolves true/false · field.isPending() · zidan:async-validation</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= API LAB ================= -->
+      <section class="tab-panel" id="panel-lab" role="tabpanel" aria-labelledby="tab-lab" tabindex="0" hidden>
+        <div class="panel-head">
+          <h2>API lab — every option, callback, method and event</h2>
+          <p>This panel is a live test harness, not a screenshot. The coverage board counts the
+            documented select options, field options, callbacks, public instance methods and
+            <code>zidan:*</code> events that are configured or wired here. <strong>Run all
+            self-tests</strong> calls every method once, exercises every event with a real
+            interaction and reports pass/fail per method.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Coverage board</h3>
+            <p class="form-status" id="lab-coverage" role="status" aria-live="polite"></p>
+            <ul class="lab-coverage" id="lab-coverage-list"></ul>
+            <div class="event-toolbar">
+              <button type="button" class="btn btn-primary" id="lab-selftest">Run all self-tests</button>
+              <button type="button" class="btn" id="lab-clear">Clear results</button>
+            </div>
+            <ol class="event-log lab-log" id="lab-results" aria-live="polite"></ol>
+          </div>
+          <div class="card">
+            <h3>Callback log</h3>
+            <p>Every option callback configured by this lab writes here — <code>onInit</code>,
+              <code>onSelect</code>, <code>onTagAdd</code>, <code>onUploadProgress</code>,
+              <code>onPhoneCountry</code> and the rest — with its real payload.</p>
+            <ol class="event-log lab-log" id="lab-log" aria-live="polite"></ol>
+          </div>
+          <div class="card">
+            <h3>Select options</h3>
+            <p>A combobox wired with every select option: rendering hooks, text overrides,
+              scrollbar, custom classes, validation and all nine select callbacks. The second
+              select stays disabled until the <code>enable()</code> self-test runs.</p>
+            <select id="lab-select">
+              <option value="starter">Starter</option>
+              <option value="pro">Pro</option>
+              <option value="team">Team</option>
+              <option value="enterprise" disabled>Enterprise (locked)</option>
+            </select>
+            <p style="margin-top:16px"><select id="lab-disabled" disabled>
+              <option>Disabled by the disabled option</option>
+              <option>Second option</option>
+            </select></p>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>zidanSelect('#lab-select', {
+  mode: 'combobox', layout: 'floating-label',
+  filterOption: …, renderOption: …,
+  renderSelected: …, customClasses: …,
+  onSelect, onOpen, onClose, …
+});</code></pre>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Tags &amp; multi options</h3>
+            <p>Tag rules (<code>minTagLength</code>, <code>maxTags</code>, delimiters,
+              <code>commitOnTab</code> / <code>commitOnBlur</code>, <code>valueDelimiter</code>)
+              and the three tag rendering hooks. Multi-select shows <code>renderSelected</code>.</p>
+            <select id="lab-tags" multiple>
+              <option>Alpha</option>
+              <option>Beta</option>
+              <option>Gamma</option>
+            </select>
+            <p style="margin-top:16px"><select id="lab-multi" multiple>
+              <option value="one">One</option>
+              <option value="two">Two</option>
+              <option value="three">Three</option>
+            </select></p>
+          </div>
+          <div class="card">
+            <h3>Remote pagination options</h3>
+            <p><code>fetchOptions</code> + <code>fetchPageSize</code>, scroll auto-load,
+              cache, custom <code>loadMoreText</code>, <code>onLoadMore</code> and
+              <code>onError</code>. Query <em>err</em> to see the retryable error state.</p>
+            <select id="lab-remote"></select>
+            <p class="form-status" id="lab-remote-status" role="status" aria-live="polite"></p>
+          </div>
+          <div class="card" id="lab-methods-card">
+            <h3>Instance methods</h3>
+            <p>One button per public method. Each button calls the real method, then logs its
+              return value. The self-test above runs the same list automatically.</p>
+            <div id="lab-method-groups"></div>
+          </div>
+          <div class="card">
+            <h3>Text, password, email &amp; textarea</h3>
+            <input id="lab-text" type="text">
+            <p style="margin-top:14px"><input id="lab-password" type="password"></p>
+            <p style="margin-top:14px"><input id="lab-email" type="email"></p>
+            <p style="margin-top:14px"><textarea id="lab-note"></textarea></p>
+            <p class="form-status" id="lab-text-status" role="status" aria-live="polite"></p>
+          </div>
+          <div class="card">
+            <h3>Range, stepper, phone &amp; date</h3>
+            <input id="lab-range" type="range" min="0" max="100" value="40">
+            <p><output id="lab-range-output"></output></p>
+            <p style="margin-top:14px"><input id="lab-stepper" type="number" min="0" max="100" value="10"></p>
+            <p style="margin-top:14px"><input id="lab-phone" type="tel"></p>
+            <p style="margin-top:14px"><input id="lab-date" type="date"></p>
+            <p class="form-status" id="lab-phone-status" role="status" aria-live="polite"></p>
+          </div>
+          <div class="card">
+            <h3>Checkbox, switch &amp; radio</h3>
+            <input id="lab-check" type="checkbox">
+            <p style="margin-top:14px"><input id="lab-switch" type="checkbox"></p>
+            <fieldset id="lab-radio" style="margin-top:14px">
+              <legend>Lab radio group</legend>
+              <label><input type="radio" name="lab-radio" value="a"> Option A</label>
+              <label><input type="radio" name="lab-radio" value="b"> Option B</label>
+              <label><input type="radio" name="lab-radio" value="c"> Option C</label>
+            </fieldset>
+          </div>
+          <div class="card">
+            <h3>File upload options</h3>
+            <p>The first input uses a local custom uploader (type <code>fail</code> in the file
+              name to see the error state). The second is the visual simulation pipeline. The
+              third is configured with <code>uploadUrl</code> and never sends automatically.</p>
+            <input id="lab-upload" type="file" multiple>
+            <p style="margin-top:14px"><input id="lab-upload-sim" type="file"></p>
+            <p style="margin-top:14px"><input id="lab-upload-xhr" type="file"></p>
+            <div id="lab-probe-host" hidden></div>
+          </div>
         </div>
       </section>
 
@@ -1012,6 +1180,26 @@ window.ZIDAN_FORM_CONFIG = {
               <textarea rows="2" placeholder="Textarea…" data-zidan="textarea" data-zidan-label="Notes"></textarea>
             </div>
           </div>
+        </div>
+
+        <div class="card" id="rtl-demo" style="margin-top:16px">
+          <h3>RTL &amp; logical layout</h3>
+          <p>Roots read <code>dir</code> from the nearest ancestor. Padding, clear buttons,
+            switch knobs, select chevrons and range ticks mirror; <code>--zs-range-angle</code>
+            flips the gradient without extra JavaScript.</p>
+          <div dir="rtl" lang="ar"
+               style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));align-items:start">
+            <select data-zidan-select="combobox" data-zidan-label="إطار العمل" data-zidan-placeholder="ابحث…">
+              <option value="">ابحث…</option>
+              <option>رياكت</option><option>فيو</option><option>سفيلت</option><option>أسترو</option>
+            </select>
+            <input type="text" data-zidan="input" data-zidan-label="الاسم" data-zidan-clear="true" value="ليلى">
+            <label><input type="checkbox" checked data-zidan="checkbox" data-zidan-variant="switch"
+                          data-zidan-label="الإشعارات"> الإشعارات</label>
+            <input type="range" min="0" max="100" value="60" data-zidan="input" data-zidan-label="المستوى"
+                   data-zidan-range-ticks="5" data-zidan-output="#rtl-range-out">
+          </div>
+          <p class="form-status">القيمة: <output id="rtl-range-out">60</output></p>
         </div>
 
         <details class="options-details">
@@ -1273,5 +1461,6 @@ window.ZIDAN_FORM_CONFIG = {
 
   <script src="zidan-form.js"></script>
   <script src="demo.js"></script>
+  <script src="lab.js"></script>
 </body>
 </html>

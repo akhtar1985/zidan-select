@@ -28,9 +28,9 @@ bundle.
 
 | Build | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- |
-| Full — every control | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-theme.css) |
-| Select-only — ≈95 kB | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-theme.css) |
-| File-only — ≈76 kB | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-theme.css) |
+| Full — every control | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/plugin-theme.css) |
+| Select-only — ≈104 kB | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-theme.css) |
+| File-only — ≈82 kB | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
 [Select-only and file-only builds](#select-only-and-file-only-builds); the
@@ -47,9 +47,9 @@ the pinned version:
 
 | Build | JS (min) | CSS (min) |
 | --- | --- | --- |
-| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/zidan-form.min.js) | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-core.min.css) + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-theme.min.css) |
-| Select-only | [zidan-select.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.min.js) | [plugin-select-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-core.min.css) + [plugin-select-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-theme.min.css) |
-| File-only | [zidan-file.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.min.js) | [plugin-file-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-core.min.css) + [plugin-file-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-theme.min.css) |
+| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/zidan-form.min.js) | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/plugin-core.min.css) + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/plugin-theme.min.css) |
+| Select-only | [zidan-select.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.min.js) | [plugin-select-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-core.min.css) + [plugin-select-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-theme.min.css) |
+| File-only | [zidan-file.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.min.js) | [plugin-file-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-core.min.css) + [plugin-file-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-theme.min.css) |
 
 - **One file of JS** — `zidan-form.js` (classic script, UMD-ish) + `zidan-form.mjs` (ESM wrapper).
 - **Split CSS** — `plugin-core.css` (structure only) and `plugin-theme.css` (tokens, presets, skins).
@@ -69,6 +69,12 @@ the pinned version:
   with click-to-deselect; file `dropzone · button · avatar · gallery · compact`.
 - **Upload API** — `simulateUpload`, custom `upload()` handler, XHR `uploadUrl`, progress,
   cancel, retry, `getUploadState()`, per-file `renderFile` hook.
+- **Async validation (2.3)** — Promise-returning rules with a pending spinner, abort on
+  change, stale-result guards and native submit blocking.
+- **Remote pagination (2.3)** — paged `fetchOptions`, cached pages, load-more button and
+  scroll auto-load with a retryable error state.
+- **RTL & TypeScript (2.3)** — logical-property layout with mirrored transforms, plus
+  hand-written declarations for the full and subset builds.
 - WAI-ARIA labels, focus management, keyboard support throughout, `prefers-reduced-motion`.
 
 ---
@@ -87,7 +93,10 @@ the same two stylesheets and no dependencies.
 | Number stepper & range skins | **3 stepper layouts, 3 range skins** | — | — | — | — |
 | File upload variants & progress | **Dropzone, button, avatar, gallery, compact** | — | — | — | — |
 | Text input utilities | **Clear, reveal, prefix/suffix, counter** | — | — | — | — |
-| Built-in validation rules | **Every type, date rules, validation icons** | — | — | — | — |
+| Built-in validation rules | **Every type, date rules, async Promise rules, validation icons** | — | — | — | — |
+| Remote / paged option loading | **Yes — cached, load-more, scroll auto-load** | AJAX adapter | — | `load()` callback | — |
+| RTL layout | **Yes, logical properties** | Yes | Yes | Yes | Partial |
+| TypeScript declarations | **Yes, full + both subsets** | Community | Bundled | Bundled | Bundled |
 | Split structure / theme CSS | **Yes** | Partial | Partial | Partial | Partial |
 | Select-only / file-only builds | **Yes, with matching CSS** | Core is select-only | Core is select + text | Core is select-only | Core is select-only |
 | Validation coexistence tested | **Native, jQuery Validation, JustValidate, Parsley** | — | — | — | — |
@@ -106,9 +115,10 @@ the same two stylesheets and no dependencies.
 - **Opt-in and reversible** — enhance only `data-zidan*` controls; `destroy()` restores markup.
 - **No build step** — classic script, ESM wrapper and plain CSS.
 
-**Trade-offs:** smaller community than Select2, no React/Vue component package, and advanced
-remote-search plugins are better served by Select2 or Tom Select. Full matrix, honest
-limitations and migration notes: **[`docs/comparison.md`](docs/comparison.md)**.
+**Trade-offs:** smaller community than Select2, no React/Vue component package, and for very
+complex comboboxes (tokenized multi-search, drag-reorder tag editors) Select2 or Tom Select
+still have deeper ecosystems. Full matrix, honest limitations and migration notes:
+**[`docs/comparison.md`](docs/comparison.md)**.
 
 ---
 
@@ -128,7 +138,7 @@ limitations and migration notes: **[`docs/comparison.md`](docs/comparison.md)**.
 12. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
 13. [Build & publish](#build--publish)
 14. [Browser support](#browser-support)
-15. [What's new in 2.1–2.2](#whats-new-in-2122)
+15. [What's new in 2.1–2.3](#whats-new-in-213)
 16. [Migrating from 1.x](#migrating-from-1x)
 
 ---
@@ -153,6 +163,10 @@ Deep links open the matching tab:
 
 The page also has a live **event console** (below the tabs) that shows every `zidan:*` event as
 you interact, and the **Embed & share** tab for copying snippets.
+
+A mock **Shopify product page** — variant combobox, quantity stepper, gift-wrap switch, tile
+radios, upload dropzone and the Liquid install snippets — runs at
+<https://akhtar1985.github.io/zidan-select/shopify.html>.
 
 ---
 
@@ -211,17 +225,17 @@ override presets.
 | `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase (not shipped logic). |
 | `playground.html`, `playground.css`, `playground.js` | Per-field option builder with live preview and copyable HTML / JS output (not shipped logic). |
 | `robots.txt`, `sitemap.xml` | Crawler directives and the public page list for GitHub Pages (not shipped on npm). |
-| `docs/` | Comparison, options, validation, frameworks, theming and build guides. |
+| `docs/` | Comparison, options, validation, frameworks, theming, build and the static HTML/WordPress cookbook. |
 
 Copyable URLs for the published files (pin the version in production):
 
-- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/zidan-form.js>
-- `zidan-form.min.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/zidan-form.min.js>
-- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/zidan-form.mjs>
-- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-core.css>
-- `plugin-core.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-core.min.css>
-- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-theme.css>
-- `plugin-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/plugin-theme.min.css>
+- `zidan-form.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/zidan-form.js>
+- `zidan-form.min.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/zidan-form.min.js>
+- `zidan-form.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/zidan-form.mjs>
+- `plugin-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/plugin-core.css>
+- `plugin-core.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/plugin-core.min.css>
+- `plugin-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/plugin-theme.css>
+- `plugin-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/plugin-theme.min.css>
 - npm package — <https://www.npmjs.com/package/zidan-select>
 - Source — <https://github.com/akhtar1985/zidan-select>
 
@@ -242,27 +256,27 @@ exactly like the full build.
 
 Copyable CDN URLs (pin the version):
 
-- `zidan-select.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.js>
-- `zidan-select.min.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.min.js>
-- `zidan-select.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.mjs>
-- `plugin-select-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-core.css>
-- `plugin-select-core.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-core.min.css>
-- `plugin-select-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-theme.css>
-- `plugin-select-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-theme.min.css>
-- `zidan-file.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.js>
-- `zidan-file.min.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.min.js>
-- `zidan-file.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.mjs>
-- `plugin-file-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-core.css>
-- `plugin-file-core.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-core.min.css>
-- `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-theme.css>
-- `plugin-file-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-theme.min.css>
+- `zidan-select.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.js>
+- `zidan-select.min.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.min.js>
+- `zidan-select.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.mjs>
+- `plugin-select-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-core.css>
+- `plugin-select-core.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-core.min.css>
+- `plugin-select-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-theme.css>
+- `plugin-select-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-theme.min.css>
+- `zidan-file.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.js>
+- `zidan-file.min.js` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.min.js>
+- `zidan-file.mjs` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.mjs>
+- `plugin-file-core.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-core.css>
+- `plugin-file-core.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-core.min.css>
+- `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-theme.css>
+- `plugin-file-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-theme.min.css>
 
-Select / combobox / tags only (≈95 kB JS, ≈12 kB core CSS, ≈32 kB theme CSS):
+Select / combobox / tags only (≈104 kB JS, ≈12 kB core CSS, ≈32 kB theme CSS):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-core.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/plugin-select-theme.css">
-<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-core.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-theme.css">
+<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.js"></script>
 <script>
   // auto-init covers [data-zidan-select], class="zidan-select", zidan-form scopes
   // and ZIDAN_FORM_CONFIG targets; JS-only options:
@@ -270,12 +284,12 @@ Select / combobox / tags only (≈95 kB JS, ≈12 kB core CSS, ≈32 kB theme CS
 </script>
 ```
 
-File upload only (≈76 kB JS, ≈9 kB core CSS, ≈35 kB theme CSS):
+File upload only (≈82 kB JS, ≈9 kB core CSS, ≈34 kB theme CSS):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-core.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/plugin-file-theme.css">
-<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/file/zidan-file.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-core.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-theme.css">
+<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.js"></script>
 <script>
   zidanField('#upload', { variant: 'dropzone', upload: '/api/files' });
 </script>
@@ -296,6 +310,10 @@ targets apply.
 ---
 
 ## Quick start
+
+> Building a plain HTML page, a WordPress site or a page-builder embed? The
+> [static HTML & WordPress cookbook](docs/html-and-wordpress.md) has complete copy-paste pages
+> (full, select-only, file-only, ID/class targeting, `functions.php` enqueue).
 
 ```html
 <link rel="stylesheet" href="plugin-core.css">
@@ -404,7 +422,7 @@ argument to `zidanSelect()`:
 </select>
 
 <!-- select-only build; use zidan-form.js for every control -->
-<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.2.4/dist/select/zidan-select.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.js"></script>
 <script>
   const picker = zidanSelect('#mymov', {
     mode: 'combobox',            // 'select' | 'combobox' | 'tags'
@@ -552,13 +570,14 @@ keys, Home/End and Space keep browser semantics; the wrapper adds `role="radiogr
 - Variants: `dropzone`, `button`, `avatar`, `gallery`, `compact`.
 - Native `input.files` is the source of truth; removing a file rebuilds it with `DataTransfer`.
 - `maxFiles`, `maxSize` (bytes) / `maxSizeMB`, `accept` are validated with a live status message.
-- Real uploads: set `data-zidan-upload-url` (XHR multipart) or pass `upload(context)` in JS.
+- Real uploads: set `data-zidan-upload-url` (XHR multipart) or pass `upload(file, context)` in JS.
 - Progress, cancel, retry, `getUploadState()`, `renderFile(item, info)` and `zidan:upload-*`
   events are all available; files stay put during `simulateUpload`.
 
 ```js
 zidanField('#files', {
-  upload(context) {
+  upload(file, context) {
+    // file: the File being uploaded
     // context: { file, field, formData, signal, onProgress, complete, fail }
     fetch('/upload', { method: 'POST', body: context.formData, signal: context.signal })
       .then(res => res.ok ? res.json() : Promise.reject(res.status))
@@ -1002,11 +1021,13 @@ npm run build   # dist/ (+ local .min files when esbuild is installed)
 | Command | What it does |
 | --- | --- |
 | `scripts/serve.mjs` | No-dependency demo server on port 4173 (`PORT=8080 npm run dev`). |
-| `scripts/build.mjs` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, and minifies with esbuild **if** it is installed. |
-| `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, and the playground, README and demo stay wired to each other. |
+| `scripts/build.mjs` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, emits the select-only and file-only bundles with declarations, and minifies every JS/CSS output with esbuild. |
+| `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, the build artifacts ship, and the playground, README, demo and cookbook stay wired to each other — then runs 19 jsdom behaviour suites. |
+| `scripts/dom/run.mjs` | jsdom suites for select, fields, uploads, async validation, pagination, RTL, teardown, and the select-only/file-only/minified bundles. |
 
-Minified files on the CDN do not need esbuild: jsDelivr generates `.min.*` from the
-published sources, so the `@2.2.4` `.min` URLs above stay valid without a local build.
+**Minified files ship in the package.** `npm run build` writes real `.min.js` / `.min.css`
+files into `dist/` (including both subset folders), so the URLs above work on unpkg, a
+self-hosted CDN or jsDelivr without relying on the CDN's auto-minification.
 
 Publishing:
 
@@ -1037,7 +1058,31 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](docs
 
 ---
 
-## What's new in 2.1–2.2
+## What's new in 2.1–2.3
+
+**2.3.0** adds the capabilities that were previously the library's biggest gaps:
+
+- **Async validation** — `validate` and `validateDate` may return a Promise. Fields get a
+  `.zs-field--pending` spinner and `aria-busy`, block form submission through native validity,
+  abort the in-flight check when the value changes, ignore stale responses, pass an
+  `AbortSignal` as the third argument, and emit `zidan:async-validation`.
+  `validate()` now returns `boolean | Promise<boolean>`.
+- **Remote select pagination** — `fetchOptions(query, signal, { page, pageSize, append })`
+  returns a page (`{ items, hasMore }`); results are cached in a small LRU, a
+  **Load more** footer and scroll-to-end both fetch the next page, and
+  `loadMore()`, `hasMoreResults()`, `getAsyncState()`, `refreshOptions()` and
+  `clearCache()` are available for custom UI.
+- **RTL support** — logical CSS properties, mirrored knob/tick/icon transforms and
+  `--zs-range-angle`; component roots follow the nearest `dir` attribute automatically.
+- **TypeScript declarations** — `zidan-form.d.ts` for the full bundle plus per-build
+  declarations for `zidan-select` and `zidan-file`, wired into the exports map.
+- **Self-hosted minified bundles** — `npm run build` now emits `.min.js` and `.min.css`
+  for all three builds, so you can ship from your own CDN with the same files npm exports.
+- **Automated behaviour tests** — `npm test` builds the subsets and runs 19 jsdom suites
+  covering select, fields, uploads, async validation, pagination, RTL, teardown and both
+  subset bundles (including their minified copies).
+
+**2.1–2.2** added:
 
 - **Subset builds** — select-only and file-only JS bundles with matching core/theme CSS in
   `dist/select/` and `dist/file/`; themes, layouts and framework adapters included.

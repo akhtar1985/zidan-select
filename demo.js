@@ -62,7 +62,7 @@
   if (gallery) {
     window.zidanField(gallery, {
       // custom uploader: call onProgress while working, then complete()
-      upload: function (context) {
+      upload: function (file, context) {
         var progress = 0;
         var timer = window.setInterval(function () {
           if (context.signal && context.signal.aborted) {
@@ -74,12 +74,107 @@
           if (progress >= 99) {
             window.clearInterval(timer);
             window.setTimeout(function () {
-              context.complete({ url: 'https://cdn.example.com/' + encodeURIComponent(context.file.name) });
+              context.complete({ url: 'https://cdn.example.com/' + encodeURIComponent(file.name) });
             }, 350);
           }
         }, 150);
       }
     });
+  }
+
+  /* ---------------- remote pagination ---------------- */
+
+  var remotePeople = document.getElementById('remote-people');
+  if (remotePeople) {
+    var firstNames = ['Ada', 'Grace', 'Linus', 'Margaret', 'Alan', 'Barbara', 'Edsger', 'Frances',
+      'Ken', 'Dennis', 'Radia', 'Vint', 'Anita', 'Tim', 'Guido', 'Bjarne', 'Katherine', 'Donald',
+      'Hedy', 'John', 'Mary', 'Shafi', 'Leslie', 'Niklaus', 'Jean', 'Sophie', 'Adele', 'Noor',
+      'Hasan', 'Imani', 'Yusuf', 'Leila', 'Omar', 'Sana', 'Zara', 'Idris', 'Amina', 'Bilal',
+      'Farah', 'Kareem', 'Nadia', 'Rami', 'Salma', 'Tariq', 'Yara', 'Zainab', 'Dalia'];
+    var people = firstNames.map(function (name, index) {
+      return { value: 'person-' + (index + 1), label: name + ' #' + (index + 1) };
+    });
+    var remoteStatus = document.getElementById('remote-status');
+    window.zidanSelect(remotePeople, {
+      mode: 'combobox',
+      label: 'Owner',
+      placeholder: 'Search people…',
+      minChars: 0,
+      fetchPageSize: 5,
+      fetchOptions: function (query, signal, context) {
+        return new Promise(function (resolve) {
+          var text = String(query || '').toLowerCase();
+          var matches = people.filter(function (person) {
+            return !text || person.label.toLowerCase().indexOf(text) !== -1;
+          });
+          var start = context.page * context.pageSize;
+          var items = matches.slice(start, start + context.pageSize);
+          var timer = window.setTimeout(function () {
+            if (remoteStatus) {
+              remoteStatus.textContent = 'Page ' + (context.page + 1) + ' — showing '
+                + Math.min(start + items.length, matches.length) + ' of ' + matches.length
+                + (text ? ' matches' : ' people') + '.';
+            }
+            resolve({ items: items, hasMore: start + context.pageSize < matches.length });
+          }, 380);
+          if (signal) {
+            signal.addEventListener('abort', function () { window.clearTimeout(timer); }, { once: true });
+          }
+        });
+      }
+    });
+  }
+
+  /* ---------------- async validation ---------------- */
+
+  var asyncEmail = document.getElementById('async-email');
+  if (asyncEmail) {
+    var asyncForm = document.getElementById('async-form');
+    var asyncResult = document.getElementById('async-result');
+    var taken = ['ada@example.com', 'grace@example.com'];
+    var asyncField = window.zidanField(asyncEmail, {
+      label: 'Work email',
+      icon: 'mail',
+      hint: 'Try ada@example.com — the fake server says it is taken.',
+      alwaysValidate: true,
+      showValidState: true,
+      validate: function (value, field, context) {
+        if (!value) return true;
+        return new Promise(function (resolve, reject) {
+          var timer = window.setTimeout(function () {
+            resolve(taken.indexOf(String(value).toLowerCase()) !== -1
+              ? 'This address is already registered.'
+              : true);
+          }, 900);
+          if (context.signal) {
+            context.signal.addEventListener('abort', function () {
+              window.clearTimeout(timer);
+              var err = new Error('Aborted');
+              err.name = 'AbortError';
+              reject(err);
+            }, { once: true });
+          }
+        });
+      }
+    });
+    asyncEmail.addEventListener('zidan:async-validation', function (event) {
+      if (!asyncResult) return;
+      asyncResult.textContent = event.detail.valid
+        ? 'Available — submit again to continue.'
+        : event.detail.message;
+    });
+    if (asyncForm) {
+      asyncForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (asyncResult) asyncResult.textContent = 'Checking…';
+        asyncField.validate().then(function (valid) {
+          if (!asyncResult) return;
+          asyncResult.textContent = valid
+            ? 'Submitted (demo only).'
+            : (asyncField.errorMessage || 'Please fix the field.');
+        });
+      });
+    }
   }
 
   /* ---------------- initialise ---------------- */
@@ -589,11 +684,11 @@
   var logTotal = 0;
 
   var EVENT_NAMES = [
-    'init', 'change', 'input', 'validation', 'step', 'picker',
+    'init', 'change', 'input', 'validation', 'async-validation', 'step', 'picker',
     'phone-country', 'phone-format', 'icon-click',
     'upload-start', 'upload-progress', 'upload-success', 'upload-error', 'upload-cancel',
     'remove', 'clear', 'error', 'reveal', 'open', 'close', 'select',
-    'tag-add', 'tag-remove', 'no-results'
+    'tag-add', 'tag-remove', 'no-results', 'load-more', 'destroy'
   ];
 
   function refreshLogCount() {
