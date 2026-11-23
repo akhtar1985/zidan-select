@@ -101,6 +101,7 @@
     "build": "node scripts/build.mjs",
     "test": "node scripts/test.mjs",
     "types": "tsc -p tsconfig.types.json",
+    "prepublishOnly": "npm run types && npm run build && npm test",
     "lint": "node --check zidan-form.js && node --check demo.js && node --check playground.js && node --check zidan-form.mjs"
   },
   "engines": {
