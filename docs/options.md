@@ -135,7 +135,7 @@ Applies to `ZidanCheckbox`, `ZidanRadioGroup`, `ZidanFileUpload`, `ZidanTextFiel
 | `layout` | `data-zidan-layout` | string | `stacked` | `stacked`, `inline`, `compact`, `floating`, `outlined`, `card`. |
 | `theme` | `data-zidan-theme`, `data-zs-theme` | string | `default` | `default`, `modern`, `minimal`, `dark`, `glass`. Resolves element → ancestor → `<html>`. |
 | `framework` | `data-zidan-framework`, `data-zs-framework` | string | `none` | `none`, `bootstrap`, `tailwind`, `bulma`, `foundation`, `vanilla`. |
-| `label` | `data-zidan-label` | string | — | Used when the markup has no `<label>`; a generated label is `<label for>`. |
+| `label` | `data-zidan-label` | string | — | Used when the markup has no `<label>`; a generated label is `<label for>`. If the markup already has a `<label>`, the generated one replaces it and the original is hidden until `destroy()`. |
 | `hint` | `data-zidan-hint` | string | — | Rendered under the control and linked via `aria-describedby`. |
 | `validation` | `data-zidan-validation` | `valid` \| `invalid` | — | Initial state; later states come from validity or `setValidation()`. |
 | `alwaysValidate` | — | boolean | `false` | Mark invalid as soon as native validity fails instead of on blur. |
@@ -145,7 +145,7 @@ Applies to `ZidanCheckbox`, `ZidanRadioGroup`, `ZidanFileUpload`, `ZidanTextFiel
 | `prefix` | `data-zidan-prefix` | string | — | Static text before the input. |
 | `suffix` | `data-zidan-suffix` | string | — | Static text after the input. |
 | `counter` | `data-zidan-counter` | number | `maxlength` | Counter maximum; wins over the `maxlength` default. |
-| `output` | `data-zidan-output` | selector | — | Range value is mirrored into this element. |
+| `output` | `data-zidan-output` | selector | — | Range display value (formatted when `rangeFormat` is set) is mirrored into this element. |
 | `title` | `data-zidan-title` | string | `Choose a file` | Dropzone headline. |
 | `dropHint` | `data-zidan-drop-hint` | string | — | Dropzone subtitle. |
 | `accept` | native `accept` | string | — | Validated on top of the native picker filter and shown in the dropzone hint. |
@@ -291,13 +291,17 @@ national `0` is dropped in international/E.164 output.
 | JS option | Data attribute | Type | Default | Notes |
 | --- | --- | --- | --- | --- |
 | `rangeVariant` | `data-zidan-range-variant` | `default` \| `gradient` \| `stepped` \| `minimal` | `default` | Visual skin. |
-| `rangeBubble` | `data-zidan-range-bubble` | boolean | `true` | Floating value bubble above the thumb. |
-| `rangeMinMax` | `data-zidan-range-minmax` | boolean | `true` | Min/max scale under the track. |
-| `rangeTicks` | `data-zidan-range-ticks` | number \| array | `0` | Count (data attribute) or array of values (JS option). |
-| `rangeTickLabels` | `data-zidan-range-tick-labels` | boolean | `false` | Text labels on ticks. |
+| `rangeBubble` | `data-zidan-range-bubble` | boolean | `true` | Master switch for the floating value bubble. |
+| `rangeBubbleMode` | `data-zidan-range-bubble-mode` | `always` \| `active` \| `never` | `always` | `active` shows the bubble only on hover, focus or drag. |
+| `rangeBubblePosition` | `data-zidan-range-bubble-position` | `top` \| `bottom` | `top` | Bubble above the track or below the ticks/scale. |
+| `rangeFill` | `data-zidan-range-fill` | boolean | `true` | Coloured progress fill; `false` keeps the neutral track (gradient skin keeps its gradient). |
+| `rangeMinMax` | `data-zidan-range-minmax` | boolean | `true` | Min/max scale under the track. Hidden automatically when labeled ticks cover both ends, so 0 and the max print once. |
+| `rangeMinLabel` / `rangeMaxLabel` | `data-zidan-range-min-label` / `-range-max-label` | string | — | Custom text for the scale ends (e.g. `Low` / `High`); `rangeFormat` is used when unset. |
+| `rangeTicks` | `data-zidan-range-ticks` | number \| array \| string | `0` | Count, JS array, JSON array or comma list (`0,250,500`). Values are absolute and out-of-range ones sit at the nearest end. |
+| `rangeTickLabels` | `data-zidan-range-tick-labels` | boolean | `false` | Text labels on ticks. Labels at both ends replace the min/max scale. |
 | `rangeLabels` | — | object | — | Map `{ value: 'Label' }` used with labeled ticks. |
 | `rangeFormat` | `data-zidan-range-format` | string \| function | — | Template with `{value}`, `{min}`, `{max}` (or `%s`), or `function(value, field)` in JS. |
-| `output` | `data-zidan-output` | selector | — | Mirrors the raw value into a `<output>`/element. |
+| `output` | `data-zidan-output` | selector | — | Mirrors the display value (formatted when `rangeFormat` is set) into a `<output>`/element; `input.value` keeps the raw value. |
 
 ```html
 <input type="range" min="0" max="1000" step="50" value="400"
@@ -313,11 +317,35 @@ zidanField('#price', {
   rangeLabels: { 0: 'Free', 1000: 'Top' },
   rangeFormat: value => '€' + Number(value).toLocaleString('en-US')
 });
+
+zidanField('#delivery', {
+  rangeBubbleMode: 'active',      // 'always' | 'active' | 'never'
+  rangeBubblePosition: 'bottom',  // 'top' | 'bottom'
+  rangeFill: false,               // neutral track, no progress colour
+  rangeTicks: '0,10,20,30',       // count, array, JSON or comma list
+  rangeTickLabels: true,
+  rangeMinLabel: 'Low',
+  rangeMaxLabel: 'High'
+});
 ```
 
 The range keeps `input.value` native; only the visual chrome and bubble are added. Instance
 properties `range`, `rangeBubble`, `rangeTicksEl` and `rangeScale` are exposed if you need to
 re-render custom ticks.
+
+Labeled ticks and the scale do not stack: when `rangeTickLabels` is on and the tick values
+include both `min` and `max`, the scale row (`.zs-range-scale`) gets `zs-range-scale--hidden`
+and the tick labels are the single endpoint readout. `rangeLabels` entries win over
+`rangeFormat` for that value. Endpoint labels carry `zs-range-tick--start` / `--end` and the
+bubble gets `zs-range-bubble--start` / `--end`, so both stay inside the track at 0 and max,
+including in RTL. Without a scale row (`.zs-range--labels-no-scale`) the label height is
+reserved so labels cannot overlap the next element.
+
+Bubble behaviour is controlled by `rangeBubbleMode` (`always` / `active` / `never`) and
+`rangeBubblePosition` (`top` / `bottom`), the coloured progress by `rangeFill`, and the scale
+ends by `rangeMinLabel` / `rangeMaxLabel`. `rangeFill: false` keeps the neutral track but not
+the gradient skin, and `rangeFormat` also feeds `aria-valuetext` so assistive tech reads the
+formatted value.
 
 ## Date & time pickers
 
@@ -495,7 +523,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | `options` | — | Array of strings or `{value,label,disabled,group}`. |
 | `suggestions` | — | Tags suggestions. |
 | `value` | — | Initial value(s). |
-| `label` | `data-zidan-label` | Floating label text. |
+| `label` | `data-zidan-label` | Floating label text. An author `<label>` for the same control is hidden while the field is enhanced and restored by `destroy()`. |
 | `placeholder` | `data-zidan-placeholder` | Trigger placeholder. |
 
 ### Behaviour

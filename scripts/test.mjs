@@ -135,19 +135,33 @@ check('advanced page and shared header are wired up', () => {
     assert(page.includes(needle), 'advanced page missing technical detail: ' + needle);
   }
   assert(page.includes('data-lang="html"') && page.includes('data-lang="js"'), 'advanced page needs both HTML and JS examples');
+  assert(page.includes('id="globals"') && page.includes('initZidanSelects') && page.includes('zidanField'), 'advanced page must map each build to its global functions');
+  assert(/select-only[\s\S]{0,400}?initZidanForms[\s\S]{0,200}?zidanField/.test(page), 'advanced page does not separate select-only functions from the full bundle');
+  assert(core.includes('[data-zs-hidden-label]'), 'core CSS must hide the author label the plugin replaces');
   assert(read('index.html').includes('advanced.html'), 'demo does not link the advanced page');
   assert(read('README.md').includes('advanced.html'), 'README does not link the advanced page');
   assert(read('docs/index.html').includes('../advanced.html'), 'docs index does not link the advanced page');
 
   const pages = ['index.html', 'advanced.html', 'playground.html', 'shopify.html'];
   const navs = pages.map(name => {
-    const match = read(name).match(/<nav class="header-nav"[\s\S]*?<\/nav>/);
+    const page = read(name);
+    const match = page.match(/<nav[^>]*class="header-nav"[^>]*>[\s\S]*?<\/nav>/);
     assert(match, name + ' is missing the shared header nav');
+    assert(/<nav[^>]*id="site-nav"/.test(match[0]), name + ' header nav is missing its id for the menu button');
+    assert(/<button[^>]*class="nav-toggle"[^>]*aria-controls="site-nav"/.test(page), name + ' is missing the mobile menu button');
+    assert(/data-nav="open"|aria-expanded="false"/.test(page), name + ' menu button is not announced as collapsible');
+    assert(page.includes('<script src="nav.js">'), name + ' does not load the shared header script');
     return Array.from(match[0].matchAll(/<a href="([^"]+)"/g)).map(item => item[1]).join('|');
   });
   assert(new Set(navs).size === 1, 'demo pages do not share the same header links');
+  assert(new Set(navs[0].split('|')).size === 9, 'shared header should expose nine links on every demo page');
   assert(navs[0].includes('advanced.html') && navs[0].includes('shopify.html'), 'shared header is incomplete');
-  assert(!/header-nav a:nth-child/.test(read('demo.css') + read('nav.css')), 'mobile CSS still hides header links');
+  const navCss = read('nav.css');
+  assert(!/header-nav a:nth-child/.test(read('demo.css') + navCss), 'mobile CSS still hides header links');
+  assert(!/header-nav[\s\S]{0,400}?overflow-x:\s*auto/.test(navCss), 'mobile header still relies on a silent horizontal scroller');
+  assert(navCss.includes('.nav-toggle') && navCss.includes('[data-nav="open"]') && navCss.includes('[data-nav-ready]'), 'mobile menu styles are missing');
+  assert(read('nav.js').includes('data-nav-ready') && read('nav.js').includes('aria-expanded'), 'mobile menu script is missing its collapsed state or ARIA state');
+  assert(read('.github/workflows/pages.yml').includes('nav.js'), 'Pages workflow does not publish the shared header script');
 });
 
 check('new features are present', () => {

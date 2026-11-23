@@ -17,7 +17,7 @@ zidan-select/
 ├─ advanced.css/js      # advanced-page-only assets
 ├─ playground.html      # per-field option builder
 ├─ playground.css/js    # playground-only assets
-├─ nav.css              # shared demo header
+├─ nav.css / nav.js     # shared demo header and mobile menu
 ├─ robots.txt           # Pages crawler directives + sitemap pointer
 ├─ sitemap.xml          # public Pages URLs
 ├─ demo.css / demo.js   # demo-only assets
@@ -205,7 +205,7 @@ import 'zidan-select/file/css/theme';
 
 The demo is static and needs no build. `.github/workflows/pages.yml` assembles `_site/` on every
 push to `main` — `index.html`, `advanced.html`, `playground.html`, `shopify.html`, `advanced.css`,
-`advanced.js`, `playground.css`, `playground.js`, `demo.css`, `demo.js`, `nav.css`, `robots.txt`,
+`advanced.js`, `playground.css`, `playground.js`, `demo.css`, `demo.js`, `nav.css`, `nav.js`, `robots.txt`,
 `sitemap.xml`, the four library files and `docs/` — then uploads it with
 `actions/upload-pages-artifact` and publishes it with `actions/deploy-pages`.
 

@@ -582,6 +582,24 @@
     return list.indexOf(candidate) === -1 ? fallback : candidate;
   }
 
+  /* rangeTicks: JS array, JSON array, comma list or a tick count */
+  function parseRangeTicks(value) {
+    if (Array.isArray(value)) return value.slice();
+    if (typeof value === 'string') {
+      var raw = value.trim();
+      if (raw.charAt(0) === '[') {
+        try {
+          var parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) return parsed;
+        } catch (err) { /* fall back to the tick count */ }
+      } else if (raw.indexOf(',') !== -1) {
+        return raw.split(',').map(function (part) { return Number(part.trim()); })
+          .filter(function (number) { return isFinite(number); });
+      }
+    }
+    return value;
+  }
+
   /* theme/framework/layout resolution shared by every field and the select */
   function resolveScope(node, options) {
     var opts = options || {};
@@ -994,6 +1012,16 @@
       labelEl = el('label', 'zs-label', { for: input.id });
       labelEl.textContent = opts.label;
       if (this.layout !== 'floating-label') rootEl.classList.add('zs-root--has-static-label');
+
+      // Hide the author's <label>: this label replaces it, and showing both
+      // would print the same text twice above the control.
+      var authorLabel = this.el.labels && this.el.labels[0] ? this.el.labels[0] : null;
+      if (authorLabel && authorLabel.closest && authorLabel.closest('.zs-root')) authorLabel = null;
+      this._authorLabel = authorLabel || null;
+      if (authorLabel) {
+        authorLabel.hidden = true;
+        authorLabel.setAttribute('data-zs-hidden-label', 'true');
+      }
     }
 
     var clearBtn = el('button', 'zs-clear', {
@@ -1022,9 +1050,7 @@
     var dropdown = el('div', 'zs-dropdown');
     dropdown.id = this.id + '-listbox';
     dropdown.setAttribute('role', 'listbox');
-    if (this.mode !== 'tags') {
-      dropdown.setAttribute('aria-multiselectable', String(!!(opts.multiple || this.mode === 'tags')));
-    }
+    dropdown.setAttribute('aria-multiselectable', String(!!(opts.multiple || this.mode === 'tags')));
     this._applyCustomClass(dropdown, 'dropdown');
 
     var live = el('div', 'zs-live', { 'aria-live': 'polite', 'aria-atomic': 'true' });
@@ -1101,6 +1127,22 @@
         setTimeout(function () { self._handleFormReset(); }, 0);
       };
       this.form.addEventListener('reset', this.onFormReset);
+    }
+
+    /* `required` is a JS-only option as well as a native attribute. A native
+       select can carry it directly; a mount-mode div needs a submit guard. */
+    if (opts.required && this.native && this.native.tagName === 'SELECT' && !this.native.required) {
+      this.native.required = true;
+      this._nativeRequiredAdded = true;
+    } else if (opts.required && !this.native && this.form) {
+      this.onFormSubmit = function (event) {
+        if (self.value_.length) return;
+        event.preventDefault();
+        self.setValidation('invalid');
+        if (self.input && self.input.focus) self.input.focus();
+        self.announce('Please select an option.');
+      };
+      this.form.addEventListener('submit', this.onFormSubmit);
     }
     return this.syncEl;
   };
@@ -1991,6 +2033,14 @@
     var key = event.key;
     var items = this._visibleItems();
 
+    /* Space opens a closed combobox/listbox (WAI-ARIA), unless the user is
+       already typing a search or tag query in an open control. */
+    if ((key === ' ' || key === 'Spacebar') && !this.opened) {
+      event.preventDefault();
+      this.open();
+      return;
+    }
+
     if (key === 'ArrowDown' || key === 'ArrowUp') {
       event.preventDefault();
       if (!this.opened) {
@@ -2519,6 +2569,11 @@
     this.clearCache();
     if (this.resizeObserver) this.resizeObserver.disconnect();
     if (this.form && this.onFormReset) this.form.removeEventListener('reset', this.onFormReset);
+    if (this.form && this.onFormSubmit) this.form.removeEventListener('submit', this.onFormSubmit);
+    if (this._nativeRequiredAdded && this.native) {
+      this.native.required = false;
+      this._nativeRequiredAdded = false;
+    }
 
     doc.removeEventListener('pointerdown', this.onDocumentPointerDown, true);
     global.removeEventListener('resize', this.onWindowResize);
@@ -2527,6 +2582,12 @@
     this.emit('destroy', { instance: this });
 
     if (this.root && this.root.parentNode) this.root.parentNode.removeChild(this.root);
+
+    if (this._authorLabel) {
+      this._authorLabel.hidden = false;
+      this._authorLabel.removeAttribute('data-zs-hidden-label');
+      this._authorLabel = null;
+    }
 
     if (this.native) {
       this.native.hidden = false;
@@ -2569,6 +2630,8 @@
   var RADIO_VARIANTS = ['stacked', 'inline', 'card', 'button', 'tile'];
   var FILE_VARIANTS = ['dropzone', 'button', 'avatar', 'gallery', 'compact'];
   var RANGE_VARIANTS = ['default', 'gradient', 'stepped', 'minimal'];
+  var RANGE_BUBBLE_MODES = ['always', 'active', 'never'];
+  var RANGE_BUBBLE_POSITIONS = ['top', 'bottom'];
 
   function textWithout(rootNode, skip) {
     var out = '';
@@ -2607,6 +2670,7 @@
     this.destroyed = false;
     this._listeners = [];
     this._cleanups = [];
+    this._describedByBefore = [];
     this.formEl = target.form || (target.closest ? target.closest('form') : null);
     var scope = resolveScope(target, this.opts);
     this.theme = scope.theme;
@@ -2807,6 +2871,22 @@
     return Promise.resolve(!result.error);
   };
 
+  ZidanFieldBase.prototype._trackDescribedBy = function (input) {
+    if (!input || !input.getAttribute) return;
+    for (var i = 0; i < this._describedByBefore.length; i += 1) {
+      if (this._describedByBefore[i][0] === input) return;
+    }
+    this._describedByBefore.push([input, input.getAttribute('aria-describedby')]);
+  };
+
+  ZidanFieldBase.prototype._addDescribedBy = function (input, id) {
+    if (!input || !input.getAttribute || !id) return;
+    this._trackDescribedBy(input);
+    var current = (input.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+    if (current.indexOf(id) === -1) current.push(id);
+    input.setAttribute('aria-describedby', current.join(' '));
+  };
+
   ZidanFieldBase.prototype._syncDescribedBy = function () {
     if (!this.el || !this.el.getAttribute) return;
     var errorId = this.id + '-error';
@@ -2815,6 +2895,7 @@
     var targets = this.validationTargets();
     targets.forEach(function (input) {
       if (!input || !input.getAttribute) return;
+      this._trackDescribedBy(input);
       var current = (input.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
       var next = current.filter(function (id) { return id !== errorId && id !== hintId; });
       if (hintId) next.push(hintId);
@@ -3026,7 +3107,16 @@
     this._cleanups.forEach(function (fn) { fn(); });
     this._cleanups.length = 0;
     this.emit('destroy', {});
-    if (this.root && this.root.parentNode) this.root.parentNode.removeChild(this.root);
+    /* radio groups use the author's <fieldset> as their root: removing it would
+       delete the original radios too, so only remove roots the field created. */
+    if (this.root && this.root !== this.el && this.root.parentNode) this.root.parentNode.removeChild(this.root);
+    this._describedByBefore.forEach(function (entry) {
+      var input = entry[0];
+      if (!input || !input.getAttribute) return;
+      if (entry[1] === null || entry[1] === undefined) input.removeAttribute('aria-describedby');
+      else input.setAttribute('aria-describedby', entry[1]);
+    });
+    this._describedByBefore = [];
     if (this.el.__zidanField === this) delete this.el.__zidanField;
     ZidanForm._unregister(this);
     return this;
@@ -3130,8 +3220,7 @@
     if (hintText) {
       var hint = el('p', 'zs-field__hint', { id: this.id + '-hint' }, hintText);
       root.appendChild(hint);
-      input.setAttribute('aria-describedby', this.id + '-hint');
-      this._cleanups.push(function () { input.removeAttribute('aria-describedby'); });
+      this._addDescribedBy(input, this.id + '-hint');
     }
 
     this.check = check;
@@ -3220,6 +3309,12 @@
 
   function ZidanRadioGroup(target, options) {
     if (!(this instanceof ZidanRadioGroup)) return new ZidanRadioGroup(target, options);
+    /* radios are enhanced as a group, never one input at a time */
+    if (isElement(target) && /^INPUT$/i.test(target.tagName)) {
+      var group = target.closest ? target.closest('fieldset, [data-zidan-radio-group]') : null;
+      if (!group) throw new Error('ZidanRadioGroup: expected a <fieldset> containing the radio inputs.');
+      target = group;
+    }
     ZidanFieldBase.call(this, target, options, 'radio-group');
     var variant = pickList(this.opts.variant || target.getAttribute('data-zidan-variant'), RADIO_VARIANTS, 'stacked');
     this.variant = variant;
@@ -3229,7 +3324,14 @@
     target.setAttribute('data-zs-kind', 'radio-group');
     target.setAttribute('data-zs-variant', variant);
     this._applyScope(target);
-    if (!target.hasAttribute('role')) target.setAttribute('role', 'radiogroup');
+    var hadRole = target.hasAttribute('role');
+    if (!hadRole) target.setAttribute('role', 'radiogroup');
+    this._teardown = function () {
+      target.classList.remove('zs-radio-group');
+      ['data-zs-kind', 'data-zs-variant', 'data-zs-theme', 'data-zs-framework', 'data-zs-layout']
+        .forEach(function (name) { target.removeAttribute(name); });
+      if (!hadRole) target.removeAttribute('role');
+    };
     this._labels = [];
     this._enhance();
     this._bindValidity();
@@ -3559,6 +3661,22 @@
 
     self.on(clearBtn, 'click', function () { self.clear(); });
 
+    /* Delegated once: the list is rebuilt on every upload progress tick, so
+       per-item listeners would grow without bound. */
+    self.on(list, 'click', function (event) {
+      var button = event.target && event.target.closest ? event.target.closest('button') : null;
+      if (!button || !list.contains(button)) return;
+      var item = button.closest('.zs-file-item');
+      var index = item ? parseInt(item.getAttribute('data-zs-file-index'), 10) : -1;
+      var file = index >= 0 ? self.getFiles()[index] : null;
+      if (!file) return;
+      event.preventDefault();
+      event.stopPropagation();
+      if (button.classList.contains('zs-file-cancel')) self.cancelUpload(file);
+      else if (button.classList.contains('zs-file-retry')) self.retryUpload(file);
+      else if (button.classList.contains('zs-file-remove')) self.removeFile(file);
+    });
+
     this._bindValidity();
     this.on(this.formEl, 'reset', function () {
       global.setTimeout(function () {
@@ -3855,6 +3973,7 @@
       var state = self._stateFor(file, false) || { status: 'idle', progress: 0, error: '', result: null };
       var item = el('li', 'zs-file-item');
       item.setAttribute('data-zs-upload-state', state.status);
+      item.setAttribute('data-zs-file-index', String(index));
 
       var thumb = el('span', 'zs-file-thumb');
       if (/^image\//.test(file.type)) {
@@ -3904,30 +4023,15 @@
       if (state.status === 'uploading') {
         var cancel = el('button', 'zs-file-cancel', { type: 'button', 'aria-label': 'Cancel upload of ' + file.name });
         cancel.textContent = opts.cancelLabel || 'Cancel';
-        self.on(cancel, 'click', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-          self.cancelUpload(file);
-        });
         actions.appendChild(cancel);
       } else if (state.status === 'error' || state.status === 'canceled') {
         var retry = el('button', 'zs-file-retry', { type: 'button', 'aria-label': 'Retry upload of ' + file.name });
         retry.textContent = opts.retryLabel || 'Retry';
-        self.on(retry, 'click', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-          self.retryUpload(file);
-        });
         actions.appendChild(retry);
       }
 
       var remove = el('button', 'zs-file-remove', { type: 'button', 'aria-label': 'Remove ' + file.name });
       remove.textContent = '\u00d7';
-      self.on(remove, 'click', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        self.removeFile(file);
-      });
       actions.appendChild(remove);
 
       item.appendChild(thumb);
@@ -4284,8 +4388,10 @@
           iso = String(iso).toUpperCase();
           var country = PHONE_COUNTRIES[iso];
           if (!country) return;
+          /* ISO + dial only: Windows renders flag emoji as the two ISO letters,
+             which duplicated the code ("GB GB +44"). */
           var optionNode = el('option', null, { value: iso },
-            (country.flag ? country.flag + ' ' : '') + iso + ' +' + country.dial);
+            iso + ' +' + country.dial);
           countrySelect.appendChild(optionNode);
         });
         countrySelect.value = phoneCountry;
@@ -4370,12 +4476,23 @@
     if (isRange) {
       var rangeVariant = pickList(fieldOption(input, opts, 'rangeVariant', 'range-variant', 'default'), RANGE_VARIANTS, 'default');
       var rangeBubbleOn = fieldBool(input, opts, 'rangeBubble', 'range-bubble', true);
+      var rangeBubbleMode = pickList(fieldOption(input, opts, 'rangeBubbleMode', 'range-bubble-mode', 'always'), RANGE_BUBBLE_MODES, 'always');
+      var rangeBubblePosition = pickList(fieldOption(input, opts, 'rangeBubblePosition', 'range-bubble-position', 'top'), RANGE_BUBBLE_POSITIONS, 'top');
+      var rangeFillOn = fieldBool(input, opts, 'rangeFill', 'range-fill', true);
       var rangeScaleOn = fieldBool(input, opts, 'rangeMinMax', 'range-minmax', true);
+      var showBubble = rangeBubbleOn && rangeBubbleMode !== 'never';
+      var bubbleVisible = showBubble && rangeVariant !== 'minimal';
       rangeWrap = el('div', 'zs-range');
       rangeWrap.setAttribute('data-zs-range', rangeVariant);
-      if (rangeBubbleOn) {
+      rangeWrap.classList.toggle('zs-range--fill-off', !rangeFillOn);
+      rangeWrap.classList.toggle('zs-range--no-bubble', !bubbleVisible);
+      if (showBubble) {
         rangeBubble = el('output', 'zs-range-bubble', { for: this.id, 'aria-hidden': 'true' });
         rangeWrap.appendChild(rangeBubble);
+        if (bubbleVisible) {
+          rangeWrap.classList.toggle('zs-range--bubble-active', rangeBubbleMode === 'active');
+          rangeWrap.classList.toggle('zs-range--bubble-bottom', rangeBubblePosition === 'bottom');
+        }
       }
       rangeWrap.appendChild(input);
       rangeTicksEl = el('div', 'zs-range-ticks', { 'aria-hidden': 'true' });
@@ -4393,7 +4510,11 @@
       this.rangeTicksEl = rangeTicksEl;
       this.rangeScale = rangeScale;
       this.rangeFormat = opts.rangeFormat || input.getAttribute('data-zidan-range-format') || null;
-      this.rangeTicksOption = fieldOption(input, opts, 'rangeTicks', 'range-ticks', 0);
+      this.rangeBubbleMode = rangeBubbleMode;
+      this.rangeBubblePosition = rangeBubblePosition;
+      this.rangeMinLabel = String(fieldOption(input, opts, 'rangeMinLabel', 'range-min-label', ''));
+      this.rangeMaxLabel = String(fieldOption(input, opts, 'rangeMaxLabel', 'range-max-label', ''));
+      this.rangeTicksOption = parseRangeTicks(fieldOption(input, opts, 'rangeTicks', 'range-ticks', 0));
       this.rangeTickLabels = fieldBool(input, opts, 'rangeTickLabels', 'range-tick-labels', false);
       this.rangeLabelMap = opts.rangeLabels || null;
       this.rangeSignature = '';
@@ -4613,7 +4734,8 @@
 
     var outputSelector = opts.output || input.getAttribute('data-zidan-output');
     if (isRange && outputSelector) {
-      var out = doc.querySelector(outputSelector);
+      var out = null;
+      try { out = doc.querySelector(outputSelector); } catch (err) { out = null; }
       if (out) {
         this.rangeOutput = out;
       }
@@ -4685,28 +4807,45 @@
     return { min: min, max: max };
   };
 
+  ZidanTextField.prototype._rangeLabelFor = function (value) {
+    if (this.rangeLabelMap && this.rangeLabelMap[value] !== undefined) {
+      return String(this.rangeLabelMap[value]);
+    }
+    return this._formatRangeValue(value);
+  };
+
   ZidanTextField.prototype._renderRangeTicks = function () {
     if (!this.rangeTicksEl) return;
     var bounds = this._rangeBounds();
     var option = this.rangeTicksOption;
-    var values = [];
-    if (Array.isArray(option)) values = option.map(Number).filter(function (n) { return isFinite(n); });
-    else {
-      var count = parseInt(option, 10);
-      if (!(count > 1)) return;
-      for (var i = 0; i < count; i += 1) values.push(bounds.min + ((bounds.max - bounds.min) * i) / (count - 1));
-    }
+    var labelsOn = !!this.rangeTickLabels;
     this.rangeTicksEl.textContent = '';
+    var values = [];
+    if (Array.isArray(option)) {
+      values = option.map(Number).filter(function (n) { return isFinite(n); });
+    } else {
+      var count = parseInt(option, 10);
+      if (count > 1) {
+        for (var i = 0; i < count; i += 1) values.push(bounds.min + ((bounds.max - bounds.min) * i) / (count - 1));
+      }
+    }
+    /* Labeled ticks at both ends replace the min/max scale, so the start and end
+       numbers are printed once instead of twice. */
+    var coversEnds = labelsOn && !!this.rangeScale && values.length > 0 &&
+      values.indexOf(bounds.min) !== -1 && values.indexOf(bounds.max) !== -1;
+    if (this.rangeScale) this.rangeScale.classList.toggle('zs-range-scale--hidden', coversEnds);
+    /* with no scale row, tick labels need their own room so they cannot overlap
+       whatever follows the range */
+    this.range.classList.toggle('zs-range--labels-no-scale', labelsOn && !this.rangeScale && values.length > 0);
     values.forEach(function (value) {
       var pct = bounds.max > bounds.min ? (value - bounds.min) / (bounds.max - bounds.min) : 0;
       var tick = el('span', 'zs-range-tick');
       tick.style.setProperty('--zs-range-tick-pct', (clamp(pct, 0, 1) * 100).toFixed(2) + '%');
-      if (this.rangeTickLabels) {
-        var label = this.rangeLabelMap && this.rangeLabelMap[value] !== undefined
-          ? this.rangeLabelMap[value]
-          : this._formatRangeValue(value);
-        tick.textContent = label;
+      if (labelsOn) {
+        tick.textContent = this._rangeLabelFor(value);
         tick.classList.add('zs-range-tick--labeled');
+        if (pct <= 0) tick.classList.add('zs-range-tick--start');
+        else if (pct >= 1) tick.classList.add('zs-range-tick--end');
       }
       this.rangeTicksEl.appendChild(tick);
     }, this);
@@ -4721,12 +4860,24 @@
     pct = clamp(pct, 0, 1);
     this.range.style.setProperty('--zs-range-pct', pct.toFixed(4));
     this.range.style.setProperty('--zs-range-fill', (pct * 100).toFixed(2) + '%');
-    if (this.rangeBubble) this.rangeBubble.textContent = this._formatRangeValue(numeric);
-    if (this.rangeScale) {
-      this.rangeScale.firstChild.textContent = this._formatRangeValue(bounds.min);
-      this.rangeScale.lastChild.textContent = this._formatRangeValue(bounds.max);
+    if (this.rangeBubble) {
+      this.rangeBubble.textContent = this._formatRangeValue(numeric);
+      /* at the ends, align the bubble inside the track instead of half outside it */
+      this.rangeBubble.classList.toggle('zs-range-bubble--start', pct <= 0);
+      this.rangeBubble.classList.toggle('zs-range-bubble--end', pct >= 1);
     }
-    var signature = [bounds.min, bounds.max, this.el.step, JSON.stringify(this.rangeTicksOption), this.rangeTickLabels].join('|');
+    if (this.rangeScale) {
+      this.rangeScale.firstChild.textContent = this.rangeMinLabel || this._formatRangeValue(bounds.min);
+      this.rangeScale.lastChild.textContent = this.rangeMaxLabel || this._formatRangeValue(bounds.max);
+    }
+    /* the formatted value is what the user sees and what assistive tech should read */
+    if (this.rangeFormat) this.el.setAttribute('aria-valuetext', this._formatRangeValue(numeric));
+    else this.el.removeAttribute('aria-valuetext');
+    var signature = [
+      bounds.min, bounds.max, this.el.step, JSON.stringify(this.rangeTicksOption), this.rangeTickLabels,
+      JSON.stringify(this.rangeLabelMap || null), this.rangeMinLabel, this.rangeMaxLabel,
+      String(this.rangeFormat || '')
+    ].join('|');
     if (signature !== this.rangeSignature) {
       this.rangeSignature = signature;
       this._renderRangeTicks();
@@ -4736,8 +4887,9 @@
   ZidanTextField.prototype._syncRangeOutput = function (value) {
     if (this.range) this._syncRange(value);
     if (this.rangeOutput) {
-      this.rangeOutput.textContent = value;
-      this.rangeOutput.value = value;
+      var display = this.range ? this._formatRangeValue(value) : value;
+      this.rangeOutput.textContent = display;
+      this.rangeOutput.value = display;
     }
   };
 
@@ -4932,8 +5084,9 @@
     }
     if (this.range) this._syncRange(value);
     if (this.rangeOutput) {
-      this.rangeOutput.textContent = value;
-      this.rangeOutput.value = value;
+      var display = this.range ? this._formatRangeValue(value) : value;
+      this.rangeOutput.textContent = display;
+      this.rangeOutput.value = display;
     }
     if (this.stepper) {
       var min = parseFloat(input.min);
@@ -4957,6 +5110,7 @@
   };
 
   ZidanTextField.prototype._teardown = function () {
+    if (this.range) this.el.removeAttribute('aria-valuetext');
     if (this._restoreInput) this._restoreInput();
   };
 
@@ -5022,7 +5176,11 @@
       // (output, counter, clearable, …) work without a data attribute
       var kind = fieldKindFor(node) || inferredTextKind(node);
       if (!kind) return;
-      if (kind === 'radio' && !node.hasAttribute('data-zidan-radio')) {
+      if (kind === 'radio' || kind === 'radio-group') {
+        if (/^INPUT$/i.test(node.tagName)) {
+          node = node.closest ? node.closest('fieldset, [data-zidan-radio-group]') : null;
+          if (!node) return;
+        }
         kind = 'radio-group';
       }
       var instance = createField(node, kind, options || {});
@@ -5037,7 +5195,13 @@
       if (!isElement(node) || node.__zidanField) return;
       var kind = fieldKindFor(node);
       if (!kind) return;
-      if (kind === 'radio') kind = 'radio-group';
+      if (kind === 'radio' || kind === 'radio-group') {
+        if (/^INPUT$/i.test(node.tagName)) {
+          node = node.closest ? node.closest('fieldset, [data-zidan-radio-group]') : null;
+          if (!node) return;
+        }
+        kind = 'radio-group';
+      }
       var instance = createField(node, kind, options || {});
       if (instance) instances.push(instance);
     });

@@ -536,6 +536,13 @@
   letter-spacing: 0.01em;
 }
 
+/* The plugin renders its own label and hides the author's original one. Author
+   rules such as `.field-label { display:block }` would otherwise beat the
+   browser's [hidden] default and show both labels at once. */
+[data-zs-hidden-label] {
+  display: none !important;
+}
+
 .zs-field__hint {
   margin: 0;
   font-size: 0.75rem;
@@ -1552,6 +1559,26 @@ textarea.zs-input-native {
   font-variant-numeric: tabular-nums;
 }
 
+/* labeled endpoint ticks already show min and max: keep the row for layout,
+   hide its text so the endpoints are printed once */
+.zs-range-scale--hidden {
+  visibility: hidden;
+}
+
+/* labeled ticks without a scale row need the label height reserved */
+.zs-range--labels-no-scale {
+  padding-bottom: 18px;
+}
+
+/* keep endpoint tick labels inside the track instead of half outside it */
+.zs-range-tick--labeled.zs-range-tick--start {
+  transform: translateX(0);
+}
+
+.zs-range-tick--labeled.zs-range-tick--end {
+  transform: translateX(-100%);
+}
+
 .zs-range-bubble {
   position: absolute;
   top: 0;
@@ -1566,6 +1593,46 @@ textarea.zs-input-native {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   pointer-events: none;
+}
+
+/* bubble and fill options */
+.zs-range--no-bubble {
+  padding-top: 4px;
+}
+
+.zs-range--bubble-active .zs-range-bubble {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 140ms ease;
+}
+
+.zs-range--bubble-active:hover .zs-range-bubble,
+.zs-range--bubble-active:focus-within .zs-range-bubble,
+.zs-field--focused .zs-range--bubble-active .zs-range-bubble {
+  opacity: 1;
+  visibility: visible;
+}
+
+.zs-range--bubble-bottom {
+  padding-bottom: 30px;
+}
+
+/* labels sit above the bubble, so both need room */
+.zs-range--bubble-bottom.zs-range--labels-no-scale {
+  padding-bottom: 38px;
+}
+
+.zs-range--bubble-bottom .zs-range-bubble {
+  top: auto;
+  bottom: 0;
+}
+
+.zs-range--fill-off .zs-input-native::-webkit-slider-runnable-track {
+  background: var(--zs-range-track);
+}
+
+.zs-range--fill-off .zs-input-native::-moz-range-progress {
+  background: var(--zs-range-track);
 }
 
 [dir="rtl"] .zs-range-tick,
@@ -1584,6 +1651,47 @@ textarea.zs-input-native {
 
 .zs-field[dir="rtl"] .zs-range-bubble {
   transform: translateX(50%);
+}
+
+[dir="rtl"] .zs-range-tick--labeled.zs-range-tick--start {
+  transform: translateX(-100%);
+}
+
+[dir="rtl"] .zs-range-tick--labeled.zs-range-tick--end {
+  transform: translateX(0);
+}
+
+.zs-field[dir="rtl"] .zs-range-tick--labeled.zs-range-tick--start {
+  transform: translateX(-100%);
+}
+
+.zs-field[dir="rtl"] .zs-range-tick--labeled.zs-range-tick--end {
+  transform: translateX(0);
+}
+
+/* keep the value bubble inside the track at both ends */
+.zs-range-bubble--start {
+  transform: translateX(0);
+}
+
+.zs-range-bubble--end {
+  transform: translateX(-100%);
+}
+
+[dir="rtl"] .zs-range-bubble--start {
+  transform: translateX(-100%);
+}
+
+[dir="rtl"] .zs-range-bubble--end {
+  transform: translateX(0);
+}
+
+.zs-field[dir="rtl"] .zs-range-bubble--start {
+  transform: translateX(-100%);
+}
+
+.zs-field[dir="rtl"] .zs-range-bubble--end {
+  transform: translateX(0);
 }
 
 /* validation state icons */

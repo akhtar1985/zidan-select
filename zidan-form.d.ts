@@ -220,8 +220,17 @@ export interface TextFieldOptions extends FieldOptions {
   phone?: boolean;
   phoneCountry?: string;
   phoneFormat?: PhoneFormat;
+  rangeVariant?: 'default' | 'gradient' | 'stepped' | 'minimal';
+  rangeBubble?: boolean;
+  rangeBubbleMode?: 'always' | 'active' | 'never';
+  rangeBubblePosition?: 'top' | 'bottom';
+  rangeFill?: boolean;
+  rangeMinMax?: boolean;
+  rangeTicks?: number[] | number | string;
+  rangeTickLabels?: boolean;
+  rangeMinLabel?: string;
+  rangeMaxLabel?: string;
   rangeFormat?: string | ((value: number, field: ZidanTextField) => string);
-  rangeTicks?: number[];
   rangeLabels?: Record<string, string>;
   disableWeekends?: boolean;
   disabledDates?: string[] | string | ((value: string, date: Date) => boolean);

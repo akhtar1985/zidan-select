@@ -32,7 +32,11 @@
         <span class="brand-sub">advanced options</span>
       </span>
     </a>
-    <nav class="header-nav" aria-label="Project links">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
       <a href="index.html">Demo</a>
       <a href="advanced.html" aria-current="page">Advanced</a>
       <a href="playground.html">Playground</a>
@@ -58,7 +62,7 @@
       <div class="hero-actions">
         <a class="btn btn-primary" href="#init">Start with initialization</a>
         <a class="btn" href="playground.html">Build a field visually</a>
-        <a class="btn" href="docs/options.md">Full option tables</a>
+        <a class="btn" href="https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md">Full option tables</a>
       </div>
       <ul class="adv-facts">
         <li>No runtime dependencies</li>
@@ -71,6 +75,7 @@
 
     <nav class="adv-toc" aria-label="On this page">
       <a href="#load">Build &amp; load</a>
+      <a href="#globals">Build &amp; JS</a>
       <a href="#init">Initialization</a>
       <a href="#precedence">Precedence</a>
       <a href="#select">Async select &amp; tags</a>
@@ -161,6 +166,104 @@ const { ZidanForm, initZidanForms, initZidanSelects } = require('zidan-select');
           </tbody>
         </table>
       </div>
+    </section>
+
+    <!-- ================= BUILD -> GLOBALS ================= -->
+    <section class="adv-section" id="globals" aria-labelledby="globals-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Pick your script</p>
+        <h2 id="globals-title">Which build, which JavaScript function</h2>
+        <p>
+          Each build exposes only the functions for the controls it ships. Load one build and copy
+          the block below that matches it — the three snippets are not interchangeable, and a
+          function that belongs to another build is simply <code>undefined</code>.
+        </p>
+      </div>
+
+      <div class="adv-table-wrap">
+        <table class="adv-table">
+          <thead>
+            <tr><th>You loaded</th><th>Functions available on <code>window</code></th><th>Not in this build</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Full bundle<br><code>zidan-form.js</code></th>
+              <td><code>initZidanForms</code> · <code>initZidanSelects</code> · <code>zidanField</code> · <code>zidanSelect</code> · <code>ZidanForm</code> · <code>ZidanSelect</code> · <code>registerZidanIcon</code></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <th>Select-only<br><code>dist/select/zidan-select.js</code></th>
+              <td><code>initZidanSelects</code> · <code>zidanSelect</code> · <code>ZidanForm</code> · <code>ZidanSelect</code> · <code>registerZidanIcon</code></td>
+              <td><code>initZidanForms</code> · <code>zidanField</code></td>
+            </tr>
+            <tr>
+              <th>File-only<br><code>dist/file/zidan-file.js</code></th>
+              <td><code>initZidanForms</code> · <code>zidanField</code> · <code>ZidanForm</code> · <code>registerZidanIcon</code></td>
+              <td><code>initZidanSelects</code> · <code>zidanSelect</code> · <code>ZidanSelect</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="adv-subhead">Full bundle — selects, inputs, checkboxes, radios and files</h3>
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs"><button type="button" data-lang="js" aria-pressed="true">JavaScript</button></div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="js"><code>&lt;script src="zidan-form.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // every [data-zidan] / [data-zidan-select] control on the page
+  initZidanForms(document);
+
+  // or initialise one control at a time
+  zidanField('#phone', { phone: { country: 'GB', format: 'international' } });
+  zidanSelect('#country', { mode: 'combobox', clearable: true });
+&lt;/script&gt;</code></pre>
+      </div>
+
+      <h3 class="adv-subhead">Select-only — dropdowns, combobox and tags only</h3>
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs"><button type="button" data-lang="js" aria-pressed="true">JavaScript</button></div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="js"><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-core.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/plugin-select-theme.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/select/zidan-select.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  initZidanSelects(document);
+  zidanSelect('#country', { mode: 'combobox' });
+
+  // zidanField() and initZidanForms() do not exist in this build;
+  // ZidanForm.field() returns [] because no input or file family is loaded.
+&lt;/script&gt;</code></pre>
+      </div>
+
+      <h3 class="adv-subhead">File-only — uploads only</h3>
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs"><button type="button" data-lang="js" aria-pressed="true">JavaScript</button></div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="js"><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-core.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/plugin-file-theme.css"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/zidan-select@2.3.0/dist/file/zidan-file.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  initZidanForms(document);
+  zidanField('#files', { variant: 'dropzone', maxFiles: 4 });
+
+  // zidanSelect() and initZidanSelects() do not exist in this build.
+&lt;/script&gt;</code></pre>
+      </div>
+
+      <p class="adv-note">
+        <strong>Same markup in all three builds.</strong> Auto-init reads the same
+        <code>data-zidan</code> / <code>data-zidan-select</code> attributes, and
+        <code>ZidanForm</code> exists everywhere for <code>refresh()</code>,
+        <code>destroyAll()</code> and <code>observe()</code>. The examples further down this page
+        assume the full bundle unless they say otherwise.
+      </p>
     </section>
 
     <!-- ================= INITIALIZATION ================= -->
@@ -417,7 +520,13 @@ picker.clearCache();        // drop cached pages only</code></pre>
 
 &lt;input type="range" min="0" max="1000" step="50" value="400"
        data-zidan="input" data-zidan-range-variant="minimal"
-       data-zidan-range-bubble="true" data-zidan-output="#adv-range-out"&gt;</code></pre>
+       data-zidan-range-bubble="true" data-zidan-output="#adv-range-out"&gt;
+
+&lt;input type="range" min="0" max="30" value="5"
+       data-zidan="input" data-zidan-range-bubble-mode="active"
+       data-zidan-range-bubble-position="bottom" data-zidan-range-fill="false"
+       data-zidan-range-min-label="Low" data-zidan-range-max-label="High"
+       data-zidan-range-ticks="10,20"&gt;</code></pre>
         <pre data-lang="js" hidden><code>const email = zidanField('#email', {
   alwaysValidate: true,
   showValidState: true,
@@ -434,7 +543,18 @@ await email.validate();   // Promise&lt;boolean&gt;
 email.isPending();        // true while the request is in flight
 email.checkAsync();       // run the async rule without changing focus
 email.setError('…');      // manual message
-email.clearError();</code></pre>
+email.clearError();
+
+// Range chrome: same options as data attributes, plus array tick values
+zidanField('#adv-range-chrome', {
+  rangeTicks: [10, 20],         // or '10,20' from the data attribute
+  rangeBubbleMode: 'active',     // 'always' | 'active' | 'never'
+  rangeBubblePosition: 'bottom', // 'top' | 'bottom'
+  rangeFill: false,              // progress fill off
+  rangeMinLabel: 'Low',
+  rangeMaxLabel: 'High',
+  rangeFormat: value =&gt; value + ' days'
+});</code></pre>
       </div>
 
       <div class="adv-live">
@@ -460,7 +580,13 @@ email.clearError();</code></pre>
           <div class="adv-live-head"><h3>Live: range ticks + formatter</h3></div>
           <label class="field-label" for="adv-range">Budget</label>
           <input id="adv-range" type="range" min="0" max="1000" step="50" value="400" name="adv-range">
-          <p class="adv-status">Output: <output id="adv-range-out">€400</output></p>
+          <p class="adv-status">Output: <output id="adv-range-out">€400</output>. Labeled endpoint ticks replace the min/max scale, so 0 and 1,000 appear once.</p>
+        </div>
+        <div class="adv-live">
+          <div class="adv-live-head"><h3>Live: range chrome</h3></div>
+          <label class="field-label" for="adv-range-chrome">Delivery window</label>
+          <input id="adv-range-chrome" type="range" min="0" max="30" step="1" value="5" name="adv-range-chrome">
+          <p class="adv-status">Bubble on hover / focus / drag below the track, no progress fill, marks at 10 and 20, custom scale ends.</p>
         </div>
       </div>
       <p class="adv-note">When pending, the native control carries the pending message, so <code>form.checkValidity()</code> and submit handlers wait. <code>destroy()</code> aborts in-flight checks; <code>field.reset()</code> clears the pending state. Listen for <code>zidan:async-validation</code> with <code>{ valid, message }</code>.</p>
@@ -698,6 +824,7 @@ ZidanForm.themes.push('brand');</code></pre>
     </div>
   </footer>
 
+  <script src="nav.js"></script>
   <script src="zidan-form.js"></script>
   <script src="advanced.js"></script>
 </body>

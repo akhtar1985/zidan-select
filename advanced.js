@@ -174,7 +174,7 @@
   if (tagsSelect) {
     window.zidanSelect(tagsSelect, {
       mode: 'tags',
-      label: 'Skills',
+      label: 'Skills (max 4)',
       placeholder: 'Type a skill and press Enter',
       maxTags: 4,
       minTagLength: 2,
@@ -194,6 +194,22 @@
       label: 'UK phone',
       icon: 'phone',
       phone: { country: 'GB', format: 'international' }
+    });
+  }
+
+  var rangeChrome = document.getElementById('adv-range-chrome');
+  if (rangeChrome) {
+    form.field(rangeChrome, {
+      label: 'Delivery window',
+      rangeTicks: [10, 20],
+      rangeBubbleMode: 'active',
+      rangeBubblePosition: 'bottom',
+      rangeFill: false,
+      rangeMinLabel: 'Low',
+      rangeMaxLabel: 'High',
+      rangeFormat: function (value) {
+        return value + ' days';
+      }
     });
   }
 

@@ -264,6 +264,17 @@
             { key: 'rangeStep', label: 'Range step', type: 'number', def: 50, when: function (s) { return s.type === 'range'; } },
             { key: 'rangeValue', label: 'Range value', type: 'number', def: 400, when: function (s) { return s.type === 'range'; } },
             bool('rangeMinMax', 'Min / max scale', true, function (s) { return s.type === 'range'; }),
+            { key: 'rangeBubbleMode', label: 'Range bubble', type: 'select', def: 'always', when: function (s) { return s.type === 'range'; }, options: [
+              ['always', 'Always'], ['active', 'On hover / focus'], ['never', 'Never']
+            ] },
+            { key: 'rangeBubblePosition', label: 'Bubble position', type: 'select', def: 'top', when: function (s) { return s.type === 'range'; }, options: [
+              ['top', 'Top'], ['bottom', 'Bottom']
+            ] },
+            bool('rangeFill', 'Progress fill', true, function (s) { return s.type === 'range'; }),
+            text('rangeMinLabel', 'Scale start label', '', function (s) { return s.type === 'range'; }),
+            text('rangeMaxLabel', 'Scale end label', '', function (s) { return s.type === 'range'; }),
+            text('rangeTicks', 'Tick values (comma list)', '', function (s) { return s.type === 'range'; }),
+            bool('rangeTickLabels', 'Tick labels', false, function (s) { return s.type === 'range'; }),
             bool('pickerButton', 'Open picker button', false, function (s) { return s.type === 'date' || s.type === 'time'; })
           ]
         },
@@ -276,7 +287,7 @@
         }
       ],
       defaults: function () {
-        return { type: 'email', label: 'Email address', placeholder: 'you@example.com', theme: 'default', framework: 'none', layout: '', autoIcon: true, icon: '', iconPosition: 'left', prefix: '', suffix: '', clearable: true, reveal: false, counter: '', hint: '', stepper: 'false', phone: false, phoneCountry: 'US', phoneFormat: 'national', rangeVariant: 'default', rangeMin: 0, rangeMax: 1000, rangeStep: 50, rangeValue: 400, rangeMinMax: true, pickerButton: false, required: false, disabled: false };
+        return { type: 'email', label: 'Email address', placeholder: 'you@example.com', theme: 'default', framework: 'none', layout: '', autoIcon: true, icon: '', iconPosition: 'left', prefix: '', suffix: '', clearable: true, reveal: false, counter: '', hint: '', stepper: 'false', phone: false, phoneCountry: 'US', phoneFormat: 'national', rangeVariant: 'default', rangeMin: 0, rangeMax: 1000, rangeStep: 50, rangeValue: 400, rangeMinMax: true, rangeBubbleMode: 'always', rangeBubblePosition: 'top', rangeFill: true, rangeMinLabel: '', rangeMaxLabel: '', rangeTicks: '', rangeTickLabels: false, pickerButton: false, required: false, disabled: false };
       }
     }
   };
@@ -438,6 +449,13 @@
       if (isRange) {
         attrs += attr('data-zidan-range-variant', s.rangeVariant);
         attrs += attr('data-zidan-range-minmax', s.rangeMinMax ? 'true' : 'false');
+        attrs += attr('data-zidan-range-bubble-mode', s.rangeBubbleMode);
+        attrs += attr('data-zidan-range-bubble-position', s.rangeBubblePosition);
+        attrs += attr('data-zidan-range-fill', s.rangeFill ? 'true' : 'false');
+        attrs += attr('data-zidan-range-min-label', s.rangeMinLabel);
+        attrs += attr('data-zidan-range-max-label', s.rangeMaxLabel);
+        attrs += attr('data-zidan-range-ticks', s.rangeTicks);
+        if (s.rangeTickLabels) attrs += '\n  data-zidan-range-tick-labels="true"';
         attrs += attr('data-zidan-output', '#pg-text-output');
       }
       if ((s.type === 'date' || s.type === 'time') && s.pickerButton) attrs += '\n  data-zidan-picker-button';
@@ -545,6 +563,16 @@
       if (s.type === 'range') {
         add('rangeVariant', s.rangeVariant);
         add('rangeMinMax', s.rangeMinMax);
+        add('rangeBubbleMode', s.rangeBubbleMode);
+        add('rangeBubblePosition', s.rangeBubblePosition);
+        add('rangeFill', s.rangeFill);
+        add('rangeMinLabel', s.rangeMinLabel);
+        add('rangeMaxLabel', s.rangeMaxLabel);
+        if (String(s.rangeTicks || '').trim()) {
+          var tickValues = String(s.rangeTicks).split(',').map(Number).filter(function (value) { return isFinite(value); });
+          if (tickValues.length) add('rangeTicks', tickValues);
+        }
+        add('rangeTickLabels', s.rangeTickLabels);
         add('output', '#pg-text-output');
       }
       if ((s.type === 'date' || s.type === 'time') && s.pickerButton) add('pickerButton', true);

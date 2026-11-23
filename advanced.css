@@ -207,6 +207,11 @@
 
 .adv-table td code { white-space: nowrap; }
 
+.adv-subhead {
+  margin: 22px 0 10px;
+  font-size: 0.95rem;
+}
+
 /* live demos */
 .adv-live {
   margin: 16px 0 0;

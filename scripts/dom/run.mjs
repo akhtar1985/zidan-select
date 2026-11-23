@@ -92,6 +92,35 @@ test('select multi value and clear', () => {
   select.destroy();
 });
 
+test('a JS label replaces the author label instead of duplicating it', () => {
+  const window = boot('<label class="field-label" for="s">Movie</label><select id="s"><option>A</option></select>');
+  const authorLabel = window.document.querySelector('.field-label');
+  const select = window.zidanSelect('#s', { label: 'Movie' });
+
+  assert.equal(authorLabel.getAttribute('data-zs-hidden-label'), 'true');
+  const visible = Array.from(window.document.querySelectorAll('label'))
+    .filter(el => !el.hidden && el.textContent.trim() === 'Movie');
+  assert.equal(visible.length, 1, 'the page should show the label once');
+
+  select.destroy();
+  assert.equal(authorLabel.getAttribute('data-zs-hidden-label'), null);
+  assert.equal(authorLabel.hidden, false);
+});
+
+test('phone country options show the code once (ISO + dial)', () => {
+  const window = boot('<input id="p" type="tel" data-zidan-phone="true" data-zidan-phone-country="GB">');
+  const field = window.zidanField('#p');
+  const select = window.document.querySelector('.zs-phone-country');
+  assert.ok(select, 'the country selector should render');
+  for (const option of Array.from(select.options)) {
+    const iso = option.value;
+    const hits = option.textContent.match(new RegExp('\\b' + iso + '\\b', 'g')) || [];
+    assert.equal(hits.length, 1, iso + ' option repeats its code: "' + option.textContent + '"');
+  }
+  assert.equal(select.options[Array.from(select.options).findIndex(o => o.value === 'GB')].textContent, 'GB +44');
+  field.destroy();
+});
+
 /* ---------------- async validation ---------------- */
 
 test('async validation: pending state, success, failure and events', async () => {
@@ -395,6 +424,165 @@ test('RTL: component roots follow dir and range ticks use logical positions', ()
   assert.ok(!/left:/.test(tick.getAttribute('style') || ''), 'no physical left offset on ticks');
   select.destroy();
   range.destroy();
+});
+
+test('range: labeled endpoint ticks replace the min/max scale instead of repeating it', () => {
+  const window = boot('<input id="r" type="range" min="0" max="1000" step="50" value="400">');
+  const field = window.zidanField(window.document.getElementById('r'), {
+    rangeTicks: [0, 250, 500, 750, 1000],
+    rangeTickLabels: true,
+    rangeFormat: (value) => '€' + Number(value).toLocaleString('en-US')
+  });
+  const ticks = Array.from(field.rangeTicksEl.querySelectorAll('.zs-range-tick'));
+  assert.equal(ticks.length, 5);
+  assert.equal(ticks[0].textContent, '€0');
+  assert.equal(ticks[4].textContent, '€1,000');
+  assert.ok(ticks[0].classList.contains('zs-range-tick--start'));
+  assert.ok(ticks[4].classList.contains('zs-range-tick--end'));
+  const scale = field.rangeScale;
+  assert.ok(scale.classList.contains('zs-range-scale--hidden'), 'min/max scale is replaced, not repeated');
+
+  field.rangeTicksOption = 0;
+  field._syncRange('400');
+  assert.equal(field.rangeTicksEl.children.length, 0, 'stale ticks are cleared');
+  assert.ok(!scale.classList.contains('zs-range-scale--hidden'), 'scale returns when ticks are removed');
+  field.destroy();
+});
+
+test('range: bubble mode/position, fill, custom ends and tick parsing', () => {
+  const window = boot('<input id="r" type="range" min="0" max="30" step="1" value="5"\n    data-zidan-range-bubble-mode="active" data-zidan-range-bubble-position="bottom"\n    data-zidan-range-fill="false" data-zidan-range-min-label="Low"\n    data-zidan-range-max-label="High" data-zidan-range-ticks="0,10,20,30"\n    data-zidan-range-tick-labels="true"><input id="j" type="range" min="0" max="30" value="5" data-zidan-range-ticks="[5,15,25]">');
+  const field = window.zidanField('#r');
+  assert.ok(field.range.classList.contains('zs-range--bubble-active'));
+  assert.ok(field.range.classList.contains('zs-range--bubble-bottom'));
+  assert.ok(field.range.classList.contains('zs-range--fill-off'));
+  assert.ok(field.range.classList.contains('zs-range--no-bubble') === false);
+  const ticks = Array.from(field.rangeTicksEl.querySelectorAll('.zs-range-tick'));
+  assert.deepEqual(ticks.map(t => t.textContent), ['0', '10', '20', '30'], 'comma list ticks parsed from the attribute');
+  const json = window.zidanField('#j');
+  assert.equal(json.rangeTicksEl.querySelectorAll('.zs-range-tick').length, 3, 'JSON array ticks parsed from the attribute');
+  field.destroy();
+  json.destroy();
+});
+
+test('range: custom scale ends, formatted aria value and no-bubble mode', () => {
+  const window = boot('<input id="r" type="range" min="0" max="10" value="4"><input id="q" type="range" min="0" max="10" value="4"><input id="x" type="range" min="0" max="10" value="4">');
+  const field = window.zidanField(window.document.getElementById('r'), {
+    rangeMinLabel: 'Low',
+    rangeMaxLabel: 'High',
+    rangeFormat: (value) => value + ' days'
+  });
+  assert.equal(field.rangeScale.firstChild.textContent, 'Low');
+  assert.equal(field.rangeScale.lastChild.textContent, 'High');
+  assert.equal(field.el.getAttribute('aria-valuetext'), '4 days');
+  assert.ok(!field.range.classList.contains('zs-range--no-bubble'));
+  field.destroy();
+  assert.equal(field.el.getAttribute('aria-valuetext'), null, 'destroy restores native semantics');
+  const again = window.zidanField(window.document.getElementById('r'));
+
+  const quiet = window.zidanField(window.document.getElementById('q'), { rangeBubbleMode: 'never' });
+  assert.equal(quiet.rangeBubble, null, 'never removes the bubble');
+  assert.ok(quiet.range.classList.contains('zs-range--no-bubble'));
+
+  assert.doesNotThrow(() => window.zidanField(window.document.getElementById('x'), { output: '###' }), 'a bad output selector must not break init');
+  again.destroy();
+  quiet.destroy();
+});
+
+test('range: the output mirrors the formatted value', () => {
+  const window = boot('<input id="r" type="range" min="0" max="1000" step="50" value="400"><output id="out"></output>');
+  const field = window.zidanField(window.document.getElementById('r'), {
+    output: '#out',
+    rangeFormat: (value) => '€' + Number(value).toLocaleString('en-US')
+  });
+  const out = window.document.getElementById('out');
+  assert.equal(out.textContent, '€400');
+  field.setValue(750);
+  assert.equal(out.textContent, '€750');
+  const bubble = field.range.querySelector('.zs-range-bubble');
+  assert.ok(!bubble.classList.contains('zs-range-bubble--start'));
+  assert.ok(!bubble.classList.contains('zs-range-bubble--end'));
+  field.setValue(0);
+  assert.ok(bubble.classList.contains('zs-range-bubble--start'), 'bubble stays inside the track at min');
+  field.setValue(1000);
+  assert.ok(bubble.classList.contains('zs-range-bubble--end'), 'bubble stays inside the track at max');
+  field.destroy();
+});
+
+/* ---------------- subset builds ---------------- */
+
+/* ---------------- regression fixes ---------------- */
+
+test('radio group destroy keeps the author fieldset and radios', () => {
+  const window = boot('<form><fieldset id="rg" data-zidan="radio-group"><label><input type="radio" name="p" value="a" checked> A</label><label><input type="radio" name="p" value="b"> B</label></fieldset></form>');
+  const group = window.zidanField('#rg');
+  assert.equal(group.el, window.document.getElementById('rg'));
+  group.destroy();
+  assert.ok(window.document.getElementById('rg'), 'the fieldset must stay in the document');
+  assert.equal(window.document.querySelectorAll('input[type="radio"]').length, 2);
+  assert.equal(group.el.classList.contains('zs-radio-group'), false, 'enhancement classes are removed');
+});
+
+test('a single radio resolves its fieldset instead of destroying the input', () => {
+  const window = boot('<form><fieldset id="rg"><label><input id="r" type="radio" name="p" value="a" data-zidan> A</label></fieldset></form>');
+  const group = window.zidanField('#r');
+  assert.equal(group.el, window.document.getElementById('rg'));
+  group.destroy();
+  assert.ok(window.document.getElementById('r'), 'the radio must stay in the document');
+});
+
+test('JS required on a select blocks the form and mirrors to the native control', () => {
+  const window = boot('<form><select id="s" data-zidan-select><option value="">Pick</option><option value="a">A</option></select></form>');
+  const select = window.zidanSelect('#s', { required: true });
+  assert.equal(select.native.required, true);
+  assert.equal(window.document.querySelector('form').checkValidity(), false);
+  assert.equal(select.input.getAttribute('aria-required'), 'true');
+  select.setValue('a');
+  assert.equal(window.document.querySelector('form').checkValidity(), true);
+  select.destroy();
+  assert.equal(select.native.required, false, 'destroy removes the mirrored required attribute');
+});
+
+test('tags listbox announces that it is multi-selectable', () => {
+  const window = boot('<select id="t" multiple data-zidan-select="tags"><option value="js">JS</option></select>');
+  const select = window.zidanSelect('#t');
+  assert.equal(select.dropdown.getAttribute('aria-multiselectable'), 'true');
+  select.destroy();
+});
+
+test('Space opens a closed select', () => {
+  const window = boot('<select id="s" data-zidan-select><option value="a">A</option></select>');
+  const select = window.zidanSelect('#s');
+  select.input.dispatchEvent(new window.KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true }));
+  assert.equal(select.isOpen(), true);
+  select.destroy();
+});
+
+test('destroy restores the author aria-describedby instead of leaving stale ids', () => {
+  const window = boot('<div><p id="author">Help</p><input id="a" data-zidan="input" data-zidan-hint="Extra" aria-describedby="author"></div>');
+  const field = window.zidanField('#a');
+  assert.equal(field.el.getAttribute('aria-describedby'), 'author a-hint');
+  field.setError('Bad value');
+  field.destroy();
+  assert.equal(field.el.getAttribute('aria-describedby'), 'author');
+});
+
+test('checkbox hint adds to, and destroy restores, the author aria-describedby', () => {
+  const window = boot('<div><p id="author">Help</p><label><input id="c" type="checkbox" data-zidan="checkbox" data-zidan-hint="Extra" aria-describedby="author"> C</label></div>');
+  const field = window.zidanField('#c');
+  assert.equal(field.el.getAttribute('aria-describedby'), 'author c-hint');
+  field.destroy();
+  assert.equal(field.el.getAttribute('aria-describedby'), 'author');
+});
+
+test('file list re-renders do not accumulate per-item listeners', () => {
+  const window = boot('<input id="f" type="file" multiple data-zidan="file">');
+  const field = window.zidanField('#f');
+  field.addFiles([new window.File(['x'], 'a.txt'), new window.File(['y'], 'b.txt')]);
+  const before = field._listeners.length;
+  field._render();
+  field._render();
+  assert.equal(field._listeners.length, before);
+  field.destroy();
 });
 
 /* ---------------- subset builds ---------------- */

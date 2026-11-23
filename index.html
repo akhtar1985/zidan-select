@@ -104,7 +104,11 @@
         <span class="brand-sub">v2.3 · zero dependencies</span>
       </span>
     </a>
-    <nav class="header-nav" aria-label="Project links">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
       <a href="index.html" aria-current="page">Demo</a>
       <a href="advanced.html">Advanced</a>
       <a href="playground.html">Playground</a>
@@ -933,7 +937,7 @@ ZidanForm.registerIcon('sparkle',
               <input type="range" min="0" max="1000" step="50" value="400" id="range-minimal" data-zidan="input"
                      data-zidan-label="Minimal, JS formatter" data-zidan-range-variant="minimal"
                      data-zidan-range-minmax="false" data-zidan-output="#range-out-2">
-              <p class="form-status">Value: <output id="range-out-2" for="range-minimal">400</output></p>
+              <p class="form-status">Value: <output id="range-out-2" for="range-minimal">€400</output></p>
             </div>
           </div>
           <div class="card">
@@ -1398,9 +1402,9 @@ window.ZIDAN_FORM_CONFIG = {
         </div>
         <p class="compare-note">
           Describes each project's core package; plugins can close some gaps. Full matrix, trade-offs
-          and migration notes in <a href="docs/comparison.md">docs/comparison.md</a>. Trimmed
+          and migration notes in <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/comparison.md">docs/comparison.md</a>. Trimmed
           select-only and file-only bundles are listed in the README and
-          <a href="docs/build.md">docs/build.md</a>.
+          <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/build.md">docs/build.md</a>.
         </p>
       </div>
     </section>
@@ -1423,7 +1427,7 @@ window.ZIDAN_FORM_CONFIG = {
         </details>
         <details class="faq-item">
           <summary>Can I use it with React, Vue or Angular?</summary>
-          <p>Yes — initialise in a mount/effect and call <code>destroy()</code> on cleanup. The <a href="docs/frameworks.md">framework guide</a> covers React, Next.js SSR, Vue and Angular patterns.</p>
+          <p>Yes — initialise in a mount/effect and call <code>destroy()</code> on cleanup. The <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/frameworks.md">framework guide</a> covers React, Next.js SSR, Vue and Angular patterns.</p>
         </details>
         <details class="faq-item">
           <summary>Does it conflict with jQuery Validation, JustValidate or Parsley?</summary>
@@ -1431,7 +1435,7 @@ window.ZIDAN_FORM_CONFIG = {
         </details>
         <details class="faq-item">
           <summary>How do I customise the look?</summary>
-          <p>Load <code>plugin-core.css</code> then <code>plugin-theme.css</code>, and override CSS variables or add a theme. Register custom names with <code>ZidanForm.themes.push('brand')</code> before initialising. See <a href="docs/theming.md">theming</a>.</p>
+          <p>Load <code>plugin-core.css</code> then <code>plugin-theme.css</code>, and override CSS variables or add a theme. Register custom names with <code>ZidanForm.themes.push('brand')</code> before initialising. See <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/theming.md">theming</a>.</p>
         </details>
         <details class="faq-item">
           <summary>Can I enhance just one select?</summary>
@@ -1462,6 +1466,7 @@ window.ZIDAN_FORM_CONFIG = {
     </div>
   </footer>
 
+  <script src="nav.js"></script>
   <script src="zidan-form.js"></script>
   <script src="demo.js"></script>
   <script src="lab.js"></script>

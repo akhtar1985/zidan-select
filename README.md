@@ -225,7 +225,7 @@ override presets.
 | `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase (not shipped logic). |
 | `advanced.html`, `advanced.css`, `advanced.js` | Advanced reference: init and precedence, async paging, Promise validation, uploads, events, RTL and TypeScript, with copyable HTML/JS examples (not shipped logic). |
 | `playground.html`, `playground.css`, `playground.js` | Per-field option builder with live preview and copyable HTML / JS output (not shipped logic). |
-| `nav.css` | Shared header and navigation for the demo pages (not shipped logic). |
+| `nav.css`, `nav.js` | Shared header, navigation and mobile menu button for the demo pages (not shipped logic). |
 | `robots.txt`, `sitemap.xml` | Crawler directives and the public page list for GitHub Pages (not shipped on npm). |
 | `docs/` | Comparison, options, validation, frameworks, theming, build and the static HTML/WordPress cookbook. |
 
@@ -681,10 +681,24 @@ zidanField('#price', {
   rangeLabels: { 0: 'Free', 1000: 'Top' },
   rangeFormat: value => '€' + Number(value).toLocaleString('en-US')
 });
+
+zidanField('#delivery', {
+  rangeBubbleMode: 'active',      // always | active | never
+  rangeBubblePosition: 'bottom',  // top | bottom
+  rangeFill: false,               // no progress colour
+  rangeTicks: '0,10,20,30',       // count, array, JSON or comma list
+  rangeTickLabels: true,
+  rangeMinLabel: 'Low',
+  rangeMaxLabel: 'High'
+});
 ```
 
-Variants: `default`, `gradient`, `stepped`, `minimal`. Bubble, min/max scale, ticks and labels
-can each be toggled; `rangeFormat` accepts a template (`{value}`, `{min}`, `{max}`) or a function.
+Variants: `default`, `gradient`, `stepped`, `minimal`. Bubble (always / on hover-focus / never,
+top or bottom), fill, min/max scale, custom scale ends, ticks and labels can each be set;
+`rangeFormat` accepts a template (`{value}`, `{min}`, `{max}`) or a function and also feeds
+`aria-valuetext`. Labeled ticks at both ends replace the min/max scale (classes
+`zs-range-scale--hidden` and `zs-range-tick--start` / `--end`), so the start and end numbers
+are printed once. `output` receives the formatted display value; `input.value` keeps the raw one.
 
 ### Date & time pickers
 
@@ -720,7 +734,7 @@ per field; clickable icons call `input.showPicker()` when available.
 | `reveal` | `data-zidan-reveal` | boolean | `false` | Password show/hide. |
 | `prefix` / `suffix` | `data-zidan-prefix` / `-suffix` | string | — | Static adornments. |
 | `counter` | `data-zidan-counter` | number | `maxlength` | Character limit for the counter; overrides `maxlength`. |
-| `output` | `data-zidan-output` | selector | — | Range value is mirrored into this element. |
+| `output` | `data-zidan-output` | selector | — | Range display value (formatted when `rangeFormat` is set) is mirrored into this element. |
 | `autoIcon` / `icon` | `data-zidan-auto-icon` / `data-zidan-icon` | boolean / string | `false` / — | Type-based or custom input icon (any registered name). |
 | `iconPosition` / `iconClickable` | `data-zidan-icon-position` / `-icon-clickable` | `left`\|`right` / boolean | `left` / `false` | Side and behaviour of the icon. |
 | `validationIcon` | `data-zidan-validation-icon` | boolean | `false` | Check/alert glyphs tied to validation state. |
@@ -730,7 +744,9 @@ per field; clickable icons call `input.showPicker()` when available.
 | `phone` / `phoneCountry` / `phoneFormat` | `data-zidan-phone` / `-phone-country` / `-phone-format` | boolean / ISO-2 / `national`\|`international`\|`e164` | — / `US` / `national` | Phone formatting and validation. |
 | `phoneCountrySelect` / `phoneCountries` | `data-zidan-phone-country-select` / `-phone-countries` | boolean / list | `true` / common set | Country selector. |
 | `rangeVariant` / `rangeBubble` / `rangeMinMax` | `data-zidan-range-variant` / `-range-bubble` / `-range-minmax` | string / boolean / boolean | `default` / `true` / `true` | Range skin and chrome. |
-| `rangeTicks` / `rangeTickLabels` / `rangeLabels` / `rangeFormat` | `data-zidan-range-ticks` / `-range-tick-labels` / — / `-range-format` | number\|array / boolean / object / string\|function | `0` / `false` / — / — | Ticks, labels and value formatter. |
+| `rangeBubbleMode` / `rangeBubblePosition` / `rangeFill` | `data-zidan-range-bubble-mode` / `-range-bubble-position` / `-range-fill` | `always`\|`active`\|`never` / `top`\|`bottom` / boolean | `always` / `top` / `true` | Bubble visibility and side, progress fill. |
+| `rangeTicks` / `rangeTickLabels` / `rangeLabels` / `rangeFormat` | `data-zidan-range-ticks` / `-range-tick-labels` / — / `-range-format` | number\|array\|string / boolean / object / string\|function | `0` / `false` / — / — | Ticks (count, array, JSON or comma list), labels and value formatter. |
+| `rangeMinLabel` / `rangeMaxLabel` | `data-zidan-range-min-label` / `-range-max-label` | string | — | Custom text for the scale ends. |
 | `pickerButton` / `pickerIcon` | `data-zidan-picker-button` / `-picker-icon` | boolean / string | `false` / per type | Date/time picker button and icon. |
 | `disableWeekends` / `disabledDates` | `data-zidan-disable-weekends` / `-disabled-dates` | boolean / list\|function | `false` / — | Date rules written into native validity. |
 | `title` | `data-zidan-title` | string | `Choose a file` | File dropzone title. |
