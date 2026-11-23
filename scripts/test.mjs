@@ -123,6 +123,33 @@ check('field playground is wired up', () => {
   assert(read('README.md').includes('playground.html'), 'README does not link the playground');
 });
 
+check('advanced page and shared header are wired up', () => {
+  const page = read('advanced.html');
+  const script = read('advanced.js');
+  const styles = read('advanced.css');
+  assert(styles.length > 0 && script.length > 0, 'advanced page assets missing');
+  assert(page.includes('advanced.css') && page.includes('advanced.js'), 'advanced page does not load its assets');
+  assert(page.includes('nav.css') && page.includes('demo.css'), 'advanced page does not load the shared demo styles');
+  assert(page.includes('zidan-form.js'), 'advanced page does not load the library');
+  for (const needle of ['fetchOptions', 'fetchPageSize', 'validate', 'data-zidan-options', 'zidan:load-more', 'zidan:async-validation', 'ZidanForm.observe']) {
+    assert(page.includes(needle), 'advanced page missing technical detail: ' + needle);
+  }
+  assert(page.includes('data-lang="html"') && page.includes('data-lang="js"'), 'advanced page needs both HTML and JS examples');
+  assert(read('index.html').includes('advanced.html'), 'demo does not link the advanced page');
+  assert(read('README.md').includes('advanced.html'), 'README does not link the advanced page');
+  assert(read('docs/index.html').includes('../advanced.html'), 'docs index does not link the advanced page');
+
+  const pages = ['index.html', 'advanced.html', 'playground.html', 'shopify.html'];
+  const navs = pages.map(name => {
+    const match = read(name).match(/<nav class="header-nav"[\s\S]*?<\/nav>/);
+    assert(match, name + ' is missing the shared header nav');
+    return Array.from(match[0].matchAll(/<a href="([^"]+)"/g)).map(item => item[1]).join('|');
+  });
+  assert(new Set(navs).size === 1, 'demo pages do not share the same header links');
+  assert(navs[0].includes('advanced.html') && navs[0].includes('shopify.html'), 'shared header is incomplete');
+  assert(!/header-nav a:nth-child/.test(read('demo.css') + read('nav.css')), 'mobile CSS still hides header links');
+});
+
 check('new features are present', () => {
   for (const hook of ['.zs-more', '.zs-field--pending', 'zs-range-tick', 'zs-file-progress']) {
     assert(core.includes(hook), 'core missing ' + hook);
@@ -156,9 +183,12 @@ check('Pages metadata is complete', () => {
   assert(robots.includes('Sitemap: https://akhtar1985.github.io/zidan-select/sitemap.xml'), 'robots.txt missing sitemap pointer');
   assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/playground.html'), 'sitemap missing the playground');
   assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/shopify.html'), 'sitemap missing the Shopify demo');
+  assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/advanced.html'), 'sitemap missing the advanced page');
   const workflow = read('.github/workflows/pages.yml');
   assert(workflow.includes('robots.txt') && workflow.includes('sitemap.xml'), 'Pages workflow does not publish robots/sitemap');
   assert(workflow.includes('shopify.html'), 'Pages workflow does not publish the Shopify demo');
+  assert(workflow.includes('advanced.html') && workflow.includes('nav.css'), 'Pages workflow does not publish the advanced page or shared header');
+  assert(read('advanced.html').includes('<link rel="canonical"'), 'advanced page missing canonical URL');
   const html = read('index.html');
   assert(html.includes('<link rel="canonical"'), 'demo missing canonical URL');
   assert(html.includes('property="og:image"'), 'demo missing Open Graph image');

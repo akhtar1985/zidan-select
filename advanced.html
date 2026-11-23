@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advanced options — HTML, JavaScript, async validation, pagination &amp; uploads</title>
+  <meta name="description" content="ZidanForm advanced reference: build loading, initialization and option precedence, async select pagination, tags, Promise validation, upload pipeline, events, lifecycle, RTL and TypeScript — with copyable HTML and JavaScript examples.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/advanced.html">
+  <meta name="theme-color" content="#4f6bed">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:title" content="ZidanForm advanced options — HTML and JavaScript">
+  <meta property="og:description" content="The technical reference the demo was missing: initialization, precedence, async fetching, Promise validation, uploads, events and lifecycle.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/advanced.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="plugin-core.css">
+  <link rel="stylesheet" href="plugin-theme.css">
+  <link rel="stylesheet" href="demo.css">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="advanced.css">
+</head>
+<body>
+  <a class="skip-link" href="#adv-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">advanced options</span>
+      </span>
+    </a>
+    <nav class="header-nav" aria-label="Project links">
+      <a href="index.html">Demo</a>
+      <a href="advanced.html" aria-current="page">Advanced</a>
+      <a href="playground.html">Playground</a>
+      <a href="shopify.html">Shopify</a>
+      <a href="index.html#compare">Compare</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="docs/">Docs</a>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+    </nav>
+  </header>
+
+  <main id="adv-main" class="wrap adv-main">
+    <section class="hero adv-hero">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Advanced reference · 2.3</p>
+      <h1>Advanced options, <span>HTML and JavaScript</span>.</h1>
+      <p>
+        The demo shows every control; this page shows how to wire the parts that need more than a
+        visual check: build loading, option precedence, remote paging, Promise validation, upload
+        handlers, events and teardown. Every example has an HTML and a JavaScript version where
+        both are possible.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#init">Start with initialization</a>
+        <a class="btn" href="playground.html">Build a field visually</a>
+        <a class="btn" href="docs/options.md">Full option tables</a>
+      </div>
+      <ul class="adv-facts">
+        <li>No runtime dependencies</li>
+        <li>Classic script + ESM</li>
+        <li>HTML attrs, JSON attrs or JS options</li>
+        <li>Async rules abort on change</li>
+        <li>Full, select-only and file-only builds</li>
+      </ul>
+    </section>
+
+    <nav class="adv-toc" aria-label="On this page">
+      <a href="#load">Build &amp; load</a>
+      <a href="#init">Initialization</a>
+      <a href="#precedence">Precedence</a>
+      <a href="#select">Async select &amp; tags</a>
+      <a href="#fields">Validation &amp; fields</a>
+      <a href="#upload">Uploads</a>
+      <a href="#events">Events &amp; lifecycle</a>
+      <a href="#platform">Themes, RTL &amp; types</a>
+    </nav>
+
+    <!-- ================= BUILD & LOAD ================= -->
+    <section class="adv-section" id="load" aria-labelledby="load-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Technical</p>
+        <h2 id="load-title">Build and load order</h2>
+        <p>
+          Load exactly one build per page. Structure and theme are separate files, and
+          <code>plugin-core.css</code> must come before <code>plugin-theme.css</code>. Your own
+          overrides go after both.
+        </p>
+      </div>
+
+      <div class="adv-table-wrap">
+        <table class="adv-table">
+          <thead>
+            <tr><th>Build</th><th>JavaScript</th><th>CSS</th><th>Use when</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Full</th>
+              <td><code>zidan-form.js</code><br>213 kB raw · 126 kB min</td>
+              <td><code>plugin-core.css</code> 39 kB<br><code>plugin-theme.css</code> 48 kB</td>
+              <td>Several control families on one page.</td>
+            </tr>
+            <tr>
+              <th>Select-only</th>
+              <td><code>dist/select/zidan-select.js</code><br>106 kB raw · 64 kB min</td>
+              <td><code>plugin-select-core.css</code> 13 kB<br><code>plugin-select-theme.css</code> 33 kB</td>
+              <td>Only select, combobox or tags.</td>
+            </tr>
+            <tr>
+              <th>File-only</th>
+              <td><code>dist/file/zidan-file.js</code><br>84 kB raw · 50 kB min</td>
+              <td><code>plugin-file-core.css</code> 10 kB<br><code>plugin-file-theme.css</code> 35 kB</td>
+              <td>Only file uploads.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="adv-note"><strong>Sizes are from the 2.3.0 build.</strong> Minified files ship in the npm package and are generated by <code>npm run build</code>; the CDN also minifies on request.</p>
+
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs">
+            <button type="button" data-lang="html" aria-pressed="true">HTML · CDN</button>
+            <button type="button" data-lang="js" aria-pressed="false">JavaScript · npm</button>
+          </div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="html"><code>&lt;link rel="stylesheet" href="plugin-core.css"&gt;
+&lt;link rel="stylesheet" href="plugin-theme.css"&gt;
+&lt;script src="zidan-form.js"&gt;&lt;/script&gt;
+
+&lt;!-- select-only or file-only pages: use that build's JS and both
+     matching CSS files instead of the full bundle — never both. --&gt;</code></pre>
+        <pre data-lang="js" hidden><code>// ESM
+import ZidanForm, { initZidanForms, initZidanSelects, zidanField } from 'zidan-select';
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';
+
+// CommonJS
+const { ZidanForm, initZidanForms, initZidanSelects } = require('zidan-select');
+
+// One page = one build. Subsets are complete, not add-ons:
+// import { ZidanSelect } from 'zidan-select/select';
+// import 'zidan-select/select/css/core';
+// import 'zidan-select/select/css/theme';</code></pre>
+      </div>
+
+      <div class="adv-table-wrap">
+        <table class="adv-table">
+          <thead><tr><th>Constraint</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><th>Runtime</th><td>No dependencies. Browser APIs only; classic script, ESM wrapper and plain CSS.</td></tr>
+            <tr><th>Build step</th><td>None for consumers. Node 18+ is only needed for this repository's tests and <code>dist/</code> build.</td></tr>
+            <tr><th>Auto-init</th><td><code>[data-zidan-select]</code>, <code>[data-zidan]</code>, <code>.zidan-select</code>, <code>.zidan-field</code>, <code>zidan-form</code> wrappers and configured targets, on <code>DOMContentLoaded</code>.</td></tr>
+            <tr><th>Opt out</th><td><code>&lt;html data-zidan-auto-init="false"&gt;</code> or <code>window.ZIDAN_SELECT_CONFIG = { autoInit: false }</code> before the script.</td></tr>
+            <tr><th>Native state</th><td>The real control stays in the DOM at 1×1 px (never <code>display:none</code>), so <code>FormData</code>, <code>reset()</code>, <code>:invalid</code> and <code>input.files</code> keep working.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= INITIALIZATION ================= -->
+    <section class="adv-section" id="init" aria-labelledby="init-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Entry points</p>
+        <h2 id="init-title">Initialization: markup, selectors or config</h2>
+        <p>
+          Markup is enough for most fields. Use the API when you need callbacks, render hooks,
+          remote data or an option that cannot be written as an attribute.
+        </p>
+      </div>
+
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs">
+            <button type="button" data-lang="html" aria-pressed="true">HTML</button>
+            <button type="button" data-lang="js" aria-pressed="false">JavaScript</button>
+          </div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="html"><code>&lt;form class="zidan-form"&gt;
+  &lt;select name="country" data-zidan-select="combobox"
+          data-zidan-label="Country" data-zidan-clearable="true"&gt;…&lt;/select&gt;
+
+  &lt;input type="file" name="docs" data-zidan="file"
+         data-zidan-file-variant="dropzone" data-zidan-max-size-mb="4"&gt;
+
+  &lt;input type="email" name="email" data-zidan="input"
+         data-zidan-label="Email" data-zidan-auto-icon="true"&gt;
+
+  &lt;fieldset data-zidan="radio-group" data-zidan-variant="tile"&gt;…&lt;/fieldset&gt;
+&lt;/form&gt;
+
+&lt;script src="zidan-form.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  initZidanForms(document);   // fields
+  initZidanSelects(document); // selects, if you prefer explicit init
+&lt;/script&gt;</code></pre>
+        <pre data-lang="js" hidden><code>// One select, one field, or every match
+const picker = zidanSelect('#country', { mode: 'combobox', clearable: true });
+const upload = zidanField('#docs', { variant: 'dropzone', maxSizeMB: 4 });
+const fields = initZidanForms(document);
+
+// Explicit targets before the generic scan; its options win
+window.ZIDAN_FORM_CONFIG = {
+  targets: [
+    '#country',
+    { selector: '#brands', options: { mode: 'tags', maxTags: 3 } }
+  ],
+  fieldTargets: [
+    { selector: '#email', options: { icon: 'mail' } }
+  ],
+  formTargets: ['#checkout']
+};
+
+// Later, after dynamic DOM changes
+const observer = ZidanForm.observe(document.body);
+ZidanForm.refresh(document);
+observer.disconnect();</code></pre>
+      </div>
+
+      <div class="adv-table-wrap">
+        <table class="adv-table">
+          <thead><tr><th>Entry point</th><th>Returns</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><th><code>zidanSelect(target, opts)</code></th><td>Instance or array</td><td>Accepts a selector, element or NodeList. Plain selects are not touched by auto-init.</td></tr>
+            <tr><th><code>zidanField(target, opts)</code></th><td>Field or array</td><td>Works on marked controls and on plain supported <code>&lt;input&gt;</code>/<code>&lt;textarea&gt;</code> elements.</td></tr>
+            <tr><th><code>initZidanSelects(scope?, opts?)</code></th><td>Select[]</td><td>Scans the scope for marked selects and configured targets.</td></tr>
+            <tr><th><code>initZidanForms(scope?, opts?)</code></th><td>Field[]</td><td>Scans for marked fields and <code>zidan-form</code> wrappers.</td></tr>
+            <tr><th><code>ZidanForm.init(scope, opts)</code></th><td>Field[]</td><td>Shared options are merged into every field.</td></tr>
+            <tr><th><code>ZidanForm.get(input)</code></th><td>Field | null</td><td>Look up the instance attached to a native control.</td></tr>
+            <tr><th><code>ZidanForm.refresh(scope?)</code></th><td>Field[]</td><td>Re-scan and re-sync native state without rebuilding the page.</td></tr>
+            <tr><th><code>ZidanForm.destroyAll()</code></th><td>void</td><td>Restores every enhanced control, including those in subsets.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= PRECEDENCE ================= -->
+    <section class="adv-section" id="precedence" aria-labelledby="precedence-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Debugging</p>
+        <h2 id="precedence-title">Option precedence and the HTML/JS boundary</h2>
+        <p>
+          When the same option is set twice, the more specific source wins. Functions can only be
+          passed from JavaScript, which is why async fetching, render hooks and custom validators
+          have no data-attribute equivalent.
+        </p>
+      </div>
+
+      <div class="adv-table-wrap">
+        <table class="adv-table">
+          <thead><tr><th>Priority</th><th>Source</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><th>1 — highest</th><td>JavaScript options</td><td><code>zidanSelect('#x', { maxTags: 3 })</code></td></tr>
+            <tr><th>2</th><td><code>data-zidan-options</code> JSON</td><td><code>data-zidan-options='{"maxTags":3}'</code></td></tr>
+            <tr><th>3</th><td>Individual data attributes</td><td><code>data-zidan-max-tags="4"</code></td></tr>
+            <tr><th>4 — lowest</th><td>Native markup and plugin defaults</td><td><code>multiple</code>, <code>required</code>, <code>maxlength</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="adv-note"><strong>Counter detail:</strong> <code>maxlength</code> only supplies the default counter limit. <code>data-zidan-counter</code> (or the <code>counter</code> JS option) overrides it.</p>
+
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs">
+            <button type="button" data-lang="html" aria-pressed="true">HTML · JSON only</button>
+            <button type="button" data-lang="js" aria-pressed="false">JavaScript · wins</button>
+          </div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="html"><code>&lt;select id="skills" class="zidan-select" multiple
+        data-zidan-options='{"mode":"tags","maxTags":4,"placeholder":"Type and press Enter"}'&gt;
+  &lt;option&gt;Design&lt;/option&gt;
+  &lt;option&gt;Frontend&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+        <pre data-lang="js" hidden><code>// JS options beat the JSON attribute, which beats data-* attributes
+zidanSelect('#skills', {
+  mode: 'tags',
+  maxTags: 2,
+  validateTag: tag =&gt; tag.length &lt;= 12 || 'Use 12 characters or fewer'
+});
+
+// Functions cannot come from HTML or JSON:
+// fetchOptions, renderOption, renderSelected, renderTag, formatTag,
+// validateTag, validate, validateDate, upload, callbacks, customClasses</code></pre>
+      </div>
+    </section>
+
+    <!-- ================= SELECT ================= -->
+    <section class="adv-section" id="select" aria-labelledby="select-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Select</p>
+        <h2 id="select-title">Remote paging, caching and tags</h2>
+        <p>
+          A paged <code>fetchOptions</code> returns <code>{ items, hasMore }</code>. Pages are
+          cached per query, the footer shows a load-more button, and scrolling near the bottom
+          fetches the next page automatically.
+        </p>
+      </div>
+
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs">
+            <button type="button" data-lang="js" aria-pressed="true">JavaScript</button>
+          </div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="js"><code>const picker = zidanSelect('#owner', {
+  mode: 'combobox',
+  fetchPageSize: 20,
+  autoLoadMore: true,
+  cacheResults: true,
+  fetchOptions: async (query, signal, { page, pageSize }) =&gt; {
+    const res = await fetch('/api/users?q=' + encodeURIComponent(query)
+      + '&amp;page=' + page + '&amp;size=' + pageSize, { signal });
+    const data = await res.json();
+    return {
+      items: data.rows.map(u =&gt; ({ value: u.id, label: u.name })),
+      hasMore: data.page + 1 &lt; data.pages
+    };
+  },
+  onLoadMore: ({ page }) =&gt; console.log('page', page)
+});
+
+picker.loadMore();          // fetch the next page manually
+picker.hasMoreResults();    // boolean
+picker.getAsyncState();     // { query, page, hasMore, loading, fetchingMore, error }
+picker.refreshOptions();    // clear cache and refetch page 0
+picker.clearCache();        // drop cached pages only</code></pre>
+      </div>
+
+      <div class="adv-live">
+        <div class="adv-live-head">
+          <h3>Live: paged remote select</h3>
+          <span class="adv-status" id="adv-remote-status">Loaded from an in-memory paged source.</span>
+        </div>
+        <label class="field-label" for="adv-remote">Assign reviewer</label>
+        <select id="adv-remote" name="reviewer"></select>
+        <p class="adv-status" id="adv-remote-event">Open the list, scroll, or use Load more.</p>
+      </div>
+      <p class="adv-note">Remote results are <strong>not</strong> filtered again on the client. Keep values stable across pages so the merge can de-duplicate them. The cache limit is <code>ZidanSelect.cacheLimit = 50</code> pages, least-recently-used.</p>
+
+      <div class="adv-grid adv-grid--2" style="margin-top:18px">
+        <div class="card adv-card">
+          <h3>Tags &amp; render hooks</h3>
+          <div class="adv-code">
+            <div class="adv-code-head">
+              <div class="adv-code-tabs"><button type="button" data-lang="js" aria-pressed="true">JavaScript</button></div>
+              <button type="button" class="adv-copy" data-copy>Copy</button>
+            </div>
+            <pre data-lang="js"><code>zidanSelect('#skills', {
+  mode: 'tags',
+  maxTags: 4,
+  minTagLength: 2,
+  allowFreeText: true,
+  commitOnTab: true,
+  validateTag: tag =&gt; tag.length &lt;= 16 || 'Keep tags short',
+  renderTag: tag =&gt; '&lt;span&gt;' + tag + '&lt;/span&gt;'
+});</code></pre>
+          </div>
+          <label class="field-label" for="adv-tags" style="margin-top:14px">Skills (max 4)</label>
+          <select id="adv-tags" multiple>
+            <option>Design</option>
+            <option>Frontend</option>
+            <option>Accessibility</option>
+            <option>Research</option>
+          </select>
+        </div>
+        <div class="card adv-card">
+          <h3>Methods worth knowing</h3>
+          <ul>
+            <li><code>getValue()</code> / <code>setValue(v)</code> / <code>clear()</code></li>
+            <li><code>setOptions(items)</code> rebuilds native options</li>
+            <li><code>loadMore()</code>, <code>clearCache()</code>, <code>refreshOptions()</code></li>
+            <li><code>hasMoreResults()</code>, <code>getAsyncState()</code></li>
+            <li><code>addTag()</code>, <code>removeTag()</code>, <code>getTags()</code></li>
+            <li><code>setLayout()</code>, <code>setFramework()</code>, <code>setScrollbar()</code></li>
+            <li><code>setValidation()</code>, <code>refresh()</code>, <code>destroy()</code></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FIELDS ================= -->
+    <section class="adv-section" id="fields" aria-labelledby="fields-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Fields</p>
+        <h2 id="fields-title">Promise validation, phone, date and range</h2>
+        <p>
+          <code>validate</code> and <code>validateDate</code> may return a Promise. The field shows
+          a pending state, writes the pending message into native validity so submission waits,
+          aborts the previous request when the value changes and ignores stale resolutions.
+        </p>
+      </div>
+
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs">
+            <button type="button" data-lang="html" aria-pressed="true">HTML</button>
+            <button type="button" data-lang="js" aria-pressed="false">JavaScript</button>
+          </div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="html"><code>&lt;!-- Static rules work as attributes --&gt;
+&lt;input type="tel" data-zidan="input" data-zidan-label="Phone"
+       data-zidan-phone="true" data-zidan-phone-country="GB"
+       data-zidan-phone-format="international"&gt;
+
+&lt;input type="date" data-zidan="input" data-zidan-label="Delivery"
+       data-zidan-disable-weekends="true"
+       data-zidan-disabled-dates="2026-12-25,2027-01-01"&gt;
+
+&lt;input type="range" min="0" max="1000" step="50" value="400"
+       data-zidan="input" data-zidan-range-variant="minimal"
+       data-zidan-range-bubble="true" data-zidan-output="#adv-range-out"&gt;</code></pre>
+        <pre data-lang="js" hidden><code>const email = zidanField('#email', {
+  alwaysValidate: true,
+  showValidState: true,
+  messages: { pending: 'Checking…', generic: 'That email is not available.' },
+  validate: async (value, field, { signal }) =&gt; {
+    if (!value) return true;
+    const res = await fetch('/api/check-email?e=' + encodeURIComponent(value), { signal });
+    const { taken } = await res.json();
+    return taken ? 'This email is already registered.' : true;
+  }
+});
+
+await email.validate();   // Promise&lt;boolean&gt;
+email.isPending();        // true while the request is in flight
+email.checkAsync();       // run the async rule without changing focus
+email.setError('…');      // manual message
+email.clearError();</code></pre>
+      </div>
+
+      <div class="adv-live">
+        <div class="adv-live-head">
+          <h3>Live: async email check</h3>
+          <span class="adv-status" id="adv-email-status">Try <code>taken@example.com</code>.</span>
+        </div>
+        <label class="field-label" for="adv-email">Work email</label>
+        <input id="adv-email" type="email" name="adv-email" autocomplete="off" placeholder="you@company.com">
+        <div class="adv-actions">
+          <button class="btn btn-primary" type="button" id="adv-check">Check availability</button>
+        </div>
+      </div>
+
+      <div class="adv-grid adv-grid--2" style="margin-top:18px">
+        <div class="adv-live">
+          <div class="adv-live-head"><h3>Live: phone formatting</h3></div>
+          <label class="field-label" for="adv-phone">UK phone</label>
+          <input id="adv-phone" type="tel" name="adv-phone">
+          <p class="adv-status">Typing reformats around the caret; a country selector is optional.</p>
+        </div>
+        <div class="adv-live">
+          <div class="adv-live-head"><h3>Live: range ticks + formatter</h3></div>
+          <label class="field-label" for="adv-range">Budget</label>
+          <input id="adv-range" type="range" min="0" max="1000" step="50" value="400" name="adv-range">
+          <p class="adv-status">Output: <output id="adv-range-out">€400</output></p>
+        </div>
+      </div>
+      <p class="adv-note">When pending, the native control carries the pending message, so <code>form.checkValidity()</code> and submit handlers wait. <code>destroy()</code> aborts in-flight checks; <code>field.reset()</code> clears the pending state. Listen for <code>zidan:async-validation</code> with <code>{ valid, message }</code>.</p>
+    </section>
+
+    <!-- ================= UPLOADS ================= -->
+    <section class="adv-section" id="upload" aria-labelledby="upload-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Files</p>
+        <h2 id="upload-title">Upload pipeline: handlers, progress and retries</h2>
+        <p>
+          Native <code>input.files</code> stays the source of truth. Removing a file rebuilds it
+          with <code>DataTransfer</code>. For real uploads use an XHR endpoint or a custom
+          <code>upload()</code> handler; for demos use <code>simulateUpload</code>.
+        </p>
+      </div>
+
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs">
+            <button type="button" data-lang="js" aria-pressed="true">JavaScript</button>
+            <button type="button" data-lang="html" aria-pressed="false">HTML</button>
+          </div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="js"><code>zidanField('#files', {
+  variant: 'dropzone',
+  maxFiles: 4,
+  maxSizeMB: 5,
+  upload(file, context) {
+    // context: { file, field, formData, signal, onProgress, complete, fail }
+    fetch('/upload', {
+      method: 'POST',
+      body: context.formData,
+      signal: context.signal
+    })
+      .then(res =&gt; res.ok ? res.json() : Promise.reject(res.status))
+      .then(context.complete)
+      .catch(context.fail);
+  },
+  renderFile(itemEl, { index }) {
+    itemEl.dataset.index = index;
+  }
+});
+
+// Or let the plugin send multipart XHR:
+// zidanField('#files', { uploadUrl: '/api/files', uploadField: 'file' });</code></pre>
+        <pre data-lang="html" hidden><code>&lt;input type="file" id="files" name="files" multiple
+       accept="image/*,.pdf"
+       data-zidan="file"
+       data-zidan-file-variant="dropzone"
+       data-zidan-max-files="4"
+       data-zidan-max-size-mb="5"
+       data-zidan-upload-url="/api/files"
+       data-zidan-upload-field="file"&gt;
+
+&lt;!-- demo only: no network, animated progress --&gt;
+&lt;input type="file" data-zidan="file"
+       data-zidan-simulate-upload="true"
+       data-zidan-simulate-duration="1400"&gt;</code></pre>
+      </div>
+
+      <div class="adv-live">
+        <div class="adv-live-head">
+          <h3>Live: compact upload with simulated progress</h3>
+          <span class="adv-status">Max 2 files · 2 MB each</span>
+        </div>
+        <label class="field-label" for="adv-file">Reference files</label>
+        <input id="adv-file" type="file" name="adv-file" multiple accept="image/*,.pdf">
+      </div>
+      <p class="adv-note"><strong>Methods:</strong> <code>getFiles()</code>, <code>addFiles()</code>, <code>replaceFiles()</code>, <code>removeFile()</code>, <code>uploadAll()</code>, <code>uploadFile()</code>, <code>cancelUpload()</code>, <code>cancelAll()</code>, <code>retryUpload()</code>, <code>getUploadState()</code>. Events: <code>zidan:upload-start</code>, <code>-progress</code>, <code>-success</code>, <code>-error</code>, <code>-cancel</code>.</p>
+    </section>
+
+    <!-- ================= EVENTS & LIFECYCLE ================= -->
+    <section class="adv-section" id="events" aria-labelledby="events-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Integration</p>
+        <h2 id="events-title">Events and lifecycle</h2>
+        <p>
+          Events bubble from the enhanced wrapper, so one document-level listener can cover a
+          whole form. Every listener, DOM node and in-flight request is removed by
+          <code>destroy()</code>.
+        </p>
+      </div>
+
+      <div class="adv-table-wrap">
+        <table class="adv-table">
+          <thead><tr><th>Event</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><th><code>zidan:change</code></th><td><code>{ instance, kind, value }</code>, <code>{ checked }</code> or <code>{ files }</code></td></tr>
+            <tr><th><code>zidan:validation</code></th><td><code>{ instance, state, message? }</code></td></tr>
+            <tr><th><code>zidan:async-validation</code></th><td><code>{ valid, message }</code> when a Promise rule settles</td></tr>
+            <tr><th><code>zidan:load-more</code></th><td><code>{ page, query }</code> for appended remote pages</td></tr>
+            <tr><th><code>zidan:step</code></th><td><code>{ instance, value, direction }</code></td></tr>
+            <tr><th><code>zidan:phone-country</code> / <code>zidan:phone-format</code></th><td><code>{ country }</code> / <code>{ format }</code></td></tr>
+            <tr><th><code>zidan:icon-click</code> / <code>zidan:picker</code></th><td>Icon action or date/time picker request</td></tr>
+            <tr><th><code>zidan:upload-*</code></th><td>File state, name, progress, result or message</td></tr>
+            <tr><th><code>zidan:remove</code> / <code>zidan:clear</code></th><td>File removal and field clearing</td></tr>
+            <tr><th><code>zidan:init</code> / <code>zidan:destroy</code> / <code>zidan:error</code></th><td>Lifecycle and caught callback/upload errors</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="adv-code">
+        <div class="adv-code-head">
+          <div class="adv-code-tabs"><button type="button" data-lang="js" aria-pressed="true">JavaScript</button></div>
+          <button type="button" class="adv-copy" data-copy>Copy</button>
+        </div>
+        <pre data-lang="js"><code>document.addEventListener('zidan:change', event =&gt; {
+  console.log(event.detail.kind, event.detail.value || event.detail.checked);
+});
+
+document.addEventListener('zidan:upload-progress', event =&gt; {
+  console.log(event.detail.name, event.detail.progress + '%');
+});
+
+const observer = ZidanForm.observe(document.body); // adds/removes nodes
+// teardown
+observer.disconnect();
+ZidanForm.destroyAll();
+
+// Per instance
+field.update();      // mirror native disabled/required/value
+field.refresh();     // re-render without rebuilding
+field.destroy();     // restore original markup + listeners</code></pre>
+      </div>
+      <p class="adv-note">The observer reacts to nodes added or removed <strong>inside</strong> the observed root. If you remove the container itself, call <code>field.destroy()</code> or <code>ZidanForm.destroyAll()</code> first.</p>
+    </section>
+
+    <!-- ================= PLATFORM ================= -->
+    <section class="adv-section" id="platform" aria-labelledby="platform-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Platform</p>
+        <h2 id="platform-title">Themes, RTL, adapters and TypeScript</h2>
+        <p>
+          Structure never carries colour. Override tokens in the theme layer or register your own
+          theme name; layouts and framework adapters resolve per element, then ancestor, then
+          <code>&lt;html&gt;</code>.
+        </p>
+      </div>
+
+      <div class="adv-grid adv-grid--2">
+        <div class="card adv-card">
+          <h3>Theme tokens</h3>
+          <div class="adv-code">
+            <div class="adv-code-head">
+              <div class="adv-code-tabs"><button type="button" data-lang="css" aria-pressed="true">CSS</button></div>
+              <button type="button" class="adv-copy" data-copy>Copy</button>
+            </div>
+            <pre data-lang="css"><code>.my-brand {
+  --zs-primary: #e11d48;
+  --zs-primary-soft: #fff1f4;
+  --zs-focus-ring: rgba(225, 29, 72, .22);
+  --zs-radius: 14px;
+  --zs-check-checked-bg: #e11d48;
+}
+
+/* register a name before fields initialise:
+   ZidanForm.themes.push('brand'); */</code></pre>
+          </div>
+        </div>
+        <div class="card adv-card">
+          <h3>Framework adapters</h3>
+          <div class="adv-table-wrap" style="margin-top:0">
+            <table class="adv-table">
+              <thead><tr><th>Setting</th><th>Values</th></tr></thead>
+              <tbody>
+                <tr><th><code>data-zs-framework</code></th><td><code>bootstrap · tailwind · bulma · foundation</code></td></tr>
+                <tr><th><code>data-zidan-framework</code></th><td>Per field; wins over the ancestor</td></tr>
+                <tr><th>Theme</th><td><code>default · modern · minimal · dark · glass</code></td></tr>
+                <tr><th>Layouts</th><td>Select: 5 skins. Fields: <code>stacked · inline · compact · floating · outlined · card</code></td></tr>
+                <tr><th>Grid</th><td><code>.zs-form-grid</code> auto-fit container; <code>.zs-full</code> spans a row</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="adv-grid adv-grid--2" style="margin-top:16px">
+        <div class="adv-card card">
+          <h3>RTL uses logical properties</h3>
+          <div class="adv-rtl" dir="rtl">
+            <label class="field-label" for="adv-rtl">المدينة</label>
+            <select id="adv-rtl">
+              <option>الرياض</option>
+              <option>جدة</option>
+              <option>الدمام</option>
+            </select>
+          </div>
+          <p class="adv-status">The wrapper follows <code>dir</code>; transforms for arrows, ticks and icons are mirrored.</p>
+        </div>
+        <div class="adv-card card">
+          <h3>TypeScript declarations</h3>
+          <div class="adv-code">
+            <div class="adv-code-head">
+              <div class="adv-code-tabs"><button type="button" data-lang="ts" aria-pressed="true">TypeScript</button></div>
+              <button type="button" class="adv-copy" data-copy>Copy</button>
+            </div>
+            <pre data-lang="ts"><code>import ZidanForm, { zidanField } from 'zidan-select';
+
+const field = zidanField('#email', {
+  validate: async value =&gt; value.includes('@') || 'Enter an email'
+});
+
+ZidanForm.themes.push('brand');</code></pre>
+          </div>
+          <p class="adv-status">Declarations ship for the full package and for <code>zidan-select/select</code> and <code>zidan-select/file</code>.</p>
+        </div>
+      </div>
+
+      <div class="adv-table-wrap">
+        <table class="adv-table">
+          <thead><tr><th>Topic</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><th>Browsers</th><td>Chromium 105+, Firefox 121+, Safari 15.4+ / iOS 15.4+. Firefox exposes thin native scrollbars only.</td></tr>
+            <tr><th>Validation libraries</th><td>Native HTML5, jQuery Validation, JustValidate and Parsley. Native controls stay measurable; <code>aria-invalid</code> and <code>.zs-field--invalid</code> stay in sync.</td></tr>
+            <tr><th>Frameworks</th><td>Initialise after mount, call <code>destroy()</code> before unmount. Guides for React, Next.js App Router, Vue 3 and Angular ship in <code>docs/frameworks.md</code>.</td></tr>
+            <tr><th>CSS</th><td><code>plugin-core.css</code> is structural only — no colour literals. Put your tokens or theme after <code>plugin-theme.css</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="index.html">Demo</a> ·
+        <a href="playground.html">Playground</a> ·
+        <a href="shopify.html">Shopify</a> ·
+        <a href="docs/">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="zidan-form.js"></script>
+  <script src="advanced.js"></script>
+</body>
+</html>

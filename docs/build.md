@@ -13,8 +13,11 @@ zidan-select/
 ├─ plugin-core.css      # structure only
 ├─ plugin-theme.css     # tokens, presets, layouts, framework adapters
 ├─ index.html           # tabbed demo + theme showcase
+├─ advanced.html        # advanced options + HTML/JS reference
+├─ advanced.css/js      # advanced-page-only assets
 ├─ playground.html      # per-field option builder
 ├─ playground.css/js    # playground-only assets
+├─ nav.css              # shared demo header
 ├─ robots.txt           # Pages crawler directives + sitemap pointer
 ├─ sitemap.xml          # public Pages URLs
 ├─ demo.css / demo.js   # demo-only assets
@@ -201,8 +204,9 @@ import 'zidan-select/file/css/theme';
 ## GitHub Pages
 
 The demo is static and needs no build. `.github/workflows/pages.yml` assembles `_site/` on every
-push to `main` — `index.html`, `playground.html`, `playground.css`, `playground.js`, `demo.css`,
-`demo.js`, `robots.txt`, `sitemap.xml`, the four library files and `docs/` — then uploads it with
+push to `main` — `index.html`, `advanced.html`, `playground.html`, `shopify.html`, `advanced.css`,
+`advanced.js`, `playground.css`, `playground.js`, `demo.css`, `demo.js`, `nav.css`, `robots.txt`,
+`sitemap.xml`, the four library files and `docs/` — then uploads it with
 `actions/upload-pages-artifact` and publishes it with `actions/deploy-pages`.
 
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
@@ -210,11 +214,13 @@ One-time setup: **Settings → Pages → Build and deployment → Source: GitHub
 | URL | Serves |
 | --- | --- |
 | `https://akhtar1985.github.io/zidan-select/` | The tabbed demo |
+| `https://akhtar1985.github.io/zidan-select/advanced.html` | Advanced options and API reference |
 | `https://akhtar1985.github.io/zidan-select/playground.html` | Per-field option playground |
+| `https://akhtar1985.github.io/zidan-select/shopify.html` | Shopify product-page demo |
 | `https://akhtar1985.github.io/zidan-select/docs/` | Documentation index |
 | `/#select`, `/#check`, `/#file`, `/#inputs`, `/#themes` | Deep links to a demo tab |
 | `/playground.html#select`, `#file`, `#checkbox`, `#radio`, `#text` | Deep links to a playground control |
-| `/robots.txt`, `/sitemap.xml` | Crawler directives and the four public page URLs |
+| `/robots.txt`, `/sitemap.xml` | Crawler directives and the public page URLs |
 
 The workflow only copies demo assets, so `scripts/`, `dist/`, `package.json` and local scratch
 files are never published.

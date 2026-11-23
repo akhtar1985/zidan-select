@@ -14,6 +14,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="plugin-core.css">
   <link rel="stylesheet" href="plugin-theme.css">
+  <link rel="stylesheet" href="nav.css">
   <style>
     :root {
       --sp-bg: #f7f5f1;
@@ -33,21 +34,6 @@
       line-height: 1.55;
     }
     a { color: var(--sp-accent); }
-    .sp-header {
-      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-      gap: 12px; padding: 16px 24px; border-bottom: 1px solid var(--sp-line);
-      background: rgba(255, 255, 255, 0.9);
-    }
-    .sp-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; text-decoration: none; color: inherit; }
-    .sp-brand span.mark {
-      width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center;
-      background: var(--sp-ink); color: #fff; font-size: 0.95rem;
-    }
-    .sp-brand small { display: block; font-weight: 500; color: var(--sp-muted); font-size: 0.72rem; }
-    .sp-nav { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.88rem; }
-    .sp-nav a { text-decoration: none; color: var(--sp-muted); }
-    .sp-nav a:hover { color: var(--sp-ink); }
-    .sp-nav a[aria-current="page"] { color: var(--sp-ink); font-weight: 600; }
     .sp-main { max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
     .sp-eyebrow {
       display: inline-flex; align-items: center; gap: 8px; margin: 0 0 10px;
@@ -142,20 +128,24 @@
 <body>
   <a class="sp-skip" href="#product">Skip to product</a>
 
-  <header class="sp-header">
-    <a class="sp-brand" href="index.html">
-      <span class="mark" aria-hidden="true">Z</span>
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
-        ZidanForm
-        <small>Shopify demo · mock storefront</small>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">Shopify demo</span>
       </span>
     </a>
-    <nav class="sp-nav" aria-label="Demos">
-      <a href="index.html">Main demo</a>
+    <nav class="header-nav" aria-label="Project links">
+      <a href="index.html">Demo</a>
+      <a href="advanced.html">Advanced</a>
       <a href="playground.html">Playground</a>
       <a href="shopify.html" aria-current="page">Shopify</a>
+      <a href="index.html#compare">Compare</a>
+      <a href="index.html#faq">FAQ</a>
       <a href="docs/">Docs</a>
       <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
     </nav>
   </header>
 

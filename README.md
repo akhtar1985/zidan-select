@@ -223,7 +223,9 @@ override presets.
 | `dist/select/` | Select-only build: `zidan-select.js`, `zidan-select.mjs`, `plugin-select-core.css`, `plugin-select-theme.css`. |
 | `dist/file/` | File-only build: `zidan-file.js`, `zidan-file.mjs`, `plugin-file-core.css`, `plugin-file-theme.css`. |
 | `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase (not shipped logic). |
+| `advanced.html`, `advanced.css`, `advanced.js` | Advanced reference: init and precedence, async paging, Promise validation, uploads, events, RTL and TypeScript, with copyable HTML/JS examples (not shipped logic). |
 | `playground.html`, `playground.css`, `playground.js` | Per-field option builder with live preview and copyable HTML / JS output (not shipped logic). |
+| `nav.css` | Shared header and navigation for the demo pages (not shipped logic). |
 | `robots.txt`, `sitemap.xml` | Crawler directives and the public page list for GitHub Pages (not shipped on npm). |
 | `docs/` | Comparison, options, validation, frameworks, theming, build and the static HTML/WordPress cookbook. |
 
