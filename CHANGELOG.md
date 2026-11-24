@@ -11,6 +11,25 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+### Added
+
+- **Declarative AJAX** — `data-zidan-fetch-url` (or the `fetchUrl` option) turns a select into a
+  remote search with no JavaScript. The plugin builds the request (`fetchQueryParam`,
+  `fetchPageParam`, `fetchPageSizeParam`, or `fetchSkipParam` for offset APIs), maps rows from a
+  dot path (`fetchItemsPath`), decides paging from `fetchTotalPath` / `fetchHasMorePath`, and
+  keeps debounce, abort, caching and the load-more footer from the existing `fetchOptions`
+  pipeline. `fetchMethod`, `fetchHeaders` and `fetchCredentials` tune the request.
+- **`ajax.html` demo** — a new page runs both modes against real HTTP endpoints: an
+  attribute-only combobox over a public API and a hand-written `fetchOptions` over a static
+  JSON file, with the async state, load-more and cache on screen.
+- **HTML documentation pages** — `scripts/docs.mjs` renders the Markdown guides into styled
+  pages during the Pages build, so the docs index and README link pages on the site instead of
+  GitHub `.md` files.
+
+### Docs
+
+- `docs/options.md` documents every `fetch*` option with a markup-only example.
+
 ## [2.3.1] - 2026-11-24
 
 ### Fixed

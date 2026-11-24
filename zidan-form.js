@@ -671,6 +671,17 @@
     autoLoadMore: true,
     cacheResults: true,
     loadMoreText: 'Load more',
+    fetchUrl: null,            // declarative AJAX: GET this endpoint instead of writing fetchOptions
+    fetchMethod: 'GET',
+    fetchQueryParam: 'q',
+    fetchPageParam: 'page',    // 1-based page number sent with every request
+    fetchSkipParam: null,      // when set, send skip = page * pageSize instead of fetchPageParam
+    fetchPageSizeParam: 'limit',
+    fetchItemsPath: null,      // dot path to the array in the JSON body ('data.items')
+    fetchTotalPath: null,      // dot path to the number of rows available
+    fetchHasMorePath: null,    // dot path to a boolean
+    fetchHeaders: null,
+    fetchCredentials: 'same-origin',
     /* tags */
     maxTags: Infinity,
     minTagLength: 1,
@@ -707,6 +718,112 @@
   /* ------------------------------------------------------------------ *
    * ZidanSelect
    * ------------------------------------------------------------------ */
+
+  /* ---------------- declarative AJAX (fetchUrl) ---------------- */
+
+  function readDotPath(source, path) {
+    if (!path) return undefined;
+    return String(path).split('.').reduce(function (node, key) {
+      return node === null || node === undefined ? undefined : node[key];
+    }, source);
+  }
+
+  function firstRemoteArray(body) {
+    if (Array.isArray(body)) return body;
+    if (!body || typeof body !== 'object') return [];
+    var keys = ['items', 'data', 'results', 'options', 'rows', 'products', 'records'];
+    for (var i = 0; i < keys.length; i++) {
+      if (Array.isArray(body[keys[i]])) return body[keys[i]];
+    }
+    return [];
+  }
+
+  /* Map common API shapes ({id,title}, {value,label}, plain strings) to select items. */
+  function remoteItem(raw) {
+    if (raw === null || raw === undefined) return null;
+    if (typeof raw !== 'object') {
+      var text = String(raw);
+      return { value: text, label: text };
+    }
+    var value = raw.value !== undefined ? raw.value
+      : raw.id !== undefined ? raw.id
+        : raw.slug !== undefined ? raw.slug
+          : raw.code !== undefined ? raw.code
+            : raw.key !== undefined ? raw.key : undefined;
+    var label = raw.label !== undefined ? raw.label
+      : raw.name !== undefined ? raw.name
+        : raw.title !== undefined ? raw.title
+          : raw.full_name !== undefined ? raw.full_name
+            : raw.text !== undefined ? raw.text : undefined;
+    if (label === undefined) label = value === undefined ? '' : value;
+    if (value === undefined) value = label;
+    return { value: value, label: label, disabled: !!raw.disabled };
+  }
+
+  /*
+   * Turns fetchUrl + fetch* options into the same promise fetchOptions would return:
+   * { items, hasMore, total }. Honours AbortSignal and the paging context the
+   * select passes in, so caching, debounce and "Load more" work unchanged.
+   */
+  function createRemoteFetcher(opts) {
+    return function (query, signal, context) {
+      if (typeof fetch !== 'function') {
+        return Promise.reject(new Error('This environment has no fetch().'));
+      }
+      var page = context && context.page ? context.page : 0;
+      var pageSize = opts.fetchPageSize > 0 ? opts.fetchPageSize : 0;
+      var url;
+      try {
+        url = new URL(opts.fetchUrl, (typeof location !== 'undefined' && location.href) || undefined);
+      } catch (error) {
+        return Promise.reject(new Error('Invalid fetchUrl: ' + opts.fetchUrl));
+      }
+      if (opts.fetchQueryParam) url.searchParams.set(opts.fetchQueryParam, query || '');
+      if (pageSize > 0 && opts.fetchPageSizeParam) {
+        url.searchParams.set(opts.fetchPageSizeParam, String(pageSize));
+      }
+      if (opts.fetchSkipParam) {
+        if (pageSize > 0) url.searchParams.set(opts.fetchSkipParam, String(page * pageSize));
+      } else if (opts.fetchPageParam) {
+        url.searchParams.set(opts.fetchPageParam, String(page + 1));
+      }
+
+      var headers = { Accept: 'application/json' };
+      if (opts.fetchHeaders && typeof opts.fetchHeaders === 'object') {
+        Object.keys(opts.fetchHeaders).forEach(function (key) {
+          headers[key] = opts.fetchHeaders[key];
+        });
+      }
+
+      return fetch(url.toString(), {
+        method: opts.fetchMethod || 'GET',
+        headers: headers,
+        signal: signal,
+        credentials: opts.fetchCredentials || 'same-origin'
+      }).then(function (response) {
+        if (!response.ok) {
+          throw new Error('Request failed (' + response.status + ' ' + (response.statusText || 'error') + ')');
+        }
+        return response.json();
+      }).then(function (body) {
+        var rows = opts.fetchItemsPath ? readDotPath(body, opts.fetchItemsPath) : firstRemoteArray(body);
+        if (!Array.isArray(rows)) rows = rows === undefined || rows === null ? [] : [rows];
+        var items = rows.map(remoteItem).filter(Boolean);
+
+        var hasMore;
+        if (opts.fetchHasMorePath) hasMore = !!readDotPath(body, opts.fetchHasMorePath);
+        var rawTotal = opts.fetchTotalPath ? readDotPath(body, opts.fetchTotalPath)
+          : (body && typeof body === 'object' ? body.total : undefined);
+        var total = rawTotal === undefined || rawTotal === null ? NaN : Number(rawTotal);
+        if (hasMore === undefined && isFinite(total) && pageSize > 0) {
+          hasMore = (page + 1) * pageSize < total;
+        }
+        if (hasMore === undefined) hasMore = pageSize > 0 && items.length >= pageSize;
+
+        return { items: items, hasMore: hasMore, total: isFinite(total) ? total : undefined };
+      });
+    };
+  }
 
   function ZidanSelect(target, options) {
     if (!(this instanceof ZidanSelect)) return new ZidanSelect(target, options);
@@ -828,6 +945,15 @@
     merged.autoLoadMore = pick('autoLoadMore', readBoolAttr(d.zidanAutoLoadMore, DEFAULTS.autoLoadMore));
     merged.cacheResults = pick('cacheResults', readBoolAttr(d.zidanCacheResults, DEFAULTS.cacheResults));
     merged.loadMoreText = pick('loadMoreText', d.zidanLoadMoreText || DEFAULTS.loadMoreText);
+    merged.fetchUrl = pick('fetchUrl', d.zidanFetchUrl || null);
+    merged.fetchMethod = pick('fetchMethod', d.zidanFetchMethod || DEFAULTS.fetchMethod);
+    merged.fetchQueryParam = pick('fetchQueryParam', d.zidanFetchQueryParam !== undefined ? d.zidanFetchQueryParam : DEFAULTS.fetchQueryParam);
+    merged.fetchPageParam = pick('fetchPageParam', d.zidanFetchPageParam !== undefined ? d.zidanFetchPageParam : DEFAULTS.fetchPageParam);
+    merged.fetchSkipParam = pick('fetchSkipParam', d.zidanFetchSkipParam || null);
+    merged.fetchPageSizeParam = pick('fetchPageSizeParam', d.zidanFetchPageSizeParam !== undefined ? d.zidanFetchPageSizeParam : DEFAULTS.fetchPageSizeParam);
+    merged.fetchItemsPath = pick('fetchItemsPath', d.zidanFetchItemsPath || null);
+    merged.fetchTotalPath = pick('fetchTotalPath', d.zidanFetchTotalPath || null);
+    merged.fetchHasMorePath = pick('fetchHasMorePath', d.zidanFetchHasMorePath || null);
 
     // carry over every explicitly-passed option (callbacks, custom classes, ...)
     Object.keys(options).forEach(function (key) {
@@ -843,6 +969,11 @@
     if (mode === 'combobox') merged.searchable = true;
     if (mode === 'tags' && merged.searchable === false) merged.searchable = true;
     if (mode === 'tags') merged.multiple = true;
+
+    // declarative AJAX: one URL is enough to opt into remote loading
+    if (merged.fetchUrl && typeof merged.fetchOptions !== 'function') {
+      merged.fetchOptions = createRemoteFetcher(merged);
+    }
     return merged;
   };
 

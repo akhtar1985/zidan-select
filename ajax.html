@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="modern">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZidanForm AJAX &amp; remote data demo — search, paginate and load more from an API</title>
+  <meta name="description" content="Live AJAX selects built with ZidanForm: declare data-zidan-fetch-url and the combobox searches a real API with debounce, abort, caching and load-more paging, or pass your own fetchOptions function.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/ajax.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ZidanForm AJAX &amp; remote data demo">
+  <meta property="og:description" content="Remote search, paging and load-more on real HTTP endpoints, from HTML attributes or a fetchOptions function.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/ajax.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="plugin-core.css">
+  <link rel="stylesheet" href="plugin-theme.css">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="ajax.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.3 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="index.html">Demo</a>
+      <a href="advanced.html">Advanced</a>
+      <a href="playground.html">Playground</a>
+      <a href="ajax.html" aria-current="page">AJAX</a>
+      <a href="shopify.html">Shopify</a>
+      <a href="index.html#compare">Compare</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="docs/">Docs</a>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+      </select>
+    </nav>
+  </header>
+
+  <main class="ajax-main">
+    <section class="ajax-hero">
+      <p class="ajax-eyebrow">Remote data</p>
+      <h1>Search, page and load more from a real API</h1>
+      <p class="ajax-lead">
+        Remote selects have always been supported through a <code>fetchOptions</code> function. 2.3.2
+        also makes them declarative: give a select <code>data-zidan-fetch-url</code> and the plugin
+        builds the request, the debounce, the abort handling, the LRU cache and the
+        <strong>Load more</strong> footer for you. Both cards below hit HTTP endpoints — nothing is
+        faked in memory except the JSON file that stands in for a slow server.
+      </p>
+      <p class="ajax-links">
+        <a href="#declarative">Declarative endpoint</a>
+        <a href="#fetchoptions">Your own fetchOptions</a>
+        <a href="#contract">The fetch contract</a>
+      </p>
+    </section>
+
+    <section class="ajax-card" id="declarative">
+      <header>
+        <h2>1. One attribute: <code>data-zidan-fetch-url</code></h2>
+        <p>
+          This combobox is a plain <code>&lt;select&gt;</code> with data attributes only. Every keystroke
+          debounces into <code>GET https://dummyjson.com/products/search?q=…&amp;limit=8&amp;skip=…</code>;
+          aborting the previous request, caching pages and showing <em>Load more</em> while the
+          response still has rows left.
+        </p>
+      </header>
+
+      <div class="ajax-grid">
+        <div class="ajax-demo">
+          <label class="ajax-label" for="products">Search a product</label>
+          <select id="products" name="product"
+                  data-zidan-select="combobox"
+                  data-zidan-clearable="true"
+                  data-zidan-placeholder="Type to search 194 products…"
+                  data-zidan-fetch-url="https://dummyjson.com/products/search"
+                  data-zidan-fetch-items-path="products"
+                  data-zidan-fetch-total-path="total"
+                  data-zidan-fetch-skip-param="skip"
+                  data-zidan-fetch-page-size="8"
+                  data-zidan-fetch-page-size-param="limit">
+            <option value="">Pick a product…</option>
+          </select>
+
+          <div class="ajax-actions">
+            <button type="button" class="ajax-button" id="products-more">Load more</button>
+            <button type="button" class="ajax-button ajax-button--ghost" id="products-refresh">Clear cache &amp; reload</button>
+          </div>
+
+          <pre class="ajax-state" id="products-state" aria-live="polite">open the list to see its async state</pre>
+        </div>
+
+        <div class="ajax-snippet">
+          <span class="ajax-tag">HTML — no JavaScript</span>
+          <pre><code>&lt;select id="products"
+        data-zidan-select="combobox"
+        data-zidan-fetch-url="https://dummyjson.com/products/search"
+        data-zidan-fetch-items-path="products"
+        data-zidan-fetch-total-path="total"
+        data-zidan-fetch-skip-param="skip"
+        data-zidan-fetch-page-size="8"
+        data-zidan-fetch-page-size-param="limit"&gt;&lt;/select&gt;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="ajax-card" id="fetchoptions">
+      <header>
+        <h2>2. Your own <code>fetchOptions</code></h2>
+        <p>
+          When the response shape or the URL building is yours, return the promise yourself. This card
+          fetches a static JSON file over HTTP and simulates a slow server so you can watch
+          <code>abort</code>, the loading state and the cache. The method receives
+          <code>(query, signal, { page, pageSize, append })</code> and resolves to
+          <code>{ items, hasMore }</code> or a plain array.
+        </p>
+      </header>
+
+      <div class="ajax-grid">
+        <div class="ajax-demo">
+          <label class="ajax-label" for="country">Search a country</label>
+          <select id="country" name="country">
+            <option value="">Pick a country…</option>
+          </select>
+
+          <div class="ajax-actions">
+            <button type="button" class="ajax-button" id="country-more">Load more</button>
+            <button type="button" class="ajax-button ajax-button--ghost" id="country-refresh">refreshOptions()</button>
+          </div>
+
+          <pre class="ajax-state" id="country-state" aria-live="polite">type to search — the fake server waits 300 ms</pre>
+        </div>
+
+        <div class="ajax-snippet">
+          <span class="ajax-tag">JavaScript</span>
+          <pre><code>zidanSelect('#country', {
+  mode: 'combobox',
+  fetchPageSize: 5,
+  minChars: 0,
+  fetchOptions: async (query, signal, { page, pageSize }) =&gt; {
+    const res = await fetch('demo-data/countries.json', { signal });
+    const rows = await res.json();
+    const hits = rows.filter(row =&gt;
+      row.name.toLowerCase().includes(query.toLowerCase()));
+    const start = page * pageSize;
+    return {
+      items: hits.slice(start, start + pageSize),
+      hasMore: start + pageSize &lt; hits.length
+    };
+  }
+});</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="ajax-card" id="contract">
+      <h2>3. The fetch contract</h2>
+      <div class="ajax-grid ajax-grid--three">
+        <div>
+          <h3>Return shape</h3>
+          <p>
+            An array, or <code>{ items, hasMore }</code>, or <code>{ items, total }</code>. With
+            <code>fetchUrl</code> the plugin reads <code>fetchItemsPath</code>,
+            <code>fetchTotalPath</code> or <code>fetchHasMorePath</code>; it also understands
+            <code>items</code>, <code>data</code>, <code>results</code>, <code>options</code>,
+            <code>rows</code>, <code>products</code> and <code>records</code> without a path.
+          </p>
+        </div>
+        <div>
+          <h3>Item mapping</h3>
+          <p>
+            Plain strings work. Objects use <code>value</code> / <code>label</code>; otherwise
+            <code>id</code>, <code>slug</code> or <code>code</code> for the value and
+            <code>name</code>, <code>title</code> or <code>full_name</code> for the label — which is
+            why the dummyjson <code>title</code> field renders without a mapping function.
+          </p>
+        </div>
+        <div>
+          <h3>Behaviour you inherit</h3>
+          <p>
+            <code>debounce</code>, <code>minChars</code>, an <code>AbortSignal</code> per request,
+            an LRU <code>cacheResults</code>, <code>loadMore()</code>,
+            <code>refreshOptions()</code>, <code>clearCache()</code>,
+            <code>getAsyncState()</code>, the <code>zidan:load-more</code> event, and a footer that
+            shows the error and retries instead of emptying the list.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="ajax-footer">
+      <p>
+        Third-party data: <a href="https://dummyjson.com" rel="noopener">dummyjson.com</a>.
+        Full option table: <a href="docs/#remote">docs → remote selects</a>.
+        Source: <a href="https://github.com/akhtar1985/zidan-select">github.com/akhtar1985/zidan-select</a>.
+      </p>
+    </footer>
+  </main>
+
+  <script src="zidan-form.js"></script>
+  <script src="nav.js"></script>
+  <script src="ajax.js"></script>
+</body>
+</html>

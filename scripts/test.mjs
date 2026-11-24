@@ -92,7 +92,7 @@ check('docs and demo reference the current files', () => {
   if (readme) assert(readme.includes('Which files should you load?'), 'README does not explain which files to load');
   if (readme) assert(readme.includes('You do not need to load everything.'), 'README does not state that the full bundle is optional');
   if (readme) assert(readme.includes('plugin-core.css'), 'README missing split CSS section');
-  if (readme) assert(readme.includes('docs/comparison.md'), 'README does not link the comparison guide');
+  if (readme) assert(readme.includes('docs/comparison.html'), 'README does not link the comparison guide');
   assert(fs.existsSync(path.join(root, 'docs/comparison.md')), 'comparison guide missing');
   const cookbookPath = path.join(root, 'docs/html-and-wordpress.md');
   assert(fs.existsSync(cookbookPath), 'static HTML/WordPress cookbook missing');
@@ -100,8 +100,8 @@ check('docs and demo reference the current files', () => {
   for (const needle of ['window.ZIDAN_FORM_CONFIG', 'wp_enqueue_script', 'dist/select/zidan-select.js', 'dist/file/zidan-file.js', 'zidanSelect(\'#', 'zidanField(\'#']) {
     assert(cookbook.includes(needle), 'cookbook missing example: ' + needle);
   }
-  if (readme) assert(readme.includes('docs/html-and-wordpress.md'), 'README does not link the cookbook');
-  assert(read('docs/index.html').includes('html-and-wordpress.md'), 'docs index does not link the cookbook');
+  if (readme) assert(readme.includes('docs/html-and-wordpress.html'), 'README does not link the cookbook');
+  assert(read('docs/index.html').includes('html-and-wordpress.html'), 'docs index does not link the cookbook');
   for (const needle of ['asset_url', '## 9. Shopify', 'Checkout UI Extensions']) {
     assert(cookbook.includes(needle), 'cookbook missing Shopify content: ' + needle);
   }
@@ -146,6 +146,24 @@ check('README links resolve on npm', () => {
   assert(pkg.homepage === 'https://akhtar1985.github.io/zidan-select/', 'package.json homepage must be the live demo');
 });
 
+check('AJAX / remote data is supported and demoed', () => {
+  const library = read('zidan-form.js');
+  for (const option of ['fetchUrl', 'fetchItemsPath', 'fetchTotalPath', 'fetchSkipParam', 'fetchHasMorePath', 'createRemoteFetcher']) {
+    assert(library.includes(option), 'library is missing the AJAX option ' + option);
+  }
+  assert(library.includes("fetchMethod: 'GET'"), 'fetchUrl must default to GET');
+  const page = read('ajax.html');
+  assert(page.includes('data-zidan-fetch-url="https://dummyjson.com/products/search"'), 'AJAX demo must exercise the declarative fetchUrl');
+  assert(page.includes('data-zidan-fetch-items-path="products"'), 'AJAX demo must map the JSON rows');
+  assert(page.includes('ajax.css') && page.includes('ajax.js'), 'AJAX page is missing its assets');
+  assert(page.includes('fetchOptions'), 'AJAX page must document the fetchOptions contract');
+  assert(fs.existsSync(path.join(root, 'demo-data/countries.json')), 'AJAX demo dataset missing');
+  assert(read('docs/options.md').includes('fetchUrl'), 'docs/options.md does not document fetchUrl');
+  assert(read('docs/index.html').includes('../ajax.html'), 'docs index does not link the AJAX demo');
+  assert(read('index.html').includes('ajax.html'), 'the AJAX page is not linked from the demo');
+  assert(read('README.md').includes('ajax.html'), 'the README does not mention the AJAX page');
+});
+
 check('field playground is wired up', () => {
   const playground = read('playground.html');
   assert(playground.includes('plugin-core.css') && playground.includes('plugin-theme.css'), 'playground does not load both stylesheets');
@@ -178,7 +196,7 @@ check('advanced page and shared header are wired up', () => {
   assert(read('README.md').includes('advanced.html'), 'README does not link the advanced page');
   assert(read('docs/index.html').includes('../advanced.html'), 'docs index does not link the advanced page');
 
-  const pages = ['index.html', 'advanced.html', 'playground.html', 'shopify.html'];
+  const pages = ['index.html', 'advanced.html', 'playground.html', 'shopify.html', 'ajax.html'];
   const navs = pages.map(name => {
     const page = read(name);
     const match = page.match(/<nav[^>]*class="header-nav"[^>]*>[\s\S]*?<\/nav>/);
@@ -190,8 +208,9 @@ check('advanced page and shared header are wired up', () => {
     return Array.from(match[0].matchAll(/<a href="([^"]+)"/g)).map(item => item[1]).join('|');
   });
   assert(new Set(navs).size === 1, 'demo pages do not share the same header links');
-  assert(new Set(navs[0].split('|')).size === 9, 'shared header should expose nine links on every demo page');
-  assert(navs[0].includes('advanced.html') && navs[0].includes('shopify.html'), 'shared header is incomplete');
+  assert(new Set(navs[0].split('|')).size === 10, 'shared header should expose ten links on every demo page');
+  assert(navs[0].includes('advanced.html') && navs[0].includes('shopify.html') && navs[0].includes('ajax.html'), 'shared header is incomplete');
+  assert(read('.github/workflows/pages.yml').includes('ajax.html'), 'Pages workflow does not publish the AJAX page');
   const navCss = read('nav.css');
   assert(!/header-nav a:nth-child/.test(read('demo.css') + navCss), 'mobile CSS still hides header links');
   assert(!/header-nav[\s\S]{0,400}?overflow-x:\s*auto/.test(navCss), 'mobile header still relies on a silent horizontal scroller');

@@ -106,6 +106,24 @@ export interface SelectOptions extends SelectCallbacks {
   autoLoadMore?: boolean;
   cacheResults?: boolean;
   loadMoreText?: string;
+  /** AJAX without JS: GET this URL and the select builds its own fetchOptions */
+  fetchUrl?: string | null;
+  fetchMethod?: string;
+  /** Query-string parameter for the search term (set to '' to omit it) */
+  fetchQueryParam?: string;
+  /** 1-based page parameter (set to '' to omit it) */
+  fetchPageParam?: string;
+  /** When set, send skip = page * pageSize instead of fetchPageParam */
+  fetchSkipParam?: string | null;
+  fetchPageSizeParam?: string;
+  /** Dot path to the array of rows in the JSON body, e.g. 'data.items' */
+  fetchItemsPath?: string | null;
+  /** Dot path to the total row count, used to decide hasMore */
+  fetchTotalPath?: string | null;
+  /** Dot path to a boolean hasMore flag */
+  fetchHasMorePath?: string | null;
+  fetchHeaders?: Record<string, string> | null;
+  fetchCredentials?: RequestCredentials;
   maxTags?: number;
   minTagLength?: number;
   maxTagLength?: number;

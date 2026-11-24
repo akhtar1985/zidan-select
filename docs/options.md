@@ -546,6 +546,15 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | --- | --- | --- |
 | `fetchOptions(query, signal, context)` | — | Return an array of items, or a page `{ items, hasMore }` (or `{ items, total }`). `signal` aborts stale requests; `context` is `{ page, pageSize, append, instance }`. |
 | `fetchPageSize` | `0` | Page size handed to `fetchOptions`. `0` keeps the legacy single-request behaviour. |
+| `fetchUrl` | `null` | **Declarative AJAX.** GET this URL and the select builds its own `fetchOptions` — no JavaScript needed. Attribute: `data-zidan-fetch-url`. |
+| `fetchQueryParam` | `'q'` | Query-string parameter that receives the search term (`''` omits it). |
+| `fetchPageParam` | `'page'` | 1-based page number sent with every request (`''` omits it). |
+| `fetchSkipParam` | `null` | Send `skip = page × pageSize` instead of `fetchPageParam`, for APIs that page by offset (dummyjson, Laravel, many REST APIs). |
+| `fetchPageSizeParam` | `'limit'` | Parameter that receives `fetchPageSize`. |
+| `fetchItemsPath` | `null` | Dot path to the array of rows in the JSON body (`products`, `data.items`). Without it the plugin looks for `items`, `data`, `results`, `options`, `rows`, `products` or `records`. |
+| `fetchTotalPath` | `null` | Dot path to the total row count; with `fetchPageSize` it decides `hasMore`. Falls back to a top-level `total`. |
+| `fetchHasMorePath` | `null` | Dot path to a boolean instead of a count. |
+| `fetchMethod`, `fetchHeaders`, `fetchCredentials` | `'GET'`, `null`, `'same-origin'` | Request tuning for `fetchUrl` (JavaScript only). |
 | `autoLoadMore` | `true` | Scrolling near the dropdown bottom fetches the next page automatically. |
 | `loadMoreText` | `Load more` | Label of the footer button rendered while `hasMore` is true. |
 | `cacheResults` | `true` | Cache pages per query + page. Clear with `select.clearCache()`. |
@@ -587,6 +596,29 @@ and clicking it retries. Appended fetches emit `zidan:load-more` with `{ page, q
 failures emit the usual `zidan:error`.
 
 The cache size is global: `ZidanSelect.cacheLimit = 50` pages (least-recently-used eviction).
+
+### AJAX from markup only
+
+One URL is enough to turn a combobox into a remote search. The plugin sends the query, page
+and page size, reads the rows out of the JSON, and keeps every other behaviour (debounce,
+abort, cache, load-more, errors) identical to a hand-written `fetchOptions`.
+
+```html
+<select id="product" name="product"
+        data-zidan-select="combobox"
+        data-zidan-fetch-url="/api/products/search"
+        data-zidan-fetch-items-path="data.items"
+        data-zidan-fetch-total-path="data.total"
+        data-zidan-fetch-skip-param="skip"
+        data-zidan-fetch-page-size="20">
+</select>
+```
+
+That markup calls `GET /api/products/search?q=…&limit=20&skip=0`, then `skip=20` for the next
+page, and stops when `skip + limit >= data.total`. Rows map automatically: `value` / `label`, or
+`id` / `slug` / `code` for the value and `name` / `title` / `full_name` for the label. A live page
+with both modes, against a real API and a static JSON file, ships as
+[`ajax.html`](https://akhtar1985.github.io/zidan-select/ajax.html).
 
 ### Tags
 

@@ -340,6 +340,78 @@ test('pagination: query change resets to page 0 and scroll loads more', async ()
   select.destroy();
 });
 
+test('declarative fetchUrl builds the request and maps the response', async () => {
+  const window = boot('<select id="api"></select>');
+  const requests = [];
+  window.fetch = (url, init) => {
+    requests.push({ url: String(url), init });
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve({
+        products: [{ id: 1, title: 'Phone' }, { id: 2, title: 'Laptop' }],
+        total: 4
+      })
+    });
+  };
+
+  const select = window.zidanSelect('#api', {
+    mode: 'combobox',
+    fetchUrl: 'https://api.test/products',
+    fetchItemsPath: 'products',
+    fetchTotalPath: 'total',
+    fetchSkipParam: 'skip',
+    fetchPageSize: 2
+  });
+
+  select.open();
+  await wait(20);
+
+  assert.equal(requests.length, 1);
+  assert.ok(requests[0].url.startsWith('https://api.test/products?'), 'fetchUrl is the request base');
+  assert.ok(requests[0].url.includes('q='), 'sends the query parameter');
+  assert.ok(requests[0].url.includes('limit=2'), 'sends fetchPageSize as limit');
+  assert.ok(requests[0].url.includes('skip=0'), 'sends skip instead of page when fetchSkipParam is set');
+  assert.equal(requests[0].init.method, 'GET');
+  assert.equal(requests[0].init.headers.Accept, 'application/json');
+  assert.equal(JSON.stringify(select.asyncItems.map(item => [item.value, item.label])), '[["1","Phone"],["2","Laptop"]]');
+  assert.equal(select.hasMoreResults(), true, 'total 4 with a page of 2 leaves more rows');
+
+  await select.loadMore();
+  assert.equal(requests.length, 2);
+  assert.ok(requests[1].url.includes('skip=2'), 'the second page skips the first page');
+  assert.equal(select.hasMoreResults(), false, 'the last page clears hasMore');
+  select.destroy();
+});
+
+test('declarative fetchUrl reports HTTP failures without emptying the list', async () => {
+  const window = boot('<select id="api"></select>');
+  let status = 200;
+  window.fetch = () => Promise.resolve({
+    ok: status === 200,
+    status: status,
+    statusText: 'Service Unavailable',
+    json: () => Promise.resolve({ items: [{ value: 'a', label: 'A' }], hasMore: false })
+  });
+  const select = window.zidanSelect('#api', { mode: 'combobox', fetchUrl: 'https://api.test/rows' });
+  select.open();
+  await wait(20);
+  assert.equal(select.asyncItems.length, 1);
+
+  status = 503;
+  select.refreshOptions();
+  await wait(20);
+  assert.ok(select.error && /503/.test(select.error.message), 'the failure surfaces the HTTP status');
+
+  status = 200;
+  select.refreshOptions();
+  await wait(20);
+  assert.equal(select.error, null, 'a later success clears the error');
+  assert.equal(select.asyncItems.length, 1, 'the retry repopulates the list');
+  select.destroy();
+});
+
 test('pagination: page errors keep the loaded list and allow retry', async () => {
   const window = boot('<select id="remote"></select>');
   let failNext = false;
