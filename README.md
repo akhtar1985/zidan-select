@@ -1149,8 +1149,9 @@ and `VERSION`, both CSS banners, the README CDN URLs, the demo pages and the doc
 Pushing the tag runs [`.github/workflows/release.yml`](https://github.com/akhtar1985/zidan-select/blob/main/.github/workflows/release.yml), which
 publishes to npm through **trusted publishing** (OIDC) with `--provenance` — no token and no local
 `npm login`, and every tarball carries a provenance attestation. Prereleases go to the `next`
-dist-tag. The workflow refuses a tag that disagrees with `package.json` and refuses to republish a
-version that already exists on the registry. History lives in [`CHANGELOG.md`](https://github.com/akhtar1985/zidan-select/blob/main/CHANGELOG.md).
+dist-tag, and creates the matching **GitHub Release** for the tag. The workflow refuses a tag that
+disagrees with `package.json` and refuses to republish a version that already exists on the
+registry. History lives in [`CHANGELOG.md`](https://github.com/akhtar1985/zidan-select/blob/main/CHANGELOG.md).
 
 GitHub Pages serves the repo root: the demo is `index.html` (no build needed), docs live in
 `docs/`. Release notes should list theme/layout additions and any token renames.

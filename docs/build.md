@@ -185,7 +185,8 @@ Flags: `--dry-run` (print the plan, write nothing), `--no-commit` (edit files an
 only), `--skip-checks`. It requires a clean tracked working tree, so the release commit holds only
 the bump, and it refuses a version that is already tagged.
 
-Pushing the tag starts `.github/workflows/release.yml`. Nothing else to run.
+Pushing the tag starts `.github/workflows/release.yml`. Nothing else to run: it publishes to npm and
+creates the matching GitHub Release, so the Releases panel and the changelog stay in step.
 
 ## Publishing to npm
 
@@ -193,7 +194,7 @@ Publishing happens in CI:
 
 | Trigger | What happens |
 | --- | --- |
-| Tag `vX.Y.Z` pushed | Verifies the tag against `package.json`, refuses an existing version, runs `prepublishOnly` (types → build → test), publishes with `--provenance`. |
+| Tag `vX.Y.Z` pushed | Verifies the tag against `package.json`, refuses an existing version, runs `prepublishOnly` (types → build → test), publishes with `--provenance`, then creates the GitHub Release for the tag with `--generate-notes`. |
 | **Actions → Publish to npm → Run workflow** | The same job without a tag, for publishing the version already committed. |
 
 Authentication is **npm trusted publishing** over OIDC: the job requests `id-token: write` and

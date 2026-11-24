@@ -133,6 +133,7 @@ check('version metadata and release tooling agree', () => {
   assert(workflow.includes('--provenance'), 'release workflow must publish with provenance');
   assert(workflow.includes("tags: ['v*']"), 'release workflow must run on version tags');
   assert(workflow.includes('id-token: write'), 'release workflow needs id-token for trusted publishing');
+  assert(workflow.includes('gh release create'), 'release workflow must create the GitHub Release for the tag');
 });
 
 check('README links resolve on npm', () => {
