@@ -7,8 +7,8 @@ two separate stylesheets.
 
 [![demo](https://img.shields.io/badge/demo-live-4f6bed)](https://akhtar1985.github.io/zidan-select/)
 [![npm](https://img.shields.io/npm/v/zidan-select?color=cb3837)](https://www.npmjs.com/package/zidan-select)
-[![docs](https://img.shields.io/badge/docs-options%20%7C%20API%20%7C%20theming-6b7280)](docs/options.md)
-[![license](https://img.shields.io/badge/license-MIT-22c55e)](LICENSE)
+[![docs](https://img.shields.io/badge/docs-options%20%7C%20API%20%7C%20theming-6b7280)](https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md)
+[![license](https://img.shields.io/badge/license-MIT-22c55e)](https://github.com/akhtar1985/zidan-select/blob/main/LICENSE)
 
 ## Which files should you load?
 
@@ -118,7 +118,7 @@ the same two stylesheets and no dependencies.
 **Trade-offs:** smaller community than Select2, no React/Vue component package, and for very
 complex comboboxes (tokenized multi-search, drag-reorder tag editors) Select2 or Tom Select
 still have deeper ecosystems. Full matrix, honest limitations and migration notes:
-**[`docs/comparison.md`](docs/comparison.md)**.
+**[`docs/comparison.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/comparison.md)**.
 
 ---
 
@@ -145,10 +145,10 @@ still have deeper ecosystems. Full matrix, honest limitations and migration note
 
 ## Live demo
 
-[![ZidanForm demo — every control on one page](docs/demo.png)](https://akhtar1985.github.io/zidan-select/)
+[![ZidanForm demo — every control on one page](https://raw.githubusercontent.com/akhtar1985/zidan-select/main/docs/demo.png)](https://akhtar1985.github.io/zidan-select/)
 
 **Demo:** <https://akhtar1985.github.io/zidan-select/> — deployed from `main` by
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml) on every push.
+[`.github/workflows/pages.yml`](https://github.com/akhtar1985/zidan-select/blob/main/.github/workflows/pages.yml) on every push.
 
 Deep links open the matching tab:
 
@@ -318,7 +318,7 @@ targets apply.
 ## Quick start
 
 > Building a plain HTML page, a WordPress site or a page-builder embed? The
-> [static HTML & WordPress cookbook](docs/html-and-wordpress.md) has complete copy-paste pages
+> [static HTML & WordPress cookbook](https://github.com/akhtar1985/zidan-select/blob/main/docs/html-and-wordpress.md) has complete copy-paste pages
 > (full, select-only, file-only, ID/class targeting, `functions.php` enqueue).
 
 ```html
@@ -413,7 +413,7 @@ the select build enhances selects, the file build enhances file inputs; both und
 same config keys, marker classes and JSON attribute.
 
 Windows/macOS keyboard behaviour, grouping, search and all select features live in
-[`docs/options.md`](docs/options.md).
+[`docs/options.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md).
 
 ### JavaScript init: one select by ID or class
 
@@ -473,8 +473,8 @@ The file-only build uses the same targeted pattern: `zidanField('#upload', { var
 accept: 'image/*', maxFiles: 4 })` and `zidanField('.upload-field', options)`.
 
 Every option in JavaScript form — with defaults, callbacks and rendering hooks — is in
-[Select options](docs/options.md#select-options) and
-[File upload](docs/options.md#file-upload-variants-uploading--rendering). Try the editable
+[Select options](https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md#select-options) and
+[File upload](https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md#file-upload-variants-uploading--rendering). Try the editable
 options object live in the demo's **Select** tab →
 [Direct JS init](https://akhtar1985.github.io/zidan-select/#select).
 
@@ -769,7 +769,7 @@ per field; clickable icons call `input.showPicker()` when available.
 
 ### Select options
 
-See [`docs/options.md`](docs/options.md) for the complete table (`mode`, `layout`,
+See [`docs/options.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md) for the complete table (`mode`, `layout`,
 `themeFramework`, `searchable`, `clearable`, `multiple`, `maxTags`, `suggestions`,
 `fetchOptions`, `debounce`, `minChars`, callbacks, `customClasses`, `scrollbar`, …).
 
@@ -877,7 +877,7 @@ Custom theme — no build step, core never changes:
 }
 ```
 
-Token list, preset details and layout notes: [`docs/theming.md`](docs/theming.md).
+Token list, preset details and layout notes: [`docs/theming.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/theming.md).
 
 ### Layouts
 
@@ -972,8 +972,8 @@ form.addEventListener('submit', event => {
 });
 ```
 
-Full recipes: [`docs/validation.md`](docs/validation.md). A runnable page that loads all three
-libraries next to a native form ships as [`docs/validation.html`](docs/validation.html).
+Full recipes: [`docs/validation.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/validation.md). A runnable page that loads all three
+libraries next to a native form ships as [`docs/validation.html`](https://akhtar1985.github.io/zidan-select/docs/validation.html).
 
 ---
 
@@ -1008,7 +1008,7 @@ Short version: initialise after mount, call `destroy()` before unmount, push sta
 be controlled through the instance, because the plugin owns the visible trigger.
 
 Complete, copy-pasteable examples (React 18, Next.js App Router with SSR-safe imports, Vue 3
-`onMounted`, Angular `ngAfterViewInit` + `ControlValueAccessor` notes): [`docs/frameworks.md`](docs/frameworks.md).
+`onMounted`, Angular `ngAfterViewInit` + `ControlValueAccessor` notes): [`docs/frameworks.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/frameworks.md).
 
 Next.js CSS imports:
 
@@ -1074,20 +1074,20 @@ git push origin main --follow-tags
 
 `scripts/release.mjs` writes the version into `package.json`, `package-lock.json`, the JS banner
 and `VERSION`, both CSS banners, the README CDN URLs, the demo pages and the docs; moves
-`## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) under a dated heading; runs the type check and
+`## [Unreleased]` in [`CHANGELOG.md`](https://github.com/akhtar1985/zidan-select/blob/main/CHANGELOG.md) under a dated heading; runs the type check and
 `npm test`; then commits `Release X.Y.Z` and creates the annotated tag `vX.Y.Z`.
 `npm run release -- --dry-run` prints the plan without writing anything.
 
-Pushing the tag runs [`.github/workflows/release.yml`](.github/workflows/release.yml), which
+Pushing the tag runs [`.github/workflows/release.yml`](https://github.com/akhtar1985/zidan-select/blob/main/.github/workflows/release.yml), which
 publishes to npm through **trusted publishing** (OIDC) with `--provenance` — no token and no local
 `npm login`, and every tarball carries a provenance attestation. Prereleases go to the `next`
 dist-tag. The workflow refuses a tag that disagrees with `package.json` and refuses to republish a
-version that already exists on the registry. History lives in [`CHANGELOG.md`](CHANGELOG.md).
+version that already exists on the registry. History lives in [`CHANGELOG.md`](https://github.com/akhtar1985/zidan-select/blob/main/CHANGELOG.md).
 
 GitHub Pages serves the repo root: the demo is `index.html` (no build needed), docs live in
 `docs/`. Release notes should list theme/layout additions and any token renames.
 
-Full checklist, folder tree and release automation notes: [`docs/build.md`](docs/build.md).
+Full checklist, folder tree and release automation notes: [`docs/build.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/build.md).
 
 ---
 
@@ -1150,9 +1150,9 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](docs
   `renderFile` and `zidan:upload-*` events.
 - **Date rules** — weekend and blocked-date rules now write into native validity, so
   `form.checkValidity()` and third-party validators see them.
-- **Docs & demo** — new option tables in [`docs/options.md`](docs/options.md), token list in
-  [`docs/theming.md`](docs/theming.md), validation rules in
-  [`docs/validation.md`](docs/validation.md), and a live event console on the demo page.
+- **Docs & demo** — new option tables in [`docs/options.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md), token list in
+  [`docs/theming.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/theming.md), validation rules in
+  [`docs/validation.md`](https://github.com/akhtar1985/zidan-select/blob/main/docs/validation.md), and a live event console on the demo page.
 
 The 2.0 API is unchanged; every addition is opt-in.
 

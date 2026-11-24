@@ -135,6 +135,17 @@ check('version metadata and release tooling agree', () => {
   assert(workflow.includes('id-token: write'), 'release workflow needs id-token for trusted publishing');
 });
 
+check('README links resolve on npm', () => {
+  const readme = read('README.md');
+  for (const bad of ['](docs/', '](LICENSE', '](.github/', '](../']) {
+    assert(!readme.includes(bad), 'README has a relative link npm renders as a 404: ' + bad);
+  }
+  assert(readme.includes('https://raw.githubusercontent.com/akhtar1985/zidan-select/main/docs/demo.png'), 'demo screenshot must use an absolute raw URL so it renders on npm');
+  assert(readme.includes('(https://akhtar1985.github.io/zidan-select/)'), 'README must link the live demo');
+  const pkg = JSON.parse(read('package.json'));
+  assert(pkg.homepage === 'https://akhtar1985.github.io/zidan-select/', 'package.json homepage must be the live demo');
+});
+
 check('field playground is wired up', () => {
   const playground = read('playground.html');
   assert(playground.includes('plugin-core.css') && playground.includes('plugin-theme.css'), 'playground does not load both stylesheets');
