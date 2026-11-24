@@ -682,6 +682,53 @@ test('shopify demo: the product page enhances every control', async () => {
   assert.ok(doc.querySelector('input[name="properties[Gift wrap]"]').__zidanField, 'shopify gift wrap not enhanced');
 });
 
+/* ---------------- option regressions ---------------- */
+
+test('a preset validation state survives construction and update()', () => {
+  const window = boot('<input id="e" type="email" data-zidan-validation="invalid"><input id="n" type="text">');
+  const preset = window.zidanField('#e');
+  assert.equal(preset.getValidation(), 'invalid');
+  assert.equal(window.document.getElementById('e').getAttribute('aria-invalid'), 'true');
+
+  const manual = window.zidanField('#n');
+  manual.setValidation('invalid');
+  manual.update();
+  assert.equal(manual.getValidation(), 'invalid', 'update() must keep a manual invalid state');
+
+  const input = window.document.getElementById('e');
+  input.value = 'ada@example.com';
+  input.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(preset.getValidation(), null, 'typing clears the preset state');
+});
+
+test('a preset select validation state survives the initial value', () => {
+  const window = boot('<select id="s" data-zidan-validation="invalid"><option value="a">A</option></select>');
+  const select = window.zidanSelect('#s');
+  assert.equal(select.root.getAttribute('data-zs-validation'), 'invalid');
+  select.setValue('a');
+  assert.equal(select.root.getAttribute('data-zs-validation'), null, 'a real value change clears it');
+});
+
+test('a non-searchable select is read-only and never filters', () => {
+  const window = boot('<select id="s" data-zidan-select="select"><option value="a">Alpha</option><option value="b">Beta</option></select>');
+  const select = window.zidanSelect('#s', { searchable: false });
+  assert.equal(select.input.readOnly, true);
+  select.open();
+  select.input.value = 'zzz';
+  select.input.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(select._visibleItems().length, 2, 'typing must not filter a plain select');
+  assert.equal(select.dropdown.querySelectorAll('[data-zs-option]').length, 2);
+});
+
+test('tags allowFreeText=false accepts listed values only', () => {
+  const window = boot('<select id="t" multiple data-zidan-select="tags" data-zidan-allow-free-text="false"><option value="html">HTML</option><option value="css">CSS</option></select>');
+  const tags = window.zidanSelect('#t');
+  tags.addTag('html');
+  tags.addTag('css');
+  tags.addTag('ruby');
+  assert.deepEqual(Array.from(tags.getTags()), ['html', 'css']);
+});
+
 /* ---------------- runner ---------------- */
 
 export async function runDomTests() {

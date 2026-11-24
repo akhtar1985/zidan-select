@@ -11,6 +11,9 @@
   var valueEl = document.getElementById('pg-value');
   var kindNote = document.getElementById('pg-kind-note');
   var resetBtn = document.getElementById('pg-reset');
+  var methodsEl = document.getElementById('pg-methods');
+  var eventsEl = document.getElementById('pg-events');
+  var usageNote = document.getElementById('pg-usage-note');
   var modeButtons = Array.prototype.slice.call(document.querySelectorAll('.pg-runmode button'));
 
   var THEME_OPTIONS = [
@@ -36,6 +39,8 @@
     ['file', 'File'], ['upload', 'Upload'], ['eye', 'Eye'], ['globe', 'Globe'],
     ['map-pin', 'Map pin'], ['image', 'Image']
   ];
+  var VALIDATION_OPTIONS = [['', 'None'], ['valid', 'Valid'], ['invalid', 'Invalid']];
+  var STATUS_ICON = [['', 'None'], ['check', 'Check'], ['alert', 'Alert']];
   var MOVIES = ['Inception', 'Interstellar', 'The Dark Knight', 'Dunkirk', 'Tenet', 'Oppenheimer'];
   var PLANS = [['starter', 'Starter'], ['pro', 'Pro'], ['team', 'Team']];
 
@@ -54,48 +59,90 @@
   function text(key, label, def, when) {
     return { key: key, label: label, type: 'text', def: def === undefined ? '' : def, when: when };
   }
+  function number(key, label, def, when) {
+    return { key: key, label: label, type: 'number', def: def === undefined ? '' : def, when: when };
+  }
+  function choice(key, label, options, def, when, reflow) {
+    return { key: key, label: label, type: 'select', options: options, def: def, when: when, reflow: reflow };
+  }
+  function validationField() {
+    return choice('validation', 'Validation state', VALIDATION_OPTIONS, '');
+  }
+  function styleGroup() {
+    return { title: 'Theme & layout', fields: [themeField(), frameworkField(), layoutField()] };
+  }
+  function stateGroup(fields) {
+    return {
+      title: 'State',
+      fields: [bool('required', 'Required', false), bool('disabled', 'Disabled', false), validationField()]
+        .concat(fields || [])
+    };
+  }
+
+  var TEXT_TYPE_OPTIONS = [
+    ['text', 'Text'], ['email', 'Email'], ['password', 'Password'], ['number', 'Number'],
+    ['tel', 'Phone'], ['url', 'URL'], ['search', 'Search'], ['date', 'Date'],
+    ['time', 'Time'], ['datetime-local', 'Datetime'], ['range', 'Range'], ['color', 'Colour']
+  ];
 
   var KINDS = {
     select: {
-      label: 'Select',
+      label: 'Select / combobox / tags',
       initName: 'initZidanSelects()',
       groups: [
         {
           title: 'Control',
           fields: [
-            { key: 'mode', label: 'Mode', type: 'select', def: 'combobox', reflow: true, options: [
-              ['select', 'Select'], ['combobox', 'Combobox'], ['tags', 'Tags']
-            ] },
-            { key: 'layout', label: 'Layout', type: 'select', options: SELECT_LAYOUT_OPTIONS, def: 'classic-clean' },
+            choice('mode', 'Mode', [['select', 'Select'], ['combobox', 'Combobox'], ['tags', 'Tags']], 'combobox', null, true),
+            choice('layout', 'Layout', SELECT_LAYOUT_OPTIONS, 'classic-clean'),
             themeField(),
             frameworkField(),
-            { key: 'scrollbar', label: 'Scrollbar', type: 'select', def: 'default', options: [
+            choice('scrollbar', 'Scrollbar', [
               ['default', 'Default'], ['thin', 'Thin'], ['fancy', 'Fancy'], ['hover', 'On hover'], ['hidden', 'Hidden']
-            ] }
+            ], 'default')
           ]
         },
         {
           title: 'Content',
           fields: [
             text('label', 'Floating label', 'Favorite movie'),
-            text('placeholder', 'Placeholder', 'Choose a movie…', function (s) { return s.mode !== 'tags' && !isMulti(s); })
+            text('placeholder', 'Placeholder', 'Choose a movie…', function (s) { return s.mode !== 'tags'; })
           ]
         },
         {
           title: 'Behaviour',
           fields: [
-            bool('searchable', 'Searchable', true, function (s) { return s.mode === 'select'; }),
+            bool('searchable', 'Searchable (type to filter)', true, function (s) { return s.mode === 'select'; }),
             bool('clearable', 'Clear button', true),
             bool('multiple', 'Allow multiple values', false, function (s) { return s.mode !== 'tags'; }),
-            bool('required', 'Required', false),
-            bool('disabled', 'Disabled', false)
+            choice('closeOnSelect', 'Close after choosing', [['', 'Auto'], ['true', 'Always'], ['false', 'Never']], ''),
+            number('maxDropdownHeight', 'Listbox max height (px)', 280)
           ]
-        }
+        },
+        {
+          title: 'Tags mode',
+          fields: [
+            number('maxTags', 'Max tags', '', function (s) { return s.mode === 'tags'; }),
+            number('minTagLength', 'Min tag length', 1, function (s) { return s.mode === 'tags'; }),
+            number('maxTagLength', 'Max tag length', '', function (s) { return s.mode === 'tags'; }),
+            bool('allowFreeText', 'Allow free text', true, function (s) { return s.mode === 'tags'; }),
+            bool('commitOnTab', 'Commit on Tab', false, function (s) { return s.mode === 'tags'; }),
+            bool('commitOnBlur', 'Commit on blur', false, function (s) { return s.mode === 'tags'; })
+          ]
+        },
+        stateGroup()
       ],
       defaults: function () {
-        return { mode: 'combobox', layout: 'classic-clean', theme: 'default', framework: 'none', scrollbar: 'default', label: 'Favorite movie', placeholder: 'Choose a movie…', searchable: true, clearable: true, multiple: false, required: false, disabled: false };
+        return {
+          mode: 'combobox', layout: 'classic-clean', theme: 'default', framework: 'none', scrollbar: 'default',
+          label: 'Favorite movie', placeholder: 'Choose a movie…', searchable: true, clearable: true,
+          multiple: false, closeOnSelect: '', maxDropdownHeight: 280,
+          maxTags: '', minTagLength: 1, maxTagLength: '', allowFreeText: true,
+          commitOnTab: false, commitOnBlur: false, required: false, disabled: false, validation: ''
+        };
       }
     },
+
     file: {
       label: 'File upload',
       initName: 'initZidanForms()',
@@ -103,9 +150,10 @@
         {
           title: 'Control',
           fields: [
-            { key: 'variant', label: 'Variant', type: 'select', def: 'dropzone', options: [
-              ['dropzone', 'Dropzone'], ['button', 'Button'], ['avatar', 'Avatar'], ['gallery', 'Gallery'], ['compact', 'Compact']
-            ] },
+            choice('variant', 'Variant', [
+              ['dropzone', 'Dropzone'], ['button', 'Button'], ['avatar', 'Avatar'],
+              ['gallery', 'Gallery'], ['compact', 'Compact']
+            ], 'dropzone', null, true),
             themeField(),
             frameworkField(),
             layoutField()
@@ -116,41 +164,67 @@
           fields: [
             text('title', 'Drop title', 'Drag & drop your files'),
             text('dropHint', 'Drop hint', 'PNG, JPG or PDF up to 5 MB'),
-            text('accept', 'Accepted files', 'image/*,.pdf')
+            text('accept', 'Accepted files', 'image/*,.pdf'),
+            text('hint', 'Hint under the field', '')
           ]
         },
         {
           title: 'Limits & behaviour',
           fields: [
-            { key: 'maxFiles', label: 'Max files', type: 'number', def: 4 },
-            { key: 'maxSizeMB', label: 'Max size (MB)', type: 'number', def: 5 },
+            number('maxFiles', 'Max files', 4),
+            number('maxSizeMB', 'Max size (MB)', 5),
             bool('multiple', 'Multiple files', true),
-            bool('autoUpload', 'Auto upload', true),
-            bool('simulateUpload', 'Simulate progress', false),
+            bool('autoUpload', 'Auto upload', true, null, true),
+            bool('simulateUpload', 'Simulate progress', false, null, true),
+            number('simulateDuration', 'Simulation length (ms)', 900, function (s) { return !!s.simulateUpload; }),
             bool('showPreview', 'Image preview', true),
-            bool('showFileMeta', 'Show size / type', true),
-            bool('required', 'Required', false),
-            bool('disabled', 'Disabled', false)
+            bool('showFileMeta', 'Show size / type', true)
           ]
-        }
+        },
+        {
+          title: 'Upload endpoint',
+          fields: [
+            text('uploadUrl', 'Upload URL (XHR)', '/api/files'),
+            text('uploadField', 'FormData field name', 'file'),
+            bool('withCredentials', 'Send credentials', false, function (s) { return !!s.uploadUrl; }),
+            text('progressTemplate', 'Progress text', 'Uploading {percent}%'),
+            text('uploadedLabel', 'Uploaded label', 'Uploaded'),
+            text('failedLabel', 'Failed label', 'Upload failed'),
+            text('cancelLabel', 'Cancel label', 'Cancel'),
+            text('retryLabel', 'Retry label', 'Retry')
+          ]
+        },
+        stateGroup()
       ],
       defaults: function () {
-        return { variant: 'dropzone', theme: 'default', framework: 'none', layout: '', title: 'Drag & drop your files', dropHint: 'PNG, JPG or PDF up to 5 MB', accept: 'image/*,.pdf', maxFiles: 4, maxSizeMB: 5, multiple: true, autoUpload: true, simulateUpload: false, showPreview: true, showFileMeta: true, required: false, disabled: false };
+        return {
+          variant: 'dropzone', theme: 'default', framework: 'none', layout: '',
+          title: 'Drag & drop your files', dropHint: 'PNG, JPG or PDF up to 5 MB', accept: 'image/*,.pdf', hint: '',
+          maxFiles: 4, maxSizeMB: 5, multiple: true, autoUpload: true, simulateUpload: false,
+          simulateDuration: 900, showPreview: true, showFileMeta: true,
+          uploadUrl: '', uploadField: 'file', withCredentials: false,
+          progressTemplate: 'Uploading {percent}%', uploadedLabel: 'Uploaded',
+          failedLabel: 'Upload failed', cancelLabel: 'Cancel', retryLabel: 'Retry',
+          required: false, disabled: false, validation: ''
+        };
       }
     },
+
     checkbox: {
-      label: 'Checkbox / switch',
+      label: 'Checkbox',
       initName: 'initZidanForms()',
       groups: [
         {
           title: 'Control',
           fields: [
-            { key: 'variant', label: 'Variant', type: 'select', def: 'switch', reflow: true, options: [
-              ['default', 'Checkbox'], ['switch', 'Switch'], ['card', 'Card'], ['button', 'Button'], ['minimal', 'Minimal']
-            ] },
-            { key: 'switchStyle', label: 'Switch style', type: 'select', def: 'ios', when: function (s) { return s.variant === 'switch'; }, options: [
-              ['ios', 'iOS'], ['material', 'Material'], ['square', 'Square'], ['labeled', 'Labeled'], ['icon', 'Icon']
-            ] },
+            choice('variant', 'Variant', [
+              ['default', 'Checkbox'], ['switch', 'Switch'], ['card', 'Card'],
+              ['button', 'Button'], ['minimal', 'Minimal']
+            ], 'default', null, true),
+            choice('switchStyle', 'Switch style', [
+              ['ios', 'iOS'], ['material', 'Material'], ['square', 'Square'],
+              ['labeled', 'Labeled'], ['icon', 'Icon']
+            ], 'ios', function (s) { return s.variant === 'switch'; }),
             themeField(),
             frameworkField(),
             layoutField()
@@ -170,24 +244,33 @@
             bool('checked', 'Checked', true),
             bool('indeterminate', 'Indeterminate', false, function (s) { return s.variant !== 'switch'; }),
             bool('required', 'Required', false),
-            bool('disabled', 'Disabled', false)
+            bool('disabled', 'Disabled', false),
+            validationField()
           ]
         }
       ],
       defaults: function () {
-        return { variant: 'switch', switchStyle: 'ios', theme: 'default', framework: 'none', layout: '', label: 'Email digest', description: 'A short daily summary.', hint: '', checked: true, indeterminate: false, required: false, disabled: false };
+        return {
+          variant: 'default', switchStyle: 'ios', theme: 'default', framework: 'none', layout: '',
+          label: 'Email digest', description: 'A short daily summary.', hint: '',
+          checked: true, indeterminate: false, required: false, disabled: false, validation: ''
+        };
       }
     },
-    radio: {
-      label: 'Radio group',
+
+    switch: {
+      label: 'Switch',
       initName: 'initZidanForms()',
       groups: [
         {
           title: 'Control',
           fields: [
-            { key: 'variant', label: 'Variant', type: 'select', def: 'stacked', options: [
-              ['stacked', 'Stacked'], ['inline', 'Inline'], ['card', 'Card'], ['button', 'Button'], ['tile', 'Tile']
-            ] },
+            choice('switchStyle', 'Switch style', [
+              ['ios', 'iOS'], ['material', 'Material'], ['square', 'Square'],
+              ['labeled', 'Labeled'], ['icon', 'Icon']
+            ], 'ios', null, true),
+            text('onLabel', 'On label', 'ON', function (s) { return /^(labeled|icon|square|material)$/.test(s.switchStyle); }),
+            text('offLabel', 'Off label', 'OFF', function (s) { return /^(labeled|icon|square|material)$/.test(s.switchStyle); }),
             themeField(),
             frameworkField(),
             layoutField()
@@ -195,100 +278,348 @@
         },
         {
           title: 'Copy',
-          fields: [text('legend', 'Legend', 'Plan')]
+          fields: [
+            text('label', 'Label', 'Email digest'),
+            text('description', 'Description', 'A short daily summary.'),
+            text('hint', 'Hint', '')
+          ]
         },
         {
-          title: 'Behaviour',
+          title: 'State',
           fields: [
-            bool('deselectable', 'Click again to clear', false),
-            bool('disabled', 'Disabled', false)
+            bool('checked', 'Checked', true),
+            bool('required', 'Required', false),
+            bool('disabled', 'Disabled', false),
+            validationField()
           ]
         }
       ],
       defaults: function () {
-        return { variant: 'stacked', theme: 'default', framework: 'none', layout: '', legend: 'Plan', deselectable: false, disabled: false };
+        return {
+          switchStyle: 'ios', onLabel: 'ON', offLabel: 'OFF', theme: 'default', framework: 'none', layout: '',
+          label: 'Email digest', description: 'A short daily summary.', hint: '',
+          checked: true, required: false, disabled: false, validation: ''
+        };
       }
     },
-    text: {
-      label: 'Text & inputs',
+
+    radio: {
+      label: 'Radio group',
       initName: 'initZidanForms()',
       groups: [
         {
           title: 'Control',
           fields: [
-            { key: 'type', label: 'Input type', type: 'select', def: 'email', reflow: true, options: [
-              ['text', 'Text'], ['email', 'Email'], ['password', 'Password'], ['number', 'Number'],
-              ['tel', 'Phone'], ['url', 'URL'], ['search', 'Search'], ['date', 'Date'],
-              ['time', 'Time'], ['textarea', 'Textarea'], ['range', 'Range']
-            ] },
-            text('label', 'Label', 'Email address'),
-            text('placeholder', 'Placeholder', 'you@example.com', function (s) { return s.type !== 'range'; }),
+            choice('variant', 'Variant', [
+              ['stacked', 'Stacked'], ['inline', 'Inline'], ['card', 'Card'],
+              ['button', 'Button'], ['tile', 'Tile']
+            ], 'stacked'),
             themeField(),
             frameworkField(),
             layoutField()
           ]
         },
         {
-          title: 'Icons & add-ons',
+          title: 'Copy',
           fields: [
-            bool('autoIcon', 'Icon from input type', true, null, true),
-            { key: 'icon', label: 'Custom icon', type: 'select', options: ICON_OPTIONS, def: '', when: function (s) { return !s.autoIcon; } },
-            { key: 'iconPosition', label: 'Icon position', type: 'select', def: 'left', when: function (s) { return !!(s.icon || s.autoIcon); }, options: [['left', 'Left'], ['right', 'Right']] },
-            text('prefix', 'Prefix', '', function (s) { return s.type !== 'textarea' && s.type !== 'range'; }),
-            text('suffix', 'Suffix', '', function (s) { return s.type !== 'textarea' && s.type !== 'range'; }),
-            bool('clearable', 'Clear button', true, function (s) { return s.type !== 'range'; }),
-            bool('reveal', 'Show / hide password', false, function (s) { return s.type === 'password'; }),
-            { key: 'counter', label: 'Character counter', type: 'number', def: '', when: function (s) { return s.type === 'text' || s.type === 'email' || s.type === 'textarea'; } },
+            text('legend', 'Legend', 'Plan'),
             text('hint', 'Hint', '')
           ]
         },
         {
-          title: 'Type-specific',
+          title: 'Behaviour',
           fields: [
-            { key: 'stepper', label: 'Number stepper', type: 'select', def: 'false', when: function (s) { return s.type === 'number'; }, options: [
-              ['false', 'Off'], ['stacked', 'Stacked'], ['split', 'Split'], ['inline', 'Inline']
-            ] },
-            bool('phone', 'Phone formatting', false, function (s) { return s.type === 'tel'; }, true),
-            { key: 'phoneCountry', label: 'Phone country', type: 'select', def: 'US', when: function (s) { return s.type === 'tel' && s.phone; }, options: [
-              ['US', 'United States'], ['GB', 'United Kingdom'], ['DE', 'Germany'], ['FR', 'France'],
-              ['IN', 'India'], ['PK', 'Pakistan'], ['AU', 'Australia'], ['CA', 'Canada']
-            ] },
-            { key: 'phoneFormat', label: 'Phone format', type: 'select', def: 'national', when: function (s) { return s.type === 'tel' && s.phone; }, options: [
-              ['national', 'National'], ['international', 'International'], ['e164', 'E.164']
-            ] },
-            { key: 'rangeVariant', label: 'Range style', type: 'select', def: 'default', when: function (s) { return s.type === 'range'; }, options: [
-              ['default', 'Default'], ['gradient', 'Gradient'], ['stepped', 'Stepped'], ['minimal', 'Minimal']
-            ] },
-            { key: 'rangeMin', label: 'Range min', type: 'number', def: 0, when: function (s) { return s.type === 'range'; } },
-            { key: 'rangeMax', label: 'Range max', type: 'number', def: 1000, when: function (s) { return s.type === 'range'; } },
-            { key: 'rangeStep', label: 'Range step', type: 'number', def: 50, when: function (s) { return s.type === 'range'; } },
-            { key: 'rangeValue', label: 'Range value', type: 'number', def: 400, when: function (s) { return s.type === 'range'; } },
-            bool('rangeMinMax', 'Min / max scale', true, function (s) { return s.type === 'range'; }),
-            { key: 'rangeBubbleMode', label: 'Range bubble', type: 'select', def: 'always', when: function (s) { return s.type === 'range'; }, options: [
-              ['always', 'Always'], ['active', 'On hover / focus'], ['never', 'Never']
-            ] },
-            { key: 'rangeBubblePosition', label: 'Bubble position', type: 'select', def: 'top', when: function (s) { return s.type === 'range'; }, options: [
-              ['top', 'Top'], ['bottom', 'Bottom']
-            ] },
-            bool('rangeFill', 'Progress fill', true, function (s) { return s.type === 'range'; }),
-            text('rangeMinLabel', 'Scale start label', '', function (s) { return s.type === 'range'; }),
-            text('rangeMaxLabel', 'Scale end label', '', function (s) { return s.type === 'range'; }),
-            text('rangeTicks', 'Tick values (comma list)', '', function (s) { return s.type === 'range'; }),
-            bool('rangeTickLabels', 'Tick labels', false, function (s) { return s.type === 'range'; }),
-            bool('pickerButton', 'Open picker button', false, function (s) { return s.type === 'date' || s.type === 'time'; })
-          ]
-        },
-        {
-          title: 'State',
-          fields: [
+            bool('deselectable', 'Click again to clear', false),
             bool('required', 'Required', false),
-            bool('disabled', 'Disabled', false)
+            bool('disabled', 'Disabled', false),
+            validationField()
           ]
         }
       ],
       defaults: function () {
-        return { type: 'email', label: 'Email address', placeholder: 'you@example.com', theme: 'default', framework: 'none', layout: '', autoIcon: true, icon: '', iconPosition: 'left', prefix: '', suffix: '', clearable: true, reveal: false, counter: '', hint: '', stepper: 'false', phone: false, phoneCountry: 'US', phoneFormat: 'national', rangeVariant: 'default', rangeMin: 0, rangeMax: 1000, rangeStep: 50, rangeValue: 400, rangeMinMax: true, rangeBubbleMode: 'always', rangeBubblePosition: 'top', rangeFill: true, rangeMinLabel: '', rangeMaxLabel: '', rangeTicks: '', rangeTickLabels: false, pickerButton: false, required: false, disabled: false };
+        return {
+          variant: 'stacked', theme: 'default', framework: 'none', layout: '', legend: 'Plan', hint: '',
+          deselectable: false, required: false, disabled: false, validation: ''
+        };
       }
+    }
+  };
+
+  /* ------------------------------------------------------------------ *
+   * Text family: one option model per input type
+   * ------------------------------------------------------------------ */
+
+  function textDefaults(type) {
+    return {
+      type: type, label: '', placeholder: '', hint: '', theme: 'default', framework: 'none', layout: '',
+      autoIcon: false, icon: '', iconPosition: 'left', iconClickable: false, iconLabel: '',
+      validationIcon: false, prefix: '', suffix: '', clearable: false, reveal: false,
+      counter: '', rows: 4, maxlength: '', minlength: '',
+      stepper: 'false', stepperPosition: 'right', stepperWrap: false, stepperLongPress: true,
+      stepperDelay: 420, stepperInterval: 90, min: '', max: '', step: '', value: '',
+      phone: false, phoneCountry: 'US', phoneFormat: 'national', phoneCountrySelect: true,
+      phoneCountries: '', phoneCountryLabel: '', phoneValidate: true,
+      rangeVariant: 'default', rangeBubbleMode: 'always', rangeBubblePosition: 'top',
+      rangeFill: true, rangeMinMax: true, rangeTicks: '', rangeTickLabels: false,
+      rangeMinLabel: '', rangeMaxLabel: '', rangeFormat: '',
+      pickerButton: false, pickerIcon: 'calendar', pickerLabel: '',
+      disableWeekends: false, disabledDates: '',
+      required: false, disabled: false, validation: ''
+    };
+  }
+
+  function textKind(type, copy) {
+    var fields = [
+      {
+        title: 'Control',
+        fields: [
+          text('label', copy.label, copy.placeholderLabel || 'Label'),
+          text('placeholder', 'Placeholder', copy.placeholder || '', function (s) { return s.type !== 'date' && s.type !== 'range'; }),
+          text('hint', 'Hint', '')
+        ]
+      },
+      styleGroup(),
+      {
+        title: 'Icons & add-ons',
+        fields: [
+          bool('autoIcon', 'Icon from input type', false, null, true),
+          choice('icon', 'Custom icon', ICON_OPTIONS, '', function (s) { return !s.autoIcon; }),
+          choice('iconPosition', 'Icon position', [['left', 'Left'], ['right', 'Right']], 'left',
+            function (s) { return !!(s.icon || s.autoIcon); }),
+          bool('iconClickable', 'Clickable icon', false, function (s) { return !!(s.icon || s.autoIcon); }, true),
+          text('iconLabel', 'Icon label', '', function (s) { return !!(s.icon || s.autoIcon); }),
+          bool('validationIcon', 'Validation icon', false),
+          text('prefix', 'Prefix', '', function (s) { return s.type !== 'range'; }),
+          text('suffix', 'Suffix', '', function (s) { return s.type !== 'range'; }),
+          bool('clearable', 'Clear button', false, function (s) { return s.type !== 'range'; }),
+          bool('reveal', 'Show / hide password', false, function (s) { return s.type === 'password'; }),
+          number('counter', 'Character counter', '', function (s) { return s.type === 'text' || s.type === 'email'; }),
+          number('maxlength', 'Max length', '', function (s) { return s.type === 'text' || s.type === 'email'; }),
+          number('rows', 'Rows', 4, function (s) { return s.type === 'textarea'; })
+        ]
+      }
+    ];
+
+    fields.push({
+      title: 'Number & stepper',
+      fields: [
+        number('min', 'Min', '', function (s) { return s.type === 'number'; }),
+        number('max', 'Max', '', function (s) { return s.type === 'number'; }),
+        number('step', 'Step', '', function (s) { return s.type === 'number'; }),
+        text('value', 'Value', '', function (s) { return s.type === 'number'; }),
+        choice('stepper', 'Stepper', [['false', 'Off'], ['stacked', 'Stacked'], ['split', 'Split'], ['inline', 'Inline']],
+          'stacked', function (s) { return s.type === 'number'; }),
+        choice('stepperPosition', 'Stepper position', [['right', 'Right'], ['left', 'Left']], 'right',
+          function (s) { return s.type === 'number' && s.stepper === 'inline'; }),
+        bool('stepperWrap', 'Wrapped stepper', false, function (s) { return s.type === 'number' && s.stepper !== 'false'; }),
+        bool('stepperLongPress', 'Long-press repeat', true, function (s) { return s.type === 'number' && s.stepper !== 'false'; }),
+        number('stepperDelay', 'Hold delay (ms)', 420, function (s) { return s.type === 'number' && s.stepper !== 'false'; }),
+        number('stepperInterval', 'Repeat interval (ms)', 90, function (s) { return s.type === 'number' && s.stepper !== 'false'; })
+      ]
+    });
+
+    fields.push({
+      title: 'Phone',
+      fields: [
+        bool('phone', 'Phone formatting', false, function (s) { return s.type === 'tel'; }, true),
+        text('value', 'Phone value', '07700 900123', function (s) { return s.type === 'tel'; }),
+        choice('phoneCountry', 'Country', [
+          ['US', 'United States'], ['GB', 'United Kingdom'], ['DE', 'Germany'], ['FR', 'France'],
+          ['IN', 'India'], ['PK', 'Pakistan'], ['AU', 'Australia'], ['CA', 'Canada']
+        ], 'GB', function (s) { return s.type === 'tel' && s.phone; }),
+        choice('phoneFormat', 'Format', [
+          ['national', 'National'], ['international', 'International'], ['e164', 'E.164']
+        ], 'national', function (s) { return s.type === 'tel' && s.phone; }),
+        bool('phoneCountrySelect', 'Country selector', true, function (s) { return s.type === 'tel' && s.phone; }),
+        text('phoneCountries', 'Countries (ISO list)', '', function (s) { return s.type === 'tel' && s.phone; }),
+        text('phoneCountryLabel', 'Country aria-label', '', function (s) { return s.type === 'tel' && s.phone; }),
+        bool('phoneValidate', 'Validate length', true, function (s) { return s.type === 'tel' && s.phone; })
+      ]
+    });
+
+    fields.push({
+      title: 'Range',
+      fields: [
+        number('min', 'Min', 0, function (s) { return s.type === 'range'; }),
+        number('max', 'Max', 1000, function (s) { return s.type === 'range'; }),
+        number('step', 'Step', 50, function (s) { return s.type === 'range'; }),
+        number('value', 'Value', 400, function (s) { return s.type === 'range'; }),
+        choice('rangeVariant', 'Style', [
+          ['default', 'Default'], ['gradient', 'Gradient'], ['stepped', 'Stepped'], ['minimal', 'Minimal']
+        ], 'default', function (s) { return s.type === 'range'; }),
+        choice('rangeBubbleMode', 'Value bubble', [['always', 'Always'], ['active', 'On hover / focus'], ['never', 'Never']],
+          'always', function (s) { return s.type === 'range'; }),
+        choice('rangeBubblePosition', 'Bubble position', [['top', 'Top'], ['bottom', 'Bottom']], 'top',
+          function (s) { return s.type === 'range'; }),
+        bool('rangeFill', 'Progress fill', true, function (s) { return s.type === 'range'; }),
+        bool('rangeMinMax', 'Min / max scale', true, function (s) { return s.type === 'range'; }),
+        text('rangeTicks', 'Ticks (count or list)', '', function (s) { return s.type === 'range'; }),
+        bool('rangeTickLabels', 'Tick labels', false, function (s) { return s.type === 'range'; }),
+        text('rangeMinLabel', 'Scale start label', '', function (s) { return s.type === 'range'; }),
+        text('rangeMaxLabel', 'Scale end label', '', function (s) { return s.type === 'range'; }),
+        text('rangeFormat', 'Value template', '', function (s) { return s.type === 'range'; })
+      ]
+    });
+
+    fields.push({
+      title: 'Date & time',
+      fields: [
+        bool('pickerButton', 'Picker button', false, function (s) { return s.type === 'date' || s.type === 'time' || s.type === 'datetime-local'; }),
+        text('pickerIcon', 'Picker icon', 'calendar', function (s) { return s.type === 'date' || s.type === 'time' || s.type === 'datetime-local'; }),
+        text('pickerLabel', 'Picker label', '', function (s) { return s.type === 'date' || s.type === 'time' || s.type === 'datetime-local'; }),
+        bool('disableWeekends', 'Block weekends', false, function (s) { return s.type === 'date' || s.type === 'datetime-local'; }),
+        text('disabledDates', 'Blocked dates (ISO list)', '', function (s) { return s.type === 'date' || s.type === 'datetime-local'; }),
+        text('value', 'Date value', '', function (s) { return s.type === 'date' || s.type === 'time' || s.type === 'datetime-local'; })
+      ]
+    });
+
+    fields.push(stateGroup([bool('alwaysValidate', 'Always validate', false)]));
+
+    return {
+      label: copy.label,
+      initName: 'initZidanForms()',
+      groups: fields,
+      defaults: function () {
+        var base = textDefaults(type);
+        Object.keys(copy.defaults || {}).forEach(function (key) { base[key] = copy.defaults[key]; });
+        return base;
+      },
+      fixedType: type
+    };
+  }
+
+  KINDS.text = textKind('text', {
+    label: 'Text & email',
+    placeholderLabel: 'Email address',
+    placeholder: 'ada@example.com',
+    defaults: { type: 'text', label: 'Email address', placeholder: 'ada@example.com', autoIcon: true, clearable: true }
+  });
+  KINDS.textarea = textKind('textarea', {
+    label: 'Textarea',
+    placeholderLabel: 'Message',
+    placeholder: 'Tell us more…',
+    defaults: { type: 'textarea', label: 'Message', placeholder: 'Tell us more…', counter: 240 }
+  });
+  KINDS.number = textKind('number', {
+    label: 'Number & stepper',
+    placeholderLabel: 'Guests',
+    defaults: { type: 'number', label: 'Guests', min: 0, max: 20, step: 1, value: 2, stepper: 'split' }
+  });
+  KINDS.phone = textKind('tel', {
+    label: 'Phone',
+    placeholderLabel: 'Phone number',
+    defaults: {
+      type: 'tel', label: 'Phone number', autoIcon: true, phone: true,
+      phoneCountry: 'GB', phoneFormat: 'international', value: '07700 900123'
+    }
+  });
+  KINDS.range = textKind('range', {
+    label: 'Range',
+    placeholderLabel: 'Budget',
+    defaults: { type: 'range', label: 'Budget', value: 400, rangeTicks: '0,500,1000', rangeTickLabels: true }
+  });
+  KINDS.date = textKind('date', {
+    label: 'Date & time',
+    placeholderLabel: 'Delivery date',
+    defaults: { type: 'date', label: 'Delivery date', pickerButton: true, value: '' }
+  });
+  KINDS.date.groups[0].fields.unshift(choice('type', 'Input type', [
+    ['date', 'Date'], ['time', 'Time'], ['datetime-local', 'Datetime'], ['month', 'Month'], ['week', 'Week']
+  ], 'date', null, true));
+  delete KINDS.date.fixedType;
+
+  /* ------------------------------------------------------------------ *
+   * Per-control usage reference
+   * ------------------------------------------------------------------ */
+
+  var FIELD_METHODS = [
+    ['getValue()', 'Current value (array for multiple/tags).'],
+    ['setValue(v)', 'Write the native control and re-render.'],
+    ['update()', 'Re-read checked, disabled, value and validity.'],
+    ['validate()', 'Run the rules now; returns boolean or Promise.'],
+    ['setValidation(state)', "'valid', 'invalid' or null."],
+    ['setError(msg)', 'Show a manual message; clearError() hides it.'],
+    ['destroy()', 'Restore the original markup and listeners.']
+  ];
+  var FIELD_EVENTS = [
+    ['zidan:init', 'After enhancement.'],
+    ['zidan:change', 'Value, checked state or files changed.'],
+    ['zidan:input', 'Text or range input while typing.'],
+    ['zidan:validation', 'State changed: { state, message }.'],
+    ['zidan:clear', 'The clear button was used.'],
+    ['zidan:destroy', 'Instance removed.']
+  ];
+
+  var USAGE = {
+    select: {
+      note: 'The instance returned by zidanSelect() / initZidanSelects().',
+      methods: [
+        ['open() / close() / toggle()', 'Control the listbox.'],
+        ['getValue() / setValue(v)', 'Single value, or an array for multiple/tags.'],
+        ['getTags() / addTag(t) / removeTag(t)', 'Tags mode helpers.'],
+        ['setOptions(items)', 'Replace options; keeps groups and disabled flags.'],
+        ['loadMore() / hasMoreResults()', 'Paged fetchOptions results.'],
+        ['getAsyncState()', '{ query, page, hasMore, loading, error }.'],
+        ['refreshOptions() / clearCache()', 'Refetch page 0 / drop cached pages.'],
+        ['setLayout() / setFramework() / setScrollbar()', 'Restyle at runtime.'],
+        ['destroy()', 'Restore the original <select>.']
+      ],
+      events: [
+        ['zidan:change', '{ value, previousValue }'],
+        ['zidan:select', '{ value, item }'],
+        ['zidan:open / zidan:close', 'Listbox visibility.'],
+        ['zidan:tag-add / zidan:tag-remove', '{ tag, value }'],
+        ['zidan:load-more', '{ page, query }'],
+        ['zidan:error', '{ error, callback }']
+      ]
+    },
+    file: {
+      note: 'Uploads run through your function, an XHR uploadUrl or the simulator.',
+      methods: [
+        ['getFiles() / getUploadState()', 'Files and per-file status/progress.'],
+        ['addFiles(files) / replaceFiles(files)', 'Add or swap the selection.'],
+        ['removeFile(nameOrIndex) / clear()', 'Remove one file or all of them.'],
+        ['uploadAll() / uploadFile(file)', 'Start the pipeline manually.'],
+        ['cancelUpload(file) / cancelAll() / retryUpload(file)', 'Control one upload.'],
+        ['setVariant(name) / setUploader(fnOrUrl)', 'Change look or transport.'],
+        ['destroy()', 'Restore the original <input type="file">.']
+      ],
+      events: [
+        ['zidan:upload-start', '{ file, name, size }'],
+        ['zidan:upload-progress', '{ file, progress }'],
+        ['zidan:upload-success', '{ file, result }'],
+        ['zidan:upload-error', '{ file, error }'],
+        ['zidan:upload-cancel', '{ file }'],
+        ['zidan:remove', '{ file, index }']
+      ]
+    },
+    checkbox: { note: 'Checkbox and switch share one field instance.', methods: FIELD_METHODS.concat([['setChecked(b) / isChecked()', 'Toggle and read the state.'], ['setIndeterminate(b)', 'Mixed state.']]), events: FIELD_EVENTS },
+    switch: { note: 'A checkbox with variant: "switch".', methods: FIELD_METHODS.concat([['setChecked(b) / isChecked()', 'Toggle and read the state.']]), events: FIELD_EVENTS },
+    radio: { note: 'One instance per <fieldset> or [data-zidan-radio-group].', methods: FIELD_METHODS.concat([['setValue(v)', 'Check the radio with that value.'], ['getValue()', 'The checked radio value or "".']]), events: FIELD_EVENTS },
+    text: { note: 'Text, email, password, url, search and colour inputs.', methods: FIELD_METHODS, events: FIELD_EVENTS },
+    textarea: { note: 'A plain <textarea>, enhanced in place.', methods: FIELD_METHODS, events: FIELD_EVENTS },
+    number: {
+      note: 'Adds a stepper to a native number input.',
+      methods: FIELD_METHODS.concat([['stepUp(n) / stepDown(n)', 'Step the value.'], ['setStepper(on)', 'Enable or remove the stepper.']]),
+      events: FIELD_EVENTS.concat([['zidan:step', '{ value, direction }']])
+    },
+    phone: {
+      note: 'Formatting is caret-safe; the native value stays authoritative.',
+      methods: FIELD_METHODS.concat([
+        ['getPhoneCountry() / setPhoneCountry(iso)', 'Read or change the country.'],
+        ['setPhoneFormat(fmt) / formatPhone(v)', 'national, international or e164.']
+      ]),
+      events: FIELD_EVENTS.concat([['zidan:phone-country', '{ country }'], ['zidan:phone-format', '{ format }']])
+    },
+    range: {
+      note: 'The native range keeps its value; only the chrome is added.',
+      methods: FIELD_METHODS,
+      events: FIELD_EVENTS
+    },
+    date: {
+      note: 'Uses input.showPicker() when the browser supports it.',
+      methods: FIELD_METHODS.concat([['openPicker() / showPicker()', 'Open the native picker.']]),
+      events: FIELD_EVENTS.concat([['zidan:picker', '{ type }']])
     }
   };
 
@@ -328,6 +659,10 @@
     return '\n  ' + name + '="' + escapeAttr(value) + '"';
   }
 
+  function flag(name, on) {
+    return on ? '\n  ' + name : '';
+  }
+
   function themeAttrs(s) {
     return attr('data-zidan-theme', s.theme) +
       attr('data-zidan-framework', s.framework) +
@@ -338,9 +673,9 @@
    * Generated markup
    * ------------------------------------------------------------------ */
 
-  function selectMarkup(s, withAttrs) {
+  function selectMarkup(kind, s, withAttrs) {
     var multi = isMulti(s);
-    var attrs = ' id="pg-select"' + '\n  name="movie"';
+    var attrs = ' id="pg-' + kind + '"' + '\n  name="movie"';
     if (withAttrs) {
       attrs += attr('data-zidan-select', s.mode);
       attrs += themeAttrs(s);
@@ -348,11 +683,18 @@
       attrs += attr('data-zidan-label', s.label);
       if (s.mode !== 'tags') attrs += attr('data-zidan-placeholder', s.placeholder);
       if (s.mode === 'select') attrs += attr('data-zidan-searchable', s.searchable ? 'true' : 'false');
-      if (s.clearable) attrs += '\n  data-zidan-clearable="true"';
+      if (s.clearable) attrs += flag('data-zidan-clearable', 'true');
+      if (s.mode === 'tags') {
+        attrs += attr('data-zidan-max-tags', s.maxTags);
+        attrs += attr('data-zidan-min-tag-length', s.minTagLength);
+        attrs += attr('data-zidan-max-tag-length', s.maxTagLength);
+        attrs += attr('data-zidan-allow-free-text', s.allowFreeText ? 'true' : 'false');
+      }
+      attrs += attr('data-zidan-validation', s.validation);
     }
-    if (multi) attrs += '\n  multiple';
-    if (s.required) attrs += '\n  required';
-    if (s.disabled) attrs += '\n  disabled';
+    if (multi) attrs += flag('multiple', true);
+    if (s.required) attrs += flag('required', true);
+    if (s.disabled) attrs += flag('disabled', true);
 
     var lines = ['<select' + attrs + '\n>'];
     MOVIES.forEach(function (name, index) {
@@ -364,116 +706,181 @@
     return lines.join('\n');
   }
 
-  function fileMarkup(s, withAttrs) {
-    var attrs = ' id="pg-file"' + '\n  type="file"' + '\n  name="attachments"';
+  function fileMarkup(kind, s, withAttrs) {
+    var attrs = ' id="pg-' + kind + '"' + '\n  type="file"' + '\n  name="attachments"';
     if (withAttrs) {
-      attrs += '\n  data-zidan="file"';
+      attrs += attr('data-zidan', 'file');
       attrs += attr('data-zidan-file-variant', s.variant);
       attrs += themeAttrs(s);
       attrs += attr('data-zidan-title', s.title);
       attrs += attr('data-zidan-drop-hint', s.dropHint);
+      attrs += attr('data-zidan-hint', s.hint);
       attrs += attr('data-zidan-max-files', s.maxFiles);
       attrs += attr('data-zidan-max-size-mb', s.maxSizeMB);
+      attrs += attr('data-zidan-upload-url', s.uploadUrl);
+      attrs += attr('data-zidan-upload-field', s.uploadUrl ? s.uploadField : '');
+      attrs += attr('data-zidan-with-credentials', s.uploadUrl ? (s.withCredentials ? 'true' : 'false') : '');
       attrs += attr('data-zidan-auto-upload', s.autoUpload ? 'true' : 'false');
       attrs += attr('data-zidan-simulate-upload', s.simulateUpload ? 'true' : 'false');
+      attrs += attr('data-zidan-simulate-duration', s.simulateUpload ? s.simulateDuration : '');
       attrs += attr('data-zidan-preview', s.showPreview ? 'true' : 'false');
       attrs += attr('data-zidan-show-file-meta', s.showFileMeta ? 'true' : 'false');
+      attrs += attr('data-zidan-progress-template', s.progressTemplate);
+      attrs += attr('data-zidan-uploaded-label', s.uploadedLabel);
+      attrs += attr('data-zidan-failed-label', s.failedLabel);
+      attrs += attr('data-zidan-cancel-label', s.cancelLabel);
+      attrs += attr('data-zidan-retry-label', s.retryLabel);
+      attrs += attr('data-zidan-validation', s.validation);
     }
     attrs += attr('accept', s.accept);
-    if (s.multiple) attrs += '\n  multiple';
-    if (s.required) attrs += '\n  required';
-    if (s.disabled) attrs += '\n  disabled';
+    if (s.multiple) attrs += flag('multiple', true);
+    if (s.required) attrs += flag('required', true);
+    if (s.disabled) attrs += flag('disabled', true);
     return '<input' + attrs + '\n>';
   }
 
-  function checkboxMarkup(s, withAttrs) {
-    var attrs = ' id="pg-checkbox"' + '\n  type="checkbox"' + '\n  name="newsletter"';
+  function checkboxMarkup(kind, s, withAttrs) {
+    var isSwitch = kind === 'switch' || s.variant === 'switch';
+    var variant = kind === 'switch' ? 'switch' : s.variant;
+    var attrs = ' id="pg-' + kind + '"' + '\n  type="checkbox"' + '\n  name="newsletter"';
     if (withAttrs) {
-      attrs += '\n  data-zidan="checkbox"';
-      attrs += attr('data-zidan-variant', s.variant);
-      if (s.variant === 'switch') attrs += attr('data-zidan-switch-style', s.switchStyle);
+      attrs += attr('data-zidan', 'checkbox');
+      attrs += attr('data-zidan-variant', variant);
+      if (isSwitch) {
+        attrs += attr('data-zidan-switch-style', s.switchStyle);
+        if (/^(labeled|icon|square|material)$/.test(s.switchStyle)) {
+          attrs += attr('data-zidan-on-label', s.onLabel);
+          attrs += attr('data-zidan-off-label', s.offLabel);
+        }
+      }
       attrs += themeAttrs(s);
       attrs += attr('data-zidan-label', s.label);
       attrs += attr('data-zidan-description', s.description);
       attrs += attr('data-zidan-hint', s.hint);
-      if (s.indeterminate) attrs += '\n  data-zidan-indeterminate';
+      attrs += attr('data-zidan-validation', s.validation);
+      if (s.indeterminate && !isSwitch) attrs += flag('data-zidan-indeterminate', true);
     }
-    if (s.checked) attrs += '\n  checked';
-    if (s.required) attrs += '\n  required';
-    if (s.disabled) attrs += '\n  disabled';
+    if (s.checked) attrs += flag('checked', true);
+    if (s.required) attrs += flag('required', true);
+    if (s.disabled) attrs += flag('disabled', true);
     return '<label class="pg-check">\n  <input' + attrs.replace(/\n  /g, '\n    ') + '\n  >' + escapeText(s.label) + '\n</label>';
   }
 
-  function radioMarkup(s, withAttrs) {
-    var attrs = ' id="pg-radio"' + '\n  class="zidan-field"';
+  function radioMarkup(kind, s, withAttrs) {
+    var attrs = ' id="pg-' + kind + '"' + '\n  class="zidan-field"';
     if (withAttrs) {
-      attrs += '\n  data-zidan="radio-group"';
+      attrs += attr('data-zidan', 'radio-group');
       attrs += attr('data-zidan-variant', s.variant);
       attrs += themeAttrs(s);
-      if (s.deselectable) attrs += '\n  data-zidan-deselectable';
+      attrs += attr('data-zidan-hint', s.hint);
+      attrs += attr('data-zidan-validation', s.validation);
+      if (s.deselectable) attrs += flag('data-zidan-deselectable', true);
     }
-    if (s.disabled) attrs += '\n  disabled';
+    if (s.disabled) attrs += flag('disabled', true);
     var lines = ['<fieldset' + attrs + '\n>', '  <legend>' + escapeText(s.legend) + '</legend>'];
     PLANS.forEach(function (plan, index) {
-      lines.push('  <label><input type="radio" name="plan" value="' + plan[0] + '"' + (index === 0 ? ' checked' : '') + '>' + plan[1] + '</label>');
+      var first = index === 0;
+      lines.push('  <label><input type="radio" name="plan" value="' + plan[0] + '"' +
+        (first ? ' checked' : '') + (s.required && first ? ' required' : '') + '>' + plan[1] + '</label>');
     });
     lines.push('</fieldset>');
     return lines.join('\n');
   }
 
-  function textMarkup(s, withAttrs) {
-    var isTextarea = s.type === 'textarea';
-    var isRange = s.type === 'range';
-    var attrs = ' id="pg-text"';
-    if (!isTextarea) attrs += '\n  type="' + s.type + '"';
-    attrs += '\n  name="' + (s.type === 'password' ? 'password' : (isRange ? 'budget' : 'email')) + '"';
+  function textTypeOf(kind, s) {
+    return KINDS[kind].fixedType || s.type;
+  }
+
+  function textMarkup(kind, s, withAttrs) {
+    var type = textTypeOf(kind, s);
+    var isTextarea = type === 'textarea';
+    var isRange = type === 'range';
+    var isPhone = type === 'tel';
+    var isPicker = type === 'date' || type === 'time' || type === 'datetime-local';
+    var id = 'pg-' + kind;
+    var attrs = ' id="' + id + '"';
+    if (!isTextarea) attrs += '\n  type="' + type + '"';
+    attrs += '\n  name="' + (type === 'tel' ? 'phone' : (isRange ? 'budget' : (type === 'password' ? 'password' : 'field'))) + '"';
+
     if (withAttrs) {
-      attrs += '\n  data-zidan="' + (isTextarea ? 'textarea' : 'input') + '"';
+      attrs += attr('data-zidan', isTextarea ? 'textarea' : 'input');
       attrs += themeAttrs(s);
       attrs += attr('data-zidan-label', s.label);
       attrs += attr('data-zidan-hint', s.hint);
-      if (s.autoIcon) attrs += '\n  data-zidan-auto-icon="true"';
+      attrs += attr('data-zidan-validation', s.validation);
+      if (s.autoIcon) attrs += flag('data-zidan-auto-icon', 'true');
       if (!s.autoIcon && s.icon) attrs += attr('data-zidan-icon', s.icon);
-      if (s.icon || s.autoIcon) attrs += attr('data-zidan-icon-position', s.iconPosition);
+      if (s.icon || s.autoIcon) {
+        attrs += attr('data-zidan-icon-position', s.iconPosition);
+        attrs += attr('data-zidan-icon-clickable', s.iconClickable ? 'true' : '');
+        attrs += attr('data-zidan-icon-label', s.iconLabel);
+      }
+      if (s.validationIcon) attrs += flag('data-zidan-validation-icon', 'true');
       attrs += attr('data-zidan-prefix', s.prefix);
       attrs += attr('data-zidan-suffix', s.suffix);
-      if (s.clearable) attrs += '\n  data-zidan-clear';
-      if (s.reveal) attrs += '\n  data-zidan-reveal';
+      if (s.clearable) attrs += flag('data-zidan-clear', true);
+      if (s.reveal) attrs += flag('data-zidan-reveal', true);
       attrs += attr('data-zidan-counter', s.counter);
-      if (s.type === 'number' && s.stepper !== 'false') attrs += attr('data-zidan-stepper', s.stepper);
-      if (s.type === 'tel' && s.phone) {
-        attrs += '\n  data-zidan-phone="true"';
+      if (type === 'number') {
+        if (s.stepper !== 'false') {
+          attrs += attr('data-zidan-stepper', s.stepper);
+          if (s.stepper === 'inline') attrs += attr('data-zidan-stepper-position', s.stepperPosition);
+          attrs += attr('data-zidan-stepper-wrap', s.stepperWrap ? 'true' : '');
+          attrs += attr('data-zidan-stepper-long-press', s.stepperLongPress ? 'true' : 'false');
+          attrs += attr('data-zidan-stepper-delay', s.stepperDelay);
+          attrs += attr('data-zidan-stepper-interval', s.stepperInterval);
+        }
+      }
+      if (isPhone && s.phone) {
+        attrs += flag('data-zidan-phone', 'true');
         attrs += attr('data-zidan-phone-country', s.phoneCountry);
         attrs += attr('data-zidan-phone-format', s.phoneFormat);
+        attrs += attr('data-zidan-phone-country-select', s.phoneCountrySelect ? 'true' : 'false');
+        attrs += attr('data-zidan-phone-countries', s.phoneCountries);
+        attrs += attr('data-zidan-phone-country-label', s.phoneCountryLabel);
       }
       if (isRange) {
         attrs += attr('data-zidan-range-variant', s.rangeVariant);
-        attrs += attr('data-zidan-range-minmax', s.rangeMinMax ? 'true' : 'false');
         attrs += attr('data-zidan-range-bubble-mode', s.rangeBubbleMode);
         attrs += attr('data-zidan-range-bubble-position', s.rangeBubblePosition);
         attrs += attr('data-zidan-range-fill', s.rangeFill ? 'true' : 'false');
+        attrs += attr('data-zidan-range-minmax', s.rangeMinMax ? 'true' : 'false');
+        attrs += attr('data-zidan-range-ticks', s.rangeTicks);
+        if (s.rangeTickLabels) attrs += flag('data-zidan-range-tick-labels', 'true');
         attrs += attr('data-zidan-range-min-label', s.rangeMinLabel);
         attrs += attr('data-zidan-range-max-label', s.rangeMaxLabel);
-        attrs += attr('data-zidan-range-ticks', s.rangeTicks);
-        if (s.rangeTickLabels) attrs += '\n  data-zidan-range-tick-labels="true"';
-        attrs += attr('data-zidan-output', '#pg-text-output');
+        attrs += attr('data-zidan-range-format', s.rangeFormat);
+        attrs += attr('data-zidan-output', '#pg-' + kind + '-output');
       }
-      if ((s.type === 'date' || s.type === 'time') && s.pickerButton) attrs += '\n  data-zidan-picker-button';
+      if (isPicker) {
+        if (s.pickerButton) attrs += flag('data-zidan-picker-button', true);
+        attrs += attr('data-zidan-picker-icon', s.pickerButton ? s.pickerIcon : '');
+        attrs += attr('data-zidan-picker-label', s.pickerButton ? s.pickerLabel : '');
+        if (/^date|datetime/.test(type)) {
+          attrs += attr('data-zidan-disable-weekends', s.disableWeekends ? 'true' : '');
+          attrs += attr('data-zidan-disabled-dates', s.disabledDates);
+        }
+      }
     }
-    if (!isTextarea && s.type !== 'range') attrs += attr('placeholder', s.placeholder);
-    if (isTextarea) attrs += '\n  rows="4"';
-    if (isRange) {
-      attrs += attr('min', s.rangeMin);
-      attrs += attr('max', s.rangeMax);
-      attrs += attr('step', s.rangeStep);
-      attrs += attr('value', s.rangeValue);
+    if (!isTextarea && !isRange && type !== 'color') attrs += attr('placeholder', s.placeholder);
+    if (!isTextarea && type !== 'range' && type !== 'date' && type !== 'time' && type !== 'datetime-local') {
+      attrs += attr('maxlength', s.maxlength);
     }
-    if (s.required) attrs += '\n  required';
-    if (s.disabled) attrs += '\n  disabled';
+    if (type === 'number' || isRange) {
+      attrs += attr('min', s.min);
+      attrs += attr('max', s.max);
+      attrs += attr('step', s.step);
+      attrs += attr('value', s.value);
+    }
+    if (isPhone || isPicker) attrs += attr('value', s.value);
+    if (isTextarea) attrs += attr('rows', s.rows);
+    if (s.required) attrs += flag('required', true);
+    if (s.disabled) attrs += flag('disabled', true);
+
     var tag = isTextarea ? 'textarea' : 'input';
-    var markup = '<label for="pg-text">' + escapeText(s.label) + '</label>\n<' + tag + attrs + '\n>';
+    var markup = '<label for="' + id + '">' + escapeText(s.label) + '</label>\n<' + tag + attrs + '\n>';
     if (isTextarea) markup += '</textarea>';
-    if (isRange) markup += '\n<output id="pg-text-output" for="pg-text">' + s.rangeValue + '</output>';
+    if (isRange) markup += '\n<output id="pg-' + kind + '-output" for="' + id + '">' + escapeText(s.value) + '</output>';
     return markup;
   }
 
@@ -481,8 +888,14 @@
     select: selectMarkup,
     file: fileMarkup,
     checkbox: checkboxMarkup,
+    switch: checkboxMarkup,
     radio: radioMarkup,
-    text: textMarkup
+    text: textMarkup,
+    textarea: textMarkup,
+    number: textMarkup,
+    phone: textMarkup,
+    range: textMarkup,
+    date: textMarkup
   };
 
   /* ------------------------------------------------------------------ *
@@ -491,6 +904,7 @@
 
   function jsOptions(kind, s) {
     var out = '';
+    var type = textTypeOf(kind, s);
     function add(key, value) {
       if (value === '' || value === null || value === undefined) return;
       out += '  ' + key + ': ' + JSON.stringify(value) + ',\n';
@@ -506,6 +920,16 @@
       if (s.mode === 'select') add('searchable', s.searchable);
       add('clearable', s.clearable);
       if (s.mode !== 'tags') add('multiple', isMulti(s));
+      if (s.closeOnSelect !== '') add('closeOnSelect', s.closeOnSelect === 'true');
+      if (Number(s.maxDropdownHeight) > 0) add('maxDropdownHeight', Number(s.maxDropdownHeight));
+      if (s.mode === 'tags') {
+        if (Number(s.maxTags) > 0) add('maxTags', Number(s.maxTags));
+        add('minTagLength', Number(s.minTagLength) || 1);
+        if (Number(s.maxTagLength) > 0) add('maxTagLength', Number(s.maxTagLength));
+        add('allowFreeText', !!s.allowFreeText);
+        add('commitOnTab', !!s.commitOnTab);
+        add('commitOnBlur', !!s.commitOnBlur);
+      }
     }
     if (kind === 'file') {
       add('variant', s.variant);
@@ -514,75 +938,126 @@
       add('layout', s.layout);
       add('title', s.title);
       add('dropHint', s.dropHint);
+      add('hint', s.hint);
       add('accept', s.accept);
       add('maxFiles', Number(s.maxFiles) || 0);
       add('maxSizeMB', Number(s.maxSizeMB) || 0);
       add('autoUpload', s.autoUpload);
       add('simulateUpload', s.simulateUpload);
+      if (s.simulateUpload) add('simulateDuration', Number(s.simulateDuration) || 900);
       add('showPreview', s.showPreview);
       add('showFileMeta', s.showFileMeta);
+      if (s.uploadUrl) {
+        add('uploadUrl', s.uploadUrl);
+        add('uploadField', s.uploadField);
+        add('withCredentials', s.withCredentials);
+      }
+      add('progressTemplate', s.progressTemplate);
+      add('uploadedLabel', s.uploadedLabel);
+      add('failedLabel', s.failedLabel);
+      add('cancelLabel', s.cancelLabel);
+      add('retryLabel', s.retryLabel);
     }
-    if (kind === 'checkbox') {
-      add('variant', s.variant);
-      if (s.variant === 'switch') add('switchStyle', s.switchStyle);
+    if (kind === 'checkbox' || kind === 'switch') {
+      var variant = kind === 'switch' ? 'switch' : s.variant;
+      add('variant', variant);
+      if (variant === 'switch') {
+        add('switchStyle', s.switchStyle);
+        if (/^(labeled|icon|square|material)$/.test(s.switchStyle)) {
+          add('onLabel', s.onLabel);
+          add('offLabel', s.offLabel);
+        }
+      }
       add('theme', s.theme);
       add('framework', s.framework);
       add('layout', s.layout);
       add('label', s.label);
       add('description', s.description);
       add('hint', s.hint);
-      add('indeterminate', s.indeterminate);
+      if (kind !== 'switch') add('indeterminate', s.indeterminate);
     }
     if (kind === 'radio') {
       add('variant', s.variant);
       add('theme', s.theme);
       add('framework', s.framework);
       add('layout', s.layout);
+      add('hint', s.hint);
       add('deselectable', s.deselectable);
     }
-    if (kind === 'text') {
+    if (MARKUP[kind] === textMarkup) {
       add('theme', s.theme);
       add('framework', s.framework);
       add('layout', s.layout);
       add('label', s.label);
       add('hint', s.hint);
-      add('autoIcon', s.autoIcon);
-      if (!s.autoIcon) add('icon', s.icon);
-      if (s.icon || s.autoIcon) add('iconPosition', s.iconPosition);
+      if (s.autoIcon) add('autoIcon', true);
+      if (!s.autoIcon && s.icon) add('icon', s.icon);
+      if (s.icon || s.autoIcon) {
+        add('iconPosition', s.iconPosition);
+        if (s.iconClickable) add('iconClickable', true);
+        add('iconLabel', s.iconLabel);
+      }
+      add('validationIcon', s.validationIcon);
       add('prefix', s.prefix);
       add('suffix', s.suffix);
-      if (s.type !== 'range') add('clearable', s.clearable);
-      if (s.type === 'password') add('reveal', s.reveal);
-      if (s.counter !== '' && Number(s.counter) > 0) add('counter', Number(s.counter));
-      if (s.type === 'number' && s.stepper !== 'false') add('stepper', s.stepper);
-      if (s.type === 'tel' && s.phone) {
+      if (type !== 'range') add('clearable', s.clearable);
+      if (type === 'password') add('reveal', s.reveal);
+      if (Number(s.counter) > 0) add('counter', Number(s.counter));
+      if (type === 'number' && s.stepper !== 'false') {
+        add('stepper', s.stepper);
+        if (s.stepper === 'inline') add('stepperPosition', s.stepperPosition);
+        add('stepperWrap', s.stepperWrap);
+        add('stepperLongPress', s.stepperLongPress);
+        add('stepperDelay', Number(s.stepperDelay) || 420);
+        add('stepperInterval', Number(s.stepperInterval) || 90);
+      }
+      if (type === 'tel' && s.phone) {
         add('phone', true);
         add('phoneCountry', s.phoneCountry);
         add('phoneFormat', s.phoneFormat);
+        add('phoneCountrySelect', s.phoneCountrySelect);
+        if (s.phoneCountries) add('phoneCountries', String(s.phoneCountries).split(',').map(function (iso) { return iso.trim(); }).filter(Boolean));
+        add('phoneCountryLabel', s.phoneCountryLabel);
       }
-      if (s.type === 'range') {
+      if (type === 'range') {
         add('rangeVariant', s.rangeVariant);
-        add('rangeMinMax', s.rangeMinMax);
         add('rangeBubbleMode', s.rangeBubbleMode);
         add('rangeBubblePosition', s.rangeBubblePosition);
         add('rangeFill', s.rangeFill);
-        add('rangeMinLabel', s.rangeMinLabel);
-        add('rangeMaxLabel', s.rangeMaxLabel);
+        add('rangeMinMax', s.rangeMinMax);
         if (String(s.rangeTicks || '').trim()) {
-          var tickValues = String(s.rangeTicks).split(',').map(Number).filter(function (value) { return isFinite(value); });
-          if (tickValues.length) add('rangeTicks', tickValues);
+          var ticks = String(s.rangeTicks).indexOf(',') !== -1
+            ? String(s.rangeTicks).split(',').map(Number).filter(function (v) { return isFinite(v); })
+            : Number(s.rangeTicks);
+          add('rangeTicks', ticks);
         }
         add('rangeTickLabels', s.rangeTickLabels);
-        add('output', '#pg-text-output');
+        add('rangeMinLabel', s.rangeMinLabel);
+        add('rangeMaxLabel', s.rangeMaxLabel);
+        if (s.rangeFormat) add('rangeFormat', s.rangeFormat);
+        add('output', '#pg-' + kind + '-output');
       }
-      if ((s.type === 'date' || s.type === 'time') && s.pickerButton) add('pickerButton', true);
+      if (/^(date|time|datetime-local)$/.test(type)) {
+        if (s.pickerButton) {
+          add('pickerButton', true);
+          add('pickerIcon', s.pickerIcon);
+          add('pickerLabel', s.pickerLabel);
+        }
+        if (/^(date|datetime-local)$/.test(type)) {
+          if (s.disableWeekends) add('disableWeekends', true);
+          if (s.disabledDates) add('disabledDates', s.disabledDates);
+        }
+      }
     }
+    if (kind === 'select') add('required', s.required);
+    add('validation', s.validation);
     if (!out) return '{}';
     return '{\n' + out.replace(/,\n$/, '\n') + '}';
   }
 
   function jsSnippet(kind, s) {
     var selector = '#pg-' + kind;
+    var type = textTypeOf(kind, s);
     var lines = [];
     if (kind === 'select') {
       lines.push("const select = document.querySelector('" + selector + "');");
@@ -598,27 +1073,31 @@
       if (s.disabled) lines.push('input.disabled = true;');
       lines.push('');
       lines.push('const upload = zidanField(input, ' + jsOptions(kind, s) + ');');
-    } else if (kind === 'checkbox') {
+    } else if (kind === 'checkbox' || kind === 'switch') {
       lines.push("const input = document.querySelector('" + selector + "');");
       lines.push('input.checked = ' + (s.checked ? 'true' : 'false') + ';');
-      if (s.indeterminate) lines.push('input.indeterminate = true;');
+      if (kind !== 'switch' && s.indeterminate) lines.push('input.indeterminate = true;');
       if (s.required) lines.push('input.required = true;');
       if (s.disabled) lines.push('input.disabled = true;');
       lines.push('');
       lines.push('const checkbox = zidanField(input, ' + jsOptions(kind, s) + ');');
     } else if (kind === 'radio') {
       lines.push("const group = document.querySelector('" + selector + "');");
-      if (s.disabled) lines.push('group.disabled = true;');
       lines.push('');
       lines.push('const plan = zidanField(group, ' + jsOptions(kind, s) + ');');
-    } else if (kind === 'text') {
+    } else {
       lines.push("const input = document.querySelector('" + selector + "');");
-      if (s.type !== 'range' && s.type !== 'textarea') lines.push('input.placeholder = ' + JSON.stringify(s.placeholder) + ';');
-      if (s.type === 'range') {
-        lines.push('input.min = ' + JSON.stringify(String(s.rangeMin)) + ';');
-        lines.push('input.max = ' + JSON.stringify(String(s.rangeMax)) + ';');
-        lines.push('input.step = ' + JSON.stringify(String(s.rangeStep)) + ';');
-        lines.push('input.value = ' + JSON.stringify(String(s.rangeValue)) + ';');
+      if (type !== 'range' && type !== 'date' && type !== 'time' && type !== 'datetime-local') {
+        lines.push('input.placeholder = ' + JSON.stringify(s.placeholder) + ';');
+      }
+      if (type === 'number' || type === 'range') {
+        if (s.min !== '') lines.push('input.min = ' + JSON.stringify(String(s.min)) + ';');
+        if (s.max !== '') lines.push('input.max = ' + JSON.stringify(String(s.max)) + ';');
+        if (s.step !== '') lines.push('input.step = ' + JSON.stringify(String(s.step)) + ';');
+        if (s.value !== '') lines.push('input.value = ' + JSON.stringify(String(s.value)) + ';');
+      }
+      if (type === 'tel' || type === 'date' || type === 'time' || type === 'datetime-local') {
+        if (s.value) lines.push('input.value = ' + JSON.stringify(String(s.value)) + ';');
       }
       if (s.required) lines.push('input.required = true;');
       if (s.disabled) lines.push('input.disabled = true;');
@@ -706,6 +1185,37 @@
     title.textContent = kind.label + ' options';
   }
 
+  function renderUsage() {
+    var usage = USAGE[active] || USAGE.text;
+    usageNote.textContent = usage.note;
+    methodsEl.textContent = '';
+    eventsEl.textContent = '';
+    usage.methods.forEach(function (pair) {
+      var li = document.createElement('li');
+      var code = document.createElement('code');
+      code.textContent = pair[0];
+      li.appendChild(code);
+      if (pair[1]) {
+        var span = document.createElement('span');
+        span.textContent = pair[1];
+        li.appendChild(span);
+      }
+      methodsEl.appendChild(li);
+    });
+    usage.events.forEach(function (pair) {
+      var li = document.createElement('li');
+      var code = document.createElement('code');
+      code.textContent = pair[0];
+      li.appendChild(code);
+      if (pair[1]) {
+        var span = document.createElement('span');
+        span.textContent = pair[1];
+        li.appendChild(span);
+      }
+      eventsEl.appendChild(li);
+    });
+  }
+
   function destroyInstances() {
     instances.forEach(function (instance) {
       if (instance && typeof instance.destroy === 'function' && !instance.destroyed) instance.destroy();
@@ -714,10 +1224,9 @@
   }
 
   function initPreview() {
-    var kind = KINDS[active];
     var s = states[active];
     var withAttrs = runMode === 'attrs';
-    stage.innerHTML = MARKUP[active](s, withAttrs);
+    stage.innerHTML = MARKUP[active](active, s, withAttrs);
 
     if (withAttrs) {
       if (window.initZidanSelects) window.initZidanSelects(stage);
@@ -744,7 +1253,7 @@
     var instance = activeInstance();
     var value;
     if (!instance) value = '—';
-    else if (active === 'checkbox') value = instance.isChecked();
+    else if (active === 'checkbox' || active === 'switch') value = instance.isChecked();
     else if (active === 'file') value = instance.getFiles().map(function (file) { return file.name; });
     else value = instance.getValue();
     valueEl.textContent = JSON.stringify(value);
@@ -757,7 +1266,7 @@
     destroyInstances();
     initPreview();
     var s = states[active];
-    htmlCode.textContent = MARKUP[active](s, true);
+    htmlCode.textContent = MARKUP[active](active, s, true);
     jsCode.textContent = jsSnippet(active, s);
   }
 
@@ -770,13 +1279,13 @@
    * ------------------------------------------------------------------ */
 
   function syncState(kindKey) {
-    var kind = KINDS[kindKey];
     var s = states[kindKey];
-    if (kindKey === 'text' && s.type !== 'tel') s.phone = false;
+    var kind = KINDS[kindKey];
+    if (kind.fixedType && s.type !== kind.fixedType) s.type = kind.fixedType;
   }
 
   function selectKind(key, focus) {
-    if (!KINDS[key]) return;
+    if (!KINDS[key]) key = 'select';
     active = key;
     if (window.history && history.replaceState) history.replaceState(null, '', '#' + key);
     Array.prototype.slice.call(tabs.querySelectorAll('button')).forEach(function (button) {
@@ -784,9 +1293,11 @@
       button.setAttribute('aria-selected', on ? 'true' : 'false');
       button.tabIndex = on ? 0 : -1;
       if (on && focus) button.focus();
+      if (on && button.scrollIntoView) button.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     });
     panel.setAttribute('aria-labelledby', 'pg-tab-' + key);
     renderOptions();
+    renderUsage();
     refresh();
   }
 

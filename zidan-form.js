@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.3.0
+ * ZidanForm v2.3.1
  * Zero-dependency form enhancement library: select / combobox / tags,
  * checkboxes, switches, radio groups, file upload with drag & drop and
  * upload progress, text / number / phone / date / range inputs and textarea.
@@ -32,7 +32,7 @@
 })(typeof window !== 'undefined' ? window : this, function (global) {
   'use strict';
 
-  var VERSION = '2.3.0';
+  var VERSION = '2.3.1';
 
   // Loading the file twice (classic script + module wrapper, or two bundles)
   // must not replace the classes and orphan the live instances.
@@ -1003,6 +1003,9 @@
     input.setAttribute('aria-controls', this.id + '-listbox');
     input.setAttribute('aria-autocomplete', (opts.searchable || this.mode !== 'select') ? 'list' : 'none');
     input.setAttribute('aria-haspopup', 'listbox');
+    /* a plain select is not type-to-filter: keep its text field read-only so
+       typing cannot filter or hide the options */
+    if (this.mode === 'select' && !opts.searchable) input.readOnly = true;
     if (opts.ariaLabel || opts.label) input.setAttribute('aria-label', opts.ariaLabel || opts.label);
     if (opts.disabled) input.disabled = true;
     this._applyCustomClass(input, 'input');
@@ -1244,7 +1247,9 @@
 
     if (!this.opts.multiple && this.mode !== 'tags') next = next.slice(0, 1);
     this.value_ = next;
-    if (next.length && this.opts.validation === 'invalid') this.opts.validation = null;
+    /* a preset/manual invalid state is only cleared by a real value change, not
+       by the initial value applied during construction */
+    if (next.length && this.opts.validation === 'invalid' && !cfg.silent) this.opts.validation = null;
     this._render();
     this._syncNative();
     if (!cfg.silent) {
@@ -1957,6 +1962,22 @@
       return false;
     }
 
+    /* allowFreeText: false limits tags to the supplied option/suggestion list */
+    if (this.mode === 'tags' && !opts.allowFreeText) {
+      var pool = this.suggestions && this.suggestions.length ? this.suggestions : this.items;
+      var needle = opts.caseSensitive ? raw : raw.toLowerCase();
+      var listed = false;
+      for (var s = 0; s < pool.length; s += 1) {
+        var itemValue = opts.caseSensitive ? String(pool[s].value) : String(pool[s].value).toLowerCase();
+        var itemLabel = opts.caseSensitive ? String(pool[s].label) : String(pool[s].label).toLowerCase();
+        if (itemValue === needle || itemLabel === needle) { listed = true; break; }
+      }
+      if (!listed) {
+        if (!cfg.silent) this._tagError('"' + raw + '" is not in the list.');
+        return false;
+      }
+    }
+
     var formatted = raw;
     if (typeof opts.formatTag === 'function') {
       var formattedResult = opts.formatTag(raw, { instance: this, tags: this.getTags() });
@@ -2176,6 +2197,8 @@
 
     this.onInput = function () {
       var value = self.input.value;
+      /* plain selects are not searchable: typing must not filter the list */
+      if (self.mode === 'select' && !self.opts.searchable) return;
       self.query = value;
       if (self.opened) {
         if (typeof self.opts.fetchOptions === 'function' && self.query.length >= (self.opts.minChars || 0)) {
@@ -2802,11 +2825,12 @@
     this._setCustomValidity(message && custom ? message : '');
     if (message) {
       if (show) this.setError(message);
-      else this.setValidation('invalid');
+      else this.setValidation('invalid', true);
       return this;
     }
     if (this.errorMessage) this.setError(null);
-    if (this.validation === 'invalid') this.setValidation(null);
+    /* keep an initial or manually set invalid state until the user interacts */
+    if (this.validation === 'invalid' && !this._presetValidation) this.setValidation(null, true);
     return this;
   };
 
@@ -2963,10 +2987,17 @@
       });
       self.on(input, 'blur', function () {
         self.touched = true;
+        self._presetValidation = false;
         self._mirrorValidity();
       });
-      self.on(input, 'input', function () { self._mirrorValidity(); });
-      self.on(input, 'change', function () { self._mirrorValidity(); });
+      self.on(input, 'input', function () {
+        self._presetValidation = false;
+        self._mirrorValidity();
+      });
+      self.on(input, 'change', function () {
+        self._presetValidation = false;
+        self._mirrorValidity();
+      });
     });
     this.on(this.formEl, 'reset', function () {
       global.setTimeout(function () {
@@ -3015,8 +3046,10 @@
     return true;
   };
 
-  ZidanFieldBase.prototype.setValidation = function (state) {
+  ZidanFieldBase.prototype.setValidation = function (state, internal) {
     this.validation = VALIDATION_STATES.indexOf(state) === -1 ? null : state;
+    /* public calls pin the state; internal mirrors may clear it again */
+    if (!internal) this._presetValidation = this.validation === 'invalid';
     var invalid = this.validation === 'invalid' || !!this.errorMessage;
     if (this.root) {
       this.root.classList.toggle('zs-field--invalid', invalid);

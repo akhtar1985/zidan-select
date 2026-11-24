@@ -61,16 +61,29 @@
       <p>
         Pick a control, flip the switches and selects, and watch it update. Every field produces
         both a copy-paste HTML snippet with <code>data-*</code> attributes and a plain vanilla
-        JavaScript call, so you can use whichever fits your project.
+        JavaScript call, so you can use whichever fits your project. Each tab also lists the
+        instance methods and DOM events that control exposes.
       </p>
+      <ul class="pg-hero-facts">
+        <li>11 control families</li>
+        <li>Full documented option set</li>
+        <li>HTML attributes <em>or</em> JavaScript</li>
+        <li>Methods &amp; events per control</li>
+      </ul>
     </section>
 
     <div class="pg-kinds" role="tablist" aria-label="Control type" id="pg-kinds">
-      <button type="button" role="tab" id="pg-tab-select" aria-selected="true" aria-controls="pg-panel" tabindex="0" data-kind="select">Select</button>
-      <button type="button" role="tab" id="pg-tab-file" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="file">File upload</button>
-      <button type="button" role="tab" id="pg-tab-checkbox" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="checkbox">Checkbox / switch</button>
+      <button type="button" role="tab" id="pg-tab-select" aria-selected="true" aria-controls="pg-panel" tabindex="0" data-kind="select">Select / tags</button>
+      <button type="button" role="tab" id="pg-tab-text" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="text">Text</button>
+      <button type="button" role="tab" id="pg-tab-textarea" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="textarea">Textarea</button>
+      <button type="button" role="tab" id="pg-tab-number" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="number">Number</button>
+      <button type="button" role="tab" id="pg-tab-phone" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="phone">Phone</button>
+      <button type="button" role="tab" id="pg-tab-range" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="range">Range</button>
+      <button type="button" role="tab" id="pg-tab-date" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="date">Date &amp; time</button>
+      <button type="button" role="tab" id="pg-tab-checkbox" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="checkbox">Checkbox</button>
+      <button type="button" role="tab" id="pg-tab-switch" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="switch">Switch</button>
       <button type="button" role="tab" id="pg-tab-radio" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="radio">Radio group</button>
-      <button type="button" role="tab" id="pg-tab-text" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="text">Text &amp; inputs</button>
+      <button type="button" role="tab" id="pg-tab-file" aria-selected="false" aria-controls="pg-panel" tabindex="-1" data-kind="file">File upload</button>
     </div>
 
     <section class="pg-panel" id="pg-panel" role="tabpanel" aria-labelledby="pg-tab-select" tabindex="0">
@@ -131,6 +144,25 @@
               The JavaScript tab keeps the same native markup but removes the <code>data-*</code>
               attributes; auto-init only scans marked elements, so nothing is enhanced twice.
             </p>
+          </div>
+
+          <div class="card pg-usage">
+            <div class="pg-card-head">
+              <div>
+                <h2>Methods &amp; events</h2>
+                <p id="pg-usage-note">The instance returned by the initializer.</p>
+              </div>
+            </div>
+            <div class="pg-usage-grid">
+              <div>
+                <h3>Methods</h3>
+                <ul id="pg-methods"></ul>
+              </div>
+              <div>
+                <h3>Events</h3>
+                <ul id="pg-events"></ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>

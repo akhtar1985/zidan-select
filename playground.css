@@ -41,6 +41,30 @@
   font-size: 0.85em;
 }
 
+.pg-hero-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pg-hero-facts li {
+  padding: 6px 12px;
+  border: 1px solid rgba(91, 91, 240, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.pg-hero-facts em {
+  font-style: normal;
+  color: var(--accent-dark);
+}
+
 .pg-kinds {
   position: sticky;
   top: 82px;
@@ -426,6 +450,58 @@
   background: none;
   color: inherit;
   font-size: inherit;
+}
+
+/* ---------- methods & events ---------- */
+
+.pg-usage {
+  margin-top: 18px;
+}
+
+.pg-usage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.pg-usage-grid h3 {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.pg-usage-grid ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pg-usage-grid li {
+  display: grid;
+  gap: 2px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.pg-usage-grid li:first-child {
+  border-top: 0;
+}
+
+.pg-usage-grid code {
+  color: var(--accent-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.pg-usage-grid span {
+  color: var(--muted);
 }
 
 .pg-code-note,

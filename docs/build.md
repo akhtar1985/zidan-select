@@ -99,7 +99,7 @@ Without esbuild the build still succeeds and prints that minification was skippe
 | Select-only | `/dist/select/zidan-select.min.js` | `/dist/select/plugin-select-core.min.css` | `/dist/select/plugin-select-theme.min.css` |
 | File-only | `/dist/file/zidan-file.min.js` | `/dist/file/plugin-file-core.min.css` | `/dist/file/plugin-file-theme.min.css` |
 
-Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.3.0` to each path (or your own origin).
+Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.3.1` to each path (or your own origin).
 These are real files in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes;
 jsDelivr additionally auto-minifies the readable root files, but do not rely on that trick.
 Check the three you use with `curl -I` before changing a version, then update the URLs in the
@@ -122,7 +122,7 @@ Both theme stylesheets keep the token set, the five preset themes (`default`, `m
 adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
 as in the full build.
 
-Approximate v2.3.0 sizes (readable → minified): select ≈104 → 62 kB JS, 12 → 9 kB core CSS,
+Approximate v2.3.1 sizes (readable → minified): select ≈104 → 62 kB JS, 12 → 9 kB core CSS,
 32 → 27 kB theme; file ≈82 → 49 kB JS, 9 → 7 kB core, 34 → 29 kB theme; full ≈208 → 123 kB
 JS, 38 → 29 kB core, 47 → 39 kB theme.
 

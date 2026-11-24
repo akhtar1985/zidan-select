@@ -29,6 +29,14 @@ It clears the state on `input`/`change` once validity passes, on `form.reset()`,
 `setValidation(null)` is called. `data-zidan-validation="invalid"` forces the state without
 native validity.
 
+A state set through the public `setValidation('invalid')` (and a preset
+`data-zidan-validation="invalid"`) is **pinned**: re-rendering the field — `update()`,
+`refresh()`, `setValue()`, an option chosen in a select, an async rule that resolves clean —
+will not clear it. That is what makes a server-side error survive until the user actually
+touches the control. The pin is released by the next `input`, `change` or `blur` from the user,
+or by `setValidation(null)` / `setValidation('valid')`. Internal mirrors pass a second argument
+(`setValidation(state, true)`) so they never pin a state themselves.
+
 ## Built-in rules (written into native validity)
 
 These rules call `input.setCustomValidity(message)`, so `form.checkValidity()`,

@@ -1344,6 +1344,185 @@ details.options-details[open] summary { margin-bottom: 12px; }
 
 .site-footer a { font-weight: 600; }
 
+/* ---------------- controls & options reference ---------------- */
+
+.controls-section {
+  margin: 64px 0 0;
+  scroll-margin-top: 110px;
+}
+
+.ctl-start {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 16px;
+  background:
+    linear-gradient(135deg, rgba(91, 91, 240, 0.06), rgba(34, 184, 166, 0.05)),
+    rgba(255, 255, 255, 0.9);
+}
+
+.ctl-start h3 {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+}
+
+.ctl-start > div > p {
+  margin: 0 0 10px;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.ctl-start code,
+.ctl-options code,
+.ctl-usage code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: rgba(91, 91, 240, 0.09);
+  color: var(--accent-dark);
+  font-size: 0.78em;
+}
+
+.ctl-start-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.ctl-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.ctl-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 1px 2px rgba(16, 19, 36, 0.04), inset 0 1px 0 #fff;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.ctl-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 26px 50px -40px rgba(24, 28, 60, 0.55), inset 0 1px 0 #fff;
+}
+
+.ctl-card--wide {
+  grid-column: 1 / -1;
+}
+
+.ctl-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ctl-card-head h3 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -0.015em;
+}
+
+.ctl-tag {
+  padding: 4px 9px;
+  border: 1px solid rgba(34, 184, 166, 0.28);
+  border-radius: 999px;
+  background: rgba(34, 184, 166, 0.1);
+  color: #0e7a6e;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+.ctl-lead {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.ctl-options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+
+.ctl-options li {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 10px;
+  align-items: baseline;
+  padding-top: 7px;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.ctl-options li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.ctl-options li > code {
+  justify-self: start;
+  font-weight: 600;
+  font-size: 0.73rem;
+}
+
+.ctl-options li > span {
+  color: var(--muted);
+}
+
+.ctl-shared {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.ctl-usage {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #11162a;
+  color: #dbe4ff;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.ctl-usage code {
+  background: rgba(255, 255, 255, 0.1);
+  color: #cfd9ff;
+}
+
+.ctl-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: auto 0 0;
+  padding-top: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .ctl-start { grid-template-columns: 1fr; }
+  .ctl-options li { grid-template-columns: 1fr; gap: 2px; }
+}
+
 /* ---------------- embed mode (?embed=1) ---------------- */
 
 body.embed .site-header,
@@ -1383,6 +1562,7 @@ body.embed .card { border-radius: 0; border-left: 0; border-right: 0; }
   .playground-head, .playground-grid, .playground-actions { padding-left: 16px; padding-right: 16px; }
   .snippet-block { margin-left: 16px; margin-right: 16px; }
   .tablist { position: static; }
-  .builds-section, .compare-section, .faq-section { margin-top: 46px; }
+  .builds-section, .compare-section, .faq-section, .controls-section { margin-top: 46px; }
+  .ctl-shared, .ctl-grid { grid-template-columns: 1fr; }
   .compare-table th, .compare-table td { padding: 11px 12px; }
 }

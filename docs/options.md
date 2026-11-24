@@ -137,7 +137,7 @@ Applies to `ZidanCheckbox`, `ZidanRadioGroup`, `ZidanFileUpload`, `ZidanTextFiel
 | `framework` | `data-zidan-framework`, `data-zs-framework` | string | `none` | `none`, `bootstrap`, `tailwind`, `bulma`, `foundation`, `vanilla`. |
 | `label` | `data-zidan-label` | string | — | Used when the markup has no `<label>`; a generated label is `<label for>`. If the markup already has a `<label>`, the generated one replaces it and the original is hidden until `destroy()`. |
 | `hint` | `data-zidan-hint` | string | — | Rendered under the control and linked via `aria-describedby`. |
-| `validation` | `data-zidan-validation` | `valid` \| `invalid` | — | Initial state; later states come from validity or `setValidation()`. |
+| `validation` | `data-zidan-validation` | `valid` \| `invalid` | — | Initial state; later states come from validity or `setValidation()`. A preset `invalid` is pinned: it survives initialisation and programmatic `update()`/`refresh()`/`setValue()` until the user edits the control or you pass `setValidation(null)`. |
 | `alwaysValidate` | — | boolean | `false` | Mark invalid as soon as native validity fails instead of on blur. |
 | `indeterminate` | `data-zidan-indeterminate` | boolean | `false` | Checkbox starts mixed. |
 | `clearable` | `data-zidan-clear` | boolean | `search` only | Clear button for text inputs and textarea. |
@@ -531,7 +531,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | Option | Data attribute | Default | Description |
 | --- | --- | --- | --- |
 | `multiple` | `data-zidan-multiple` | from `multiple` | Multi-select. |
-| `searchable` | `data-zidan-searchable` | `true` except plain select | Type-to-filter. |
+| `searchable` | `data-zidan-searchable` | `true` except plain select | Type-to-filter. With `searchable: false` in `select` mode the text field is `readOnly`, so typing can never filter or hide the list — open it with a click, `Space`, `Enter` or `↓`. |
 | `clearable` | `data-zidan-clearable` | `false` | Clear button. |
 | `closeOnSelect` | — | single: `true` | Close after choosing. |
 | `maxDropdownHeight` | — | `280` | Listbox max height in px. |
@@ -600,6 +600,11 @@ The cache size is global: `ZidanSelect.cacheLimit = 50` pages (least-recently-us
 | `delimiters` | — | `[',']` |
 | `commitOnTab` / `commitOnBlur` | — | `false` |
 | `valueDelimiter` | — | `,` |
+
+With `allowFreeText: false` a tag you type must match an option or a `suggestions` entry by
+value or label (`caseSensitive` respected). Anything else is rejected: no tag is added and the
+control shows `"…" is not in the list.` through the tag error slot. Leave the option at its
+`true` default for free-form tags.
 
 ### Rendering hooks
 
@@ -745,7 +750,7 @@ to any field that should span the row) rather than putting it on a single field.
 | `getValue()` | Text/textarea value, checked value, radio value or selected files. |
 | `setValue(v)` | Writes to the native control and re-renders. |
 | `update()` / `refresh()` | Re-read native state (checked, disabled, validity, value). |
-| `setValidation('valid'\|'invalid'\|null)` | Mirrors state to classes and `aria-invalid`. |
+| `setValidation('valid'\|'invalid'\|null)` | Mirrors state to classes and `aria-invalid`. A public `'invalid'` call pins the state, so `update()`/`refresh()`/`setValue()` keep it until the user edits the control or you clear it. |
 | `getValidation()` | Current validation state. |
 | `setTheme(name)`, `setFramework(name)`, `setLayout(name)` | Scoped restyling. |
 | `destroy()` | Restores the original DOM and removes every listener. |
