@@ -59,19 +59,19 @@ export type FetchOptions = (
 export interface SelectCallbacks {
   filterOption?(item: SelectItem, query: string, context: { instance: ZidanSelect; mode: SelectMode; caseSensitive: boolean; selected: boolean }): boolean;
   renderOption?(item: SelectItem, context: { index: number; selected: boolean; active: boolean; query: string; instance: ZidanSelect }): string | Node | null | undefined;
-  renderSelected?(item: SelectItem, instance: ZidanSelect): string | Node | null | undefined;
-  renderTag?(item: SelectItem, instance: ZidanSelect): string | Node | null | undefined;
-  validateTag?(tag: string, tags: string[], context: { instance: ZidanSelect }): boolean | string | void;
-  formatTag?(tag: string, instance: ZidanSelect): string;
+  renderSelected?(item: Pick<SelectItem, 'value' | 'label'>, context: { index: number; instance: ZidanSelect }): string | Node | null | undefined;
+  renderTag?(item: Pick<SelectItem, 'value' | 'label'>, context: { index: number; instance: ZidanSelect; disabled: boolean }): string | Node | null | undefined;
+  validateTag?(tag: string, tags: SelectItem[], context: { instance: ZidanSelect }): boolean | string | void;
+  formatTag?(tag: string, context: { instance: ZidanSelect; tags: SelectItem[] }): string;
   onInit?(detail: { instance: ZidanSelect; mode: SelectMode; value: unknown }): void;
-  onChange?(detail: { value: string | string[]; previousValue?: string | string[]; item?: SelectItem; instance: ZidanSelect }): void;
-  onSelect?(detail: { value: string | string[]; item: SelectItem; instance: ZidanSelect }): void;
+  onChange?(detail: { value: unknown; previousValue?: unknown; item?: SelectItem; instance: ZidanSelect }): void;
+  onSelect?(detail: { value: unknown; item: SelectItem; instance: ZidanSelect }): void;
   onOpen?(detail: { instance: ZidanSelect }): void;
   onClose?(detail: { instance: ZidanSelect }): void;
-  onTagAdd?(detail: { tag: string; tags: string[]; instance: ZidanSelect }): void;
-  onTagRemove?(detail: { tag: string; tags: string[]; instance: ZidanSelect }): void;
+  onTagAdd?(detail: { tag: string; value: SelectItem[]; instance: ZidanSelect }): void;
+  onTagRemove?(detail: { tag: string; value: SelectItem[]; instance: ZidanSelect }): void;
   onLoadMore?(detail: { page: number; query: string; instance: ZidanSelect }): void;
-  onError?(detail: { error: unknown; message: string; instance: ZidanSelect }): void;
+  onError?(detail: { error?: unknown; message: string; instance: ZidanSelect }): void;
 }
 
 export interface SelectOptions extends SelectCallbacks {
@@ -86,6 +86,7 @@ export interface SelectOptions extends SelectCallbacks {
   options?: SelectItemInput[] | null;
   value?: string | string[] | null;
   label?: string | null;
+  ariaLabel?: string;
   placeholder?: string | null;
   multiple?: boolean;
   searchable?: boolean;
@@ -226,16 +227,21 @@ export interface FileFieldOptions extends FieldOptions {
 
 export interface TextFieldOptions extends FieldOptions {
   icon?: string;
-  iconPosition?: 'start' | 'end';
+  iconPosition?: 'left' | 'right';
   prefix?: string;
   suffix?: string;
   clearable?: boolean;
-  counter?: boolean;
-  counterMax?: number;
+  counter?: number;
   output?: HTMLOutputElement | string;
-  stepper?: boolean;
-  stepperMode?: string;
-  phone?: boolean;
+  stepper?: boolean | string;
+  stepperStep?: number;
+  phone?: boolean | {
+    country?: string;
+    format?: PhoneFormat;
+    showCountry?: boolean;
+    countries?: string[];
+    validate?: boolean;
+  };
   phoneCountry?: string;
   phoneFormat?: PhoneFormat;
   rangeVariant?: 'default' | 'gradient' | 'stepped' | 'minimal';
@@ -308,8 +314,8 @@ export class ZidanSelect {
   setValue(value: string | number | Array<string | number> | null, options?: { silent?: boolean }): this;
   clear(): this;
   setOptions(options: SelectItemInput[] | null): this;
-  addTag(label: string, data?: unknown): this;
-  removeTag(index: number): this;
+  addTag(label: string, data?: unknown): boolean;
+  removeTag(tagOrIndex: string | number): boolean;
   getTags(): SelectItem[];
   enable(): this;
   disable(): this;
@@ -361,7 +367,7 @@ export class ZidanFileUpload extends ZidanFieldBase {
   getUploadState(): UploadState[];
   addFiles(files: File[] | FileList): this;
   replaceFiles(files: File[] | FileList): this;
-  removeFile(index: number): this;
+  removeFile(index: number | File): this;
   clear(): this;
   uploadAll(): this | Promise<boolean>;
   uploadFile(file: File): this | Promise<unknown>;
@@ -369,7 +375,7 @@ export class ZidanFileUpload extends ZidanFieldBase {
   cancelAll(): this;
   retryUpload(file: File): this;
   setVariant(variant: string): this;
-  setUploader(handler: UploadHandler | null): this;
+  setUploader(handler: UploadHandler | string | null): this;
 }
 
 export class ZidanTextField extends ZidanFieldBase {
@@ -378,8 +384,8 @@ export class ZidanTextField extends ZidanFieldBase {
   stepUp(times?: number): this;
   stepDown(times?: number): this;
   setStepper(enabled: boolean): this;
-  openPicker(): void;
-  showPicker(): void;
+  openPicker(): this;
+  showPicker(): this;
   getPhoneCountry(): string;
   setPhoneCountry(iso: string): this;
   setPhoneFormat(format: PhoneFormat): this;

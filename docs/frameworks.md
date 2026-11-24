@@ -25,9 +25,11 @@ export default function ProfileForm() {
 
   useEffect(() => {
     initZidanSelects(host.current);
-    initZidanForms(host.current);
-    const radios = ZidanForm.fields.find(f => f.kind === 'radio-group' && host.current.contains(f.root));
-    radios?.onChange = ({ value }) => setPlan(value);
+    initZidanForms(host.current, {
+      onChange: ({ instance, value }) => {
+        if (instance.kind === 'radio-group') setPlan(value);
+      }
+    });
 
     return () => {
       ZidanForm.fields
@@ -115,16 +117,27 @@ inside a server-only module.
 
 ```vue
 <script setup>
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { ZidanForm, ZidanSelect, initZidanForms, initZidanSelects } from 'zidan-select';
 import 'zidan-select/css/core';
 import 'zidan-select/css/theme';
 
 const host = ref(null);
+const model = ref('France');
 
 onMounted(() => {
   initZidanSelects(host.value);
   initZidanForms(host.value);
+  const country = host.value.querySelector('select[name="country"]');
+  country.addEventListener('zidan:change', event => {
+    model.value = event.detail.value;
+  });
+});
+
+watch(model, value => {
+  const country = host.value?.querySelector('select[name="country"]');
+  const field = ZidanSelect.instances.find(instance => instance.el === country);
+  field?.setValue(value);
 });
 
 onBeforeUnmount(() => {
@@ -147,15 +160,8 @@ onBeforeUnmount(() => {
 </template>
 ```
 
-For two-way binding, read `zidan:change` in `onMounted`:
-
-```js
-host.value.addEventListener('zidan:change', event => {
-  model.value = event.detail.value;
-});
-```
-
-and push back with `field.setValue(model.value)` in a `watch()`.
+The `model` ref above demonstrates two-way binding: the native `zidan:change` event updates
+Vue state, and `watch()` pushes external changes back through the select instance.
 
 ## Angular
 

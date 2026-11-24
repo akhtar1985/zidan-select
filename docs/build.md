@@ -99,13 +99,13 @@ Without esbuild the build still succeeds and prints that minification was skippe
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | `/dist/zidan-form.min.js` | `/dist/plugin-core.min.css` | `/dist/plugin-theme.min.css` |
-| Select-only | `/dist/select/zidan-select.min.js` | `/dist/select/plugin-select-core.min.css` | `/dist/select/plugin-select-theme.min.css` |
-| File-only | `/dist/file/zidan-file.min.js` | `/dist/file/plugin-file-core.min.css` | `/dist/file/plugin-file-theme.min.css` |
+| Full | `/dist/zidan-form.min.js` — ≈131 kB | `/dist/plugin-core.min.css` — ≈31 kB | `/dist/plugin-theme.min.css` — ≈39 kB |
+| Select-only | `/dist/select/zidan-select.min.js` — ≈68 kB | `/dist/select/plugin-select-core.min.css` — ≈9 kB | `/dist/select/plugin-select-theme.min.css` — ≈27 kB |
+| File-only | `/dist/file/zidan-file.min.js` — ≈50 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈29 kB |
 
 Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.4.0` to each path (or your own origin).
-These are real files in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes;
-jsDelivr additionally auto-minifies the readable root files, but do not rely on that trick.
+These are real files in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
+Use these package files rather than relying on a CDN's auto-minification.
 Check the three you use with `curl -I` before changing a version, then update the URLs in the
 README, the demo build cards and the playground in the same commit.
 
@@ -126,19 +126,26 @@ Both theme stylesheets keep the token set, the five preset themes (`default`, `m
 adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
 as in the full build.
 
-Approximate v2.4.0 sizes (readable → minified): select ≈104 → 62 kB JS, 12 → 9 kB core CSS,
-32 → 27 kB theme; file ≈82 → 49 kB JS, 9 → 7 kB core, 34 → 29 kB theme; full ≈208 → 123 kB
-JS, 38 → 29 kB core, 47 → 39 kB theme.
+Measured v2.4.0 sizes (1 kB = 1,024 bytes; readable → minified):
+
+| Build | JavaScript | Core CSS | Theme CSS |
+| --- | --- | --- | --- |
+| Full | 229,274 B (≈224 kB) → 134,575 B (≈131 kB) | 41,054 B (≈40 kB) → 31,422 B (≈31 kB) | 47,697 B (≈47 kB) → 39,983 B (≈39 kB) |
+| Select-only | 116,926 B (≈114 kB) → 69,144 B (≈68 kB) | 12,456 B (≈12 kB) → 9,511 B (≈9 kB) | 32,559 B (≈32 kB) → 27,505 B (≈27 kB) |
+| File-only | 87,728 B (≈86 kB) → 51,406 B (≈50 kB) | 9,939 B (≈10 kB) → 7,210 B (≈7 kB) | 34,991 B (≈34 kB) → 29,929 B (≈29 kB) |
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their
 APIs — use the full build when a page needs both select and file upload.
 
 Declarative init comes along in both subsets because the marker scan and the factory live in the
-shared/factory sections every variant keeps. `class="zidan-select"`, `class="zidan-field"`,
-`data-zidan-options` JSON and `window.ZIDAN_FORM_CONFIG` targets all work without a JS call; a
-`zidan-form` scope enhances every select in the select bundle and every file input in the file
-bundle.
+shared/factory sections every variant keeps. `class="zidan-select"`, `data-zidan-options` JSON
+and `window.ZIDAN_FORM_CONFIG` targets all work without a JS call; a `zidan-form` scope enhances
+every select in the select bundle and every file input in the file bundle. The select-only bundle
+also contains the complete AJAX/pagination implementation — `fetchUrl`, `fetchOptions`,
+`fetchPageSize`, `loadMore()`, `refreshOptions()`, `getAsyncState()` and cache clearing — because
+those sections are part of its build. The file-only bundle intentionally excludes select APIs;
+it keeps the shared validation, theming, declarative-init and upload features.
 
 Build-time safety: every generated JS file is passed through `node --check`, and missing sections
 abort the build instead of producing a partial bundle.
@@ -194,7 +201,7 @@ Publishing happens in CI:
 
 | Trigger | What happens |
 | --- | --- |
-| Tag `vX.Y.Z` pushed | Verifies the tag against `package.json`, refuses an existing version, runs `prepublishOnly` (types → build → test), publishes with `--provenance`, then creates the GitHub Release for the tag with `--generate-notes`. |
+| Tag `vX.Y.Z` pushed | Verifies the tag against `package.json`, refuses an existing version, runs `prepublishOnly` (types → build → test), publishes with `--provenance`, then creates the GitHub Release for the tag with that version's `CHANGELOG.md` section as the body (`scripts/changelog-section.mjs`), falling back to `--generate-notes` when the section is missing. |
 | **Actions → Publish to npm → Run workflow** | The same job without a tag, for publishing the version already committed. |
 
 Authentication is **npm trusted publishing** over OIDC: the job requests `id-token: write` and

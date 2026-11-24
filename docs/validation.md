@@ -30,12 +30,12 @@ It clears the state on `input`/`change` once validity passes, on `form.reset()`,
 native validity.
 
 A state set through the public `setValidation('invalid')` (and a preset
-`data-zidan-validation="invalid"`) is **pinned**: re-rendering the field — `update()`,
-`refresh()`, `setValue()`, an option chosen in a select, an async rule that resolves clean —
-will not clear it. That is what makes a server-side error survive until the user actually
-touches the control. The pin is released by the next `input`, `change` or `blur` from the user,
-or by `setValidation(null)` / `setValidation('valid')`. Internal mirrors pass a second argument
-(`setValidation(state, true)`) so they never pin a state themselves.
+`data-zidan-validation="invalid"`) is **pinned against re-renders**: `update()`, `refresh()`
+and internal validity mirrors or async re-checks do not clear it. The pin is released by the
+next `input`, `change` or `blur`, or by `setValidation(null)` / `setValidation('valid')`.
+Programmatic value helpers can release it too: field `setValue()` / `setChecked()` dispatch
+`change`, and applying a non-empty select value clears the select's invalid option. Internal
+mirrors pass a second argument (`setValidation(state, true)`) so they never pin a state.
 
 ## Built-in rules (written into native validity)
 
@@ -104,7 +104,7 @@ email.isPending();           // true while the request is in flight
 
 Submission is blocked while pending because the native control carries the pending message;
 listen for `zidan:async-validation` if you need your own spinner or toast. `destroy()` aborts
-any in-flight check, and `field.reset()` clears the pending state.
+any in-flight check, and `form.reset()` clears the pending state.
 
 ## The hidden-input trap
 

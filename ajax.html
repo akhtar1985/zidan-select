@@ -14,17 +14,20 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="plugin-core.css">
   <link rel="stylesheet" href="plugin-theme.css">
+  <link rel="stylesheet" href="demo.css">
   <link rel="stylesheet" href="nav.css">
   <link rel="stylesheet" href="ajax.css">
 </head>
 <body>
+  <a class="skip-link" href="#ajax-main">Skip to AJAX demo</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
 
   <header class="site-header">
     <a class="brand" href="index.html">
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.3 · zero dependencies</span>
+        <span class="brand-sub">v2.4.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -65,25 +68,26 @@
     </nav>
   </header>
 
-  <main class="ajax-main">
-    <section class="ajax-hero">
-      <p class="ajax-eyebrow">Remote data</p>
-      <h1>Search, page and load more from a real API</h1>
+  <main id="ajax-main" class="wrap ajax-main">
+    <section class="hero ajax-hero">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Remote data · live API</p>
+      <h1>Search, page and load more <span>from a real API.</span></h1>
       <p class="ajax-lead">
-        Remote selects have always been supported through a <code>fetchOptions</code> function. 2.3.2
+        Remote selects have always been supported through a <code>fetchOptions</code> function. 2.4.0
         also makes them declarative: give a select <code>data-zidan-fetch-url</code> and the plugin
         builds the request, the debounce, the abort handling, the LRU cache and the
-        <strong>Load more</strong> footer for you. Both cards below hit HTTP endpoints — nothing is
+        <strong>Load more</strong> footer for you. The first two cards below hit HTTP endpoints — nothing is
         faked in memory except the JSON file that stands in for a slow server.
       </p>
-      <p class="ajax-links">
-        <a href="#declarative">Declarative endpoint</a>
-        <a href="#fetchoptions">Your own fetchOptions</a>
-        <a href="#contract">The fetch contract</a>
-      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#declarative">Declarative endpoint</a>
+        <a class="btn" href="#fetchoptions">Your own fetchOptions</a>
+        <a class="btn" href="#errors">Errors &amp; retry</a>
+        <a class="btn" href="#contract">The fetch contract</a>
+      </div>
     </section>
 
-    <section class="ajax-card" id="declarative">
+    <section class="card ajax-card" id="declarative">
       <header>
         <h2>1. One attribute: <code>data-zidan-fetch-url</code></h2>
         <p>
@@ -111,15 +115,15 @@
           </select>
 
           <div class="ajax-actions">
-            <button type="button" class="ajax-button" id="products-more">Load more</button>
-            <button type="button" class="ajax-button ajax-button--ghost" id="products-refresh">Clear cache &amp; reload</button>
+            <button type="button" class="btn btn-primary" id="products-more">Load more</button>
+            <button type="button" class="btn" id="products-refresh">Clear cache &amp; reload</button>
           </div>
 
           <pre class="ajax-state" id="products-state" aria-live="polite">open the list to see its async state</pre>
         </div>
 
         <div class="ajax-snippet">
-          <span class="ajax-tag">HTML — no JavaScript</span>
+          <span class="ajax-tag">Declarative HTML</span>
           <pre><code>&lt;select id="products"
         data-zidan-select="combobox"
         data-zidan-fetch-url="https://dummyjson.com/products/search"
@@ -132,7 +136,7 @@
       </div>
     </section>
 
-    <section class="ajax-card" id="fetchoptions">
+    <section class="card ajax-card" id="fetchoptions">
       <header>
         <h2>2. Your own <code>fetchOptions</code></h2>
         <p>
@@ -152,8 +156,8 @@
           </select>
 
           <div class="ajax-actions">
-            <button type="button" class="ajax-button" id="country-more">Load more</button>
-            <button type="button" class="ajax-button ajax-button--ghost" id="country-refresh">refreshOptions()</button>
+            <button type="button" class="btn btn-primary" id="country-more">Load more</button>
+            <button type="button" class="btn" id="country-refresh">refreshOptions()</button>
           </div>
 
           <pre class="ajax-state" id="country-state" aria-live="polite">type to search — the fake server waits 300 ms</pre>
@@ -161,12 +165,81 @@
 
         <div class="ajax-snippet">
           <span class="ajax-tag">JavaScript</span>
-          <pre><code>zidanSelect('#country', {
+          <pre><code>const wait = (ms, signal) =&gt; new Promise((resolve, reject) =&gt; {
+  const timer = setTimeout(resolve, ms);
+  signal.addEventListener('abort', () =&gt; {
+    clearTimeout(timer);
+    reject(new DOMException('aborted', 'AbortError'));
+  });
+});
+
+zidanSelect('#country', {
   mode: 'combobox',
   fetchPageSize: 5,
   minChars: 0,
+  debounce: 200,
   fetchOptions: async (query, signal, { page, pageSize }) =&gt; {
+    await wait(300, signal);
     const res = await fetch('demo-data/countries.json', { signal });
+    if (!res.ok) throw new Error('countries.json responded ' + res.status);
+    const rows = await res.json();
+    const needle = String(query || '').trim().toLowerCase();
+    const hits = needle
+      ? rows.filter(row =&gt; row.name.toLowerCase().includes(needle))
+      : rows;
+    const start = page * pageSize;
+    return {
+      items: hits.slice(start, start + pageSize)
+        .map(row =&gt; ({ value: row.code, label: row.name })),
+      hasMore: start + pageSize &lt; hits.length
+    };
+  }
+});</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="card ajax-card" id="errors">
+      <header>
+        <h2>3. Errors stay visible — and retry is explicit</h2>
+        <p>
+          Simulate one rejected request, then retry it. An initial failure shows an error state and
+          <code>getAsyncState().error</code> keeps the message; <code>refreshOptions()</code> clears
+          the cache and retries. If an appended page fails, the existing rows stay visible and the
+          <strong>Load more</strong> footer becomes the retry button.
+        </p>
+      </header>
+
+      <div class="ajax-grid">
+        <div class="ajax-demo">
+          <label class="ajax-label" for="retry-country">Search with a failure switch</label>
+          <select id="retry-country" name="retry-country">
+            <option value="">Pick a country…</option>
+          </select>
+
+          <div class="ajax-actions">
+            <button type="button" class="btn" id="retry-fail">Simulate failed request</button>
+            <button type="button" class="btn btn-primary" id="retry-request">Retry request</button>
+          </div>
+
+          <pre class="ajax-state" id="retry-state" aria-live="polite">open the list, then simulate a failed request</pre>
+        </div>
+
+        <div class="ajax-snippet">
+          <span class="ajax-tag">JavaScript</span>
+          <pre><code>let failNextRequest = false;
+
+zidanSelect('#retry-country', {
+  mode: 'combobox',
+  fetchPageSize: 5,
+  fetchOptions: async (query, signal, { page, pageSize }) =&gt; {
+    await new Promise(resolve =&gt; setTimeout(resolve, 300));
+    if (failNextRequest) {
+      failNextRequest = false;
+      throw new Error('Demo server is unavailable. Try again.');
+    }
+    const res = await fetch('demo-data/countries.json', { signal });
+    if (!res.ok) throw new Error('Request failed: ' + res.status);
     const rows = await res.json();
     const hits = rows.filter(row =&gt;
       row.name.toLowerCase().includes(query.toLowerCase()));
@@ -176,13 +249,17 @@
       hasMore: start + pageSize &lt; hits.length
     };
   }
-});</code></pre>
+});
+
+// The demo buttons set failNextRequest = true and call these methods.
+instance.refreshOptions();     // retry an initial failure
+instance.loadMore();           // retry a failed appended page</code></pre>
         </div>
       </div>
     </section>
 
-    <section class="ajax-card" id="contract">
-      <h2>3. The fetch contract</h2>
+    <section class="card ajax-card" id="contract">
+      <h2>4. The fetch contract</h2>
       <div class="ajax-grid ajax-grid--three">
         <div>
           <h3>Return shape</h3>
@@ -209,21 +286,28 @@
             <code>debounce</code>, <code>minChars</code>, an <code>AbortSignal</code> per request,
             an LRU <code>cacheResults</code>, <code>loadMore()</code>,
             <code>refreshOptions()</code>, <code>clearCache()</code>,
-            <code>getAsyncState()</code>, the <code>zidan:load-more</code> event, and a footer that
-            shows the error and retries instead of emptying the list.
+            <code>getAsyncState()</code>, the <code>zidan:load-more</code> event, and a failed
+            appended-page footer that retries instead of discarding the rows already loaded.
           </p>
         </div>
       </div>
     </section>
 
-    <footer class="ajax-footer">
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
       <p>
         Third-party data: <a href="https://dummyjson.com" rel="noopener">dummyjson.com</a>.
-        Full option table: <a href="docs/#remote">docs → remote selects</a>.
-        Source: <a href="https://github.com/akhtar1985/zidan-select">github.com/akhtar1985/zidan-select</a>.
+        Full option table: <a href="docs/options.html#combobox-async">remote selects</a>.
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="index.html">Demo</a> ·
+        <a href="playground.html">Playground</a> ·
+        <a href="docs/">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
       </p>
-    </footer>
-  </main>
+    </div>
+  </footer>
 
   <script src="zidan-form.js"></script>
   <script src="nav.js"></script>

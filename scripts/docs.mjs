@@ -5,11 +5,12 @@
  *   node scripts/docs.mjs _site/docs      # used by .github/workflows/pages.yml
  *   node scripts/docs.mjs .build/docs     # local preview
  *
- * The Markdown files stay the single source of truth; this script turns them into styled,
- * self-contained pages so the demo and the docs index never send readers to GitHub for a
- * document that belongs on the site. Internal .md links are rewritten to the generated .html
- * pages, headings get GitHub-style ids so existing #anchors keep working, and docs/*.html,
- * docs/index.html and docs/validation.html (authored pages) are never overwritten.
+ * The Markdown files stay the single source of truth; this script turns them into styled
+ * pages that share the demo header, design tokens and documentation layout, so the demo and
+ * the docs index never send readers to GitHub for a document that belongs on the site.
+ * Internal .md links are rewritten to the generated .html pages, headings get GitHub-style ids
+ * so existing #anchors keep working, and docs/index.html and docs/validation.html (authored
+ * pages) are never overwritten.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -45,28 +46,31 @@ function slugify(text) {
 }
 
 /** Inline Markdown: code spans, links, bold, italics, autolinks. */
-function inline(text) {
-  const codes = [];
-  let out = text.replace(/`([^`]+)`/g, (_, code) => {
-    codes.push(`<code>${escapeHtml(code)}</code>`);
-    return `\u0000${codes.length - 1}\u0000`;
-  });
+function inline(text, tokens = []) {
+  const hold = html => {
+    tokens.push(html);
+    return `\u0000${tokens.length - 1}\u0000`;
+  };
+  let out = text.replace(/`([^`]+)`/g, (_, code) => hold(`<code>${escapeHtml(code)}</code>`));
 
   out = out.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) =>
-    `<img src="${src}" alt="${escapeHtml(alt)}" loading="lazy">`);
+    hold(`<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy">`));
   out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, href) => {
-    const target = href.replace(/\.md(#[^)]*)?$/, (_, hash) => '.html' + (hash || ''));
+    const sitePage = /^\.\.\/(?:index|advanced|playground|ajax|shopify)\.html(?:#.*)?$/.test(href);
+    const target = href.startsWith('../') && !sitePage
+      ? 'https://github.com/akhtar1985/zidan-select/blob/main/' + href.slice(3)
+      : href.replace(/\.md(#[^)]*)?$/, (_, hash) => '.html' + (hash || ''));
     const external = /^https?:/i.test(target);
-    return `<a href="${target}"${external ? ' rel="noopener"' : ''}>${inline(label)}</a>`;
+    return hold(`<a href="${escapeHtml(target)}"${external ? ' rel="noopener"' : ''}>${inline(label, tokens)}</a>`);
   });
   out = out.replace(/<((?:https?:\/\/|mailto:)[^>\s]+)>/g, (_, href) =>
-    `<a href="${href}" rel="noopener">${escapeHtml(href)}</a>`);
+    hold(`<a href="${escapeHtml(href)}" rel="noopener">${escapeHtml(href)}</a>`));
 
   out = escapeHtml(out)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,;:!?]|$)/g, '$1<em>$2</em>');
 
-  return out.replace(/\u0000(\d+)\u0000/g, (_, index) => codes[Number(index)]);
+  return out.replace(/\u0000(\d+)\u0000/g, (_, index) => tokens[Number(index)]);
 }
 
 function convert(markdown) {
@@ -179,71 +183,117 @@ function convert(markdown) {
   return html.join('\n');
 }
 
+function siteHeader(page) {
+  const current = name => page.out === name ? ' aria-current="page"' : '';
+  return `<a class="skip-link" href="#docs-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.4.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="../index.html">Demo</a>
+      <a href="../advanced.html">Advanced</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../ajax.html">AJAX</a>
+      <a href="../shopify.html">Shopify</a>
+      <a href="../index.html#compare">Compare</a>
+      <a href="../index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="index.html"${page.out === 'index' ? ' aria-current="page"' : ''}>Documentation index</a>
+          <a href="options.html"${current('options')}>Options &amp; data attributes</a>
+          <a href="comparison.html"${current('comparison')}>Why &amp; comparison</a>
+          <a href="frameworks.html"${current('frameworks')}>Frameworks</a>
+          <a href="html-and-wordpress.html"${current('html-and-wordpress')}>HTML &amp; WordPress</a>
+          <a href="validation-guide.html"${current('validation-guide')}>Validation</a>
+          <a href="theming.html"${current('theming')}>Theming</a>
+          <a href="build.html"${current('build')}>Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+      </select>
+    </nav>
+  </header>`;
+}
+
+function siteFooter() {
+  return `<footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="../index.html">Demo</a> ·
+        <a href="../playground.html">Playground</a> ·
+        <a href="index.html">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="../nav.js"></script>`;
+}
+
 function template(page, body) {
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(page.title)} — ZidanForm docs</title>
   <meta name="description" content="${escapeHtml(page.blurb)}">
   <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/docs/${page.out}.html">
+  <meta name="theme-color" content="#4f6bed">
   <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ZidanForm">
   <meta property="og:title" content="${escapeHtml(page.title)} — ZidanForm docs">
   <meta property="og:description" content="${escapeHtml(page.blurb)}">
   <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/docs/${page.out}.html">
-  <style>
-    :root { --doc-ink:#16181d; --doc-muted:#616774; --doc-line:#e4e7ef; --doc-accent:#3355d8; --doc-bg:#f7f8fc; --doc-code:#11141b; }
-    * { box-sizing: border-box; }
-    body { margin:0; background:var(--doc-bg); color:var(--doc-ink); font:16px/1.65 "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-    a { color: var(--doc-accent); }
-    .doc-top { border-bottom:1px solid var(--doc-line); background:#fff; }
-    .doc-top-inner { max-width:920px; margin:0 auto; padding:14px 20px; display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; font-size:.86rem; }
-    .doc-top a[aria-current="page"] { font-weight:700; text-decoration:none; }
-    .doc-brand { font-weight:800; margin-right:auto; }
-    main { max-width:920px; margin:0 auto; padding:30px 20px 70px; background:var(--doc-bg); }
-    h1 { margin:0 0 6px; font-size:clamp(1.5rem,3vw,2rem); letter-spacing:-.02em; }
-    .doc-blurb { margin:0 0 26px; color:var(--doc-muted); }
-    h2 { margin:34px 0 10px; font-size:1.3rem; letter-spacing:-.01em; }
-    h3 { margin:26px 0 8px; font-size:1.06rem; }
-    h4 { margin:20px 0 6px; font-size:.95rem; }
-    table { width:100%; border-collapse:collapse; font-size:.9rem; }
-    .table-wrap { overflow-x:auto; margin:14px 0 22px; border:1px solid var(--doc-line); border-radius:10px; background:#fff; }
-    th, td { text-align:left; vertical-align:top; padding:8px 12px; border-bottom:1px solid var(--doc-line); }
-    th { background:#f1f3fa; font-weight:700; }
-    tr:last-child td { border-bottom:0; }
-    code { background:#eef0f8; padding:1px 5px; border-radius:5px; font:0.86em/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
-    pre { margin:14px 0 22px; padding:14px 16px; border-radius:10px; background:var(--doc-code); color:#dbe4ff; overflow:auto; }
-    pre code { background:none; padding:0; color:inherit; font-size:.82rem; }
-    blockquote { margin:14px 0; padding:10px 16px; border-left:3px solid var(--doc-accent); background:#fff; border-radius:0 8px 8px 0; color:var(--doc-muted); }
-    hr { border:0; border-top:1px solid var(--doc-line); margin:28px 0; }
-    footer { max-width:920px; margin:0 auto; padding:0 20px 50px; font-size:.84rem; color:var(--doc-muted); }
-  </style>
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../plugin-core.css">
+  <link rel="stylesheet" href="../plugin-theme.css">
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../docs.css">
 </head>
 <body>
-  <header class="doc-top">
-    <div class="doc-top-inner">
-      <a class="doc-brand" href="../index.html">ZidanForm</a>
-      <a href="index.html">Docs</a>
-      <a href="options.html"${page.out === 'options' ? ' aria-current="page"' : ''}>Options</a>
-      <a href="validation-guide.html"${page.out === 'validation-guide' ? ' aria-current="page"' : ''}>Validation</a>
-      <a href="theming.html"${page.out === 'theming' ? ' aria-current="page"' : ''}>Theming</a>
-      <a href="frameworks.html"${page.out === 'frameworks' ? ' aria-current="page"' : ''}>Frameworks</a>
-      <a href="comparison.html"${page.out === 'comparison' ? ' aria-current="page"' : ''}>Comparison</a>
-      <a href="build.html"${page.out === 'build' ? ' aria-current="page"' : ''}>Build</a>
-      <a href="html-and-wordpress.html"${page.out === 'html-and-wordpress' ? ' aria-current="page"' : ''}>HTML &amp; WordPress</a>
-      <a href="../ajax.html">AJAX demo</a>
-    </div>
-  </header>
-  <main>
-    <h1>${escapeHtml(page.title)}</h1>
-    <p class="doc-blurb">${escapeHtml(page.blurb)}</p>
+  ${siteHeader(page)}
+  <main id="docs-main" class="wrap docs-main">
+    <section class="hero docs-hero" aria-labelledby="docs-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Documentation · reference</p>
+      <h1 id="docs-title">${escapeHtml(page.title)}</h1>
+      <p class="doc-blurb">${escapeHtml(page.blurb)}</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="../playground.html">Try the playground</a>
+        <a class="btn" href="index.html">All documentation</a>
+        <a class="btn" href="../advanced.html">Advanced API</a>
+      </div>
+    </section>
+    <div class="docs-content">
 ${body}
+    </div>
+    <p class="doc-source-note">
+      Markdown source: <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/${page.source}.md" rel="noopener">docs/${page.source}.md</a>.
+      Generated by <code>scripts/docs.mjs</code> — edit the Markdown, not this page.
+    </p>
   </main>
-  <footer>
-    Markdown source: <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/${page.source}.md" rel="noopener">docs/${page.source}.md</a>.
-    Generated by <code>scripts/docs.mjs</code> — edit the Markdown, not this page.
-  </footer>
+  ${siteFooter()}
 </body>
 </html>
 `;

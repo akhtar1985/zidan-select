@@ -12,70 +12,91 @@
   <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/docs/validation.html">
   <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#4f6bed">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="../plugin-core.css">
   <link rel="stylesheet" href="../plugin-theme.css">
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 40px 22px 70px;
-      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      color: #101324;
-      background: #f5f6fb;
-      line-height: 1.55;
-    }
-    main { max-width: 900px; margin: 0 auto; }
-    h1 { margin: 0 0 6px; font-size: 1.9rem; letter-spacing: -0.02em; }
-    .lead { margin: 0 0 26px; color: #525a70; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
-    .card {
-      background: #fff;
-      border: 1px solid #e4e8f1;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 1px 2px rgba(16, 19, 36, 0.05);
-    }
-    .card h2 { margin: 0 0 2px; font-size: 1rem; }
-    .card p { margin: 0 0 16px; font-size: 0.8125rem; color: #6b7385; }
-    .card form { display: flex; flex-direction: column; gap: 14px; }
-    .status { margin-top: 12px; font-size: 0.8125rem; color: #067647; min-height: 20px; }
-    .status[data-state="error"] { color: #b42318; }
-    .status[data-state="missing"] { color: #b45309; }
-    button.submit {
-      align-self: flex-start;
-      font: inherit;
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 9px 16px;
-      border-radius: 999px;
-      border: 0;
-      color: #fff;
-      background: linear-gradient(140deg, #4f6bed, #6f5cf0);
-      cursor: pointer;
-    }
-    label.error { color: #b42318; font-size: 0.75rem; }
-    .just-validate-error-label { color: #b42318; font-size: 0.75rem; margin-top: 4px; }
-    .parsley-errors-list { color: #b42318; font-size: 0.75rem; list-style: none; padding: 0; margin: 4px 0 0; }
-    .back { display: inline-block; margin-bottom: 18px; font-size: 0.85rem; color: #4f6bed; }
-  </style>
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../docs.css">
 </head>
 <body>
-  <main>
-    <a class="back" href="index.html">← documentation</a>
-    <h1>Validation-library test bench</h1>
-    <p class="lead">
-      The same plugin markup under four validators. Everything is loaded from a CDN, so this
-      page also works as a smoke test: submit each empty form, then fill it in.
-    </p>
+  <a class="skip-link" href="#docs-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
 
-    <div class="grid">
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.4.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="../index.html">Demo</a>
+      <a href="../advanced.html">Advanced</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../ajax.html">AJAX</a>
+      <a href="../shopify.html">Shopify</a>
+      <a href="../index.html#compare">Compare</a>
+      <a href="../index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="index.html">Documentation index</a>
+          <a href="options.html">Options &amp; data attributes</a>
+          <a href="comparison.html">Why &amp; comparison</a>
+          <a href="frameworks.html">Frameworks</a>
+          <a href="html-and-wordpress.html">HTML &amp; WordPress</a>
+          <a href="validation-guide.html">Validation</a>
+          <a href="validation.html" aria-current="page">Validation test bench</a>
+          <a href="theming.html">Theming</a>
+          <a href="build.html">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+      </select>
+    </nav>
+  </header>
+
+  <main id="docs-main" class="wrap docs-main">
+    <section class="hero docs-hero" aria-labelledby="docs-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Validation · live test bench</p>
+      <h1 id="docs-title">One form, <span>four validators.</span></h1>
+      <p class="doc-blurb">
+        The same plugin markup under native HTML5, jQuery Validation, JustValidate and Parsley.
+        Everything is loaded from a CDN, so this page also works as a smoke test: submit each
+        empty form, then fill it in.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="validation-guide.html">Read the validation guide</a>
+        <a class="btn" href="index.html">All documentation</a>
+        <a class="btn" href="../playground.html">Field playground</a>
+      </div>
+    </section>
+
+    <div class="validation-grid">
       <section class="card">
         <h2>Native HTML5</h2>
         <p>Constraint validation and <code>aria-invalid</code> mirroring.</p>
         <form id="form-native" novalidate>
           <input name="email" type="email" required data-zidan="input" data-zidan-label="Email">
           <label><input type="checkbox" name="terms" required data-zidan="checkbox" data-zidan-label="Accept terms"> Accept terms</label>
-          <button class="submit" type="submit">Submit</button>
+          <button class="btn btn-primary" type="submit">Submit</button>
         </form>
         <p class="status" id="native-status" role="status"></p>
       </section>
@@ -86,7 +107,7 @@
         <form id="form-jquery">
           <input name="email" id="jq-email" type="email" required data-zidan="input" data-zidan-label="Email">
           <input name="name" id="jq-name" required minlength="3" data-zidan="input" data-zidan-label="Name">
-          <button class="submit" type="submit">Submit</button>
+          <button class="btn btn-primary" type="submit">Submit</button>
         </form>
         <p class="status" id="jquery-status" role="status"></p>
       </section>
@@ -97,7 +118,7 @@
         <form id="form-justvalidate">
           <input name="email" id="jv-email" data-zidan="input" data-zidan-label="Email">
           <input name="name" id="jv-name" data-zidan="input" data-zidan-label="Name">
-          <button class="submit" type="submit">Submit</button>
+          <button class="btn btn-primary" type="submit">Submit</button>
         </form>
         <p class="status" id="justvalidate-status" role="status"></p>
       </section>
@@ -110,13 +131,32 @@
                  data-zidan="input" data-zidan-label="Email">
           <input name="name" id="parsley-name" data-parsley-required data-parsley-minlength="3"
                  data-zidan="input" data-zidan-label="Name">
-          <button class="submit" type="submit">Submit</button>
+          <button class="btn btn-primary" type="submit">Submit</button>
         </form>
         <p class="status" id="parsley-status" role="status"></p>
       </section>
     </div>
+
+    <p class="doc-source-note">
+      The native controls stay reachable for each validator. Read the
+      <a href="validation-guide.html">validation compatibility guide</a> for configuration and
+      double-submit patterns.
+    </p>
   </main>
 
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="../index.html">Demo</a> ·
+        <a href="../playground.html">Playground</a> ·
+        <a href="index.html">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../nav.js"></script>
   <script src="../zidan-form.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.20.0/dist/jquery.validate.min.js"></script>

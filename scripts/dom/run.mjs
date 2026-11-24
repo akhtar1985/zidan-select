@@ -15,6 +15,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.
 const fullSource = fs.readFileSync(path.join(root, 'zidan-form.js'), 'utf8');
 const demoSource = () => fs.readFileSync(path.join(root, 'demo.js'), 'utf8');
 const labSource = () => fs.readFileSync(path.join(root, 'lab.js'), 'utf8');
+const playgroundSource = () => fs.readFileSync(path.join(root, 'playground.js'), 'utf8');
+const navSource = () => fs.readFileSync(path.join(root, 'nav.js'), 'utf8');
 const selectSource = () => fs.readFileSync(path.join(root, 'dist/select/zidan-select.js'), 'utf8');
 const fileSource = () => fs.readFileSync(path.join(root, 'dist/file/zidan-file.js'), 'utf8');
 const minSelectSource = () => fs.readFileSync(path.join(root, 'dist/select/zidan-select.min.js'), 'utf8');
@@ -452,10 +454,12 @@ test('pagination: initial fetch errors render a retryable state', async () => {
   select.open();
   await wait();
   assert.equal(select.error.message, 'Offline');
+  assert.equal(select.getAsyncState().error, 'Offline');
   assert.match(select.dropdown.textContent, /Offline/);
   fail = false;
   await select.refreshOptions();
   assert.equal(select.error, null);
+  assert.equal(select.getAsyncState().error, null);
   assert.equal(select.asyncItems.length, 1);
   select.destroy();
 });
@@ -799,6 +803,123 @@ test('tags allowFreeText=false accepts listed values only', () => {
   tags.addTag('css');
   tags.addTag('ruby');
   assert.deepEqual(Array.from(tags.getTags()), ['html', 'css']);
+});
+
+async function bootDemoLab() {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8')
+    .replace(/<link rel="stylesheet"[^>]*>/g, '')
+    .replace(/<script src="[^"]+"><\/script>/g, '');
+  const dom = new JSDOM(html, { runScripts: 'dangerously', url: 'https://zidan.test/', pretendToBeVisual: true });
+  installDataTransfer(dom.window);
+  dom.window.eval(fullSource);
+  dom.window.eval(demoSource());
+  dom.window.eval(labSource());
+  await wait(50);
+  return dom.window;
+}
+
+test('API lab: every documented option, callback and method is demonstrated', async () => {
+  const window = await bootDemoLab();
+  const lab = window.DemoLab;
+  assert.ok(lab, 'DemoLab was not initialized');
+  const missing = lab.missing();
+  for (const category of Object.keys(missing)) {
+    assert.deepEqual(Array.from(missing[category]), [], category + ' coverage is incomplete');
+  }
+  assert.equal(lab.expected.events.length, 27, 'event inventory is incomplete');
+  const selectDefaults = Object.keys(window.ZidanSelect.defaults);
+  assert.deepEqual(Array.from(selectDefaults.filter(name => !lab.expected.selectOptions.includes(name))), [], 'API lab inventory omits select defaults');
+  const optionsDoc = fs.readFileSync(path.join(root, 'docs/options.md'), 'utf8');
+  const completeObject = optionsDoc.split('### Every select option in one object')[1].split('```js')[1].split('```')[0];
+  assert.deepEqual(Array.from(selectDefaults.filter(name => !completeObject.includes(name + ':'))), [], 'complete options example omits select defaults');
+  for (const id of ['lab-select', 'lab-tags', 'lab-remote', 'lab-declarative', 'lab-upload', 'lab-text']) {
+    const el = window.document.getElementById(id);
+    assert.ok(el && (el.__zidanSelect || el.__zidanField), 'API lab control #' + id + ' was not enhanced');
+  }
+});
+
+test('playground emits supported attributes and complete JavaScript options', () => {
+  const html = fs.readFileSync(path.join(root, 'playground.html'), 'utf8')
+    .replace(/<link rel="stylesheet"[^>]*>/g, '')
+    .replace(/<script src="[^"]+"><\/script>/g, '');
+  const dom = new JSDOM(html, { runScripts: 'dangerously', url: 'https://zidan.test/playground.html#phone', pretendToBeVisual: true });
+  const { window } = dom;
+  window.eval(fullSource);
+  window.eval(playgroundSource());
+
+  const phoneToggle = window.document.getElementById('pg-opt-phoneValidate');
+  phoneToggle.checked = false;
+  phoneToggle.dispatchEvent(new window.Event('change', { bubbles: true }));
+  let markup = window.document.getElementById('pg-html').textContent;
+  assert.match(markup, /data-zidan-options="\{&quot;phone&quot;:\{&quot;validate&quot;:false\}\}"/);
+  assert.doesNotMatch(markup, /data-zidan-phone-country-label/);
+  assert.equal(window.document.getElementById('pg-phone').__zidanField.phone.validate, false);
+
+  window.document.querySelector('.pg-runmode [data-mode="js"]').click();
+  assert.match(window.document.getElementById('pg-js').textContent, /"validate":false/);
+  assert.equal(window.document.getElementById('pg-phone').__zidanField.phone.validate, false);
+
+  window.document.querySelector('#pg-tab-file').click();
+  markup = window.document.getElementById('pg-html').textContent;
+  for (const name of ['progress-template', 'uploaded-label', 'failed-label', 'cancel-label', 'retry-label']) {
+    assert.doesNotMatch(markup, new RegExp('data-zidan-' + name));
+    assert.match(window.document.getElementById('pg-js').textContent, new RegExp(name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) + ':'));
+  }
+});
+
+test('API lab: self-tests pass and every public event is observed', async () => {
+  const window = await bootDemoLab();
+  const output = await window.DemoLab.runSelfTest();
+  const results = Array.from(output.results);
+  const failed = results.filter(result => !result.ok);
+  assert.ok(results.length >= 74, 'self-test did not exercise the full public API');
+  assert.deepEqual(failed.map(result => result.name + ': ' + result.message), [], 'API lab self-test failures');
+  assert.deepEqual(Array.from(output.missingEvents), [], 'API lab did not observe every public event');
+  for (const category of Object.keys(output.missingCoverage)) {
+    assert.deepEqual(Array.from(output.missingCoverage[category]), [], category + ' self-test coverage is incomplete');
+  }
+});
+
+test('shared header: mobile menu and quick theme work on every shell', () => {
+  const dom = new JSDOM(`<!doctype html><html data-zs-theme="default"><body>
+    <header class="site-header">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="header-nav" id="site-nav">
+        <a href="index.html">Demo</a>
+        <select id="quick-theme">
+          <option value="default">Default theme</option>
+          <option value="dark">Dark</option>
+        </select>
+      </nav>
+    </header>
+    <div id="select-root"></div>
+    <div id="field-root"></div>
+  </body></html>`, { runScripts: 'dangerously', url: 'https://zidan.test/' });
+  const { window } = dom;
+  const media = { matches: false, addEventListener() {} };
+  window.matchMedia = () => media;
+  window.ZidanSelect = { instances: [{ root: window.document.getElementById('select-root') }] };
+  window.ZidanForm = { fields: [{ root: window.document.getElementById('field-root') }] };
+  window.eval(navSource());
+  window.document.dispatchEvent(new window.Event('DOMContentLoaded'));
+
+  const header = window.document.querySelector('.site-header');
+  const toggle = window.document.querySelector('.nav-toggle');
+  assert.equal(header.getAttribute('data-nav-ready'), '', 'header was not enhanced');
+  assert.equal(header.getAttribute('data-nav'), 'open');
+  assert.equal(toggle.getAttribute('aria-expanded'), 'true');
+  toggle.click();
+  assert.equal(header.getAttribute('data-nav'), 'collapsed');
+  assert.equal(toggle.getAttribute('aria-expanded'), 'false');
+  toggle.click();
+  assert.equal(header.getAttribute('data-nav'), 'open');
+
+  const quick = window.document.getElementById('quick-theme');
+  quick.value = 'dark';
+  quick.dispatchEvent(new window.Event('change'));
+  assert.equal(window.document.documentElement.getAttribute('data-zs-theme'), 'dark');
+  assert.equal(window.document.getElementById('select-root').getAttribute('data-zs-theme'), 'dark');
+  assert.equal(window.document.getElementById('field-root').getAttribute('data-zs-theme'), 'dark');
 });
 
 /* ---------------- runner ---------------- */

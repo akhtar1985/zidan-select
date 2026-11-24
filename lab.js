@@ -12,12 +12,15 @@
 
   var EXPECTED = {
     selectOptions: [
-      'mode', 'layout', 'themeFramework', 'id', 'name', 'disabled', 'required',
-      'options', 'value', 'label', 'placeholder',
+      'mode', 'layout', 'themeFramework', 'theme', 'id', 'name', 'disabled', 'required',
+      'options', 'value', 'label', 'ariaLabel', 'placeholder',
       'multiple', 'searchable', 'clearable', 'closeOnSelect', 'maxDropdownHeight',
       'noResultsText', 'emptyText', 'loadingText', 'clearText',
       'fetchOptions', 'debounce', 'minChars', 'allowFreeText', 'searchValues',
-      'fetchPageSize', 'autoLoadMore', 'cacheResults', 'loadMoreText',
+      'fetchUrl', 'fetchQueryParam', 'fetchPageParam', 'fetchSkipParam',
+      'fetchPageSize', 'fetchPageSizeParam', 'fetchItemsPath', 'fetchTotalPath',
+      'fetchHasMorePath', 'fetchMethod', 'fetchHeaders', 'fetchCredentials',
+      'autoLoadMore', 'cacheResults', 'loadMoreText',
       'maxTags', 'minTagLength', 'maxTagLength', 'caseSensitive', 'delimiters',
       'commitOnTab', 'commitOnBlur', 'suggestions', 'valueDelimiter',
       'customClasses', 'validation', 'scrollbar',
@@ -36,7 +39,8 @@
       'stepperInterval', 'stepperUpLabel', 'stepperDownLabel', 'stepperStep',
       'phone', 'phoneCountry', 'phoneFormat', 'phoneCountrySelect', 'phoneCountries',
       'phoneCountryLabel',
-      'rangeVariant', 'rangeBubble', 'rangeMinMax', 'rangeTicks', 'rangeTickLabels',
+      'rangeVariant', 'rangeBubble', 'rangeBubbleMode', 'rangeBubblePosition', 'rangeFill',
+      'rangeMinMax', 'rangeMinLabel', 'rangeMaxLabel', 'rangeTicks', 'rangeTickLabels',
       'rangeLabels', 'rangeFormat',
       'pickerButton', 'pickerIcon', 'pickerLabel', 'disableWeekends', 'disabledDates',
       'validateDate',
@@ -45,7 +49,7 @@
       'simulateUpload', 'simulateDuration', 'autoUpload', 'showFileMeta', 'showPreview',
       'replaceTitle', 'progressTemplate', 'uploadedLabel', 'failedLabel', 'canceledLabel',
       'cancelLabel', 'retryLabel', 'renderFile',
-      'switchStyle', 'onLabel', 'offLabel', 'deselectable', 'messages', 'ariaLabel',
+      'switchStyle', 'onLabel', 'offLabel', 'deselectable', 'messages',
       'validate', 'showValidState'
     ],
     selectCallbacks: [
@@ -192,6 +196,7 @@
     clearable: true,
     closeOnSelect: false,
     label: 'Lab plan',
+    ariaLabel: 'Choose a lab plan',
     placeholder: 'Pick a plan…',
     value: 'pro',
     options: [
@@ -316,6 +321,32 @@
     onError: hook('selectCallbacks', 'onError')
   });
 
+  var declarative = initSelect('#lab-declarative', {
+    mode: 'combobox',
+    label: 'Declarative remote lab',
+    placeholder: 'Search DummyJSON users…',
+    minChars: 0,
+    debounce: 200,
+    fetchUrl: 'https://dummyjson.com/users/search',
+    fetchQueryParam: 'q',
+    fetchPageParam: 'page',
+    fetchSkipParam: 'skip',
+    fetchPageSize: 3,
+    fetchPageSizeParam: 'limit',
+    fetchItemsPath: 'users',
+    fetchTotalPath: 'total',
+    fetchHasMorePath: null,
+    fetchMethod: 'GET',
+    fetchHeaders: null,
+    fetchCredentials: 'same-origin',
+    autoLoadMore: true,
+    cacheResults: true,
+    loadMoreText: 'Load more users',
+    onInit: hook('selectCallbacks', 'onInit'),
+    onLoadMore: hook('selectCallbacks', 'onLoadMore'),
+    onError: hook('selectCallbacks', 'onError')
+  });
+
   /* ---------------- fields ---------------- */
 
   var textStatus = document.getElementById('lab-text-status');
@@ -342,7 +373,6 @@
     validationIcon: true,
     alwaysValidate: true,
     showValidState: true,
-    ariaLabel: 'Lab text input',
     messages: { required: 'The lab needs a value.', generic: 'The lab rule failed.' },
     validate: function (value) {
       if (value === 'taken') {
@@ -389,7 +419,12 @@
   var labRange = initField('#lab-range', {
     rangeVariant: 'gradient',
     rangeBubble: true,
+    rangeBubbleMode: 'active',
+    rangeBubblePosition: 'bottom',
+    rangeFill: false,
     rangeMinMax: true,
+    rangeMinLabel: 'Low',
+    rangeMaxLabel: 'High',
     rangeTicks: [0, 50, 100],
     rangeTickLabels: true,
     rangeLabels: { 0: 'Low', 50: 'Mid', 100: 'High' },
@@ -766,7 +801,7 @@
       methods: [
         { name: 'stepUp', run: function () { stepper.stepUp(); return 'value=' + stepper.getValue(); } },
         { name: 'stepDown', run: function () { stepper.stepDown(); return 'value=' + stepper.getValue(); } },
-        { name: 'setStepper', run: function () { stepper.setStepper(false); stepper.setStepper('stacked'); return 'stepper re-enabled'; } },
+        { name: 'setStepper', run: function () { stepper.setStepper(false); var removed = !stepper.el.hasAttribute('data-zidan-stepper'); stepper.setStepper('stacked'); var restored = stepper.el.getAttribute('data-zidan-stepper'); return 'attribute removed=' + removed + ', restored=' + restored + ' (reinitialise to apply)'; } },
         { name: 'openPicker', run: function () { datePicker.openPicker(); return 'picker event emitted for ' + datePicker.el.type; } },
         { name: 'showPicker', run: function () { datePicker.showPicker(); return 'aliased to openPicker'; } },
         { name: 'getPhoneCountry', run: function () { return 'country=' + phone.getPhoneCountry(); } },
@@ -1065,7 +1100,7 @@
   var running = false;
 
   function runSelfTest() {
-    if (running) return Promise.resolve({ results: [], missingEvents: [] });
+    if (running) return Promise.resolve({ results: [], missingEvents: [], missingCoverage: missingCoverage() });
     running = true;
     var results = [];
     var chain = Promise.resolve();
@@ -1083,7 +1118,19 @@
     chain = chain.then(function () {
       return exerciseEvents();
     }).then(function () {
+      var missingApi = missingCoverage();
+      var apiGaps = [];
+      Object.keys(missingApi).forEach(function (category) {
+        missingApi[category].forEach(function (name) { apiGaps.push(category + ':' + name); });
+      });
       var missing = missingEvents();
+      results.push({
+        name: 'API inventory',
+        ok: !apiGaps.length,
+        message: apiGaps.length
+          ? 'missing: ' + apiGaps.join(', ')
+          : 'every option, callback and method is covered'
+      });
       results.push({
         name: 'DOM events',
         ok: !missing.length,
@@ -1094,12 +1141,12 @@
       renderResults(results);
       renderCoverage();
       running = false;
-      return { results: results, missingEvents: missing };
+      return { results: results, missingEvents: missing, missingCoverage: missingApi };
     }, function (error) {
       running = false;
       results.push({ name: 'self-test', ok: false, message: error && error.message ? error.message : String(error) });
       renderResults(results);
-      return { results: results, missingEvents: missingEvents() };
+      return { results: results, missingEvents: missingEvents(), missingCoverage: missingCoverage() };
     });
 
     return chain;

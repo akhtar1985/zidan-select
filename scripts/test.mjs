@@ -30,7 +30,7 @@ function assert(condition, message) {
 }
 
 check('JavaScript syntax', () => {
-  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'playground.js', 'scripts/build.mjs', 'scripts/serve.mjs', 'scripts/exa-search.mjs', 'scripts/dom/run.mjs']) {
+  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'lab.js', 'advanced.js', 'ajax.js', 'playground.js', 'nav.js', 'scripts/build.mjs', 'scripts/docs.mjs', 'scripts/serve.mjs', 'scripts/exa-search.mjs', 'scripts/changelog-section.mjs', 'scripts/dom/run.mjs']) {
     execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'pipe' });
   }
 });
@@ -134,6 +134,22 @@ check('version metadata and release tooling agree', () => {
   assert(workflow.includes("tags: ['v*']"), 'release workflow must run on version tags');
   assert(workflow.includes('id-token: write'), 'release workflow needs id-token for trusted publishing');
   assert(workflow.includes('gh release create'), 'release workflow must create the GitHub Release for the tag');
+  assert(workflow.includes('changelog-section.mjs') && workflow.includes('--notes-file'), 'release workflow must use the CHANGELOG section as the release body');
+  assert(workflow.includes('--generate-notes'), 'release workflow needs a generated-notes fallback');
+});
+
+check('release notes come from the CHANGELOG section', () => {
+  const pkg = JSON.parse(read('package.json'));
+  const section = version => execFileSync(
+    process.execPath,
+    [path.join(root, 'scripts/changelog-section.mjs'), version],
+    { encoding: 'utf8' }
+  );
+  const body = section(pkg.version).trim();
+  assert(body.length > 0, 'changelog-section.mjs printed nothing for ' + pkg.version);
+  assert(/^### /m.test(body), 'the ' + pkg.version + ' section has no subsections to publish');
+  assert(!/^## \[/m.test(body), 'the release body must stop before the next version heading');
+  assert(section('0.0.0-nonexistent') === '', 'a version with no section must print nothing so the workflow can fall back');
 });
 
 check('README links resolve on npm', () => {
@@ -158,8 +174,17 @@ check('AJAX / remote data is supported and demoed', () => {
   assert(page.includes('data-zidan-fetch-items-path="products"'), 'AJAX demo must map the JSON rows');
   assert(page.includes('ajax.css') && page.includes('ajax.js'), 'AJAX page is missing its assets');
   assert(page.includes('fetchOptions'), 'AJAX page must document the fetchOptions contract');
+  for (const id of ['retry-country', 'retry-fail', 'retry-request', 'retry-state']) {
+    assert(page.includes('id="' + id + '"'), 'AJAX error/retry demo is missing #' + id);
+  }
+  assert(read('ajax.js').includes('String(state.error)'), 'AJAX state readout must render string errors');
+  assert(read('lab.js').includes("fetchUrl: 'https://dummyjson.com/users/search'"), 'API lab must exercise declarative AJAX');
   assert(fs.existsSync(path.join(root, 'demo-data/countries.json')), 'AJAX demo dataset missing');
-  assert(read('docs/options.md').includes('fetchUrl'), 'docs/options.md does not document fetchUrl');
+  const optionsDoc = read('docs/options.md');
+  for (const option of ['fetchUrl', 'fetchQueryParam', 'fetchPageParam', 'fetchSkipParam', 'fetchPageSizeParam', 'fetchItemsPath', 'fetchTotalPath', 'fetchHasMorePath', 'fetchMethod', 'fetchHeaders', 'fetchCredentials']) {
+    assert(optionsDoc.includes(option), 'docs/options.md does not document ' + option);
+  }
+  assert(optionsDoc.includes('renderOption(item, context)'), 'renderOption documentation has the wrong signature');
   assert(read('docs/index.html').includes('../ajax.html'), 'docs index does not link the AJAX demo');
   assert(read('index.html').includes('ajax.html'), 'the AJAX page is not linked from the demo');
   assert(read('README.md').includes('ajax.html'), 'the README does not mention the AJAX page');
@@ -226,6 +251,53 @@ check('advanced page and shared header are wired up', () => {
   assert(navCss.includes('.nav-toggle') && navCss.includes('[data-nav="open"]') && navCss.includes('[data-nav-ready]'), 'mobile menu styles are missing');
   assert(read('nav.js').includes('data-nav-ready') && read('nav.js').includes('aria-expanded'), 'mobile menu script is missing its collapsed state or ARIA state');
   assert(read('.github/workflows/pages.yml').includes('nav.js'), 'Pages workflow does not publish the shared header script');
+});
+
+check('demo and documentation pages share the home visual system', () => {
+  const rootPages = ['index.html', 'advanced.html', 'playground.html', 'ajax.html', 'shopify.html'];
+  const docsPages = ['docs/index.html', 'docs/validation.html'];
+  const assertShell = (name, html, prefix) => {
+    for (const needle of [
+      'class="site-header"', 'class="brand-sub"', 'v2.4.0 · zero dependencies',
+      'class="bg-orbs"', 'id="quick-theme"', 'class="site-footer"',
+      prefix + 'demo.css', prefix + 'nav.css', prefix + 'nav.js'
+    ]) {
+      assert(html.includes(needle), name + ' is missing shared UI: ' + needle);
+    }
+  };
+  rootPages.forEach(name => assertShell(name, read(name), ''));
+  docsPages.forEach(name => assertShell(name, read(name), '../'));
+  docsPages.forEach(name => assert(read(name).includes('../docs.css'), name + ' does not load the shared docs styles'));
+  const docsIndex = read('docs/index.html');
+  assert(docsIndex.includes('href="validation-guide.html"') && docsIndex.includes('href="validation.html"'), 'docs index lost the validation guide or live test bench link');
+  assert(read('ajax.html').includes('docs/options.html#combobox-async'), 'AJAX demo links to a missing remote-options anchor');
+  assert(read('.github/workflows/pages.yml').includes('docs.css'), 'Pages workflow does not publish docs.css');
+
+  const target = path.join(root, '.build', 'docs-ui-check');
+  execFileSync(process.execPath, [path.join(root, 'scripts/docs.mjs'), target], { stdio: 'pipe' });
+  try {
+    for (const out of ['options', 'theming', 'frameworks', 'comparison', 'validation-guide', 'build', 'html-and-wordpress']) {
+      const file = path.join(target, out + '.html');
+      assert(fs.existsSync(file), 'docs generator did not write ' + out + '.html');
+      const html = fs.readFileSync(file, 'utf8');
+      assertShell('docs/' + out + '.html', html, '../');
+      assert(html.includes('../docs.css') && html.includes('class="docs-content"'), out + ' guide does not use the shared docs layout');
+      assert(!html.includes('class="doc-top"'), out + ' guide still uses the old plain header');
+      if (out === 'options') assert(html.includes('id="combobox-async"'), 'options guide lost the remote select anchor used by the AJAX demo');
+      if (out === 'build') {
+        assert(html.includes('href="https://github.com/akhtar1985/zidan-select/blob/main/CHANGELOG.md"'), 'build guide does not link to the repository changelog');
+        assert(html.includes('href="https://github.com/akhtar1985/zidan-select/blob/main/.github/workflows/release.yml"'), 'build guide does not link to the release workflow');
+      }
+      const prose = html.replace(/<pre>[\s\S]*?<\/pre>/g, '').replace(/<code>[\s\S]*?<\/code>/g, '');
+      assert(!prose.includes('&lt;a '), out + ' guide escapes Markdown links instead of rendering them');
+      const source = out === 'validation-guide' ? 'validation' : out;
+      if (/\[[^\]]+\]\([^)]+\)/.test(read('docs/' + source + '.md'))) {
+        assert(prose.includes('<a href='), out + ' guide did not render its Markdown links');
+      }
+    }
+  } finally {
+    fs.rmSync(target, { recursive: true, force: true });
+  }
 });
 
 check('new features are present', () => {
@@ -298,6 +370,41 @@ check('subset builds and minified copies exist', () => {
     'dist/zidan-form.min.js', 'dist/plugin-core.min.css', 'dist/plugin-theme.min.css'
   ]) {
     assert(fs.existsSync(path.join(root, file)), 'missing build output ' + file);
+  }
+});
+
+check('documented sizes match the built assets', () => {
+  const builds = [
+    ['zidan-form.js', 'dist/zidan-form.min.js'],
+    ['dist/select/zidan-select.js', 'dist/select/zidan-select.min.js'],
+    ['dist/file/zidan-file.js', 'dist/file/zidan-file.min.js']
+  ];
+  const home = read('index.html');
+  const advanced = read('advanced.html');
+  const readme = read('README.md');
+  for (const [raw, min] of builds) {
+    const rawSize = fs.statSync(path.join(root, raw)).size;
+    const minSize = fs.statSync(path.join(root, min)).size;
+    const rawKb = Math.round(rawSize / 1024);
+    const minKb = Math.round(minSize / 1024);
+    assert(home.includes(`≈${rawKb} kB JS · ≈${minKb} kB minified`), 'home build picker has stale sizes for ' + raw);
+    assert(home.includes(`≈${rawKb} kB · ≈${minKb} kB min`), 'home build card has stale sizes for ' + raw);
+    assert(advanced.includes(`${rawKb} kB raw · ${minKb} kB min`), 'advanced page has stale sizes for ' + raw);
+    assert(readme.includes(`≈${rawKb} kB raw · ≈${minKb} kB minified`), 'README has stale sizes for ' + raw);
+  }
+  const docsBuild = read('docs/build.md');
+  for (const file of [
+    'zidan-form.js', 'dist/zidan-form.min.js',
+    'plugin-core.css', 'dist/plugin-core.min.css', 'plugin-theme.css', 'dist/plugin-theme.min.css',
+    'dist/select/zidan-select.js', 'dist/select/zidan-select.min.js',
+    'dist/select/plugin-select-core.css', 'dist/select/plugin-select-core.min.css',
+    'dist/select/plugin-select-theme.css', 'dist/select/plugin-select-theme.min.css',
+    'dist/file/zidan-file.js', 'dist/file/zidan-file.min.js',
+    'dist/file/plugin-file-core.css', 'dist/file/plugin-file-core.min.css',
+    'dist/file/plugin-file-theme.css', 'dist/file/plugin-file-theme.min.css'
+  ]) {
+    const bytes = fs.statSync(path.join(root, file)).size;
+    assert(docsBuild.includes(bytes.toLocaleString('en-US') + ' B'), 'build guide has a stale byte size for ' + file);
   }
 });
 

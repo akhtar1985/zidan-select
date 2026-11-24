@@ -101,7 +101,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.3 · zero dependencies</span>
+        <span class="brand-sub">v2.4.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -144,7 +144,7 @@
 
   <main id="demo-app" class="wrap">
     <section class="hero">
-      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.3 · zero dependencies · full or subset builds</p>
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> v2.4.0 · zero dependencies · full or subset builds</p>
       <h1>Every form control, <span>one small library</span>.</h1>
       <p>
         ZidanForm upgrades native inputs in place — select, checkbox, switch, radio, file upload
@@ -198,23 +198,23 @@
           <a class="build-pick" href="#build-select">
             <strong>Only custom select dropdowns</strong>
             <span>Load the select-only JS plus its core and theme CSS. The rest of the page stays untouched — no full bundle.</span>
-            <em>≈104 kB JS</em>
+            <em>≈114 kB JS · ≈68 kB minified</em>
           </a>
           <a class="build-pick" href="#build-file">
             <strong>Only file uploads</strong>
             <span>Load the file-only JS plus its core and theme CSS and leave every other input as it is.</span>
-            <em>≈82 kB JS</em>
+            <em>≈86 kB JS · ≈50 kB minified</em>
           </a>
           <a class="build-pick" href="#build-full">
             <strong>Every input in the form</strong>
             <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
-            <em>≈208 kB JS</em>
+            <em>≈224 kB JS · ≈131 kB minified</em>
           </a>
         </div>
       </div>
       <div class="grid-3">
         <article class="card build-card" id="build-full">
-          <h3>Full build <span class="build-size">≈208 kB JS</span></h3>
+          <h3>Full build <span class="build-size">≈224 kB · ≈131 kB min</span></h3>
           <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.0/zidan-form.js">JS</a>
@@ -229,7 +229,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-select">
-          <h3>Select-only <span class="build-size">≈104 kB JS</span></h3>
+          <h3>Select-only <span class="build-size">≈114 kB · ≈68 kB min</span></h3>
           <p>Select, combobox, tags and multi-select — everything the select family needs.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.0/dist/select/zidan-select.js">JS</a>
@@ -244,7 +244,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-file">
-          <h3>File-only <span class="build-size">≈82 kB JS</span></h3>
+          <h3>File-only <span class="build-size">≈86 kB · ≈50 kB min</span></h3>
           <p>Dropzone, picker and inline file upload with progress, cancel and previews.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.0/dist/file/zidan-file.js">JS</a>
@@ -260,8 +260,9 @@
         </article>
       </div>
       <p class="compare-note">
-        The snippets use jsDelivr's auto-minified <code>.min</code> URLs — drop <code>.min</code>
-        to load the readable source. ESM variants and every per-file URL are listed in the
+        The snippets load the real <code>.min</code> files shipped in the npm package — drop
+        <code>.min</code> to load the readable source. Sizes are rounded from the 2.4.0 build
+        (1 kB = 1,024 bytes). ESM variants and every per-file URL are listed in the
         <a href="https://github.com/akhtar1985/zidan-select#select-only-and-file-only-builds">README build section</a>
         and <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/build.md">docs/build.md</a>.
         Not sure which options to pick? <a href="playground.html">Build the field in the playground</a>.
@@ -1304,6 +1305,9 @@ window.ZIDAN_FORM_CONFIG = {
               <code>onError</code>. Query <em>err</em> to see the retryable error state.</p>
             <select id="lab-remote"></select>
             <p class="form-status" id="lab-remote-status" role="status" aria-live="polite"></p>
+            <p style="margin-top:16px"><strong>Declarative AJAX</strong> uses the complete
+              <code>fetchUrl</code> family against DummyJSON — no custom fetcher.</p>
+            <select id="lab-declarative"></select>
           </div>
           <div class="card" id="lab-methods-card">
             <h3>Instance methods</h3>

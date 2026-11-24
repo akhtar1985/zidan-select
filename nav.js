@@ -14,6 +14,28 @@
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
 
+    var quickTheme = header.querySelector('#quick-theme');
+    if (quickTheme) {
+      var initialTheme = document.documentElement.getAttribute('data-zs-theme') || 'default';
+      if (Array.prototype.some.call(quickTheme.options, function (option) { return option.value === initialTheme; })) {
+        quickTheme.value = initialTheme;
+      }
+      quickTheme.addEventListener('change', function () {
+        var theme = quickTheme.value;
+        document.documentElement.setAttribute('data-zs-theme', theme);
+        if (window.ZidanSelect) {
+          window.ZidanSelect.instances.forEach(function (instance) {
+            instance.root.setAttribute('data-zs-theme', theme);
+          });
+        }
+        if (window.ZidanForm) {
+          window.ZidanForm.fields.forEach(function (field) {
+            if (field.root) field.root.setAttribute('data-zs-theme', theme);
+          });
+        }
+      });
+    }
+
     // Only mark the header as enhanced once the toggle really works, so the links
     // stay reachable when the script is blocked.
     header.setAttribute('data-nav-ready', '');

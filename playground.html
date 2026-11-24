@@ -34,7 +34,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">field playground</span>
+        <span class="brand-sub">v2.4.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -64,6 +64,14 @@
       </details>
       <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
       <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+      </select>
     </nav>
   </header>
 
@@ -136,7 +144,7 @@
             <div class="pg-card-head">
               <div>
                 <h2>Copy code</h2>
-                <p>Both snippets describe the same field.</p>
+                <p>HTML lists supported attributes; JavaScript carries every selected setting.</p>
               </div>
             </div>
             <div class="pg-code-block">
@@ -155,7 +163,7 @@
             </div>
             <p class="pg-code-note">
               The JavaScript tab keeps the same native markup but removes the <code>data-*</code>
-              attributes; auto-init only scans marked elements, so nothing is enhanced twice.
+              attributes. Settings without a data attribute appear only in the JavaScript snippet.
             </p>
           </div>
 

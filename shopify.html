@@ -14,39 +14,42 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="plugin-core.css">
   <link rel="stylesheet" href="plugin-theme.css">
+  <link rel="stylesheet" href="demo.css">
   <link rel="stylesheet" href="nav.css">
   <style>
     :root {
-      --sp-bg: #f7f5f1;
-      --sp-card: #ffffff;
-      --sp-ink: #17181c;
-      --sp-muted: #6b6f76;
-      --sp-line: #e5e1da;
-      --sp-accent: #1f6f4a;
-      --sp-accent-soft: #e6f2ec;
+      --sp-bg: transparent;
+      --sp-card: var(--card);
+      --sp-ink: var(--ink);
+      --sp-muted: var(--muted);
+      --sp-line: var(--line);
+      --sp-accent: var(--accent);
+      --sp-accent-soft: var(--accent-soft);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       background: var(--sp-bg);
       color: var(--sp-ink);
-      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-family: inherit;
       line-height: 1.55;
     }
     a { color: var(--sp-accent); }
-    .sp-main { max-width: 1080px; margin: 0 auto; padding: 28px 20px 64px; }
+    .sp-main { padding-top: 0; padding-bottom: 72px; }
     .sp-eyebrow {
       display: inline-flex; align-items: center; gap: 8px; margin: 0 0 10px;
       font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
       color: var(--sp-accent); font-weight: 700;
     }
     .sp-eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-    .sp-hero h1 { margin: 0 0 8px; font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.02em; }
-    .sp-hero p { margin: 0 0 24px; color: var(--sp-muted); max-width: 70ch; }
+    .sp-hero h1 { margin: 0 0 12px; font-size: clamp(2.2rem, 5vw, 3.8rem); max-width: 20ch; line-height: 1.08; letter-spacing: -0.045em; }
+    .sp-hero p { max-width: 66ch; margin: 0 0 18px; color: var(--ink-soft); font-size: 1.05rem; }
     .sp-product {
       display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr);
-      background: var(--sp-card); border: 1px solid var(--sp-line);
-      border-radius: 20px; padding: 20px; box-shadow: 0 14px 40px rgba(23, 24, 28, 0.06);
+      background: var(--sp-card); border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: var(--radius); padding: 20px;
+      box-shadow: var(--shadow-md), inset 0 1px 0 #fff;
+      -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
     }
     @media (min-width: 820px) { .sp-product { grid-template-columns: 1.05fr 1fr; padding: 26px; } }
     .sp-shot {
@@ -74,25 +77,29 @@
     .sp-fieldset { border: 0; padding: 0; margin: 0 0 16px; }
     .sp-fieldset legend { padding: 0; margin-bottom: 6px; font-size: 0.82rem; font-weight: 600; }
     .sp-button {
-      width: 100%; padding: 14px 18px; border: 0; border-radius: 12px; cursor: pointer;
-      background: var(--sp-ink); color: #fff; font-size: 0.95rem; font-weight: 700;
-      transition: transform 0.15s ease, background 0.15s ease;
+      width: 100%; padding: 13px 18px; border: 0; border-radius: 13px; cursor: pointer;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff;
+      font-size: 0.95rem; font-weight: 700;
+      box-shadow: 0 18px 34px -20px rgba(79, 70, 229, 0.9);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-    .sp-button:hover { background: #000; transform: translateY(-1px); }
+    .sp-button:hover { transform: translateY(-1px); box-shadow: 0 22px 40px -18px rgba(79, 70, 229, 0.85); }
     .sp-note { margin: 10px 0 0; font-size: 0.78rem; color: var(--sp-muted); }
     .sp-payload {
       margin: 14px 0 0; padding: 12px 14px; border-radius: 10px; background: #101216; color: #d7f5e3;
       font: 0.78rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
       max-height: 220px; overflow: auto; white-space: pre-wrap;
     }
-    .sp-section { margin-top: 42px; }
-    .sp-section h2 { margin: 0 0 6px; font-size: 1.3rem; letter-spacing: -0.01em; }
-    .sp-section > p { margin: 0 0 18px; color: var(--sp-muted); max-width: 75ch; }
+    .sp-section { margin-top: 48px; scroll-margin-top: 112px; }
+    .sp-section h2 { margin: 0 0 8px; font-size: clamp(1.4rem, 2.8vw, 1.8rem); letter-spacing: -0.025em; }
+    .sp-section > p { margin: 0 0 18px; color: var(--ink-soft); max-width: 75ch; }
     .sp-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
     @media (min-width: 760px) { .sp-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     .sp-card {
       min-width: 0;
-      background: var(--sp-card); border: 1px solid var(--sp-line); border-radius: 16px; padding: 18px;
+      background: rgba(255, 255, 255, 0.82); border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 18px; padding: 20px; box-shadow: var(--shadow-sm), inset 0 1px 0 #fff;
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
     }
     .sp-card h3 { margin: 0 0 8px; font-size: 0.95rem; }
     .sp-card p { margin: 0 0 12px; color: var(--sp-muted); font-size: 0.84rem; }
@@ -111,29 +118,29 @@
     .sp-copy:hover { background: rgba(255, 255, 255, 0.18); }
     .sp-limits { display: grid; gap: 12px; }
     @media (min-width: 760px) { .sp-limits { grid-template-columns: 1fr 1fr; } }
-    .sp-limits article { border-radius: 14px; padding: 16px 18px; border: 1px solid var(--sp-line); background: var(--sp-card); }
-    .sp-limits h3 { margin: 0 0 8px; font-size: 0.92rem; }
-    .sp-limits ul { margin: 0; padding-left: 18px; font-size: 0.84rem; color: var(--sp-muted); }
-    .sp-limits .yes h3 { color: var(--sp-accent); }
-    .sp-limits .no { background: #fff8ec; border-color: #f0e2c6; }
+    .sp-limits article { border-radius: 16px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.9); background: rgba(255, 255, 255, 0.82); box-shadow: var(--shadow-sm); }
+    .sp-limits h3 { margin: 0 0 8px; font-size: 0.98rem; }
+    .sp-limits ul { margin: 0; padding-left: 18px; font-size: 0.86rem; color: var(--ink-soft); }
+    .sp-limits .yes h3 { color: #0f7a55; }
+    .sp-limits .no { background: rgba(255, 248, 236, 0.9); border-color: #f0e2c6; }
     .sp-limits .no h3 { color: #9a6b14; }
-    .sp-footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--sp-line); color: var(--sp-muted); font-size: 0.82rem; }
-    .sp-footer a { color: inherit; }
-    .sp-skip {
-      position: absolute; left: -999px; top: 0; padding: 10px 14px; background: #fff; z-index: 10;
+    @media (max-width: 640px) {
+      .sp-main { padding-bottom: 54px; }
+      .sp-section { margin-top: 40px; }
+      .sp-card { padding: 18px; }
     }
-    .sp-skip:focus { left: 12px; top: 12px; }
   </style>
 </head>
 <body>
-  <a class="sp-skip" href="#product">Skip to product</a>
+  <a class="skip-link" href="#product">Skip to product</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
 
   <header class="site-header">
     <a class="brand" href="index.html">
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">Shopify demo</span>
+        <span class="brand-sub">v2.4.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -163,13 +170,21 @@
       </details>
       <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
       <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+      </select>
     </nav>
   </header>
 
-  <main class="sp-main">
-    <div class="sp-hero">
-      <p class="sp-eyebrow">Shopify theme demo</p>
-      <h1>A product page your theme could ship today</h1>
+  <main class="wrap sp-main">
+    <section class="hero sp-hero" aria-labelledby="shopify-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Shopify theme demo</p>
+      <h1 id="shopify-title">A product page your theme could <span>ship today.</span></h1>
       <p>
         This page is plain HTML styled like a storefront. In a real theme the same markup lives in
         a Liquid section, and the three files load through <code>asset_url</code> — no app and no
@@ -177,7 +192,12 @@
         below.) Shopify does not allow custom scripts on the checkout, so cart, product, contact
         and newsletter forms are the targets.
       </p>
-    </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#product">Try the product form</a>
+        <a class="btn" href="#install">Liquid install snippets</a>
+        <a class="btn" href="docs/html-and-wordpress.html">HTML &amp; WordPress guide</a>
+      </div>
+    </section>
 
     <div class="sp-product" id="product">
       <div>
@@ -257,7 +277,7 @@
             </label>
           </div>
 
-          <button class="sp-button" type="submit">Add to cart</button>
+          <button class="btn btn-primary sp-button" type="submit">Add to cart</button>
           <p class="sp-note">
             Demo only — the button captures the form instead of posting. In a theme this is a real
             <code>form 'product'</code> or <code>/cart/add</code> submission.
@@ -267,7 +287,7 @@
       </div>
     </div>
 
-    <section class="sp-section" aria-labelledby="install-title">
+    <section class="sp-section" id="install" aria-labelledby="install-title">
       <h2 id="install-title">Install it in a Shopify theme</h2>
       <p>
         Upload the three files to the theme's <strong>Assets</strong> folder (Online Store → Themes
@@ -372,15 +392,18 @@
       </div>
     </section>
 
-    <footer class="sp-footer">
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
       <p>
         Back to <a href="index.html">the full demo</a>, <a href="playground.html">the playground</a>
-        or <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/html-and-wordpress.md">the static HTML &amp; WordPress cookbook</a>
-        (includes the Shopify section). Source:
-        <a href="https://github.com/akhtar1985/zidan-select">github.com/akhtar1985/zidan-select</a>.
+        or <a href="docs/html-and-wordpress.html">the static HTML &amp; WordPress cookbook</a>.
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
       </p>
-    </footer>
-  </main>
+    </div>
+  </footer>
 
   <script src="nav.js"></script>
   <script src="zidan-form.js"></script>

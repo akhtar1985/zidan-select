@@ -31,8 +31,8 @@ same two stylesheets.
 | Built-in themes | **5** + custom tokens | Themes via CSS | Themes via CSS | Themes via CSS | Themes via CSS | 1 (Bootstrap) |
 | CSS-framework adapters | **Bootstrap, Tailwind, Bulma, Foundation** | — | — | — | — | n/a |
 | Validation coexistence tests | **jQuery Validation, JustValidate, Parsley, native** | — | — | — | — | Native + framework |
-| Framework support | **React, Next.js, Vue, Svelte, Angular guides** | Community wrappers | Community wrappers | Community wrappers | Community wrappers | Framework kits |
-| Weight | ~5,300 lines, one JS file | larger, plus jQuery | moderate | moderate | small | large (whole framework) |
+| Framework support | **React, Next.js, Vue, Angular guides** | Community wrappers | Community wrappers | Community wrappers | Community wrappers | Framework kits |
+| Weight | ≈224 kB raw JS + two CSS files | larger, plus jQuery | moderate | moderate | small | large (whole framework) |
 
 Feature claims above describe each project's *core* package. Plugins and community add-ons can
 close some gaps — check the other project's current docs before deciding.
@@ -66,7 +66,7 @@ close some gaps — check the other project's current docs before deciding.
   Bootstrap.
 - **No framework components.** React/Vue/Angular integration is lifecycle wiring around the
   vanilla API, not a native component library.
-- **Newer.** Version 2.0 is a rename/expansion of `zidan-select`; pin a version and read the
+- **Newer.** Version 2.x is a rename/expansion of `zidan-select`; pin a version and read the
   migration notes.
 
 ## Choose ZidanForm when…

@@ -7,9 +7,10 @@ passed to `initZidanSelects()` / `initZidanForms()` / `zidanSelect()` / `zidanFi
 `data-zidan*` attribute, which is how JS-only options are applied.
 
 > **Prefer to click through the options?** The
-> [field playground](https://akhtar1985.github.io/zidan-select/playground.html) exposes every
-> option for one control at a time and copies both the HTML attribute form and the vanilla
-> JavaScript object shown below.
+> [field playground](https://akhtar1985.github.io/zidan-select/playground.html) exposes the main
+> options for one control at a time and copies both supported HTML attributes and vanilla
+> JavaScript. The [API lab](https://akhtar1985.github.io/zidan-select/#lab) exercises the complete
+> option, callback, method and event inventory.
 
 ## Direct init by ID or class
 
@@ -131,13 +132,18 @@ Applies to `ZidanCheckbox`, `ZidanRadioGroup`, `ZidanFileUpload`, `ZidanTextFiel
 
 | JS option | Data attribute | Type | Default | Notes |
 | --- | --- | --- | --- | --- |
-| `variant` | `data-zidan-variant` | string | `default` | Checkbox: `default`, `switch`, `card`, `button`, `minimal`. Radio: `stacked`, `inline`, `card`, `button`, `tile`. File: `dropzone`, `button`, `avatar`, `gallery`, `compact`. Range: `default`, `gradient`, `stepped`, `minimal`. |
+| `variant` | `data-zidan-variant` | string | `default` | Checkbox: `default`, `switch`, `card`, `button`, `minimal`. Radio: `stacked`, `inline`, `card`, `button`, `tile`. File: `dropzone`, `button`, `avatar`, `gallery`, `compact`. Range uses `rangeVariant`. |
 | `layout` | `data-zidan-layout` | string | `stacked` | `stacked`, `inline`, `compact`, `floating`, `outlined`, `card`. |
 | `theme` | `data-zidan-theme`, `data-zs-theme` | string | `default` | `default`, `modern`, `minimal`, `dark`, `glass`. Resolves element → ancestor → `<html>`. |
 | `framework` | `data-zidan-framework`, `data-zs-framework` | string | `none` | `none`, `bootstrap`, `tailwind`, `bulma`, `foundation`, `vanilla`. |
 | `label` | `data-zidan-label` | string | — | Used when the markup has no `<label>`; a generated label is `<label for>`. If the markup already has a `<label>`, the generated one replaces it and the original is hidden until `destroy()`. |
 | `hint` | `data-zidan-hint` | string | — | Rendered under the control and linked via `aria-describedby`. |
-| `validation` | `data-zidan-validation` | `valid` \| `invalid` | — | Initial state; later states come from validity or `setValidation()`. A preset `invalid` is pinned: it survives initialisation and programmatic `update()`/`refresh()`/`setValue()` until the user edits the control or you pass `setValidation(null)`. |
+| `description` | `data-zidan-description` | string | — | Second line for card, tile, button and minimal checkbox/radio variants. |
+| `descriptions` | — | object | — | Radio group: `{ value: 'Description' }` fallback descriptions. |
+| `messages` | — | object | — | Override built-in validation messages, including `required`, `phone`, `weekend` and `generic`. |
+| `validate(value, field, context)` | — | function | — | Custom rule for text, checkbox, radio or file fields. Return `true`, `false`, a message string, Error or Promise; `context` is `{ signal, field, instance }`. |
+| `showValidState` | — | boolean | `false` | Show a positive state after a successful async rule. |
+| `validation` | `data-zidan-validation` | `valid` \| `invalid` | — | Initial state; later states come from validity or `setValidation()`. A preset `invalid` survives `update()` / `refresh()` and internal mirrors until user input/change/blur or `setValidation(null)`; programmatic value helpers that dispatch `change`, and a non-empty select value, also clear it. |
 | `alwaysValidate` | — | boolean | `false` | Mark invalid as soon as native validity fails instead of on blur. |
 | `indeterminate` | `data-zidan-indeterminate` | boolean | `false` | Checkbox starts mixed. |
 | `clearable` | `data-zidan-clear` | boolean | `search` only | Clear button for text inputs and textarea. |
@@ -163,11 +169,22 @@ Applies to `ZidanCheckbox`, `ZidanRadioGroup`, `ZidanFileUpload`, `ZidanTextFiel
 | --- | --- |
 | `onInit` | `{ instance, variant?, type? }` |
 | `onChange` | `{ instance, value }` (text/radio), `{ instance, checked, value }` (checkbox), `{ instance, files }` (file) |
-| `onValidation` | `{ instance, state }` where `state` is `valid`, `invalid` or `null` |
-| `onRemove` | `{ instance, file }` |
+| `onInput` | `{ instance, value }` (text/range) |
+| `onValidation` | `{ instance, state, message? }` where `state` is `valid`, `invalid` or `null` |
+| `onIconClick` | `{ instance, icon, position }` |
+| `onStep` | `{ instance, value, direction }` |
+| `onPicker` | `{ instance, type }` |
+| `onPhoneCountry` | `{ instance, country }` |
+| `onPhoneFormat` | `{ instance, format }` |
+| `onRemove` | `{ instance, file, index }` |
+| `onUploadStart` / `onUploadProgress` / `onUploadSuccess` | `{ instance, file, name, ... }` with size, progress or result |
+| `onUpload` | Alias of `onUploadSuccess`. |
+| `onUploadError` / `onUploadCancel` | `{ instance, file, name, error?, message? }` |
 
-DOM events with the same information: `zidan:init`, `zidan:change`, `zidan:validation`,
-`zidan:remove`, `zidan:reveal`, `zidan:clear`, `zidan:destroy`, `zidan:error`.
+DOM events with the same information: `zidan:init`, `zidan:change`, `zidan:input`,
+`zidan:validation`, `zidan:async-validation`, `zidan:remove`, `zidan:reveal`, `zidan:clear`,
+`zidan:icon-click`, `zidan:step`, `zidan:picker`, `zidan:phone-country`, `zidan:phone-format`,
+`zidan:upload-*`, `zidan:destroy` and `zidan:error`.
 
 ## Checkbox, switch & radio variants
 
@@ -241,6 +258,7 @@ Icons are sanitised with `DOMParser`: only SVG shape elements and safe attribute
 | `stepperInterval` | `data-zidan-stepper-interval` | number | `90` | Repeat interval, ms. |
 | `stepperUpLabel` | `data-zidan-stepper-up-label` | string | `Increase value` | Aria-label of “+”. |
 | `stepperDownLabel` | `data-zidan-stepper-down-label` | string | `Decrease value` | Aria-label of “−”. |
+| `stepperStep` | — | number | native `step` | Increment used by the stepper buttons and `stepUp()` / `stepDown()`. |
 
 ```html
 <input type="number" min="0" max="10" value="3" data-zidan="input"
@@ -252,6 +270,8 @@ Icons are sanitised with `DOMParser`: only SVG shape elements and safe attribute
 ```
 
 Methods: `stepUp(times = 1)`, `stepDown(times = 1)`, `setStepper(enabled)`.
+`setStepper()` toggles the source attribute; destroy and reinitialise the field to add or remove
+the generated stepper buttons.
 Event: `zidan:step` → `{ value, direction, instance }`.
 
 ## Phone formatting
@@ -524,6 +544,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | `suggestions` | — | Tags suggestions. |
 | `value` | — | Initial value(s). |
 | `label` | `data-zidan-label` | Floating label text. An author `<label>` for the same control is hidden while the field is enhanced and restored by `destroy()`. |
+| `ariaLabel` | — | Accessible name for the generated combobox input; defaults to `label`. |
 | `placeholder` | `data-zidan-placeholder` | Trigger placeholder. |
 
 ### Behaviour
@@ -591,9 +612,11 @@ users.refreshOptions();           // clears the cache and refetches page 0
 users.clearCache();               // drop cached pages only
 ```
 
-`fetchOptions` may also reject: the current list stays on screen, the footer shows the error
-and clicking it retries. Appended fetches emit `zidan:load-more` with `{ page, query }`;
-failures emit the usual `zidan:error`.
+`fetchOptions` may also reject: an initial failure shows an error state and
+`getAsyncState().error` keeps the message; call `refreshOptions()` to retry. If an appended page
+fails, the rows already loaded stay visible and the footer shows the error; clicking it retries.
+Appended fetches emit `zidan:load-more` with `{ page, query }`; failures emit the usual
+`zidan:error`.
 
 The cache size is global: `ZidanSelect.cacheLimit = 50` pages (least-recently-used eviction).
 
@@ -643,16 +666,26 @@ control shows `"…" is not in the list.` through the tag error slot. Leave the 
 | Option | Signature |
 | --- | --- |
 | `filterOption(item, query)` | return boolean |
-| `renderOption(item, index)` | HTML string or element |
-| `renderSelected(value)` | HTML string or element |
-| `renderTag(tag)` | HTML string or element |
-| `validateTag(tag)` | boolean or message string |
-| `formatTag(tag)` | display string |
+| `renderOption(item, context)` | HTML string or element; `context` is `{ index, selected, active, query, instance }`. |
+| `renderSelected(item, context)` | HTML string or element; `context` is `{ index, instance }`. |
+| `renderTag(item, context)` | HTML string or element; `context` is `{ index, instance, disabled }`. |
+| `validateTag(tag, tags, context)` | boolean or message string; `tag` is the formatted string, `tags` is the current tag list. |
+| `formatTag(tag, context)` | display string; `context` is `{ instance, tags }`. |
 
 ### Select callbacks
 
-`onInit`, `onChange`, `onSelect`, `onOpen`, `onClose`, `onTagAdd`, `onTagRemove`, `onLoadMore`, `onError`.
-Every callback receives a single payload object with `instance` and the relevant value(s).
+| Callback | Payload |
+| --- | --- |
+| `onInit` | `{ instance, mode, value }` |
+| `onChange` | `{ instance, value, previousValue? }` |
+| `onSelect` | `{ instance, value, item }` |
+| `onOpen` / `onClose` | `{ instance }` |
+| `onTagAdd` | `{ instance, tag, value }` |
+| `onTagRemove` | `{ instance, tag, value }` |
+| `onLoadMore` | `{ instance, page, query }` |
+| `onError` | `{ instance, message, error?, callback? }` |
+
+Every callback receives a single payload object.
 
 ### Every select option in one object
 
@@ -683,6 +716,7 @@ const picker = zidanSelect('#mymov', {
   // suggestions: ['Interstellar', 'Oppenheimer'],
   // value: 'inception',            // string, or array for multiple/tags
   label: 'Movie',
+  ariaLabel: 'Choose a movie',
   placeholder: 'Search a movie…',
 
   /* Behaviour */
@@ -702,6 +736,17 @@ const picker = zidanSelect('#mymov', {
   //     .then(function (response) { return response.json(); }); // items[] or { items, hasMore }
   // },
   fetchPageSize: 0,                 // >0 enables paged responses, load-more and scroll auto-load
+  fetchUrl: null,                   // declarative AJAX endpoint; no fetchOptions needed
+  fetchQueryParam: 'q',             // '' omits the search parameter
+  fetchPageParam: 'page',           // 1-based; '' omits it
+  fetchSkipParam: null,             // e.g. 'skip' sends page × fetchPageSize
+  fetchPageSizeParam: 'limit',      // '' omits the page-size parameter
+  fetchItemsPath: null,             // e.g. 'data.items'; common array names are auto-detected
+  fetchTotalPath: null,             // row count used to calculate hasMore
+  fetchHasMorePath: null,           // boolean path used instead of a total
+  fetchMethod: 'GET',
+  fetchHeaders: null,               // e.g. { Authorization: 'Bearer …' }
+  fetchCredentials: 'same-origin',  // 'omit' | 'same-origin' | 'include'
   autoLoadMore: true,
   cacheResults: true,               // ZidanSelect.cacheLimit = 50 pages, LRU
   loadMoreText: 'Load more',
@@ -722,15 +767,24 @@ const picker = zidanSelect('#mymov', {
 
   /* Rendering hooks */
   // filterOption: function (item, query) { return item.label.toLowerCase().includes(query.toLowerCase()); },
-  // renderOption: function (item) { return '<strong>' + item.label + '</strong>'; },
-  // renderSelected: function (value) { return value; },
-  // renderTag: function (tag) { return tag; },
-  // validateTag: function (tag) { return tag.length <= 24 || 'Use 24 characters or fewer'; },
-  // formatTag: function (tag) { return tag.toUpperCase(); },
+  // renderOption: function (item, context) {
+  //   return (context.selected ? '✓ ' : '') + item.label;
+  // },
+  // renderSelected: function (item, context) { return '◉ ' + item.label; },
+  // renderTag: function (item, context) { return String(item.label).toUpperCase(); },
+  // validateTag: function (tag, tags, context) { return tag.length <= 24 || 'Use 24 characters or fewer'; },
+  // formatTag: function (tag, context) { return tag.toUpperCase(); },
 
-  /* Callbacks — also: onSelect, onOpen, onClose, onTagAdd, onTagRemove, onLoadMore, onError */
+  /* Callbacks */
   onInit: function (event) { console.log('init', event.instance); },
-  onChange: function (event) { console.log('value', event.value); }
+  onChange: function (event) { console.log('value', event.value); },
+  // onSelect: function (event) { console.log('selected', event.item); },
+  // onOpen: function (event) { console.log('opened', event.instance); },
+  // onClose: function (event) { console.log('closed', event.instance); },
+  // onTagAdd: function (event) { console.log('tag added', event.tag); },
+  // onTagRemove: function (event) { console.log('tag removed', event.tag); },
+  // onLoadMore: function (event) { console.log('loading page', event.page); },
+  // onError: function (event) { console.log('error', event.message); }
 });
 ```
 
@@ -748,8 +802,12 @@ as JSON.
 `data-zidan-multiple`, `data-zidan-searchable`, `data-zidan-clearable`, `data-zidan-disabled`,
 `data-zidan-allow-free-text`, `data-zidan-max-tags`, `data-zidan-min-tag-length`,
 `data-zidan-max-tag-length`, `data-zidan-case-sensitive`, `data-zidan-validation`,
-`data-zidan-scrollbar`, and the JSON escape hatch `data-zidan-options` (any JS option that
-takes a literal value). Marker classes: `zidan-select`, `zidan-field`, `zidan-form`.
+`data-zidan-scrollbar`, `data-zidan-fetch-url`, `data-zidan-fetch-method`,
+`data-zidan-fetch-query-param`, `data-zidan-fetch-page-param`, `data-zidan-fetch-skip-param`,
+`data-zidan-fetch-page-size`, `data-zidan-fetch-page-size-param`, `data-zidan-fetch-items-path`,
+`data-zidan-fetch-total-path`, `data-zidan-fetch-has-more-path`, and the JSON escape hatch
+`data-zidan-options` (any JS option that takes a literal value). Marker classes:
+`zidan-select`, `zidan-field`, `zidan-form`.
 
 ## Defaults
 
@@ -782,12 +840,17 @@ to any field that should span the row) rather than putting it on a single field.
 | `getValue()` | Text/textarea value, checked value, radio value or selected files. |
 | `setValue(v)` | Writes to the native control and re-renders. |
 | `update()` / `refresh()` | Re-read native state (checked, disabled, validity, value). |
-| `setValidation('valid'\|'invalid'\|null)` | Mirrors state to classes and `aria-invalid`. A public `'invalid'` call pins the state, so `update()`/`refresh()`/`setValue()` keep it until the user edits the control or you clear it. |
+| `validationTargets()` | Native element(s) whose constraints are mirrored. |
+| `setValidation('valid'\|'invalid'\|null)` | Mirrors state to classes and `aria-invalid`. A public `'invalid'` call survives `update()` / `refresh()` and internal mirrors; user input/change/blur, value helpers that dispatch `change`, a non-empty select value, or another public state call clears/replaces it. |
 | `getValidation()` | Current validation state. |
+| `setError(message)` / `clearError()` | Set or clear the rendered error and invalid state. |
+| `checkAsync()` | Promise resolving to the custom-rule result; runs pending state and stale guards. |
+| `validate()` | Promise resolving to overall validity after native and custom rules. |
+| `isPending()` | Whether an async rule is currently running. |
 | `setTheme(name)`, `setFramework(name)`, `setLayout(name)` | Scoped restyling. |
 | `destroy()` | Restores the original DOM and removes every listener. |
 
-Checkbox adds `setIndeterminate(bool)` and `isChecked()`.
+Checkbox adds `setIndeterminate(bool)`, `setChecked(bool)` and `isChecked()`.
 
 Text inputs add `stepUp(times?)`, `stepDown(times?)`, `setStepper(bool)`,
 `getPhoneCountry()`, `setPhoneCountry(iso)`, `setPhoneFormat(format)`, `formatPhone(value?)`
@@ -802,18 +865,26 @@ File adds `getFiles()`, `getUploadState()`, `addFiles()`, `replaceFiles()`, `rem
 `open()`, `close()`, `toggle()`, `isOpen()`, `getValue()`, `setValue()`, `clear()`,
 `setOptions(items)`, `addTag()`, `removeTag()`, `getTags()`, `enable()`, `disable()`,
 `setLayout()`, `setFramework()`, `setScrollbar()`, `setValidation()`, `refresh()`,
+`loadMore()`, `hasMoreResults()`, `getAsyncState()`, `refreshOptions()`, `clearCache()`,
 `on(event, handler)`, `off(event, handler)`, `announce(message)`, `destroy()`.
 
 ## Events
 
 | Event | Detail |
 | --- | --- |
-| `zidan:init` | `{ instance, kind \| mode }` |
-| `zidan:change` | `{ instance, value }`, `{ checked }`, `{ files }` |
-| `zidan:validation` | `{ instance, state, message? }` |
-| `zidan:remove` | `{ instance, file, index? }` (file upload) |
+| `zidan:init` | `{ instance, kind \| mode, ... }` |
+| `zidan:change` | `{ instance, value, previousValue? }`, `{ checked }`, `{ files }` |
 | `zidan:input` | `{ instance, value }` (text/range) |
-| `zidan:step` | `{ instance, value, direction }` (number stepper) |
+| `zidan:validation` | `{ instance, state, message? }` |
+| `zidan:async-validation` | `{ instance, valid, message, error? }` |
+| `zidan:open` / `zidan:close` | `{ instance }` (select) |
+| `zidan:select` | `{ instance, value, item }` (select) |
+| `zidan:no-results` | `{ instance, query }` (select) |
+| `zidan:tag-add` / `zidan:tag-remove` | `{ instance, tag, value }` (select tags) |
+| `zidan:load-more` | `{ instance, page, query }` (select pagination) |
+| `zidan:reveal` | `{ instance, visible }` (password) |
+| `zidan:remove` | `{ instance, file, index? }` (file upload) |
+| `zidan:step` | `{ instance, value, direction, step }` (number stepper) |
 | `zidan:phone-country` | `{ instance, country }` |
 | `zidan:phone-format` | `{ instance, format }` |
 | `zidan:icon-click` | `{ instance, icon, position }` |

@@ -600,7 +600,7 @@
     textarea: { note: 'A plain <textarea>, enhanced in place.', methods: FIELD_METHODS, events: FIELD_EVENTS },
     number: {
       note: 'Adds a stepper to a native number input.',
-      methods: FIELD_METHODS.concat([['stepUp(n) / stepDown(n)', 'Step the value.'], ['setStepper(on)', 'Enable or remove the stepper.']]),
+      methods: FIELD_METHODS.concat([['stepUp(n) / stepDown(n)', 'Step the value.'], ['setStepper(on)', 'Set or clear the source attribute; reinitialise to apply.']]),
       events: FIELD_EVENTS.concat([['zidan:step', '{ value, direction }']])
     },
     phone: {
@@ -725,11 +725,6 @@
       attrs += attr('data-zidan-simulate-duration', s.simulateUpload ? s.simulateDuration : '');
       attrs += attr('data-zidan-preview', s.showPreview ? 'true' : 'false');
       attrs += attr('data-zidan-show-file-meta', s.showFileMeta ? 'true' : 'false');
-      attrs += attr('data-zidan-progress-template', s.progressTemplate);
-      attrs += attr('data-zidan-uploaded-label', s.uploadedLabel);
-      attrs += attr('data-zidan-failed-label', s.failedLabel);
-      attrs += attr('data-zidan-cancel-label', s.cancelLabel);
-      attrs += attr('data-zidan-retry-label', s.retryLabel);
       attrs += attr('data-zidan-validation', s.validation);
     }
     attrs += attr('accept', s.accept);
@@ -837,7 +832,9 @@
         attrs += attr('data-zidan-phone-format', s.phoneFormat);
         attrs += attr('data-zidan-phone-country-select', s.phoneCountrySelect ? 'true' : 'false');
         attrs += attr('data-zidan-phone-countries', s.phoneCountries);
-        attrs += attr('data-zidan-phone-country-label', s.phoneCountryLabel);
+        if (!s.phoneValidate) {
+          attrs += attr('data-zidan-options', JSON.stringify({ phone: { validate: false } }));
+        }
       }
       if (isRange) {
         attrs += attr('data-zidan-range-variant', s.rangeVariant);
@@ -855,7 +852,6 @@
       if (isPicker) {
         if (s.pickerButton) attrs += flag('data-zidan-picker-button', true);
         attrs += attr('data-zidan-picker-icon', s.pickerButton ? s.pickerIcon : '');
-        attrs += attr('data-zidan-picker-label', s.pickerButton ? s.pickerLabel : '');
         if (/^date|datetime/.test(type)) {
           attrs += attr('data-zidan-disable-weekends', s.disableWeekends ? 'true' : '');
           attrs += attr('data-zidan-disabled-dates', s.disabledDates);
@@ -1012,11 +1008,17 @@
         add('stepperInterval', Number(s.stepperInterval) || 90);
       }
       if (type === 'tel' && s.phone) {
-        add('phone', true);
-        add('phoneCountry', s.phoneCountry);
-        add('phoneFormat', s.phoneFormat);
-        add('phoneCountrySelect', s.phoneCountrySelect);
-        if (s.phoneCountries) add('phoneCountries', String(s.phoneCountries).split(',').map(function (iso) { return iso.trim(); }).filter(Boolean));
+        var phoneCountries = String(s.phoneCountries || '').split(',').map(function (iso) {
+          return iso.trim().toUpperCase();
+        }).filter(Boolean);
+        var phoneOptions = {
+          country: s.phoneCountry,
+          format: s.phoneFormat,
+          showCountry: s.phoneCountrySelect,
+          validate: !!s.phoneValidate
+        };
+        if (phoneCountries.length) phoneOptions.countries = phoneCountries;
+        add('phone', phoneOptions);
         add('phoneCountryLabel', s.phoneCountryLabel);
       }
       if (type === 'range') {
@@ -1231,6 +1233,10 @@
     if (withAttrs) {
       if (window.initZidanSelects) window.initZidanSelects(stage);
       if (window.initZidanForms) window.initZidanForms(stage);
+      instances = (window.ZidanSelect ? window.ZidanSelect.instances : [])
+        .filter(function (instance) { return stage.contains(instance.el); })
+        .concat((window.ZidanForm ? window.ZidanForm.fields : [])
+          .filter(function (instance) { return stage.contains(instance.el); }));
     } else {
       var target = stage.querySelector('#pg-' + active);
       var options = new Function('return (' + jsOptions(active, s) + ');')();

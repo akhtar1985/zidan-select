@@ -82,7 +82,9 @@ jobs:
           npm publish --provenance --access public --tag "$dist_tag"
 
       # A tag on its own only shows up under "Tags"; the Releases panel stays
-      # on the last release until one is created here.
+      # on the last release until one is created here. The body comes from the
+      # matching CHANGELOG.md section, so release notes need no second write-up;
+      # a version with no section falls back to GitHub's generated notes.
       - name: Create the GitHub release
         if: success() && github.event_name == 'push'
         env:
@@ -90,9 +92,16 @@ jobs:
         run: |
           set -eu
           tag="$GITHUB_REF_NAME"
+          version="${tag#v}"
+          notes="$(mktemp)"
+          node scripts/changelog-section.mjs "$version" > "$notes"
           if gh release view "$tag" >/dev/null 2>&1; then
             echo "release $tag already exists"
+          elif [ -s "$notes" ]; then
+            echo "using the CHANGELOG.md section for $version ($(wc -l < "$notes") lines)"
+            gh release create "$tag" --title "$tag" --notes-file "$notes" --verify-tag
           else
+            echo "no CHANGELOG.md section for $version; generating notes from commits"
             gh release create "$tag" --title "$tag" --generate-notes --verify-tag
           fi
 
