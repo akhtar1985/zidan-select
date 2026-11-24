@@ -142,11 +142,12 @@ function rollChangelog(version, date, note) {
   if (!notes) {
     fail('Nothing to release: write notes under "## [Unreleased]" or pass --note "what changed".');
   }
+  const releaseNotes = /^### /m.test(notes) ? notes : '### Changed\n\n' + notes;
   const prefix = markdown.slice(0, start).replace(/\s*$/, '\n');
-  const section = `\n## [${version}] - ${date}\n\n${notes}\n`;
+  const section = `\n## [${version}] - ${date}\n\n${releaseNotes}\n`;
   const updated = prefix + section + markdown.slice(next);
   fs.writeFileSync(file, updated);
-  return notes.split('\n').length;
+  return releaseNotes.split('\n').length;
 }
 
 function git(command) {

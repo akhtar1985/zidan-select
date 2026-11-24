@@ -11,6 +11,12 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+## [2.4.1] - 2026-11-24
+
+### Changed
+
+- Fix documentation UI and complete API coverage
+
 ## [2.4.0] - 2026-11-24
 
 ### Added
