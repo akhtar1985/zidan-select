@@ -168,6 +168,10 @@ A mock **Shopify product page** — variant combobox, quantity stepper, gift-wra
 radios, upload dropzone and the Liquid install snippets — runs at
 <https://akhtar1985.github.io/zidan-select/shopify.html>.
 
+Below the tabs sits the **[controls reference](https://akhtar1985.github.io/zidan-select/#controls)**
+— all nine control families on one page with the options you reach for most, the two ways to
+initialise a field and copyable examples, linking into the playground for the rest.
+
 ---
 
 ## Install
@@ -222,7 +226,7 @@ override presets.
 | `plugin-theme.css` | Tokens, colours, states, presets, layout skins, framework adapters. |
 | `dist/select/` | Select-only build: `zidan-select.js`, `zidan-select.mjs`, `plugin-select-core.css`, `plugin-select-theme.css`. |
 | `dist/file/` | File-only build: `zidan-file.js`, `zidan-file.mjs`, `plugin-file-core.css`, `plugin-file-theme.css`. |
-| `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase (not shipped logic). |
+| `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase plus the controls reference section (not shipped logic). |
 | `advanced.html`, `advanced.css`, `advanced.js` | Advanced reference: init and precedence, async paging, Promise validation, uploads, events, RTL and TypeScript, with copyable HTML/JS examples (not shipped logic). |
 | `playground.html`, `playground.css`, `playground.js` | Per-field option builder with live preview and copyable HTML / JS output (not shipped logic). |
 | `nav.css`, `nav.js` | Shared header, navigation and mobile menu button for the demo pages (not shipped logic). |
@@ -1052,6 +1056,9 @@ npm run build   # dist/ (+ local .min files when esbuild is installed)
 | `scripts/build.mjs` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, emits the select-only and file-only bundles with declarations, and minifies every JS/CSS output with esbuild. |
 | `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, the build artifacts ship, and the playground, README, demo and cookbook stay wired to each other — then runs 19 jsdom behaviour suites. |
 | `scripts/dom/run.mjs` | jsdom suites for select, fields, uploads, async validation, pagination, RTL, teardown, and the select-only/file-only/minified bundles. |
+| `scripts/exa-search.mjs` | Exa web search for docs and release research: `npm run search -- "your question"` (`--num 10` for more results). Reads `EXA_API_KEY`; copy `.env.example` to `.env` (git-ignored) and add a key from https://dashboard.exa.ai/api-keys. |
+
+`exa-js` is a dev dependency only, so the published bundle stays dependency-free.
 
 **Minified files ship in the package.** `npm run build` writes real `.min.js` / `.min.css`
 files into `dist/` (including both subset folders), so the URLs above work on unpkg, a

@@ -30,7 +30,7 @@ function assert(condition, message) {
 }
 
 check('JavaScript syntax', () => {
-  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'playground.js', 'scripts/build.mjs', 'scripts/serve.mjs', 'scripts/dom/run.mjs']) {
+  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'playground.js', 'scripts/build.mjs', 'scripts/serve.mjs', 'scripts/exa-search.mjs', 'scripts/dom/run.mjs']) {
     execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'pipe' });
   }
 });
@@ -121,6 +121,8 @@ check('field playground is wired up', () => {
   });
   assert(read('index.html').includes('playground.html'), 'demo does not link the playground');
   assert(read('README.md').includes('playground.html'), 'README does not link the playground');
+  assert(read('docs/index.html').includes('../index.html#controls'), 'docs index does not link the controls reference');
+  assert(read('README.md').includes('/#controls'), 'README does not link the controls reference');
 });
 
 check('advanced page and shared header are wired up', () => {
