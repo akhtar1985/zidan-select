@@ -208,8 +208,16 @@ check('advanced page and shared header are wired up', () => {
     return Array.from(match[0].matchAll(/<a href="([^"]+)"/g)).map(item => item[1]).join('|');
   });
   assert(new Set(navs).size === 1, 'demo pages do not share the same header links');
-  assert(new Set(navs[0].split('|')).size === 10, 'shared header should expose ten links on every demo page');
-  assert(navs[0].includes('advanced.html') && navs[0].includes('shopify.html') && navs[0].includes('ajax.html'), 'shared header is incomplete');
+  const navLinks = navs[0].split('|');
+  assert(new Set(navLinks).size >= 17, 'shared header should expose every demo page and docs page');
+  for (const target of ['advanced.html', 'shopify.html', 'ajax.html', 'docs/']) {
+    assert(navLinks.includes(target), 'shared header is missing ' + target);
+  }
+  for (const target of ['docs/options.html', 'docs/comparison.html', 'docs/frameworks.html', 'docs/html-and-wordpress.html']) {
+    assert(navLinks.includes(target), 'docs submenu is missing ' + target);
+    assert(pages.every(name => read(name).includes('href="' + target + '"')), 'not every demo page links ' + target);
+  }
+  assert(read('nav.css').includes('.nav-docs-panel'), 'docs submenu styles are missing');
   assert(read('.github/workflows/pages.yml').includes('ajax.html'), 'Pages workflow does not publish the AJAX page');
   const navCss = read('nav.css');
   assert(!/header-nav a:nth-child/.test(read('demo.css') + navCss), 'mobile CSS still hides header links');

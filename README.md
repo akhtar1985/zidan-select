@@ -131,15 +131,16 @@ still have deeper ecosystems. Full matrix, honest limitations and migration note
 5. [Quick start](#quick-start)
 6. [Input types](#input-types)
 7. [Options & data attributes](#options--data-attributes)
-8. [JavaScript API](#javascript-api)
-9. [Themes, layouts & frameworks](#themes-layouts--frameworks)
-10. [Validation libraries](#validation-libraries)
-11. [Form lifecycle & state sync](#form-lifecycle--state-sync)
-12. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
-13. [Build & publish](#build--publish)
-14. [Browser support](#browser-support)
-15. [What's new in 2.1–2.3](#whats-new-in-213)
-16. [Migrating from 1.x](#migrating-from-1x)
+8. [Remote data (AJAX)](#remote-data-ajax-selects)
+9. [JavaScript API](#javascript-api)
+10. [Themes, layouts & frameworks](#themes-layouts--frameworks)
+11. [Validation libraries](#validation-libraries)
+12. [Form lifecycle & state sync](#form-lifecycle--state-sync)
+13. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
+14. [Build & publish](#build--publish)
+15. [Browser support](#browser-support)
+16. [What's new in 2.1–2.3](#whats-new-in-213)
+17. [Migrating from 1.x](#migrating-from-1x)
 
 ---
 
@@ -789,6 +790,69 @@ Three behaviours that are easy to miss:
 - `setValidation('invalid')` (and `data-zidan-validation="invalid"`) is pinned: it survives
   `update()`, `refresh()`, `setValue()` and async re-checks until the user edits the control or
   you call `setValidation(null)`.
+
+---
+
+## Remote data (AJAX selects)
+
+Two ways to load options over HTTP. Both give you debounce, an `AbortSignal` per request, an LRU
+cache, a **Load more** footer, error retry and the same events.
+
+**1. Markup only** — one attribute builds the request:
+
+```html
+<select name="product"
+        data-zidan-select="combobox"
+        data-zidan-fetch-url="/api/products/search"
+        data-zidan-fetch-items-path="data.items"
+        data-zidan-fetch-total-path="data.total"
+        data-zidan-fetch-skip-param="skip"
+        data-zidan-fetch-page-size="20">
+</select>
+```
+
+That requests `GET /api/products/search?q=…&limit=20&skip=0`, then `skip=20` for the next page,
+and stops once `skip + limit >= data.total`.
+
+**2. JavaScript** — `fetchOptions` when the request or the response shape is yours:
+
+```js
+const picker = zidanSelect('#owner', {
+  mode: 'combobox',
+  fetchPageSize: 20,
+  fetchOptions: async (query, signal, { page, pageSize }) => {
+    const res = await fetch('/api/users?q=' + encodeURIComponent(query)
+      + '&page=' + page + '&size=' + pageSize, { signal });
+    const data = await res.json();
+    return {
+      items: data.rows.map(u => ({ value: u.id, label: u.name })),
+      hasMore: data.page + 1 < data.pages
+    };
+  }
+});
+```
+
+| Option | Default | Notes |
+| --- | --- | --- |
+| `fetchUrl` | `null` | Endpoint for the declarative mode (`data-zidan-fetch-url`). |
+| `fetchOptions(query, signal, context)` | — | Return an array, `{ items, hasMore }` or `{ items, total }`; `context` is `{ page, pageSize, append, instance }`. |
+| `fetchPageSize` | `0` | Rows per request; a value above `0` enables paging and the load-more footer. |
+| `fetchQueryParam` | `'q'` | Parameter that carries the search term (`''` omits it). |
+| `fetchPageParam` | `'page'` | 1-based page parameter (`''` omits it). |
+| `fetchSkipParam` | `null` | Send `skip = page × pageSize` instead — for dummyjson/Laravel-style APIs. |
+| `fetchPageSizeParam` | `'limit'` | Parameter that carries `fetchPageSize`. |
+| `fetchItemsPath`, `fetchTotalPath`, `fetchHasMorePath` | `null` | Dot paths into the JSON body (`data.items`, `data.total`). |
+| `fetchMethod`, `fetchHeaders`, `fetchCredentials` | `'GET'`, `null`, `'same-origin'` | Request tuning (JavaScript only). |
+| `debounce`, `minChars` | `250`, `0` | When typing starts a request. |
+| `cacheResults`, `autoLoadMore`, `loadMoreText` | `true`, `true`, `Load more` | Paging behaviour. |
+
+Rows map without a mapping function: `value`/`label`, or `id`/`slug`/`code` plus
+`name`/`title`/`full_name`. Instance helpers: `loadMore()`, `hasMoreResults()`,
+`getAsyncState()`, `refreshOptions()`, `clearCache()`; events: `zidan:load-more`, `zidan:error`.
+
+**[Live AJAX demo](https://akhtar1985.github.io/zidan-select/ajax.html)** — one card uses the
+attributes above against a public API, the other a hand-written `fetchOptions`, with paging,
+abort and cache state on screen.
 
 ---
 
