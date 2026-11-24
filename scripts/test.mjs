@@ -112,6 +112,29 @@ check('docs and demo reference the current files', () => {
   assert(read('index.html').includes('shopify.html'), 'demo does not link the Shopify page');
 });
 
+check('version metadata and release tooling agree', () => {
+  const pkg = JSON.parse(read('package.json'));
+  const js = read('zidan-form.js');
+  assert(js.includes('ZidanForm v' + pkg.version), 'zidan-form.js banner is behind package.json');
+  assert(js.includes("var VERSION = '" + pkg.version + "'"), 'zidan-form.js VERSION is behind package.json');
+  for (const css of ['plugin-core.css', 'plugin-theme.css']) {
+    assert(read(css).includes('ZidanForm v' + pkg.version), css + ' banner is behind package.json');
+  }
+  const lock = JSON.parse(read('package-lock.json'));
+  assert(lock.version === pkg.version, 'package-lock.json version is behind package.json');
+  assert(lock.packages && lock.packages[''] && lock.packages[''].version === pkg.version, 'package-lock.json root package version is behind package.json');
+  assert(read('README.md').includes('zidan-select@' + pkg.version), 'README CDN URLs are behind package.json');
+  const changelog = read('CHANGELOG.md');
+  assert(changelog.includes('## [Unreleased]'), 'CHANGELOG.md needs an Unreleased section for the release script');
+  assert(changelog.includes('## [' + pkg.version + ']'), 'CHANGELOG.md has no entry for ' + pkg.version);
+  assert(read('scripts/release.mjs').includes("'CHANGELOG.md'"), 'release script does not roll the changelog');
+  assert(pkg.scripts.release === 'node scripts/release.mjs', 'package.json needs the release script entry');
+  const workflow = read('.github/workflows/release.yml');
+  assert(workflow.includes('--provenance'), 'release workflow must publish with provenance');
+  assert(workflow.includes("tags: ['v*']"), 'release workflow must run on version tags');
+  assert(workflow.includes('id-token: write'), 'release workflow needs id-token for trusted publishing');
+});
+
 check('field playground is wired up', () => {
   const playground = read('playground.html');
   assert(playground.includes('plugin-core.css') && playground.includes('plugin-theme.css'), 'playground does not load both stylesheets');

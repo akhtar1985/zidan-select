@@ -1,0 +1,101 @@
+name: Publish to npm
+
+# Publishing is driven by the release tag, not by a local `npm login`:
+#
+#   npm run release -- patch --note "what changed"   # bumps, commits, tags vX.Y.Z
+#   git push origin main --follow-tags               # this workflow publishes
+#
+# Auth uses npm trusted publishing over OIDC (no token secret). One-time setup:
+# npmjs.com → zidan-select → Settings → Trusted publishing → GitHub Actions,
+# organisation/user `akhtar1985`, repository `zidan-select`, workflow `release.yml`,
+# environment left blank.
+#
+# npm records the provenance attestation for every version published here.
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Optional tag to verify against package.json (defaults to the current version)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC: trusted publishing + provenance
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # esbuild and typescript are dev dependencies; the tarball stays dependency-free.
+      - name: Install build tooling
+        run: npm ci --no-audit --no-fund
+
+      - name: Check the tag matches package.json
+        if: github.event_name == 'push'
+        run: |
+          set -eu
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./package.json').version")"
+          echo "tag=$tag package=$pkg"
+          if [ "$tag" != "$pkg" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $pkg. Use npm run release instead of tagging by hand."
+            exit 1
+          fi
+
+      - name: Refuse to republish an existing version
+        run: |
+          set -eu
+          pkg="$(node -p "require('./package.json').version")"
+          if npm view "zidan-select@$pkg" version >/dev/null 2>&1; then
+            echo "::error::zidan-select@$pkg is already on npm. Bump it with npm run release."
+            exit 1
+          fi
+          echo "publishing zidan-select@$pkg"
+
+      # `npm publish` runs prepublishOnly first: types → build → test.
+      # Prereleases go to the `next` dist-tag so `latest` stays stable.
+      - name: Publish with provenance
+        run: |
+          set -eu
+          pkg="$(node -p "require('./package.json').version")"
+          case "$pkg" in
+            *-*) dist_tag="next" ;;
+            *) dist_tag="latest" ;;
+          esac
+          npm publish --provenance --access public --tag "$dist_tag"
+
+      - name: Summarise
+        if: success()
+        run: |
+          pkg="$(node -p "require('./package.json').version")"
+          {
+            echo "### Published \`zidan-select@$pkg\`"
+            echo
+            echo "https://www.npmjs.com/package/zidan-select/v/$pkg"
+            echo
+            echo "Tarball: \`npm pack zidan-select@$pkg\` — includes a provenance attestation."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+# Fallback if trusted publishing is not configured on npm yet: create a granular
+# access token (read+write for zidan-select), store it as the NPM_TOKEN repository
+# secret, and add this env block to the Publish step. Remove it once OIDC is set up.
+#
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

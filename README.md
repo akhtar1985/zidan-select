@@ -1057,6 +1057,7 @@ npm run build   # dist/ (+ local .min files when esbuild is installed)
 | `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, the build artifacts ship, and the playground, README, demo and cookbook stay wired to each other — then runs 19 jsdom behaviour suites. |
 | `scripts/dom/run.mjs` | jsdom suites for select, fields, uploads, async validation, pagination, RTL, teardown, and the select-only/file-only/minified bundles. |
 | `scripts/exa-search.mjs` | Exa web search for docs and release research: `npm run search -- "your question"` (`--num 10` for more results). Reads `EXA_API_KEY`; copy `.env.example` to `.env` (git-ignored) and add a key from https://dashboard.exa.ai/api-keys. |
+| `scripts/release.mjs` | One-command release: `npm run release -- patch --note "what changed"` bumps every version site, rolls `CHANGELOG.md`, runs the checks, commits and tags `vX.Y.Z`. |
 
 `exa-js` is a dev dependency only, so the published bundle stays dependency-free.
 
@@ -1064,14 +1065,24 @@ npm run build   # dist/ (+ local .min files when esbuild is installed)
 files into `dist/` (including both subset folders), so the URLs above work on unpkg, a
 self-hosted CDN or jsDelivr without relying on the CDN's auto-minification.
 
-Publishing:
+Releasing is one command:
 
 ```bash
-npm version minor      # or patch/major — tags the release
-npm run build
-npm publish            # `files` limits the tarball to JS, CSS, dist, docs, README, LICENSE
-git push --follow-tags
+npm run release -- patch --note "Fix the thing that broke"   # or minor / major / 2.3.2
+git push origin main --follow-tags
 ```
+
+`scripts/release.mjs` writes the version into `package.json`, `package-lock.json`, the JS banner
+and `VERSION`, both CSS banners, the README CDN URLs, the demo pages and the docs; moves
+`## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) under a dated heading; runs the type check and
+`npm test`; then commits `Release X.Y.Z` and creates the annotated tag `vX.Y.Z`.
+`npm run release -- --dry-run` prints the plan without writing anything.
+
+Pushing the tag runs [`.github/workflows/release.yml`](.github/workflows/release.yml), which
+publishes to npm through **trusted publishing** (OIDC) with `--provenance` — no token and no local
+`npm login`, and every tarball carries a provenance attestation. Prereleases go to the `next`
+dist-tag. The workflow refuses a tag that disagrees with `package.json` and refuses to republish a
+version that already exists on the registry. History lives in [`CHANGELOG.md`](CHANGELOG.md).
 
 GitHub Pages serves the repo root: the demo is `index.html` (no build needed), docs live in
 `docs/`. Release notes should list theme/layout additions and any token renames.

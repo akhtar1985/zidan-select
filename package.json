@@ -103,6 +103,7 @@
     "types": "tsc -p tsconfig.types.json",
     "prepublishOnly": "npm run types && npm run build && npm test",
     "lint": "node --check zidan-form.js && node --check demo.js && node --check advanced.js && node --check playground.js && node --check nav.js && node --check zidan-form.mjs",
+    "release": "node scripts/release.mjs",
     "search": "node scripts/exa-search.mjs"
   },
   "engines": {
