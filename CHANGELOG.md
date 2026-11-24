@@ -11,6 +11,8 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+## [2.4.0] - 2026-11-24
+
 ### Added
 
 - **Declarative AJAX** — `data-zidan-fetch-url` (or the `fetchUrl` option) turns a select into a
