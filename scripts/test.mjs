@@ -258,7 +258,7 @@ check('demo and documentation pages share the home visual system', () => {
   const docsPages = ['docs/index.html', 'docs/validation.html'];
   const assertShell = (name, html, prefix) => {
     for (const needle of [
-      'class="site-header"', 'class="brand-sub"', 'v2.4.1 · zero dependencies',
+      'class="site-header"', 'class="brand-sub"', 'v2.4.2 · zero dependencies',
       'class="bg-orbs"', 'id="quick-theme"', 'class="site-footer"',
       prefix + 'demo.css', prefix + 'nav.css', prefix + 'nav.js'
     ]) {
