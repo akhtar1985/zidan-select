@@ -41,9 +41,7 @@ const TEXT_SITES = [
   'docs/index.html',
   'docs/validation.html',
   'docs/build.md',
-  'docs/html-and-wordpress.md',
-  'scripts/docs.mjs',
-  'scripts/test.mjs'
+  'docs/html-and-wordpress.md'
 ];
 
 const SEMVER = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z][0-9A-Za-z.-]*)?$/;

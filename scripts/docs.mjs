@@ -18,6 +18,10 @@ import {fileURLToPath} from 'node:url';
 
 const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 
+/** The package version, so the generated pages cannot drift from package.json. */
+const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+const version = pkg.version;
+
 /** source Markdown -> output page */
 const PAGES = [
   {source: 'options', out: 'options', title: 'Options & data attributes', blurb: 'Every JS option, data attribute, callback, event and instance method.'},
@@ -192,7 +196,7 @@ function siteHeader(page) {
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.4.2 · zero dependencies</span>
+        <span class="brand-sub">v${version} · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
