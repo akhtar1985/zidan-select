@@ -103,9 +103,7 @@ Without esbuild the build still succeeds and prints that minification was skippe
 | Select-only | `/dist/select/zidan-select.min.js` — ≈68 kB | `/dist/select/plugin-select-core.min.css` — ≈9 kB | `/dist/select/plugin-select-theme.min.css` — ≈27 kB |
 | File-only | `/dist/file/zidan-file.min.js` — ≈50 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈29 kB |
 
-Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.4.1` to each path (or your own origin). These
-pins track the last published npm version, so they can trail the version in `package.json`.
-The files are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
+Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.4.2` to each path (or your own origin). These are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
 Use these package files rather than relying on a CDN's auto-minification.
 Check the three you use with `curl -I` before changing a version, then update the URLs in the
 README, the demo build cards and the playground in the same commit.
@@ -247,11 +245,11 @@ gh release create v2.4.2 --title v2.4.2 --notes-file .build/notes-2.4.2.md --ver
 ```
 
 jsDelivr only serves published tarballs, so a version that is not on npm has no CDN files: its
-`zidan-select@X.Y.Z` URLs return 404. While a release is waiting on this fix, the README, demo
-build cards and docs pin the **last published** version (currently 2.4.1) instead of the version in
-`package.json`; `scripts/release.mjs` re-pins every `zidan-select@X.Y.Z` URL and `…@X.Y.Z` shorthand to
-the new version on the next release, so a delayed pin never sticks. `npm test` allows a pin behind `package.json` but
-rejects one ahead of it or a mix of versions.
+`zidan-select@X.Y.Z` URLs return 404. If that happens, pin the README, demo build cards and docs
+to the **last published** version until the publish succeeds; `scripts/release.mjs` re-pins every
+`zidan-select@X.Y.Z` URL and `…@X.Y.Z` shorthand to the new version on the next release, so a
+delayed pin never sticks. `npm test` allows a pin behind `package.json` but rejects one ahead of
+it or a mix of versions.
 
 Manual publishing remains a last resort:
 
