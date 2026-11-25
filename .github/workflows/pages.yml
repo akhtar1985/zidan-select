@@ -7,19 +7,16 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
+# Serialise Pages deployments without cancelling one that is already running: an
+# interrupted upload is exactly what leaves the next run without its artifact.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -35,9 +32,24 @@ jobs:
       - name: Build the documentation pages
         run: node scripts/docs.mjs _site/docs
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
+  # deploy-pages resolves the artifact by name within its own run. Doing the upload
+  # and the deploy in one job intermittently listed 0 artifacts, because the lookup
+  # ran a fraction of a second after the upload was finalised. A separate job starts
+  # only once the build job — upload included — has completed, which is the shape
+  # GitHub documents for Pages deployments.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
