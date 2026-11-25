@@ -33,15 +33,15 @@ colours), `plugin-theme.css` carries colours, presets and skins.
 | File uploads only | `dist/file/zidan-file.js` + `plugin-file-core.css` + `plugin-file-theme.css` |
 | Several control types together | `zidan-form.js` + `plugin-core.css` + `plugin-theme.css` |
 
-Pinned CDN URLs (replace `2.4.2` when you upgrade):
+Pinned CDN URLs (they track the last published npm version — replace `2.4.1` when you upgrade):
 
 | Build | JavaScript | CSS |
 | --- | --- | --- |
-| Full | `https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/zidan-form.js` | `…@2.4.2/plugin-core.css` + `…@2.4.2/plugin-theme.css` |
-| Select-only | `https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/zidan-select.js` | `…@2.4.2/dist/select/plugin-select-core.css` + `…plugin-select-theme.css` |
-| File-only | `https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/zidan-file.js` | `…@2.4.2/dist/file/plugin-file-core.css` + `…plugin-file-theme.css` |
+| Full | `https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/zidan-form.js` | `…@2.4.1/plugin-core.css` + `…@2.4.1/plugin-theme.css` |
+| Select-only | `https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/dist/select/zidan-select.js` | `…@2.4.1/dist/select/plugin-select-core.css` + `…plugin-select-theme.css` |
+| File-only | `https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/dist/file/zidan-file.js` | `…@2.4.1/dist/file/plugin-file-core.css` + `…plugin-file-theme.css` |
 
-Prefer self-hosting? Download the same files (`npm pack zidan-select@2.4.2`, or the raw files
+Prefer self-hosting? Download the same files (`npm pack zidan-select@2.4.1`, or the raw files
 from GitHub) and keep them next to your page:
 
 ```
@@ -174,8 +174,8 @@ see the native `FormData`.
   <title>ZidanForm static example</title>
 
   <!-- structure first, theme second -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-core.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-theme.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/plugin-core.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/plugin-theme.css">
 </head>
 <body>
 
@@ -251,7 +251,7 @@ see the native `FormData`.
     </form>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/zidan-form.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/zidan-form.js"></script>
   <script>
     // Demo only: show the native FormData instead of navigating away.
     document.querySelector('.zidan-form').addEventListener('submit', function (event) {
@@ -289,9 +289,9 @@ and `ZidanSelect`; `zidanField` does not exist here.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Select-only example</title>
   <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-core.css">
+        href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/dist/select/plugin-select-core.css">
   <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-theme.css">
+        href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/dist/select/plugin-select-theme.css">
 </head>
 <body style="max-width:520px;margin:40px auto;padding:0 20px">
 
@@ -311,7 +311,7 @@ and `ZidanSelect`; `zidanField` does not exist here.
     </select>
   </p>
 
-  <script src="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/zidan-select.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/dist/select/zidan-select.js"></script>
   <script>
     zidanSelect('#country', {
       mode: 'combobox',
@@ -342,9 +342,9 @@ Only uploads on this page? Load the file-only build. It exposes `zidanField`,
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>File upload example</title>
   <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-core.css">
+        href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/dist/file/plugin-file-core.css">
   <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-theme.css">
+        href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/dist/file/plugin-file-theme.css">
 </head>
 <body style="max-width:520px;margin:40px auto;padding:0 20px">
 
@@ -356,7 +356,7 @@ Only uploads on this page? Load the file-only build. It exposes `zidanField`,
     <input id="shots" type="file" name="shots" multiple accept="image/*">
   </form>
 
-  <script src="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/zidan-file.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/dist/file/zidan-file.js"></script>
   <script>
     zidanField('#cv', {
       variant: 'dropzone',
@@ -552,9 +552,9 @@ Shopify has its own section: [9. Shopify](#9-shopify).
 ```html
 <!-- inside one embed block: markup first, script last -->
 <select class="zidan-select" data-zidan-options='{"mode":"combobox"}'>…</select>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-core.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-theme.css">
-<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/zidan-form.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/plugin-core.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/plugin-theme.css">
+<script src="https://cdn.jsdelivr.net/npm/zidan-select@2.4.1/zidan-form.js"></script>
 ```
 
 For the single-select case, the select-only build is smaller: swap in the

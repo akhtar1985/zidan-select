@@ -116,14 +116,24 @@ function bumpJson(relative, current, next, summary) {
   summary.push(`${relative}: version ${current} → ${next}`);
 }
 
-/** Everything else carries the version inside a banner, a URL or a sentence. */
+/** A CDN pin: the full jsDelivr URL or the `…@X.Y.Z` shorthand used in the cookbook tables. */
+const CDN_PIN = /(?:zidan-select|…)@\d+\.\d+\.\d+/g;
+
+/**
+ * Everything else carries the version inside a banner, a URL or a sentence. CDN pins are matched
+ * by shape, not by `current`: they may lag package.json until that version is published, and a
+ * delayed pin must still catch up on the next release instead of sticking forever.
+ */
 function bumpText(relative, current, next, summary) {
   const file = path.join(root, relative);
   const source = fs.readFileSync(file, 'utf8');
-  const hits = source.split(current).length - 1;
-  if (!hits) fail(`${relative} does not contain ${current}; refusing a partial bump.`);
-  fs.writeFileSync(file, source.split(current).join(next));
-  summary.push(`${relative}: ${hits} replacement${hits === 1 ? '' : 's'}`);
+  const pins = source.match(CDN_PIN) || [];
+  const repinned = source.replace(CDN_PIN, pin => pin.replace(/@\d+\.\d+\.\d+$/, '@' + next));
+  const hits = repinned.split(current).length - 1;
+  if (!pins.length && !hits) fail(`${relative} does not contain ${current}; refusing a partial bump.`);
+  fs.writeFileSync(file, repinned.split(current).join(next));
+  const total = pins.length + hits;
+  summary.push(`${relative}: ${total} replacement${total === 1 ? '' : 's'}`);
 }
 
 /** Move `## [Unreleased]` under a dated heading, leaving a fresh empty section. */

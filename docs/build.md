@@ -103,8 +103,9 @@ Without esbuild the build still succeeds and prints that minification was skippe
 | Select-only | `/dist/select/zidan-select.min.js` — ≈68 kB | `/dist/select/plugin-select-core.min.css` — ≈9 kB | `/dist/select/plugin-select-theme.min.css` — ≈27 kB |
 | File-only | `/dist/file/zidan-file.min.js` — ≈50 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈29 kB |
 
-Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.4.2` to each path (or your own origin).
-These are real files in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
+Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.4.1` to each path (or your own origin). These
+pins track the last published npm version, so they can trail the version in `package.json`.
+The files are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
 Use these package files rather than relying on a CDN's auto-minification.
 Check the three you use with `curl -I` before changing a version, then update the URLs in the
 README, the demo build cards and the playground in the same commit.
@@ -212,6 +213,45 @@ publishing → GitHub Actions**, owner `akhtar1985`, repository `zidan-select`, 
 Without trusted publishing, create a granular access token with read+write on `zidan-select`,
 store it as the `NPM_TOKEN` repository secret, and uncomment the `NODE_AUTH_TOKEN` env block at
 the bottom of the workflow. Remove it once OIDC works.
+
+### Publish fails with `E404` (trusted publishing not configured)
+
+```text
+npm error code E404
+npm error 404 Not Found - PUT https://registry.npmjs.org/zidan-select - Not found
+npm error 404  The requested resource 'zidan-select@X.Y.Z' could not be found or you do not have permission to access it.
+```
+
+npm answers `404` instead of `403` when a publish cannot be authorised, so this is an auth
+problem, not a missing package. The tag and commit are fine — the npm side has no trusted
+publisher for this repository yet. Register it once (**zidan-select → Settings → Trusted
+publishing → GitHub Actions**, owner `akhtar1985`, repository `zidan-select`, workflow
+`release.yml`, environment empty), then publish the tag that already exists. Do not re-tag or
+move the tag: the run reads the version from `package.json` at that ref, which is what keeps the
+artefact in step with `vX.Y.Z`.
+
+```bash
+gh workflow run release.yml --ref v2.4.2   # any existing tag
+gh run watch
+npm view zidan-select dist-tags            # latest should be 2.4.2
+npm view zidan-select@2.4.2 version
+```
+
+A `workflow_dispatch` run skips the push-only guards and the "Create the GitHub release" step, so
+create the Release yourself when the panel is empty — the body comes from the same changelog
+section the workflow uses:
+
+```bash
+node scripts/changelog-section.mjs 2.4.2 > .build/notes-2.4.2.md
+gh release create v2.4.2 --title v2.4.2 --notes-file .build/notes-2.4.2.md --verify-tag
+```
+
+jsDelivr only serves published tarballs, so a version that is not on npm has no CDN files: its
+`zidan-select@X.Y.Z` URLs return 404. While a release is waiting on this fix, the README, demo
+build cards and docs pin the **last published** version (currently 2.4.1) instead of the version in
+`package.json`; `scripts/release.mjs` re-pins every `zidan-select@X.Y.Z` URL and `…@X.Y.Z` shorthand to
+the new version on the next release, so a delayed pin never sticks. `npm test` allows a pin behind `package.json` but
+rejects one ahead of it or a mix of versions.
 
 Manual publishing remains a last resort:
 

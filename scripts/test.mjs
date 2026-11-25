@@ -123,7 +123,24 @@ check('version metadata and release tooling agree', () => {
   const lock = JSON.parse(read('package-lock.json'));
   assert(lock.version === pkg.version, 'package-lock.json version is behind package.json');
   assert(lock.packages && lock.packages[''] && lock.packages[''].version === pkg.version, 'package-lock.json root package version is behind package.json');
-  assert(read('README.md').includes('zidan-select@' + pkg.version), 'README CDN URLs are behind package.json');
+  // A CDN pin may lag package.json while that version is still unpublished (see
+  // docs/build.md, "Publish fails with E404"), but every pin must agree, name a released
+  // version, and never lead package.json. Both the full URL and the `…@X.Y.Z` shorthand count;
+  // `npm view zidan-select@X.Y.Z` style examples are commands, not pins, and are ignored.
+  const pinned = new Map();
+  for (const name of ['README.md', 'index.html', 'advanced.html', 'docs/build.md', 'docs/html-and-wordpress.md']) {
+    for (const match of read(name).matchAll(/(?:cdn\.jsdelivr\.net\/npm\/zidan-select|…)@(\d+\.\d+\.\d+)/g)) {
+      if (!pinned.has(match[1])) pinned.set(match[1], []);
+      pinned.get(match[1]).push(name);
+    }
+  }
+  assert(pinned.size === 1, 'CDN pins must all use one version (found: ' + ([...pinned].map(([v, files]) => v + ' in ' + [...new Set(files)].join(', ')).join('; ') || 'none') + ')');
+  const pin = [...pinned.keys()][0];
+  const pinParts = pin.split('.').map(Number);
+  const pkgParts = pkg.version.split('.').map(Number);
+  const lead = pinParts[0] - pkgParts[0] || pinParts[1] - pkgParts[1] || pinParts[2] - pkgParts[2];
+  assert(lead <= 0, 'CDN pins use ' + pin + ', ahead of package.json ' + pkg.version);
+  assert(read('CHANGELOG.md').includes('## [' + pin + ']'), 'CDN pins use ' + pin + ', which has no CHANGELOG.md entry');
   const changelog = read('CHANGELOG.md');
   assert(changelog.includes('## [Unreleased]'), 'CHANGELOG.md needs an Unreleased section for the release script');
   assert(changelog.includes('## [' + pkg.version + ']'), 'CHANGELOG.md has no entry for ' + pkg.version);
