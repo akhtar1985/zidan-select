@@ -852,13 +852,18 @@ test('file list re-renders do not accumulate per-item listeners', () => {
 /* ---------------- subset builds ---------------- */
 
 test('select-only build: select, pagination and independent fields', async () => {
-  const window = boot('<select id="s"><option value="a">A</option><option value="b">B</option></select>', selectSource());
+  const window = boot('<div data-zs-framework="bulma"><select id="s"><option value="a">A</option><option value="b">B</option></select></div>', selectSource());
   assert.equal(typeof window.zidanSelect, 'function');
   assert.equal(typeof window.zidanField, 'undefined');
   assert.equal(typeof window.ZidanSelect.registerIcon, 'function');
   window.ZidanSelect.registerIcon('subset-star', '<path d="M12 2l3 6 6 1-4 5 1 6-6-3-6 3 1-6-4-5 6-1Z"/>');
   assert.ok(window.ZidanSelect.icons['subset-star']);
   const select = window.zidanSelect('#s', { mode: 'combobox', fetchPageSize: 2, fetchOptions: () => ({ items: [{ value: 'x', label: 'X' }], hasMore: true }) });
+  assert.equal(select.framework, 'bulma');
+  assert.equal(select.controlEl.classList.contains('form-control'), false);
+  select.setFramework('bootstrap');
+  assert.equal(select.controlEl.classList.contains('form-control'), true);
+  assert.equal(select.controlEl.classList.contains('form-select'), true);
   select.open();
   await wait();
   assert.equal(select.asyncItems.length, 1);
@@ -869,7 +874,7 @@ test('select-only build: select, pagination and independent fields', async () =>
 });
 
 test('file-only build: async validation and uploads work without select code', async () => {
-  const window = boot('<input id="docs" type="file">', fileSource());
+  const window = boot('<div data-zs-framework="foundation"><input id="docs" type="file"></div>', fileSource());
   assert.equal(typeof window.zidanField, 'function');
   assert.equal(typeof window.zidanSelect, 'undefined');
   const input = fileInput(window, 'docs');
@@ -878,6 +883,10 @@ test('file-only build: async validation and uploads work without select code', a
     validate: (files) => Promise.resolve(files.length ? true : 'Choose a file'),
     uploadHandler: (file, context) => { uploads += 1; context.complete({}); }
   });
+  assert.equal(field.framework, 'foundation');
+  assert.equal(field.root.getAttribute('data-zs-framework'), 'foundation');
+  field.setFramework('bootstrap');
+  assert.equal(field.root.getAttribute('data-zs-framework'), 'bootstrap');
   assert.equal(await field.validate(), false);
   field.addFiles([new window.File(['x'], 'x.txt')]);
   assert.equal(await field.validate(), true);
@@ -887,16 +896,23 @@ test('file-only build: async validation and uploads work without select code', a
 });
 
 test('minified select and file bundles behave like the full build', async () => {
-  const selectWindow = boot('<select id="s"><option value="a">A</option></select>', minSelectSource());
+  const selectWindow = boot('<div data-zs-framework="bulma"><select id="s"><option value="a">A</option></select></div>', minSelectSource());
   const select = selectWindow.zidanSelect('#s');
+  assert.equal(select.framework, 'bulma');
+  select.setFramework('bootstrap');
+  assert.equal(select.controlEl.classList.contains('form-control'), true);
+  assert.equal(select.controlEl.classList.contains('form-select'), true);
   select.setValue('a');
   assert.equal(select.getValue(), 'a');
   select.destroy();
 
-  const fileWindow = boot('<input id="docs" type="file">', minFileSource());
+  const fileWindow = boot('<div data-zs-framework="foundation"><input id="docs" type="file"></div>', minFileSource());
   const field = fileWindow.zidanField(fileInput(fileWindow, 'docs'), {
     validate: (files) => Promise.resolve(files.length ? true : 'Choose a file')
   });
+  assert.equal(field.framework, 'foundation');
+  field.setFramework('bootstrap');
+  assert.equal(field.root.getAttribute('data-zs-framework'), 'bootstrap');
   assert.equal(await field.validate(), false);
   field.addFiles([new fileWindow.File(['x'], 'x.txt')]);
   assert.equal(await field.validate(), true);

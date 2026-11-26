@@ -433,6 +433,35 @@ check('subset builds and minified copies exist', () => {
   }
 });
 
+check('subset CSS carries the current framework adapters', () => {
+  const fullTheme = read('plugin-theme.css');
+  const subsetThemes = {
+    select: read('dist/select/plugin-select-theme.css'),
+    file: read('dist/file/plugin-file-theme.css')
+  };
+  const adapterBlock = (css, framework) => {
+    const marker = '.zs-root[data-zs-framework="' + framework + '"],';
+    const start = css.indexOf(marker);
+    return start === -1 ? '' : css.slice(start, css.indexOf('\n}', start)).trim();
+  };
+  for (const framework of ['bootstrap', 'tailwind', 'bulma', 'foundation']) {
+    const expected = adapterBlock(fullTheme, framework);
+    assert(expected, 'full theme omits the ' + framework + ' adapter block');
+    for (const [name, css] of Object.entries(subsetThemes)) {
+      assert(adapterBlock(css, framework) === expected, name + '-only theme has a stale ' + framework + ' adapter');
+    }
+  }
+  for (const name of [
+    'dist/select/plugin-select-theme.min.css', 'dist/file/plugin-file-theme.min.css'
+  ]) {
+    const css = read(name);
+    for (const needle of ['--zs-input-height', '--zs-chip-bg', '--zs-option-selected-bg', '.input-group>.zs-root[data-zs-framework=bootstrap]']) {
+      assert(css.includes(needle), name + ' is missing ' + needle);
+    }
+  }
+  assert(read('dist/select/plugin-select-core.css').includes('height: var(--zs-input-height, 32px)'), 'select-only core CSS has a stale input height');
+});
+
 check('documented sizes match the built assets', () => {
   const builds = [
     ['zidan-form.js', 'dist/zidan-form.min.js'],
