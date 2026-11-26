@@ -42,6 +42,10 @@ const pickers = zidanSelect('.mymovclass', { mode: 'select', layout: 'soft-pill'
 `.zidan-select` inside a scope; use it when the markup can carry attributes. `zidanSelect()`
 is the targeted form for IDs, classes and elements you already have a reference to.
 
+Both bulk helpers skip elements that are already enhanced. Pass `{ force: true }`
+(`initZidanForms(scope, { force: true })`, `ZidanForm.init(scope, { force: true })`) to
+re-initialise them, for example after swapping markup.
+
 ### Read values and option details
 
 ```js
@@ -870,11 +874,15 @@ File adds `getFiles()`, `getUploadState()`, `addFiles()`, `replaceFiles()`, `rem
 
 ### Select
 
-`open()`, `close()`, `toggle()`, `isOpen()`, `getValue()`, `setValue()`, `clear()`,
-`setOptions(items)`, `addTag()`, `removeTag()`, `getTags()`, `enable()`, `disable()`,
-`setLayout()`, `setFramework()`, `setScrollbar()`, `setValidation()`, `refresh()`,
-`loadMore()`, `hasMoreResults()`, `getAsyncState()`, `refreshOptions()`, `clearCache()`,
-`on(event, handler)`, `off(event, handler)`, `announce(message)`, `destroy()`.
+`open()`, `close()`, `toggle()`, `isOpen()`, `getValue()`, `setValue(value, config?)`,
+`clear(config?)`, `setOptions(items)`, `addTag()`, `removeTag()`, `getTags()`, `enable()`,
+`disable()`, `setLayout()`, `setFramework()`, `setScrollbar()`, `setValidation()`,
+`refresh()`, `loadMore()`, `hasMoreResults()`, `getAsyncState()`, `refreshOptions()`,
+`clearCache()`, `on(event, handler)`, `off(event, handler)`, `announce(message)`, `destroy()`.
+
+`setValue(value, config?)` and `clear(config?)` take `{ silent: true }`, which updates the
+value, the native `<select>` and the rendered control without emitting `zidan:change` or
+calling `onChange`.
 
 ## Events
 

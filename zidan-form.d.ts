@@ -314,7 +314,8 @@ export class ZidanSelect {
   toggle(): this;
   getValue(): string | string[];
   setValue(value: string | number | Array<string | number> | null, options?: { silent?: boolean }): this;
-  clear(): this;
+  /** Resets the value; `{ silent: true }` skips `zidan:change` and `onChange`. */
+  clear(config?: { silent?: boolean }): this;
   setOptions(options: SelectItemInput[] | null): this;
   addTag(label: string, data?: unknown): boolean;
   removeTag(tagOrIndex: string | number): boolean;
@@ -419,7 +420,7 @@ export interface ZidanFormStatic {
   api: Record<string, unknown> | null;
   registerIcon(name: string, markup: string): typeof ZidanSelect | ZidanFormStatic | undefined;
   get(target: string | Element | null): ZidanFieldBase | null;
-  init(scope?: Document | Element, options?: FieldOptions): ZidanFieldBase[];
+  init(scope?: Document | Element, options?: FieldOptions & { force?: boolean }): ZidanFieldBase[];
   field: typeof zidanField;
   refresh(scope?: Document | Element): ZidanFieldBase[];
   destroyAll(): ZidanFormStatic;
@@ -434,7 +435,7 @@ export function zidanSelect(target: string | Element | ArrayLike<Element>, optio
 export function initZidanSelects(container?: Document | Element, options?: SelectOptions): ZidanSelect[];
 export function zidanField(target: string | Element, options?: FieldOptions): ZidanFieldBase | null;
 export function zidanField(target: ArrayLike<Element>, options?: FieldOptions): ZidanFieldBase[];
-export function initZidanForms(container?: Document | Element, options?: FieldOptions): ZidanFieldBase[];
+export function initZidanForms(container?: Document | Element, options?: FieldOptions & { force?: boolean }): ZidanFieldBase[];
 export function registerIcon(name: string, markup: string): typeof ZidanSelect | ZidanFormStatic | undefined;
 export function formatPhone(value: string, country?: string, format?: PhoneFormat): string;
 export function detectPhoneCountry(value: string): string;

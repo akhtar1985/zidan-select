@@ -882,15 +882,21 @@ ZidanForm.destroyAll()
 `zidanField()` also accepts a plain `<input>`/`<textarea>` of a supported type, so JS-only
 options such as `output` and `counter` work without any data attribute.
 
+Bulk helpers skip nodes that are already enhanced; pass `{ force: true }` to
+`initZidanForms()` or `ZidanForm.init()` to re-initialise them.
+
 `ZidanForm.themes`, `.fieldLayouts` are live registries: `ZidanForm.themes.push('brand')`
 adds a valid name (do it before fields initialise). `.frameworks` lists the built-in adapters.
 `ZidanSelect.layouts`, `.frameworks`, `.scrollbars`, `.instances`, `.get()`,
 `.destroyAll()` remain available.
 
 Per-select instance: `open()`, `close()`, `toggle()`, `isOpen()`, `getValue()`,
-`setValue(v)`, `clear()`, `setOptions(items)`, `enable()`, `disable()`, `setLayout()`,
-`setFramework()`, `setScrollbar()`, `setValidation()`, `refresh()`, `on()`, `off()`,
-`destroy()`.
+`setValue(v, config?)`, `clear(config?)`, `setOptions(items)`, `enable()`, `disable()`,
+`setLayout()`, `setFramework()`, `setScrollbar()`, `setValidation()`, `refresh()`,
+`on()`, `off()`, `destroy()`.
+
+`setValue(v, { silent: true })` and `clear({ silent: true })` update the value, the native
+`<select>` and the control without emitting `zidan:change` or calling `onChange`.
 
 Per-field instance: `getValue()`, `setValue(v)`, `update()`, `refresh()`,
 `setValidation(state)`, `getValidation()`, `setTheme()`, `setFramework()`, `setLayout()`,
@@ -901,7 +907,9 @@ and `getFiles()`/`getUploadState()`/`addFiles()`/`replaceFiles()`/`removeFile()`
 `setVariant()`/`setUploader()`/`uploadAll()`/`uploadFile()`/`cancelUpload()`/`cancelAll()`/
 `retryUpload()` (file).
 
-Events bubble from the wrapper:
+Events bubble from the wrapper. Removing an already-selected option from a multi-select, or
+a tag from a tag field, reports only via `zidan:change` — it is a removal, not a new
+selection, so no `zidan:select` follows.
 
 | Event | Detail |
 | --- | --- |
@@ -1125,15 +1133,17 @@ npm run dev     # static server → http://localhost:4173
 npm test        # syntax + split-CSS + API + playground/docs checks (no browser, no deps)
 npm run lint    # node --check on every script, playground.js included
 npm run build   # dist/ (+ local .min files when esbuild is installed)
+npm run sizes   # sync the byte sizes quoted in the docs with dist/
 ```
 
 | Command | What it does |
 | --- | --- |
 | `scripts/serve.mjs` | No-dependency demo server on port 4173 (`PORT=8080 npm run dev`). |
 | `scripts/build.mjs` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, emits the select-only and file-only bundles with declarations, and minifies every JS/CSS output with esbuild. |
-| `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, the build artifacts ship, and the playground, README, demo and cookbook stay wired to each other — then runs 42 jsdom behaviour suites. |
+| `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, the build artifacts ship, and the playground, README, demo and cookbook stay wired to each other — then runs 48 jsdom behaviour suites. |
 | `scripts/dom/run.mjs` | jsdom suites for select, fields, uploads, async validation, pagination, RTL, teardown, and the select-only/file-only/minified bundles. |
 | `scripts/exa-search.mjs` | Exa web search for docs and release research: `npm run search -- "your question"` (`--num 10` for more results). Reads `EXA_API_KEY`; copy `.env.example` to `.env` (git-ignored) and add a key from https://dashboard.exa.ai/api-keys. |
+| `scripts/sizes.mjs` | Rewrites the byte sizes quoted in `docs/build.md`, `README.md`, `index.html` and `advanced.html` from `dist/`, so the docs cannot drift (`npm run sizes`). |
 | `scripts/release.mjs` | One-command release: `npm run release -- patch --note "what changed"` bumps every version site, rolls `CHANGELOG.md`, runs the checks, commits and tags `vX.Y.Z`. |
 
 `exa-js` is a dev dependency only, so the published bundle stays dependency-free.
@@ -1204,7 +1214,7 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](http
   declarations for `zidan-select` and `zidan-file`, wired into the exports map.
 - **Self-hosted minified bundles** — `npm run build` now emits `.min.js` and `.min.css`
   for all three builds, so you can ship from your own CDN with the same files npm exports.
-- **Automated behaviour tests** — `npm test` builds the subsets and runs 42 jsdom suites
+- **Automated behaviour tests** — `npm test` builds the subsets and runs 48 jsdom suites
   covering select, fields, uploads, async validation, pagination, RTL, teardown and both
   subset bundles (including their minified copies).
 

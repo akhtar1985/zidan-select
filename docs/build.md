@@ -55,9 +55,10 @@ side by side at the [builds section](https://akhtar1985.github.io/zidan-select/#
 | Command | Effect |
 | --- | --- |
 | `npm run dev` | Serves the repo at <http://localhost:4173> (`PORT=8080 npm run dev`). No dependency needed. |
-| `npm test` | `node --check` on every script, asserts `plugin-core.css` has no colour literals, checks all presets/adapters and the exported API. |
+| `npm test` | `node --check` on every script, asserts `plugin-core.css` has no colour literals, checks all presets/adapters, the exported API, and that the documented asset sizes match `dist/`. |
 | `npm run lint` | Syntax check only. |
 | `npm run build` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, generates the select-only and file-only bundles, and minifies **if** esbuild is installed. |
+| `npm run sizes` | Rewrites the byte sizes quoted in `docs/build.md`, `README.md`, `index.html` and `advanced.html` from the built files. Run it after `npm run build`; `npm test` fails when they drift. |
 | `npm run release -- patch` | Bumps every version site, rolls `CHANGELOG.md`, runs the checks, commits and tags `vX.Y.Z`. |
 
 There is no watch task: the JS and CSS are the distributables, so edit and reload. `npm run
