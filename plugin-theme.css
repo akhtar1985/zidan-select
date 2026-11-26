@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.4.2 — plugin-theme.css
+ * ZidanForm v2.5.0 — plugin-theme.css
  * Design tokens, paint, state colours, preset themes (default, modern,
  * minimal, dark, glass), the five select layouts and framework adapters
  * (bootstrap, tailwind, bulma, foundation).
@@ -71,6 +71,11 @@
   --zs-option-selected-bg: #e7ecff;
   --zs-option-selected-text: #1f2a56;
   --zs-group-text: #8b93a1;
+  --zs-match-bg: rgba(37, 99, 235, 0.16);
+  --zs-menu-bg: var(--zs-dropdown-bg);
+  --zs-menu-fg: var(--zs-text);
+  --zs-menu-border: var(--zs-dropdown-border);
+  --zs-menu-shadow: var(--zs-dropdown-shadow);
 
   /* fields */
   --zs-check-size: 20px;
@@ -339,7 +344,7 @@
   border-bottom-color: #e6e6e6;
 }
 
-.zs-root[data-zs-layout="bordered-brutalist"] .zs-group {
+.zs-root[data-zs-layout="bordered-brutalist"] .zs-group-label {
   background: #f2f2f2;
   border-bottom-color: #14161a;
   color: #14161a;
@@ -1334,6 +1339,7 @@
   --zs-option-selected-bg: rgba(124, 140, 255, 0.24);
   --zs-option-selected-text: #eef0ff;
   --zs-group-text: #8b95a8;
+  --zs-match-bg: rgba(96, 165, 250, 0.28);
   --zs-file-drop-bg: #1b2029;
   --zs-file-drop-border: #3d475c;
   --zs-file-thumb-bg: rgba(124, 140, 255, 0.18);

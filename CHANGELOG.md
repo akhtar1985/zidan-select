@@ -11,7 +11,43 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-11-26
+
+### Added
+
+- Virtual window for large local lists (`virtual`, `virtualThreshold`, `itemHeight`), with
+  `aria-setsize` / `aria-posinset` and keyboard navigation that scrolls the window.
+- Diacritic-insensitive search (`accentInsensitive`) and `<mark class="zs-match">` highlighting
+  (`highlightMatches`) for matched slices.
+- Native-style type-ahead in non-searchable selects (`typeAhead`, `typeAheadTimeout`), including
+  repeated-letter cycling while the list is open.
+- Locale packs (`locale`, `ZidanSelect.locales`, `ZidanForm.locales`) for `en`, `es`, `fr`,
+  `de` and `ar`, plus automatic `<html lang>` detection and a matching root `lang`.
+- `theme: 'auto'` follows `prefers-color-scheme` through one shared listener and tracks every
+  auto root, including fields and `setTheme()`.
+- Option groups expose `role="group"` with an `aria-labelledby` header instead of
+  `role="presentation"`.
+- `requiredText` customises the required-submit message.
+- Input masks (`mask`, `data-zidan-mask`) with `#` digit, `A` letter and `*` alphanumeric
+  tokens, auto-inserted literals, caret preservation, and `ZidanForm.mask` / `unmask` helpers.
+- Tag reordering (`reorderable`) by drag or Alt+Arrow, and in-place renaming (`editable`) with
+  double-click/F2, plus `moveTag()` / `editTag()` and `zidan:tag-move` / `zidan:tag-edit`.
+- Multiple-select helpers `getSelectedItems()`, `selectAll()`, `deselectAll()`, `toggleAll()`
+  and `areAllSelected()`, all limited to non-disabled options.
+- `ZidanForm.serialize(form)` (repeated names become arrays) and `ZidanForm.validate(form)`
+  (field rules + native constraints, first-invalid focus, `zidan:validate`).
+- Searchable phone country picker replacing the cramped native list, with keyboard navigation,
+  a hidden native value holder, and `phoneCountrySearchText` / `phoneCountryEmptyText`.
+- Textarea autogrow (`autogrow`, `autogrowMax`, `refreshAutogrow()`).
+- Browser-side image downscale before upload (`downscale` option and
+  `ZidanForm.downscaleImage(file, options)`), keeping the original upload row and field name.
+- Tests and documentation for every new option; the API lab gains a 240-row search & scale demo.
+
 ### Fixed
+
+- Inline tag rename now saves on Enter/blur and cancels on Escape; the editor had bound its
+  listeners through the public custom-event API, so the keys never reached it.
+- Type `getTags()` as `string[]` — it always returned tag values, not `SelectItem` objects.
 
 - Read `closeOnSelect`, `ariaLabel`, `required`, `fetchHeaders` and `fetchCredentials` from
   declarative attributes, and expose the resolved default theme through `ZidanSelect.defaults`.

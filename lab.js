@@ -15,13 +15,15 @@
       'mode', 'layout', 'themeFramework', 'theme', 'id', 'name', 'disabled', 'required',
       'options', 'value', 'label', 'ariaLabel', 'placeholder',
       'multiple', 'searchable', 'clearable', 'closeOnSelect', 'maxDropdownHeight',
-      'noResultsText', 'emptyText', 'loadingText', 'clearText',
+      'noResultsText', 'emptyText', 'loadingText', 'clearText', 'requiredText',
+      'accentInsensitive', 'highlightMatches', 'virtual', 'virtualThreshold', 'itemHeight',
+      'typeAhead', 'typeAheadTimeout', 'locale',
       'fetchOptions', 'debounce', 'minChars', 'allowFreeText', 'searchValues',
       'fetchUrl', 'fetchQueryParam', 'fetchPageParam', 'fetchSkipParam',
       'fetchPageSize', 'fetchPageSizeParam', 'fetchItemsPath', 'fetchTotalPath',
       'fetchHasMorePath', 'fetchMethod', 'fetchHeaders', 'fetchCredentials',
       'autoLoadMore', 'cacheResults', 'loadMoreText',
-      'maxTags', 'minTagLength', 'maxTagLength', 'caseSensitive', 'delimiters',
+      'maxTags', 'minTagLength', 'maxTagLength', 'reorderable', 'editable', 'caseSensitive', 'delimiters',
       'commitOnTab', 'commitOnBlur', 'suggestions', 'valueDelimiter',
       'customClasses', 'validation', 'scrollbar',
       'filterOption', 'renderOption', 'renderSelected', 'renderTag', 'validateTag', 'formatTag',
@@ -32,6 +34,7 @@
       'variant', 'layout', 'theme', 'framework', 'label', 'hint', 'description', 'descriptions',
       'validation', 'alwaysValidate', 'indeterminate', 'clearable', 'reveal',
       'prefix', 'suffix', 'counter', 'output', 'title', 'dropHint', 'accept',
+      'mask', 'autogrow', 'autogrowMax',
       'maxFiles', 'maxSize', 'maxSizeMB', 'labels', 'clearLabel',
       'showPasswordLabel', 'hidePasswordLabel',
       'autoIcon', 'icon', 'iconPosition', 'iconClickable', 'iconLabel', 'validationIcon',
@@ -48,13 +51,13 @@
       'uploadData', 'withCredentials', 'uploadHeaders', 'headers',
       'simulateUpload', 'simulateDuration', 'autoUpload', 'showFileMeta', 'showPreview',
       'replaceTitle', 'progressTemplate', 'uploadedLabel', 'failedLabel', 'canceledLabel',
-      'cancelLabel', 'retryLabel', 'renderFile',
+      'cancelLabel', 'retryLabel', 'renderFile', 'downscale',
       'switchStyle', 'onLabel', 'offLabel', 'deselectable', 'messages',
       'validate', 'showValidState'
     ],
     selectCallbacks: [
       'onInit', 'onChange', 'onSelect', 'onOpen', 'onClose',
-      'onTagAdd', 'onTagRemove', 'onLoadMore', 'onError'
+      'onTagAdd', 'onTagRemove', 'onTagMove', 'onTagEdit', 'onLoadMore', 'onError'
     ],
     fieldCallbacks: [
       'onInit', 'onChange', 'onValidation', 'onRemove', 'onInput', 'onIconClick',
@@ -64,7 +67,8 @@
     ],
     selectMethods: [
       'open', 'close', 'toggle', 'isOpen', 'getValue', 'setValue', 'clear', 'setOptions',
-      'addTag', 'removeTag', 'getTags', 'enable', 'disable',
+      'addTag', 'removeTag', 'getTags', 'getSelectedItems', 'moveTag', 'editTag',
+      'selectAll', 'deselectAll', 'toggleAll', 'areAllSelected', 'enable', 'disable',
       'setLayout', 'setFramework', 'setScrollbar', 'setValidation', 'refresh',
       'clearCache', 'loadMore', 'hasMoreResults', 'getAsyncState', 'refreshOptions',
       'on', 'off', 'announce', 'destroy'
@@ -83,7 +87,7 @@
     events: [
       'async-validation', 'change', 'clear', 'close', 'destroy', 'error', 'icon-click',
       'init', 'input', 'load-more', 'no-results', 'open', 'phone-country', 'phone-format',
-      'picker', 'remove', 'reveal', 'select', 'step', 'tag-add', 'tag-remove',
+      'picker', 'remove', 'reveal', 'select', 'step', 'tag-add', 'tag-remove', 'tag-move', 'tag-edit',
       'upload-cancel', 'upload-error', 'upload-progress', 'upload-start',
       'upload-success', 'validation'
     ]
@@ -227,6 +231,40 @@
     onError: hook('selectCallbacks', 'onError')
   });
 
+  /* large local list: diacritics, match highlighting, type-ahead and windowing */
+  var labLarge = document.getElementById('lab-large');
+  if (labLarge) {
+    var accented = ['Café', 'Zürich', 'Señor', 'Ångström', 'Málaga', 'Kraków'];
+    var cities = [];
+    for (var cityIndex = 0; cityIndex < 240; cityIndex += 1) {
+      cities.push({
+        value: 'city-' + cityIndex,
+        label: cityIndex % 40 === 0 ? accented[(cityIndex / 40) % accented.length] : 'City ' + (cityIndex + 1)
+      });
+    }
+    initSelect('#lab-large', {
+      mode: 'combobox',
+      label: 'Search & scale',
+      placeholder: 'Try cafe, zurich or angstrom…',
+      multiple: false,
+      searchable: true,
+      required: true,
+      requiredText: 'Pick a city from the list.',
+      options: cities,
+      accentInsensitive: true,
+      highlightMatches: true,
+      typeAhead: true,
+      typeAheadTimeout: 700,
+      virtual: 'auto',
+      virtualThreshold: 120,
+      itemHeight: 38,
+      locale: 'en',
+      onOpen: hook('selectCallbacks', 'onOpen'),
+      onClose: hook('selectCallbacks', 'onClose'),
+      onSelect: hook('selectCallbacks', 'onSelect')
+    });
+  }
+
   initSelect('#lab-disabled', {
     mode: 'select',
     disabled: true,
@@ -254,6 +292,8 @@
     maxTags: 4,
     minTagLength: 2,
     maxTagLength: 16,
+    reorderable: true,
+    editable: true,
     delimiters: [',', ';'],
     commitOnTab: true,
     commitOnBlur: true,
@@ -269,13 +309,16 @@
     onOpen: hook('selectCallbacks', 'onOpen'),
     onClose: hook('selectCallbacks', 'onClose'),
     onTagAdd: hook('selectCallbacks', 'onTagAdd'),
-    onTagRemove: hook('selectCallbacks', 'onTagRemove')
+    onTagRemove: hook('selectCallbacks', 'onTagRemove'),
+    onTagMove: hook('selectCallbacks', 'onTagMove'),
+    onTagEdit: hook('selectCallbacks', 'onTagEdit')
   });
 
-  initSelect('#lab-multi', {
+  var multi = initSelect('#lab-multi', {
     mode: 'select',
     multiple: true,
     label: 'Multi with renderSelected',
+    options: ['One', 'Two', 'Three'],
     renderSelected: function (item) { return '◉ ' + item.label; },
     onSelect: hook('selectCallbacks', 'onSelect')
   });
@@ -394,6 +437,13 @@
     })
   });
 
+  initField('#lab-mask', {
+    label: 'Masked phone',
+    mask: '(###) ###-####',
+    hint: 'Type digits — literals are inserted automatically.',
+    clearable: true
+  });
+
   initField('#lab-password', {
     label: 'Lab password',
     reveal: true,
@@ -412,7 +462,9 @@
   initField('#lab-note', {
     label: 'Lab textarea',
     counter: 120,
-    hint: 'The counter override wins over maxlength.',
+    autogrow: true,
+    autogrowMax: 180,
+    hint: 'Autogrow stops at 180px; the counter override wins over maxlength.',
     clearable: true
   });
 
@@ -523,6 +575,7 @@
     accept: 'image/*,.pdf,.txt',
     maxFiles: 2,
     maxSizeMB: 2,
+    downscale: { maxWidth: 1024, maxHeight: 1024, quality: 0.85 },
     autoUpload: true,
     showFileMeta: true,
     showPreview: true,
@@ -670,6 +723,54 @@
         { name: 'addTag', run: function () { tags.addTag('LabExtra'); return 'tags=' + tags.getTags().join('|'); } },
         { name: 'removeTag', run: function () { tags.removeTag('LabExtra'); return 'tags=' + tags.getTags().join('|'); } },
         { name: 'getTags', run: function () { return 'tags=' + tags.getTags().join('|'); } },
+        { name: 'getSelectedItems', run: function () { return 'items=' + JSON.stringify(tags.getSelectedItems()); } },
+        {
+          name: 'moveTag',
+          run: function () {
+            var before = tags.getTags().slice();
+            var moved = tags.moveTag(0, tags.getTags().length - 1);
+            var after = tags.getTags().slice();
+            if (moved) tags.moveTag(after.length - 1, 0);
+            return moved + ': ' + before.join('|') + ' → ' + after.join('|');
+          }
+        },
+        {
+          name: 'editTag',
+          run: function () {
+            var first = tags.getTags()[0];
+            var changed = tags.editTag(first, first + ' *');
+            if (changed) tags.editTag(first + ' *', first);
+            return 'renamed=' + changed;
+          }
+        },
+        {
+          name: 'selectAll',
+          run: function () {
+            multi.selectAll();
+            var all = multi.getValue().slice();
+            multi.deselectAll();
+            return 'selected=' + all.join('|');
+          }
+        },
+        {
+          name: 'deselectAll',
+          run: function () {
+            multi.selectAll();
+            multi.deselectAll();
+            return 'left=' + multi.getValue().length;
+          }
+        },
+        {
+          name: 'toggleAll',
+          run: function () {
+            multi.toggleAll();
+            var filled = multi.areAllSelected();
+            multi.toggleAll();
+            return 'filled=' + filled + ' empty=' + (multi.getValue().length === 0);
+          }
+        },
+        { name: 'areAllSelected', run: function () { return 'all=' + multi.areAllSelected(); } },
+
         { name: 'enable', run: function () { selectA.enable(); return 'disabled=' + selectA.input.disabled; } },
         { name: 'disable', run: function () { selectA.disable(); var off = selectA.input.disabled; selectA.enable(); return 'disabled while running=' + off; } },
         { name: 'setLayout', run: function () { selectA.setLayout('classic-clean'); selectA.setLayout('floating-label'); return 'layout restored'; } },
@@ -1021,6 +1122,15 @@
 
     tags.addTag('LabEvent');
     tags.removeTag(tags.getTags().length - 1);
+    if (tags.getTags().length > 1) {
+      tags.moveTag(0, 1);
+      tags.moveTag(1, 0);
+    }
+    var firstTag = tags.getTags()[0];
+    if (firstTag) {
+      tags.editTag(firstTag, firstTag + ' event');
+      tags.editTag(firstTag + ' event', firstTag);
+    }
 
     remote.open();
     tasks.push(delay(180).then(function () { return remote.loadMore(); }).then(function () { remote.close(); }));

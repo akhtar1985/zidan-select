@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.4.2 — plugin-core.css
+ * ZidanForm v2.5.0 — plugin-core.css
  * Structure and mechanics only: layout, positioning, visibility, focus
  * plumbing and accessible native-input handling. No colours, borders colours,
  * shadows or decorative skin — load plugin-theme.css (or your own theme) for
@@ -124,6 +124,32 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.zs-root .zs-chip--reorderable {
+  cursor: grab;
+}
+
+.zs-root .zs-chip--reorderable:active {
+  cursor: grabbing;
+}
+
+.zs-root .zs-chip:focus-visible {
+  outline: 2px solid var(--zs-border-color-focus);
+  outline-offset: 1px;
+}
+
+.zs-root .zs-chip-edit {
+  width: 8ch;
+  max-width: 22ch;
+  min-width: 3ch;
+  padding: 0 2px;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  outline: none;
 }
 
 .zs-root .zs-chip-remove {
@@ -270,11 +296,27 @@
 }
 
 .zs-root .zs-group {
+  display: block;
+}
+
+.zs-root .zs-group-label {
   padding: 8px 10px 4px;
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.zs-root .zs-match {
+  background: var(--zs-match-bg, transparent);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.zs-root .zs-virtual-space {
+  flex: none;
+  width: 100%;
 }
 
 .zs-root .zs-option {
@@ -464,7 +506,7 @@
   border-bottom: 0;
 }
 
-.zs-root[data-zs-layout="bordered-brutalist"] .zs-group {
+.zs-root[data-zs-layout="bordered-brutalist"] .zs-group-label {
   border-bottom-width: 2px;
   border-bottom-style: solid;
   font-weight: 800;
@@ -1413,23 +1455,152 @@ textarea.zs-input-native {
 }
 
 /* phone country selector */
-.zs-phone-country {
+.zs-phone-country--native {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  pointer-events: none;
+}
+
+.zs-phone-picker {
   flex: 0 0 auto;
-  max-width: 104px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   height: calc(var(--zs-height, 44px) - 10px);
-  padding: 0 4px;
+  padding: 0 6px;
   font: inherit;
   font-size: 0.8125rem;
   color: inherit;
   background: transparent;
   border: 0;
-  border-inline-end-width: 1px;
-  border-inline-end-style: solid;
+  border-inline-end: 1px solid var(--zs-border-color);
   cursor: pointer;
+}
+
+.zs-phone-picker:focus-visible {
+  outline: 2px solid var(--zs-border-color-focus);
+  outline-offset: -2px;
+}
+
+.zs-phone-picker-iso {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.zs-phone-picker-dial {
+  color: var(--zs-text-muted);
+}
+
+.zs-phone-picker-chevron {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.zs-phone-menu {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 6px);
+  inset-inline-start: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(320px, 100%);
+  max-height: 320px;
+  overflow: hidden;
+  color: var(--zs-menu-fg);
+  background: var(--zs-menu-bg);
+  border: 1px solid var(--zs-menu-border);
+  border-radius: var(--zs-radius, 10px);
+  box-shadow: var(--zs-menu-shadow);
+}
+
+.zs-phone-menu[hidden] {
+  display: none;
+}
+
+.zs-phone-search {
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 0.875rem;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--zs-menu-border);
+  outline: none;
+}
+
+.zs-phone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.zs-phone-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 8px;
+  font: inherit;
+  font-size: 0.8125rem;
+  color: inherit;
+  text-align: start;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.zs-phone-option--active,
+.zs-phone-option:hover {
+  background: var(--zs-option-hover-bg);
+}
+
+.zs-phone-option[aria-selected="true"] {
+  background: var(--zs-option-selected-bg);
+}
+
+.zs-phone-option-iso {
+  flex: 0 0 24px;
+  font-weight: 600;
+}
+
+.zs-phone-option-name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zs-phone-option-dial {
+  color: var(--zs-text-muted);
+}
+
+.zs-phone-empty {
+  margin: 0;
+  padding: 12px;
+  font-size: 0.8125rem;
+  color: var(--zs-text-muted);
+  text-align: center;
 }
 
 .zs-field--phone .zs-input-native {
   min-width: 7ch;
+}
+
+.zs-field--autogrow .zs-input-native {
+  overflow-y: hidden;
+  resize: none;
 }
 
 /* number stepper */

@@ -11,7 +11,7 @@ export type SelectLayout =
   | 'bordered-brutalist'
   | 'glass-elevated';
 export type Framework = 'auto' | 'none' | 'vanilla' | 'bootstrap' | 'tailwind' | 'bulma' | 'foundation';
-export type Theme = 'default' | 'modern' | 'minimal' | 'dark' | 'glass';
+export type Theme = 'default' | 'modern' | 'minimal' | 'dark' | 'glass' | 'auto';
 export type FieldLayout = 'stacked' | 'inline' | 'card' | 'compact' | 'floating' | 'outlined';
 export type Scrollbar = 'default' | 'thin' | 'fancy' | 'hover' | 'hidden';
 export type ValidationState = 'valid' | 'invalid' | null | undefined;
@@ -76,6 +76,16 @@ export interface SelectCallbacks {
   onError?(detail: { error?: unknown; message: string; callback?: string; instance: ZidanSelect }): void;
 }
 
+export interface SelectLocale {
+  noResultsText?: string;
+  emptyText?: string;
+  loadingText?: string;
+  clearText?: string;
+  loadMoreText?: string;
+  placeholder?: string;
+  requiredText?: string;
+}
+
 export interface SelectOptions extends SelectCallbacks {
   mode?: SelectMode;
   layout?: SelectLayout;
@@ -99,6 +109,8 @@ export interface SelectOptions extends SelectCallbacks {
   emptyText?: string;
   loadingText?: string;
   clearText?: string;
+  /** Announced when a required select is empty on submit */
+  requiredText?: string;
   fetchOptions?: FetchOptions | null;
   debounce?: number;
   minChars?: number;
@@ -130,6 +142,10 @@ export interface SelectOptions extends SelectCallbacks {
   maxTags?: number;
   minTagLength?: number;
   maxTagLength?: number;
+  /** Drag chips (mouse) or Alt+Arrow (keyboard) to reorder tags */
+  reorderable?: boolean;
+  /** Double-click or F2 a chip to rename its label in place */
+  editable?: boolean;
   caseSensitive?: boolean;
   delimiters?: string[];
   commitOnTab?: boolean;
@@ -139,6 +155,21 @@ export interface SelectOptions extends SelectCallbacks {
   customClasses?: { [key: string]: string };
   validation?: ValidationState;
   scrollbar?: Scrollbar;
+  /** Fold diacritics so "cafe" matches "Café" (default true) */
+  accentInsensitive?: boolean;
+  /** Wrap the matching part of an option label in <mark class="zs-match"> */
+  highlightMatches?: boolean;
+  /** Row windowing for large local lists: false | true | 'auto' | minimum row count */
+  virtual?: boolean | 'auto' | number;
+  /** Row count that turns virtual: 'auto' on (default 150) */
+  virtualThreshold?: number;
+  /** Fixed row height in px for virtual lists (0 = measure) */
+  itemHeight?: number;
+  /** Jump to options by typing letters in a non-searchable select */
+  typeAhead?: boolean;
+  typeAheadTimeout?: number;
+  /** Built-in UI strings: 'en' | 'es' | 'fr' | 'de' | 'ar' or a custom pack */
+  locale?: SelectLocale | string | null;
 }
 
 export interface SelectAsyncState {
@@ -214,6 +245,20 @@ export interface UploadContext {
 
 export type UploadHandler = (file: File, context: UploadContext) => void | Promise<unknown>;
 
+export interface DownscaleOptions {
+  /** Longest edge in px (default 1920) */
+  maxWidth?: number;
+  maxHeight?: number;
+  /** JPEG/WebP quality, 0.1–1 (default 0.85) */
+  quality?: number;
+  /** Skip files already smaller than this many bytes */
+  maxBytes?: number;
+  /** Output MIME type; defaults to JPEG (PNG stays PNG) */
+  mime?: string;
+  /** Re-encode even when the resized file would be bigger */
+  force?: boolean;
+}
+
 export interface FileFieldOptions extends FieldOptions {
   variant?: string;
   accept?: string;
@@ -225,6 +270,14 @@ export interface FileFieldOptions extends FieldOptions {
   simulateUpload?: boolean;
   autoUpload?: boolean;
   previews?: boolean;
+  /** Resize images in the browser before upload: true or limits */
+  downscale?: boolean | DownscaleOptions;
+  downscaleMaxWidth?: number;
+  downscaleMaxHeight?: number;
+  downscaleQuality?: number;
+  downscaleMaxBytes?: number;
+  downscaleMime?: string;
+  downscaleForce?: boolean;
 }
 
 export interface TextFieldOptions extends FieldOptions {
@@ -246,6 +299,11 @@ export interface TextFieldOptions extends FieldOptions {
   };
   phoneCountry?: string;
   phoneFormat?: PhoneFormat;
+  /** Input mask: # digit, A letter, * letter or digit (e.g. '(###) ###-####') */
+  mask?: string;
+  /** Grow a textarea to fit its content (optionally capped in px) */
+  autogrow?: boolean;
+  autogrowMax?: number;
   rangeVariant?: 'default' | 'gradient' | 'stepped' | 'minimal';
   rangeBubble?: boolean;
   rangeBubbleMode?: 'always' | 'active' | 'never';
@@ -320,7 +378,22 @@ export class ZidanSelect {
   setOptions(options: SelectItemInput[] | null): this;
   addTag(label: string, data?: unknown): boolean;
   removeTag(tagOrIndex: string | number): boolean;
-  getTags(): SelectItem[];
+  /** Current tag values, in order (strings — use getValue() for the same list) */
+  getTags(): string[];
+  /** Selected option objects, in selection order */
+  getSelectedItems(): Array<{ value: string; label: string }>;
+  /** Move a tag/chip to another index (tags mode); returns false when unchanged */
+  moveTag(from: number | string, to: number): boolean;
+  /** Rename a tag label in place (tags mode); returns false when unchanged */
+  editTag(tagOrIndex: number | string, label: string): boolean;
+  /** Multiple mode: add every non-disabled option, keeping the current order */
+  selectAll(config?: { silent?: boolean }): this;
+  /** Multiple mode: clear the selection */
+  deselectAll(config?: { silent?: boolean }): this;
+  /** Multiple mode: select all unless every option is already selected */
+  toggleAll(config?: { silent?: boolean }): this;
+  /** Multiple mode: true when every non-disabled option is selected */
+  areAllSelected(): boolean;
   enable(): this;
   disable(): this;
   setLayout(layout: SelectLayout): this;
@@ -343,6 +416,7 @@ export class ZidanSelect {
   static readonly version: string;
   static cacheLimit: number;
   static defaults: SelectOptions;
+  static locales: Record<string, SelectLocale>;
   static icons: Record<string, string>;
   static registerIcon(name: string, markup: string): typeof ZidanSelect;
   static layouts: SelectLayout[];
@@ -387,6 +461,8 @@ export class ZidanFileUpload extends ZidanFieldBase {
 export class ZidanTextField extends ZidanFieldBase {
   constructor(target: HTMLInputElement | HTMLTextAreaElement, options?: TextFieldOptions);
   readonly phone: { country: string; format: PhoneFormat } | null;
+  readonly mask: { pattern: string } | null;
+  readonly autogrow: { max: number } | null;
   stepUp(times?: number): this;
   stepDown(times?: number): this;
   setStepper(enabled: boolean): this;
@@ -396,6 +472,10 @@ export class ZidanTextField extends ZidanFieldBase {
   setPhoneCountry(iso: string): this;
   setPhoneFormat(format: PhoneFormat): this;
   formatPhone(value?: string): string;
+  /** Value with mask literals removed */
+  getUnmaskedValue(): string;
+  /** Re-measure a textarea after external content changes */
+  refreshAutogrow(): this;
   getValue(): string;
   setValue(value: string | number | null): this;
 }
@@ -407,6 +487,7 @@ export interface ZidanFormStatic {
   fieldLayouts: string[];
   fields: ZidanFieldBase[];
   messages: FieldMessages;
+  locales: Record<string, SelectLocale>;
   icons: Record<string, string>;
   variants: {
     checkbox?: string[];
@@ -428,6 +509,16 @@ export interface ZidanFormStatic {
   observe(scope?: Element, options?: FieldOptions): MutationObserver | null;
   formatPhone?(value: string, country?: string, format?: PhoneFormat): string;
   detectPhoneCountry?(value: string): string;
+  /** Format a value with a mask pattern (# digit, A letter, * alphanumeric) */
+  mask?(value: string, pattern: string): string;
+  /** Strip punctuation/mask literals, keeping letters and digits */
+  unmask?(value: string): string;
+  /** Browser-side image resize helper; resolves to the original when no work is needed */
+  downscaleImage?(file: File, options?: DownscaleOptions): Promise<File>;
+  /** Serialised form values; repeated names become arrays */
+  serialize(target: string | HTMLFormElement | Element, options?: { files?: boolean }): Record<string, FormDataEntryValue | FormDataEntryValue[]>;
+  /** Runs every enhanced field's validate() plus native constraints, focuses the first invalid field */
+  validate(target: string | HTMLFormElement | Element, options?: { focus?: boolean }): Promise<boolean>;
 }
 
 export const ZidanForm: ZidanFormStatic;

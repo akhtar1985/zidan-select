@@ -157,6 +157,9 @@ Applies to `ZidanCheckbox`, `ZidanRadioGroup`, `ZidanFileUpload`, `ZidanTextFiel
 | `alwaysValidate` | — | boolean | `false` | Mark invalid as soon as native validity fails instead of on blur. |
 | `indeterminate` | `data-zidan-indeterminate` | boolean | `false` | Checkbox starts mixed. |
 | `clearable` | `data-zidan-clear` | boolean | `search` only | Clear button for text inputs and textarea. |
+| `mask` | `data-zidan-mask` | string | — | Input mask: `#` digit, `A` letter, `*` letter or digit; any other character is an auto-inserted literal (`(###) ###-####`). |
+| `autogrow` | `data-zidan-autogrow` | boolean | `false` | Textarea grows to fit its content. |
+| `autogrowMax` | `data-zidan-autogrow-max` | number | `0` (no cap) | Maximum height in px; beyond it the textarea scrolls. |
 | `reveal` | `data-zidan-reveal` | boolean | `false` | Password show/hide toggle. |
 | `prefix` | `data-zidan-prefix` | string | — | Static text before the input. |
 | `suffix` | `data-zidan-suffix` | string | — | Static text after the input. |
@@ -257,6 +260,31 @@ Built-in names: `text`, `mail`, `phone`, `user`, `lock`, `search`, `calendar`, `
 
 Icons are sanitised with `DOMParser`: only SVG shape elements and safe attributes survive.
 
+## Masks and textarea autogrow
+
+| JS option | Data attribute | Type | Default | Notes |
+| --- | --- | --- | --- | --- |
+| `mask` | `data-zidan-mask` | string | — | `#` digit, `A` letter, `*` letter or digit; every other character is an auto-inserted literal. |
+| `autogrow` | `data-zidan-autogrow` | boolean | `false` | Textarea height follows its content. |
+| `autogrowMax` | `data-zidan-autogrow-max` | number | `0` | Maximum height in px (0 = unlimited); longer content scrolls. |
+
+```html
+<input type="tel" data-zidan="input" data-zidan-mask="(###) ###-####"
+       placeholder="(555) 123-4567">
+<textarea data-zidan="textarea" data-zidan-autogrow="true" data-zidan-autogrow-max="220"></textarea>
+```
+
+```js
+const card = zidanField('#card', { mask: '#### #### #### ####' });
+card.getUnmaskedValue();            // digits only, no spaces
+ZidanForm.mask('4111111111111111', '#### #### #### ####'); // '4111 1111 1111 1111'
+ZidanForm.unmask('(555) 123-4567'); // '5551234567'
+```
+
+The caret is preserved while typing and when a backspace/delete removes an
+auto-inserted literal. Invalid characters are discarded instead of stored.
+Call `field.refreshAutogrow()` after changing a textarea's value outside the field.
+
 ## Number stepper (− / +)
 
 | JS option | Data attribute | Type | Default | Notes |
@@ -292,9 +320,11 @@ Event: `zidan:step` → `{ value, direction, instance }`.
 | `phone` | `data-zidan-phone` | boolean \| object | `false` | Enables formatting. Object form: `{ country, format, showCountry, countries, validate }`. |
 | `phoneCountry` | `data-zidan-phone-country` | ISO-2 | `US` | One of `ZidanForm.phoneCountries`. |
 | `phoneFormat` | `data-zidan-phone-format` | `national` \| `international` \| `e164` | `national` | Three styles per country. |
-| `phoneCountrySelect` | `data-zidan-phone-country-select` | boolean | `true` | Show the native country `<select>`. |
+| `phoneCountrySelect` | `data-zidan-phone-country-select` | boolean | `true` | Show the searchable country picker (the native select stays as the value holder). |
 | `phoneCountries` | `data-zidan-phone-countries` | list | common set | Comma-separated ISO codes for the selector. |
-| `phoneCountryLabel` | — | string | `Country code` | Aria-label for the selector. |
+| `phoneCountryLabel` | — | string | `Country code` | Aria-label for the picker. |
+| `phoneCountrySearchText` | — | string | `Search country or code` | Search field placeholder/label. |
+| `phoneCountryEmptyText` | — | string | `No countries found` | Empty state for a search with no match. |
 | `phone.validate` | — | boolean | `true` | Length check per country (uses `messages.phone`). |
 
 ```html
@@ -436,6 +466,12 @@ Variants are set with `fileVariant` / `data-zidan-file-variant` (defaults to `dr
 | `canceledLabel` | — | string | `Upload canceled` | Per-file canceled text. |
 | `cancelLabel` / `retryLabel` | — | string | `Cancel` / `Retry` | Per-file action labels. |
 | `renderFile` | — | function | — | `(itemElement, { file, index, state, field })` after the default row renders. |
+| `downscale` | `data-zidan-downscale` | boolean \| object | `false` | Resize images in the browser before upload; object form `{ maxWidth, maxHeight, quality, maxBytes, mime, force }`. |
+| `downscaleMaxWidth` / `downscaleMaxHeight` | `data-zidan-downscale-max-width` / `-max-height` | number | `1920` | Longest-edge limits, px. |
+| `downscaleQuality` | `data-zidan-downscale-quality` | number | `0.85` | JPEG/WebP quality, 0.1–1. |
+| `downscaleMaxBytes` | `data-zidan-downscale-max-bytes` | number | `0` | Files at or below this size skip resizing. |
+| `downscaleMime` | `data-zidan-downscale-mime` | string | image type | Output MIME; PNG stays PNG by default, other images become JPEG. |
+| `downscaleForce` | `data-zidan-downscale-force` | boolean | `false` | Keep the resized file even when it is larger than the original. |
 
 ### Every file option in one object
 
@@ -527,6 +563,26 @@ plus the shared `zidan:change`, `zidan:remove` (`{ file, index }`) and `zidan:cl
 Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 `onUploadError`, `onUploadCancel`.
 
+### Browser-side image downscale
+
+Set `downscale: true` to resize images before any uploader runs. The default
+caps the longest edge at 1920 px and re-encodes as JPEG (PNG stays PNG) at
+quality 0.85, skipping files that are already small enough.
+
+```js
+zidanField('#avatar', {
+  downscale: { maxWidth: 800, maxHeight: 800, quality: 0.8, maxBytes: 300 * 1024 },
+  uploadUrl: '/api/avatar'
+});
+
+// standalone helper
+const smaller = await ZidanForm.downscaleImage(file, { maxWidth: 1280 });
+```
+
+The compressed file keeps the original file's upload state row, name and
+FormData field. If the browser has no canvas support, or the resized image would
+be larger than the original, the original file is uploaded unchanged.
+
 ## Select options
 
 `ZidanSelect` keeps its full 1.x option set.
@@ -538,7 +594,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | `mode` | `data-zidan-select`, `data-zidan-mode` | `select` | `select`, `combobox`, `tags`. |
 | `layout` | `data-zidan-layout` | `classic-clean` | Five select layouts (see theming doc). |
 | `themeFramework` | `data-zidan-framework` | `auto` | `auto`, `none`, `vanilla`, `bootstrap`, `tailwind`, `bulma`, `foundation`. |
-| `theme` | `data-zidan-theme` | `default` | Colour preset. |
+| `theme` | `data-zidan-theme` | `default` | Colour preset; `auto` follows `prefers-color-scheme` (see the search & scale section). |
 | `id` | — | generated | Root id prefix. |
 | `name` | `data-zidan-name` | native name | Name for hidden mirror input in mount mode. |
 | `disabled` | `data-zidan-disabled` | native | Mirrors the native `disabled`. |
@@ -571,6 +627,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | `emptyText` | — | `No options` | Empty source message. |
 | `loadingText` | — | `Searching…` | Async loading message. |
 | `clearText` | — | `Clear selection` | Clear button label. |
+| `requiredText` | — | `Please select an option.` | Message shown when a required select blocks submit. |
 
 ### Combobox / async
 
@@ -663,11 +720,19 @@ with both modes, against a real API and a static JSON file, ships as
 | `maxTags` | `data-zidan-max-tags` | `Infinity` |
 | `minTagLength` | `data-zidan-min-tag-length` | `1` |
 | `maxTagLength` | `data-zidan-max-tag-length` | `Infinity` |
+| `reorderable` | `data-zidan-reorderable` | `false` |
+| `editable` | `data-zidan-editable` | `false` |
 | `caseSensitive` | `data-zidan-case-sensitive` | `false` |
 | `allowFreeText` | `data-zidan-allow-free-text` | `true` |
 | `delimiters` | — | `[',']` |
 | `commitOnTab` / `commitOnBlur` | — | `false` |
 | `valueDelimiter` | — | `,` |
+
+With `reorderable: true` a chip can be dragged with the mouse or moved with
+<kbd>Alt</kbd> + <kbd>←</kbd>/<kbd>→</kbd> while it has focus. With `editable: true`, double-click a
+chip (or press <kbd>F2</kbd>) to rename its label in place; <kbd>Enter</kbd> saves and
+<kbd>Esc</kbd> cancels. Both changes keep the native `<option>` label in sync and emit
+`zidan:tag-move` / `zidan:tag-edit`.
 
 With `allowFreeText: false` a tag you type must match an option or a `suggestions` entry by
 value or label (`caseSensitive` respected). Anything else is rejected: no tag is added and the
@@ -699,6 +764,72 @@ control shows `"…" is not in the list.` through the tag error slot. Leave the 
 | `onError` | `{ instance, message, error?, callback? }`; fetch failures include `error`, and callback exceptions include `error` plus the callback name. |
 
 Every callback receives a single payload object.
+
+### Large lists, search quality and locales
+
+#### Virtual window
+
+Local lists with hundreds of rows can render only the visible slice. Windowing is opt-in and
+skipped for grouped lists, custom `renderOption` renderers and paged results, where row heights
+or extras change per row.
+
+```js
+zidanSelect('#city', { virtual: 'auto', virtualThreshold: 150, itemHeight: 38 });
+```
+
+- `virtual: true` always windows; `'auto'` windows once the filtered list reaches `virtualThreshold`;
+  a number sets the threshold directly.
+- `itemHeight` fixes the row height used for spacer math. Leave `0` to measure the first row.
+- Rows keep `aria-setsize` / `aria-posinset`; keyboard `Home`, `End`, `↑`, `↓` and type-ahead
+  scroll the window and keep `aria-activedescendant` on the active row.
+- The dropdown must have a measured height (it opens with `maxDropdownHeight`); a hidden or
+  zero-height list falls back to full rendering.
+
+#### Accents and highlights
+
+```js
+zidanSelect('#city', { accentInsensitive: true, highlightMatches: true });
+```
+
+`accentInsensitive` (default `true`) folds diacritics in both the query and the option label/value,
+so `cafe` finds `Café` and `zurich` finds `Zürich`. Set it to `false` for exact matching.
+`highlightMatches` wraps the matched slice in `<mark class="zs-match">`; `--zs-match-bg` themes it.
+
+#### Type-ahead
+
+Selects that are not searchable are read-only, but printable keys still jump like a native
+`<select>`: the buffer expires after `typeAheadTimeout` (default `600` ms), repeating the same
+letter cycles through options starting with it, and `typeAhead: false` disables the behaviour.
+
+#### Locales
+
+```js
+zidanSelect('#city', { locale: 'fr' });
+ZidanSelect.locales.nl = { emptyText: 'Geen opties', noResultsText: 'Geen resultaten' };
+```
+
+Bundled packs: `en`, `es`, `fr`, `de`, `ar`. Pass a locale name or a partial pack; a pack only
+fills values you have not overridden (including `requiredText` and the default placeholder).
+`<html lang="…">` selects the pack automatically when `locale` is unset, and the root gets a
+matching `lang` attribute. `ZidanForm.locales` is the same object, so registrations are global
+and take effect for instances created afterwards.
+
+#### Theme auto
+
+```js
+zidanSelect('#city', { theme: 'auto' });   // or data-zidan-theme="auto"
+```
+
+`auto` resolves to `dark` when `prefers-color-scheme: dark` matches and `default` otherwise. A
+single shared `matchMedia` listener updates every auto root when the OS setting changes;
+`setTheme('auto')` re-arms it and destroying the instance unregisters it. `ZidanForm.themes`
+includes `auto`.
+
+#### Option groups and getTags
+
+Options with `group` render `<div role="group" aria-labelledby="…">` wrappers with a
+`.zs-group-label` header, so the listbox exposes the grouping instead of flattening it. In
+`tags` mode `getTags()` returns the tag **values** (`string[]`), matching its declaration.
 
 ### Every select option in one object
 
@@ -743,6 +874,17 @@ const picker = zidanSelect('#mymov', {
   emptyText: 'No options',
   loadingText: 'Searching…',
   clearText: 'Clear selection',
+  requiredText: 'Please select an option.',
+
+  /* Search quality, scale & language */
+  accentInsensitive: true,          // "cafe" matches "Café"
+  highlightMatches: false,          // wrap the matched slice in <mark class="zs-match">
+  typeAhead: true,                  // printable keys jump in a non-searchable select
+  typeAheadTimeout: 600,            // ms before the type-ahead buffer resets
+  virtual: false,                   // true | false | 'auto' | number (threshold)
+  virtualThreshold: 150,            // 'auto' threshold, in options
+  itemHeight: 0,                    // fixed virtual row height; 0 measures the first row
+  locale: null,                     // 'en' | 'es' | 'fr' | 'de' | 'ar' or a custom pack
 
   /* Combobox / async */
   // fetchOptions: function (query, signal, context) {
@@ -772,6 +914,8 @@ const picker = zidanSelect('#mymov', {
   maxTags: Infinity,
   minTagLength: 1,
   maxTagLength: Infinity,
+  reorderable: false,               // drag chips or Alt+Arrow to reorder
+  editable: false,                  // double-click / F2 renames a tag
   caseSensitive: false,
   allowFreeText: true,              // tags default; combobox/select default false
   delimiters: [','],
@@ -817,7 +961,10 @@ as JSON.
 `data-zidan-clearable`, `data-zidan-close-on-select`, `data-zidan-disabled`,
 `data-zidan-allow-free-text`, `data-zidan-max-tags`, `data-zidan-min-tag-length`,
 `data-zidan-max-tag-length`, `data-zidan-case-sensitive`, `data-zidan-validation`,
-`data-zidan-scrollbar`, `data-zidan-fetch-url`, `data-zidan-fetch-method`,
+`data-zidan-scrollbar`, `data-zidan-accent-insensitive`, `data-zidan-highlight-matches`,
+`data-zidan-type-ahead`, `data-zidan-type-ahead-timeout`, `data-zidan-virtual`,
+`data-zidan-virtual-threshold`, `data-zidan-item-height`, `data-zidan-locale`,
+`data-zidan-fetch-url`, `data-zidan-fetch-method`,
 `data-zidan-fetch-headers`, `data-zidan-fetch-credentials`, `data-zidan-fetch-query-param`,
 `data-zidan-fetch-page-param`, `data-zidan-fetch-skip-param`,
 `data-zidan-fetch-page-size`, `data-zidan-fetch-page-size-param`, `data-zidan-fetch-items-path`,
@@ -871,8 +1018,8 @@ to any field that should span the row) rather than putting it on a single field.
 Checkbox adds `setIndeterminate(bool)`, `setChecked(bool)` and `isChecked()`.
 
 Text inputs add `stepUp(times?)`, `stepDown(times?)`, `setStepper(bool)`,
-`getPhoneCountry()`, `setPhoneCountry(iso)`, `setPhoneFormat(format)`, `formatPhone(value?)`
-and `openPicker()` / `showPicker()`.
+`getPhoneCountry()`, `setPhoneCountry(iso)`, `setPhoneFormat(format)`, `formatPhone(value?)`,
+`getUnmaskedValue()`, `refreshAutogrow()` and `openPicker()` / `showPicker()`.
 
 Fields are enhanced in place: the generated wrapper is inserted next to the original element,
 so the element needs a parent node before `zidanField()`, `initZidanForms()` or auto-init
@@ -890,9 +1037,35 @@ File adds `getFiles()`, `getUploadState()`, `addFiles()`, `replaceFiles()`, `rem
 `refresh()`, `loadMore()`, `hasMoreResults()`, `getAsyncState()`, `refreshOptions()`,
 `clearCache()`, `on(event, handler)`, `off(event, handler)`, `announce(message)`, `destroy()`.
 
+Multiple helpers: `getSelectedItems()`, `selectAll(config?)`, `deselectAll(config?)`,
+`toggleAll(config?)` and `areAllSelected()`. They cover every non-disabled option (not only
+the rows matching the current search) and accept `{ silent: true }` like `setValue`.
+Tag helpers: `moveTag(from, to)` and `editTag(tagOrIndex, label)` return a boolean and keep
+the native options in sync.
+
 `setValue(value, config?)` and `clear(config?)` take `{ silent: true }`, which updates the
 value, the native `<select>` and the rendered control without emitting `zidan:change` or
 calling `onChange`.
+
+## Form-level helpers
+
+`ZidanForm.serialize(form, options?)` returns an object built from `FormData`: repeated names
+become arrays and file inputs are skipped unless `{ files: true }`.
+
+`ZidanForm.validate(form, options?)` resolves `true`/`false` after every enhanced field's
+`validate()` and the native form constraints run. It focuses the first invalid control (set
+`{ focus: false }` to skip) and dispatches `zidan:validate` with `{ valid, form, fields }`.
+
+```js
+const form = document.querySelector('#signup');
+const data = ZidanForm.serialize(form);
+if (await ZidanForm.validate(form)) {
+  await fetch('/signup', { method: 'POST', body: JSON.stringify(data) });
+}
+```
+
+`ZidanForm.mask(value, pattern)`, `ZidanForm.unmask(value)` and
+`ZidanForm.downscaleImage(file, options)` are also available as standalone helpers.
 
 ## Events
 
@@ -911,6 +1084,8 @@ selection, so there is no matching `zidan:select` for it.
 | `zidan:select` | `{ instance, value, item }` (select) |
 | `zidan:no-results` | `{ instance, query }` (select) |
 | `zidan:tag-add` / `zidan:tag-remove` | `{ instance, tag, value }` (select tags) |
+| `zidan:tag-move` | `{ instance, tag, from, to, value }` (select tags) |
+| `zidan:tag-edit` | `{ instance, tag, label, previousLabel, index }` (select tags) |
 | `zidan:load-more` | `{ instance, page, query }` (select pagination) |
 | `zidan:reveal` | `{ instance, visible }` (password) |
 | `zidan:remove` | `{ instance, file, index? }` (file upload) |

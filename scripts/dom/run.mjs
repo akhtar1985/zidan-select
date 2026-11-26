@@ -910,7 +910,7 @@ test('API lab: every documented option, callback and method is demonstrated', as
   for (const category of Object.keys(missing)) {
     assert.deepEqual(Array.from(missing[category]), [], category + ' coverage is incomplete');
   }
-  assert.equal(lab.expected.events.length, 27, 'event inventory is incomplete');
+  assert.equal(lab.expected.events.length, 29, 'event inventory is incomplete');
   const selectDefaults = Object.keys(window.ZidanSelect.defaults);
   assert.deepEqual(Array.from(selectDefaults.filter(name => !lab.expected.selectOptions.includes(name))), [], 'API lab inventory omits select defaults');
   const optionsDoc = fs.readFileSync(path.join(root, 'docs/options.md'), 'utf8');
@@ -1004,6 +1004,298 @@ test('shared header: mobile menu and quick theme work on every shell', () => {
   assert.equal(window.document.documentElement.getAttribute('data-zs-theme'), 'dark');
   assert.equal(window.document.getElementById('select-root').getAttribute('data-zs-theme'), 'dark');
   assert.equal(window.document.getElementById('field-root').getAttribute('data-zs-theme'), 'dark');
+});
+
+/* ---------------- search quality, scale, i18n & themes ---------------- */
+
+test('search folds diacritics and highlights the match', () => {
+  const window = boot('<select id="s"></select><select id="p"></select>');
+  const select = window.zidanSelect('#s', {
+    mode: 'combobox',
+    options: ['Café au lait', 'Zürich', 'Señor', 'Ångström'],
+    highlightMatches: true
+  });
+  select.open();
+  select.input.value = 'cafe';
+  select.input.dispatchEvent(new window.Event('input', { bubbles: true }));
+  let options = select.dropdown.querySelectorAll('[role="option"]');
+  assert.equal(options.length, 1, 'accent folding did not match');
+  assert.equal(options[0].textContent, 'Café au lait');
+  const mark = options[0].querySelector('mark.zs-match');
+  assert.ok(mark, 'match was not wrapped in <mark>');
+  assert.equal(mark.textContent, 'Café');
+
+  select.input.value = 'zurich';
+  select.input.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(select.dropdown.querySelectorAll('[role="option"]').length, 1);
+
+  select.input.value = 'zzz';
+  select.input.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(select.dropdown.querySelectorAll('[role="option"]').length, 0);
+  assert.ok(select.dropdown.querySelector('.zs-state--empty'));
+
+  const plain = window.zidanSelect('#p', { mode: 'combobox', accentInsensitive: false, options: ['Café'] });
+  plain.open();
+  plain.input.value = 'cafe';
+  plain.input.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(plain.dropdown.querySelectorAll('[role="option"]').length, 0, 'folding should be opt-out');
+  plain.input.value = 'café';
+  plain.input.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(plain.dropdown.querySelectorAll('[role="option"]').length, 1);
+});
+
+test('virtual lists render a window and keep ARIA positions', () => {
+  const window = boot('<select id="s"></select>');
+  const values = [];
+  for (let i = 0; i < 500; i += 1) values.push('Row ' + (i + 1));
+  const select = window.zidanSelect('#s', { options: values, virtual: true, itemHeight: 32 });
+  let scrollTop = 0;
+  Object.defineProperty(select.dropdown, 'clientHeight', { configurable: true, value: 320 });
+  Object.defineProperty(select.dropdown, 'scrollTop', {
+    configurable: true,
+    get() { return scrollTop; },
+    set(value) { scrollTop = value; }
+  });
+  select.open();
+
+  let rendered = select.dropdown.querySelectorAll('[role="option"]');
+  assert.ok(rendered.length > 0 && rendered.length < 60, 'expected a window, rendered ' + rendered.length);
+  assert.equal(rendered[0].getAttribute('data-zs-option'), '0');
+  assert.equal(rendered[0].getAttribute('aria-setsize'), '500');
+  assert.equal(rendered[0].getAttribute('aria-posinset'), '1');
+  assert.ok(select.dropdown.querySelector('.zs-virtual-space'), 'missing top spacer');
+
+  scrollTop = 32 * 200;
+  select.dropdown.dispatchEvent(new window.Event('scroll'));
+  rendered = select.dropdown.querySelectorAll('[role="option"]');
+  assert.equal(rendered[0].getAttribute('data-zs-option'), '196');
+  assert.equal(rendered[0].getAttribute('aria-posinset'), '197');
+
+  select.input.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'End', bubbles: true }));
+  const last = select.dropdown.querySelectorAll('[role="option"]');
+  const finalOption = last[last.length - 1];
+  assert.equal(finalOption.getAttribute('data-zs-option'), '499');
+  assert.equal(select.input.getAttribute('aria-activedescendant'), finalOption.id);
+});
+
+test('type-ahead jumps and cycles options in a plain select', async () => {
+  const window = boot('<select id="s"><option>Apple</option><option>Banana</option><option>Blueberry</option><option>Cherry</option></select>');
+  const select = window.zidanSelect('#s', { mode: 'select', typeAheadTimeout: 20 });
+  select.open();
+  assert.equal(select.input.readOnly, true);
+
+  select.input.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'c', bubbles: true }));
+  assert.equal(select.dropdown.querySelector('.zs-option--active').textContent, 'Cherry');
+
+  await wait(30);
+  select.input.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'b', bubbles: true }));
+  assert.equal(select.dropdown.querySelector('.zs-option--active').textContent, 'Banana');
+  select.input.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'b', bubbles: true }));
+  assert.equal(select.dropdown.querySelector('.zs-option--active').textContent, 'Blueberry');
+
+  select.close();
+  await wait(30);
+  select.input.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'a', bubbles: true }));
+  assert.equal(select.getValue(), 'Apple', 'typing while closed should select like a native select');
+});
+
+test('locale packs localize built-in strings', () => {
+  const window = boot('<select id="s"></select><select id="n"></select>');
+  const select = window.zidanSelect('#s', { locale: 'fr', options: [] });
+  select.open();
+  assert.equal(select.root.getAttribute('lang'), 'fr');
+  assert.equal(select.dropdown.querySelector('.zs-state--empty').textContent, 'Aucune option');
+  assert.equal(select.opts.noResultsText, 'Aucun résultat');
+  assert.equal(select.opts.placeholder, 'Sélectionnez une option…');
+
+  window.ZidanSelect.locales.nl = { emptyText: 'Geen opties' };
+  const custom = window.zidanSelect('#n', { locale: 'nl', options: [] });
+  custom.open();
+  assert.equal(custom.dropdown.querySelector('.zs-state--empty').textContent, 'Geen opties');
+});
+
+test('theme auto follows prefers-color-scheme', () => {
+  const window = boot('<select id="s"></select><input id="f" data-zidan-input>');
+  window.matchMedia = () => ({
+    matches: true,
+    addEventListener() {},
+    removeEventListener() {}
+  });
+  const select = window.zidanSelect('#s', { theme: 'auto' });
+  assert.equal(select.root.getAttribute('data-zs-theme'), 'dark');
+  const field = window.zidanField('#f', { theme: 'auto' });
+  assert.equal(field.root.getAttribute('data-zs-theme'), 'dark');
+  assert.ok(window.ZidanForm.themes.includes('auto'), 'auto is not a registered theme');
+});
+
+test('option groups expose role=group and stay unvirtualized', () => {
+  const window = boot('<select id="s"></select>');
+  const select = window.zidanSelect('#s', {
+    virtual: true,
+    options: [
+      { value: 'a', label: 'A', group: 'First' },
+      { value: 'b', label: 'B', group: 'First' },
+      { value: 'c', label: 'C', group: 'Second' }
+    ]
+  });
+  select.open();
+  const groups = select.dropdown.querySelectorAll('[role="group"]');
+  assert.equal(groups.length, 2);
+  const label = groups[0].querySelector('.zs-group-label');
+  assert.equal(label.textContent, 'First');
+  assert.equal(groups[0].getAttribute('aria-labelledby'), label.id);
+  assert.equal(groups[0].querySelectorAll('[role="option"]').length, 2);
+  assert.equal(select.dropdown.querySelectorAll('[role="option"]').length, 3);
+});
+
+test('getTags returns the tag values in order', () => {
+  const window = boot('<select id="s" multiple></select>');
+  const select = window.zidanSelect('#s', { mode: 'tags', options: ['One', 'Two'] });
+  select.addTag('One');
+  select.addTag('Two');
+  assert.deepEqual(Array.from(select.getTags()), ['One', 'Two']);
+  assert.equal(typeof select.getTags()[0], 'string');
+});
+
+/* ---------------- v2.5.0 extension features ---------------- */
+
+test('input mask formats literals and exposes mask/unmask helpers', () => {
+  const window = boot('<input id="f" data-zidan-mask="(###) ###-####">');
+  const field = window.zidanField('#f');
+  assert.equal(field.el.value, '', 'an empty mask leaves the field empty');
+  assert.equal(window.ZidanForm.mask('', '(###) ###-####'), '');
+  assert.equal(window.ZidanForm.mask('1234567890', '(###) ###-####'), '(123) 456-7890');
+  assert.equal(window.ZidanForm.unmask('(123) 456-7890'), '1234567890');
+  field.el.value = '1234567890';
+  field.el.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(field.el.value, '(123) 456-7890');
+  assert.equal(field.getUnmaskedValue(), '1234567890');
+  field.setValue('5551234');
+  assert.equal(field.el.value, '(555) 123-4');
+  assert.equal(field.getUnmaskedValue(), '5551234');
+  assert.equal(field.setValue('abc12').getUnmaskedValue(), '12');
+});
+
+test('tags can be reordered and renamed in place', () => {
+  const window = boot('<select id="s" multiple></select>');
+  const select = window.zidanSelect('#s', { mode: 'tags', reorderable: true, editable: true, options: ['One', 'Two', 'Three'] });
+  select.addTag('One');
+  select.addTag('Two');
+  select.addTag('Three');
+  assert.equal(select.moveTag(2, 0), true);
+  assert.deepEqual(Array.from(select.getTags()), ['Three', 'One', 'Two']);
+  assert.equal(select.editTag('One', 'Uno'), true);
+  const items = select.getSelectedItems();
+  assert.equal(items[1].label, 'Uno');
+  const nativeOne = Array.from(select.el.options).find((option) => option.value === 'One');
+  assert.equal(nativeOne.textContent, 'Uno', 'native option label did not follow the edit');
+  assert.equal(select.editTag('missing', 'x'), false);
+  const chip = select.chipsEl.querySelector('.zs-chip[data-zs-index="0"]');
+  chip.focus();
+  chip.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'F2', bubbles: true, cancelable: true }));
+  const editor = select.chipsEl.querySelector('.zs-chip-edit');
+  assert.ok(editor, 'F2 did not open the inline tag editor');
+  editor.value = 'Third';
+  editor.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+  assert.equal(select.chipsEl.querySelector('.zs-chip-edit'), null, 'Enter did not close the inline tag editor');
+  assert.equal(select.getSelectedItems()[0].label, 'Third');
+  select.destroy();
+});
+
+test('multiple helpers select, toggle and clear every enabled option', () => {
+  const window = boot('<select id="s" multiple><option value="a">A</option><option value="b">B</option><option value="c" disabled>C</option></select>');
+  const select = window.zidanSelect('#s');
+  select.setValue(['b']);
+  select.selectAll();
+  assert.deepEqual(Array.from(select.getValue()), ['b', 'a']);
+  assert.equal(select.areAllSelected(), true);
+  select.toggleAll();
+  assert.equal(select.getValue().length, 0);
+  select.toggleAll();
+  assert.deepEqual(Array.from(select.getValue()), ['a', 'b']);
+  select.deselectAll();
+  assert.equal(select.getValue().length, 0);
+  select.destroy();
+});
+
+test('ZidanForm.serialize flattens form data and repeats array keys', () => {
+  const window = boot('<form id="f"><input name="a" value="1"><input name="tag" value="x"><input name="tag" value="y"><input type="checkbox" name="ok" value="yes" checked><textarea name="msg" data-zidan-input>hi</textarea></form>');
+  window.zidanField('#f textarea');
+  const data = window.ZidanForm.serialize('#f');
+  assert.equal(data.a, '1');
+  assert.deepEqual(Array.from(data.tag), ['x', 'y']);
+  assert.equal(data.ok, 'yes');
+  assert.equal(data.msg, 'hi');
+  assert.throws(() => window.ZidanForm.serialize('#missing'), /expected a <form>/);
+});
+
+test('ZidanForm.validate runs field rules and native constraints', async () => {
+  const window = boot('<form id="f"><input name="email" type="email" value="nope" required><textarea id="t" name="msg" data-zidan-input></textarea></form>');
+  const text = window.zidanField('#t', { validate: (value) => value.length >= 3 });
+  const events = [];
+  window.document.getElementById('f').addEventListener('zidan:validate', (event) => events.push(event.detail.valid));
+  assert.equal(await window.ZidanForm.validate('#f'), false, 'invalid email should fail');
+  assert.equal(window.document.activeElement.name, 'email', 'first native invalid control should get focus');
+  window.document.querySelector('[name="email"]').value = 'a@b.co';
+  assert.equal(await window.ZidanForm.validate('#f'), false, 'field rule should fail');
+  assert.equal(window.document.activeElement.id, 't');
+  text.setValue('hey');
+  assert.equal(await window.ZidanForm.validate('#f', { focus: false }), true);
+  assert.deepEqual(events, [false, false, true]);
+});
+
+test('phone country picker searches and switches the dial code', () => {
+  const window = boot('<input id="p" type="tel" data-zidan-phone="true">');
+  const field = window.zidanField('#p');
+  const button = field.root.querySelector('.zs-phone-picker');
+  const menu = field.root.querySelector('.zs-phone-menu');
+  assert.ok(button, 'visible picker button missing');
+  assert.ok(field.root.querySelector('.zs-phone-country--native'), 'native value holder missing');
+  button.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  assert.equal(menu.hidden, false);
+  assert.equal(button.getAttribute('aria-expanded'), 'true');
+  const search = menu.querySelector('.zs-phone-search');
+  search.value = 'germany';
+  search.dispatchEvent(new window.Event('input', { bubbles: true }));
+  const options = menu.querySelectorAll('[data-iso]');
+  assert.equal(options.length, 1);
+  assert.equal(options[0].getAttribute('data-iso'), 'DE');
+  options[0].dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  assert.equal(field.getPhoneCountry(), 'DE');
+  assert.equal(button.querySelector('.zs-phone-picker-dial').textContent, '+49');
+  assert.equal(menu.hidden, true);
+});
+
+test('textarea autogrow follows scrollHeight and respects its cap', () => {
+  const window = boot('<textarea id="a" data-zidan-input></textarea><textarea id="b" data-zidan-input></textarea>');
+  const grow = window.document.getElementById('a');
+  const capped = window.document.getElementById('b');
+  Object.defineProperty(grow, 'scrollHeight', { configurable: true, value: 120 });
+  Object.defineProperty(capped, 'scrollHeight', { configurable: true, value: 120 });
+  const fieldA = window.zidanField('#a', { autogrow: true });
+  const fieldB = window.zidanField('#b', { autogrow: true, autogrowMax: 60 });
+  fieldA.setValue('one\ntwo');
+  fieldB.setValue('one\ntwo');
+  assert.equal(fieldA.el.style.height, '120px');
+  assert.equal(fieldB.el.style.height, '60px');
+  assert.equal(fieldB.el.style.overflowY, 'auto');
+});
+
+test('image downscale helper degrades safely without canvas', async () => {
+  const window = boot('<input id="f" type="file" accept="image/*">');
+  const file = new window.File(['png-bytes'], 'photo.png', { type: 'image/png' });
+  assert.equal(await window.ZidanForm.downscaleImage(file, { maxWidth: 10 }), file);
+  const uploaded = [];
+  const field = window.zidanField('#f', {
+    downscale: true,
+    uploadHandler: (picked) => { uploaded.push(picked); return { ok: true }; }
+  });
+  field.addFiles([file]);
+  field.uploadAll();
+  await wait(30);
+  assert.equal(uploaded.length, 1);
+  assert.equal(uploaded[0].name, 'photo.png');
+  assert.equal(field.getUploadState()[0].status, 'done');
 });
 
 /* ---------------- runner ---------------- */

@@ -184,7 +184,17 @@ made afterwards.
 
 ## Automatic dark mode
 
-Add the attribute based on `prefers-color-scheme`:
+`theme: 'auto'` (or `data-zs-theme="auto"`) resolves to `dark` when the OS prefers dark and to
+`default` otherwise:
+
+```js
+zidanSelect('#city', { theme: 'auto' });
+```
+
+One shared `matchMedia('(prefers-color-scheme: dark)')` listener updates every auto root live;
+`setTheme('auto')` re-arms it and `destroy()` removes the tracking. `auto` is resolved in JS, so
+there is no `[data-zs-theme="auto"]` CSS block — the root carries the resolved `dark`/`default`
+name. To drive it yourself instead, set the attribute before init:
 
 ```html
 <script>
@@ -192,12 +202,6 @@ Add the attribute based on `prefers-color-scheme`:
     document.documentElement.setAttribute('data-zs-theme', 'dark');
   }
 </script>
-```
-
-Or scope it to a wrapper and switch at runtime:
-
-```js
-document.querySelectorAll('.zs-field').forEach(el => el.setAttribute('data-zs-theme', 'dark'));
 ```
 
 `setTheme()` on an instance does the same for one field.

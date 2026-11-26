@@ -65,7 +65,7 @@ docs.set('advanced.html', advanced);
 
 const readme = read('README.md').split('\n');
 for (const b of builds) {
-  const i = readme.findIndex((line) => line.indexOf('@2.4.2/' + b.raw + ')') !== -1 && /≈\d+ kB raw · ≈\d+ kB minified/.test(line));
+  const i = readme.findIndex((line) => line.indexOf('@2.5.0/' + b.raw + ')') !== -1 && /≈\d+ kB raw · ≈\d+ kB minified/.test(line));
   if (i === -1) throw new Error('sizes: no README row for ' + b.raw);
   readme[i] = readme[i].replace(/≈\d+ kB raw · ≈\d+ kB minified/, () => '≈' + b.rawKb + ' kB raw · ≈' + b.minKb + ' kB minified');
 }

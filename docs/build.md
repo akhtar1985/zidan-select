@@ -104,7 +104,7 @@ Without esbuild the build still succeeds and prints that minification was skippe
 | Select-only | `/dist/select/zidan-select.min.js` — ≈68 kB | `/dist/select/plugin-select-core.min.css` — ≈9 kB | `/dist/select/plugin-select-theme.min.css` — ≈27 kB |
 | File-only | `/dist/file/zidan-file.min.js` — ≈50 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈29 kB |
 
-Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.4.2` to each path (or your own origin). These are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
+Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.5.0` to each path (or your own origin). These are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
 Use these package files rather than relying on a CDN's auto-minification.
 Check the three you use with `curl -I` before changing a version, then update the URLs in the
 README, the demo build cards and the playground in the same commit.
@@ -131,9 +131,9 @@ Regenerate them with `npm run build` followed by `npm run sizes`; `npm test` fai
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | 232,157 B (≈227 kB) → 135,366 B (≈132 kB) | 41,054 B (≈40 kB) → 31,422 B (≈31 kB) | 47,697 B (≈47 kB) → 39,983 B (≈39 kB) |
-| Select-only | 118,981 B (≈116 kB) → 69,921 B (≈68 kB) | 12,456 B (≈12 kB) → 9,511 B (≈9 kB) | 32,559 B (≈32 kB) → 27,505 B (≈27 kB) |
-| File-only | 88,830 B (≈87 kB) → 51,742 B (≈51 kB) | 9,939 B (≈10 kB) → 7,210 B (≈7 kB) | 34,991 B (≈34 kB) → 29,929 B (≈29 kB) |
+| Full | 279,391 B (≈273 kB) → 159,804 B (≈156 kB) | 44,016 B (≈43 kB) → 33,862 B (≈33 kB) | 47,953 B (≈47 kB) → 40,219 B (≈39 kB) |
+| Select-only | 147,052 B (≈144 kB) → 85,306 B (≈83 kB) | 13,156 B (≈13 kB) → 10,092 B (≈10 kB) | 32,815 B (≈32 kB) → 27,741 B (≈27 kB) |
+| File-only | 101,720 B (≈99 kB) → 58,615 B (≈57 kB) | 9,939 B (≈10 kB) → 7,210 B (≈7 kB) | 35,241 B (≈34 kB) → 30,159 B (≈29 kB) |
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their
@@ -231,10 +231,10 @@ move the tag: the run reads the version from `package.json` at that ref, which i
 artefact in step with `vX.Y.Z`.
 
 ```bash
-gh workflow run release.yml --ref v2.4.2   # any existing tag
+gh workflow run release.yml --ref v2.5.0   # any existing tag
 gh run watch
-npm view zidan-select dist-tags            # latest should be 2.4.2
-npm view zidan-select@2.4.2 version
+npm view zidan-select dist-tags            # latest should be 2.5.0
+npm view zidan-select@2.5.0 version
 ```
 
 A `workflow_dispatch` run skips the push-only guards and the "Create the GitHub release" step, so
@@ -242,8 +242,8 @@ create the Release yourself when the panel is empty — the body comes from the 
 section the workflow uses:
 
 ```bash
-node scripts/changelog-section.mjs 2.4.2 > .build/notes-2.4.2.md
-gh release create v2.4.2 --title v2.4.2 --notes-file .build/notes-2.4.2.md --verify-tag
+node scripts/changelog-section.mjs 2.5.0 > .build/notes-2.5.0.md
+gh release create v2.5.0 --title v2.5.0 --notes-file .build/notes-2.5.0.md --verify-tag
 ```
 
 jsDelivr only serves published tarballs, so a version that is not on npm has no CDN files: its

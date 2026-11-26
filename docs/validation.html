@@ -31,7 +31,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.4.2 · zero dependencies</span>
+        <span class="brand-sub">v2.5.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -234,12 +234,19 @@
           return field.$element.closest('.zs-field');
         }
       });
-      jQuery('#form-parsley').on('form:success', function () {
-        report('parsley-status', 'Valid — ' + new URLSearchParams(new FormData(this)).toString());
-      });
-      jQuery('#form-parsley').on('form:error', function () {
-        report('parsley-status', 'Blocked by Parsley.', 'error');
-      });
+      // Capture phase: stop the browser navigation that would wipe the result, then
+      // report the outcome here instead of relying on Parsley's form:success event.
+      document.getElementById('form-parsley').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var valid = jQuery(this).parsley().isValid();
+        report(
+          'parsley-status',
+          valid
+            ? 'Valid — ' + new URLSearchParams(new FormData(this)).toString()
+            : 'Blocked by Parsley.',
+          valid ? 'ok' : 'error'
+        );
+      }, true);
     } else {
       report('parsley-status', 'Parsley could not load from the CDN.', 'missing');
     }

@@ -355,6 +355,7 @@
       autoIcon: false, icon: '', iconPosition: 'left', iconClickable: false, iconLabel: '',
       validationIcon: false, prefix: '', suffix: '', clearable: false, reveal: false,
       counter: '', rows: 4, maxlength: '', minlength: '',
+      mask: '', autogrow: false, autogrowMax: '',
       stepper: 'false', stepperPosition: 'right', stepperWrap: false, stepperLongPress: true,
       stepperDelay: 420, stepperInterval: 90, min: '', max: '', step: '', value: '',
       phone: false, phoneCountry: 'US', phoneFormat: 'national', phoneCountrySelect: true,
@@ -396,6 +397,14 @@
           number('counter', 'Character counter', '', function (s) { return s.type === 'text' || s.type === 'email'; }),
           number('maxlength', 'Max length', '', function (s) { return s.type === 'text' || s.type === 'email'; }),
           number('rows', 'Rows', 4, function (s) { return s.type === 'textarea'; })
+        ]
+      },
+      {
+        title: 'Mask & sizing',
+        fields: [
+          text('mask', 'Mask', '', function (s) { return s.type === 'text'; }),
+          bool('autogrow', 'Grow with content', false, function (s) { return s.type === 'textarea'; }),
+          number('autogrowMax', 'Max height (px)', '', function (s) { return s.type === 'textarea' && s.autogrow; })
         ]
       }
     ];
@@ -557,6 +566,9 @@
         ['open() / close() / toggle()', 'Control the listbox.'],
         ['getValue() / setValue(v)', 'Single value, or an array for multiple/tags.'],
         ['getTags() / addTag(t) / removeTag(t)', 'Tags mode helpers.'],
+        ['moveTag(from, to) / editTag(tag, label)', 'Reorder or rename a tag.'],
+        ['selectAll() / deselectAll() / toggleAll()', 'Act on every enabled option.'],
+        ['areAllSelected() / getSelectedItems()', 'Selection summary with labels.'],
         ['setOptions(items)', 'Replace options; keeps groups and disabled flags.'],
         ['loadMore() / hasMoreResults()', 'Paged fetchOptions results.'],
         ['getAsyncState()', '{ query, page, hasMore, loading, error }.'],
@@ -569,6 +581,7 @@
         ['zidan:select', '{ value, item }'],
         ['zidan:open / zidan:close', 'Listbox visibility.'],
         ['zidan:tag-add / zidan:tag-remove', '{ tag, value }'],
+        ['zidan:tag-move / zidan:tag-edit', '{ tag, index, label, previousLabel }'],
         ['zidan:load-more', '{ page, query }'],
         ['zidan:error', '{ error, callback }']
       ]
@@ -596,8 +609,8 @@
     checkbox: { note: 'Checkbox and switch share one field instance.', methods: FIELD_METHODS.concat([['setChecked(b) / isChecked()', 'Toggle and read the state.'], ['setIndeterminate(b)', 'Mixed state.']]), events: FIELD_EVENTS },
     switch: { note: 'A checkbox with variant: "switch".', methods: FIELD_METHODS.concat([['setChecked(b) / isChecked()', 'Toggle and read the state.']]), events: FIELD_EVENTS },
     radio: { note: 'One instance per <fieldset> or [data-zidan-radio-group].', methods: FIELD_METHODS.concat([['setValue(v)', 'Check the radio with that value.'], ['getValue()', 'The checked radio value or "".']]), events: FIELD_EVENTS },
-    text: { note: 'Text, email, password, url, search and colour inputs.', methods: FIELD_METHODS, events: FIELD_EVENTS },
-    textarea: { note: 'A plain <textarea>, enhanced in place.', methods: FIELD_METHODS, events: FIELD_EVENTS },
+    text: { note: 'Text, email, password, url, search and colour inputs; mask adds input filtering.', methods: FIELD_METHODS.concat([['getUnmaskedValue()', 'The raw characters without literals.']]), events: FIELD_EVENTS },
+    textarea: { note: 'A plain <textarea>; autogrow follows its content up to autogrowMax.', methods: FIELD_METHODS, events: FIELD_EVENTS },
     number: {
       note: 'Adds a stepper to a native number input.',
       methods: FIELD_METHODS.concat([['stepUp(n) / stepDown(n)', 'Step the value.'], ['setStepper(on)', 'Set or clear the source attribute; reinitialise to apply.']]),
@@ -816,6 +829,11 @@
       if (s.clearable) attrs += flag('data-zidan-clear', true);
       if (s.reveal) attrs += flag('data-zidan-reveal', true);
       attrs += attr('data-zidan-counter', s.counter);
+      attrs += attr('data-zidan-mask', s.mask);
+      if (s.autogrow) {
+        attrs += flag('data-zidan-autogrow', 'true');
+        attrs += attr('data-zidan-autogrow-max', s.autogrowMax);
+      }
       if (type === 'number') {
         if (s.stepper !== 'false') {
           attrs += attr('data-zidan-stepper', s.stepper);
@@ -999,6 +1017,11 @@
       if (type !== 'range') add('clearable', s.clearable);
       if (type === 'password') add('reveal', s.reveal);
       if (Number(s.counter) > 0) add('counter', Number(s.counter));
+      if (s.mask) add('mask', s.mask);
+      if (s.autogrow) {
+        add('autogrow', true);
+        if (Number(s.autogrowMax) > 0) add('autogrowMax', Number(s.autogrowMax));
+      }
       if (type === 'number' && s.stepper !== 'false') {
         add('stepper', s.stepper);
         if (s.stepper === 'inline') add('stepperPosition', s.stepperPosition);

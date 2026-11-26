@@ -285,6 +285,18 @@ field.getValidation();            // 'valid' | 'invalid' | null
 
 `zidan:validation` bubbles from the wrapper for analytics or summary lists.
 
+### Whole-form validation and serialization
+
+```js
+const form = document.querySelector('#signup');
+const data = ZidanForm.serialize(form);       // repeated names become arrays
+const ok = await ZidanForm.validate(form);    // runs field rules + native constraints
+if (ok) await fetch('/signup', { method: 'POST', body: JSON.stringify(data) });
+```
+
+`ZidanForm.validate(form, { focus: false })` skips focusing the first invalid control.
+`zidan:validate` bubbles with `{ valid, form, fields }` once all checks settle.
+
 ## Checklist
 
 - [ ] Core control still has `name` and appears in `new FormData(form)`.

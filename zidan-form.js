@@ -1,5 +1,5 @@
 /*!
- * ZidanForm v2.4.2
+ * ZidanForm v2.5.0
  * Zero-dependency form enhancement library: select / combobox / tags,
  * checkboxes, switches, radio groups, file upload with drag & drop and
  * upload progress, text / number / phone / date / range inputs and textarea.
@@ -32,7 +32,7 @@
 })(typeof window !== 'undefined' ? window : this, function (global) {
   'use strict';
 
-  var VERSION = '2.4.2';
+  var VERSION = '2.5.0';
 
   // Loading the file twice (classic script + module wrapper, or two bundles)
   // must not replace the classes and orphan the live instances.
@@ -49,7 +49,7 @@
 
   var LAYOUTS = ['classic-clean', 'floating-label', 'soft-pill', 'bordered-brutalist', 'glass-elevated'];
   var FRAMEWORKS = ['auto', 'none', 'vanilla', 'bootstrap', 'tailwind', 'bulma', 'foundation'];
-  var THEMES = ['default', 'modern', 'minimal', 'dark', 'glass'];
+  var THEMES = ['default', 'modern', 'minimal', 'dark', 'glass', 'auto'];
   var FIELD_LAYOUTS = ['stacked', 'inline', 'card', 'compact', 'floating', 'outlined'];
   var FIELD_KINDS = ['checkbox', 'radio', 'radio-group', 'file', 'input', 'textarea'];
   var FIELDS_SELECTOR = '[data-zidan], [data-zidan-checkbox], [data-zidan-switch], [data-zidan-radio], ' +
@@ -600,6 +600,70 @@
     return value;
   }
 
+  /* system theme + locale catalogs ---------------------------------- */
+
+  /* 'auto' follows prefers-color-scheme; the root keeps data-zs-theme synced
+     with the resolved light/dark theme so the plain CSS themes keep working. */
+  var prefersDarkQuery = null;
+  var autoThemeRoots = [];
+
+  function systemPrefersDark() {
+    if (!global.matchMedia) return false;
+    if (!prefersDarkQuery) {
+      try { prefersDarkQuery = global.matchMedia('(prefers-color-scheme: dark)'); } catch (error) { return false; }
+    }
+    return !!prefersDarkQuery.matches;
+  }
+
+  function resolveThemeName(name) {
+    return name === 'auto' ? (systemPrefersDark() ? 'dark' : 'default') : name;
+  }
+
+  function syncAutoThemes() {
+    for (var i = autoThemeRoots.length - 1; i >= 0; i -= 1) {
+      var node = autoThemeRoots[i];
+      if (!node || !node.isConnected) { autoThemeRoots.splice(i, 1); continue; }
+      node.setAttribute('data-zs-theme', prefersDarkQuery && prefersDarkQuery.matches ? 'dark' : 'default');
+    }
+  }
+
+  function trackAutoTheme(node) {
+    if (!node || autoThemeRoots.indexOf(node) !== -1) return;
+    node.setAttribute('data-zs-theme', resolveThemeName('auto'));
+    autoThemeRoots.push(node);
+    if (systemPrefersDark() || prefersDarkQuery) syncAutoThemes();
+    if (prefersDarkQuery && !prefersDarkQuery.__zsBound) {
+      prefersDarkQuery.__zsBound = true;
+      if (prefersDarkQuery.addEventListener) prefersDarkQuery.addEventListener('change', syncAutoThemes);
+      else if (prefersDarkQuery.addListener) prefersDarkQuery.addListener(syncAutoThemes);
+    }
+  }
+
+  function untrackAutoTheme(node) {
+    var index = autoThemeRoots.indexOf(node);
+    if (index !== -1) autoThemeRoots.splice(index, 1);
+  }
+
+  /* Built-in strings. Extend at runtime through ZidanForm.locales. */
+  var LOCALES = {
+    en: { noResultsText: 'No results found', emptyText: 'No options', loadingText: 'Searching…', clearText: 'Clear selection', loadMoreText: 'Load more', placeholder: 'Select an option…', requiredText: 'Please select an option.' },
+    es: { noResultsText: 'No se encontraron resultados', emptyText: 'Sin opciones', loadingText: 'Buscando…', clearText: 'Borrar selección', loadMoreText: 'Cargar más', placeholder: 'Selecciona una opción…', requiredText: 'Selecciona una opción.' },
+    fr: { noResultsText: 'Aucun résultat', emptyText: 'Aucune option', loadingText: 'Recherche…', clearText: 'Effacer la sélection', loadMoreText: 'Charger plus', placeholder: 'Sélectionnez une option…', requiredText: 'Veuillez sélectionner une option.' },
+    de: { noResultsText: 'Keine Ergebnisse', emptyText: 'Keine Optionen', loadingText: 'Suche…', clearText: 'Auswahl löschen', loadMoreText: 'Mehr laden', placeholder: 'Option auswählen…', requiredText: 'Bitte wählen Sie eine Option.' },
+    ar: { noResultsText: 'لا توجد نتائج', emptyText: 'لا توجد خيارات', loadingText: 'جارٍ البحث…', clearText: 'مسح التحديد', loadMoreText: 'تحميل المزيد', placeholder: 'اختر خيارًا…', requiredText: 'يرجى اختيار خيار.' }
+  };
+
+  function parseVirtual(value) {
+    if (value === undefined || value === null || value === '') return undefined;
+    if (typeof value === 'boolean' || typeof value === 'number') return value;
+    var text = String(value).toLowerCase().trim();
+    if (text === 'auto') return 'auto';
+    if (text === 'true' || text === 'on') return true;
+    if (text === 'false' || text === 'off') return false;
+    var parsed = parseInt(text, 10);
+    return isNaN(parsed) ? undefined : parsed;
+  }
+
   /* theme/framework/layout resolution shared by every field and the select */
   function resolveScope(node, options) {
     var opts = options || {};
@@ -663,6 +727,7 @@
     emptyText: 'No options',
     loadingText: 'Searching…',
     clearText: 'Clear selection',
+    requiredText: 'Please select an option.',
     /* combobox / async */
     fetchOptions: null,
     debounce: 250,
@@ -688,6 +753,8 @@
     maxTags: Infinity,
     minTagLength: 1,
     maxTagLength: Infinity,
+    reorderable: false,        // drag chips (or Alt+Arrow) to reorder tags
+    editable: false,           // double-click a chip to rename its label
     caseSensitive: false,
     delimiters: [','],
     commitOnTab: false,
@@ -698,6 +765,15 @@
     customClasses: {},
     validation: null,          // null | 'valid' | 'invalid'
     scrollbar: 'default',      // 'default' | 'thin' | 'fancy' | 'hover' | 'hidden'
+    /* search, scale & i18n */
+    accentInsensitive: true,   // fold diacritics so "cafe" matches "Café"
+    highlightMatches: false,   // wrap the matching label substring in <mark>
+    virtual: false,            // false | true | 'auto' | minimum row count
+    virtualThreshold: 150,     // row count used by virtual: 'auto'
+    itemHeight: 0,             // fixed row height for virtualization (0 = measure)
+    typeAhead: true,           // jump to options by typing in a non-searchable select
+    typeAheadTimeout: 600,
+    locale: null,              // 'en' | 'es' | 'fr' | 'de' | 'ar' | { ... }
     /* callbacks */
     filterOption: null,
     renderOption: null,
@@ -951,6 +1027,8 @@
     merged.maxTags = pick('maxTags', d.zidanMaxTags ? parseInt(d.zidanMaxTags, 10) || Infinity : DEFAULTS.maxTags);
     merged.minTagLength = pick('minTagLength', d.zidanMinTagLength ? parseInt(d.zidanMinTagLength, 10) || 1 : DEFAULTS.minTagLength);
     merged.maxTagLength = pick('maxTagLength', d.zidanMaxTagLength ? parseInt(d.zidanMaxTagLength, 10) || Infinity : DEFAULTS.maxTagLength);
+    merged.reorderable = pick('reorderable', readBoolAttr(d.zidanReorderable, false));
+    merged.editable = pick('editable', readBoolAttr(d.zidanEditable, false));
     merged.caseSensitive = pick('caseSensitive', readBoolAttr(d.zidanCaseSensitive, false));
     merged.validation = pick('validation', d.zidanValidation || null);
     merged.options = pick('options', null);
@@ -970,6 +1048,14 @@
     merged.fetchItemsPath = pick('fetchItemsPath', d.zidanFetchItemsPath || null);
     merged.fetchTotalPath = pick('fetchTotalPath', d.zidanFetchTotalPath || null);
     merged.fetchHasMorePath = pick('fetchHasMorePath', d.zidanFetchHasMorePath || null);
+    merged.accentInsensitive = pick('accentInsensitive', readBoolAttr(d.zidanAccentInsensitive, DEFAULTS.accentInsensitive));
+    merged.highlightMatches = pick('highlightMatches', readBoolAttr(d.zidanHighlightMatches, DEFAULTS.highlightMatches));
+    merged.typeAhead = pick('typeAhead', readBoolAttr(d.zidanTypeAhead, DEFAULTS.typeAhead));
+    merged.typeAheadTimeout = pick('typeAheadTimeout', d.zidanTypeAheadTimeout ? parseInt(d.zidanTypeAheadTimeout, 10) || DEFAULTS.typeAheadTimeout : DEFAULTS.typeAheadTimeout);
+    merged.virtual = pick('virtual', parseVirtual(d.zidanVirtual));
+    merged.virtualThreshold = pick('virtualThreshold', d.zidanVirtualThreshold ? parseInt(d.zidanVirtualThreshold, 10) || DEFAULTS.virtualThreshold : DEFAULTS.virtualThreshold);
+    merged.itemHeight = pick('itemHeight', d.zidanItemHeight ? parseInt(d.zidanItemHeight, 10) || 0 : DEFAULTS.itemHeight);
+    merged.locale = pick('locale', d.zidanLocale || (doc && doc.documentElement ? doc.documentElement.lang : null) || DEFAULTS.locale);
 
     // carry over every explicitly-passed option (callbacks, custom classes, ...)
     Object.keys(options).forEach(function (key) {
@@ -985,6 +1071,21 @@
     if (mode === 'combobox') merged.searchable = true;
     if (mode === 'tags' && merged.searchable === false) merged.searchable = true;
     if (mode === 'tags') merged.multiple = true;
+
+    /* locale packs fill in built-in copy unless the caller overrode it */
+    var localeSetting = merged.locale;
+    var localeName = typeof localeSetting === 'string' ? String(localeSetting).slice(0, 2).toLowerCase() : '';
+    var localePack = localeSetting && typeof localeSetting === 'object' ? localeSetting : LOCALES[localeName];
+    if (localePack) {
+      ['noResultsText', 'emptyText', 'loadingText', 'clearText', 'loadMoreText'].forEach(function (key) {
+        if (merged[key] === DEFAULTS[key] && localePack[key]) merged[key] = localePack[key];
+      });
+      if (merged.requiredText === DEFAULTS.requiredText && localePack.requiredText) merged.requiredText = localePack.requiredText;
+      if (merged.placeholder === placeholderDefault && localePack.placeholder) merged.placeholder = localePack.placeholder;
+      merged.locale = typeof localeSetting === 'object' ? localeSetting : localeName;
+    } else {
+      merged.locale = null;
+    }
 
     // declarative AJAX: one URL is enough to opt into remote loading
     if (merged.fetchUrl && typeof merged.fetchOptions !== 'function') {
@@ -1112,11 +1213,13 @@
       this.el.parentNode.classList.contains('zs-root--mount');
 
     var scope = resolveScope(this.el, { theme: opts.theme, framework: opts.themeFramework, layout: opts.layout });
-    this.theme = scope.theme;
+    this.themeMode = scope.theme;
+    this.theme = resolveThemeName(scope.theme);
 
     var rootEl = el('div', 'zs-root');
     rootEl.id = this.id + '-root';
     rootEl.setAttribute('data-zs-theme', this.theme);
+    if (typeof opts.locale === 'string' && opts.locale) rootEl.setAttribute('lang', opts.locale);
     rootEl.setAttribute('data-zs-layout', this.layout);
     rootEl.setAttribute('data-zs-framework', this.framework);
     rootEl.setAttribute('data-zs-mode', this.mode);
@@ -1224,6 +1327,7 @@
     }
 
     this.root = rootEl;
+    if (this.themeMode === 'auto') trackAutoTheme(rootEl);
     this.controlEl = control;
     this.chipsEl = chips;
     this.input = input;
@@ -1286,7 +1390,7 @@
         event.preventDefault();
         self.setValidation('invalid');
         if (self.input && self.input.focus) self.input.focus();
-        self.announce('Please select an option.');
+        self.announce(self.opts.requiredText || 'Please select an option.');
       };
       this.form.addEventListener('submit', this.onFormSubmit);
     }
@@ -1503,6 +1607,18 @@
       var chip = el('span', 'zs-chip', { 'data-zs-index': index });
       if (self.framework === 'bootstrap') addClass(chip, 'badge rounded-pill');
       self._applyCustomClass(chip, 'chip');
+      if (self.mode === 'tags' && self.opts.reorderable) {
+        chip.setAttribute('draggable', 'true');
+        chip.setAttribute('tabindex', '0');
+        chip.setAttribute('title', 'Drag to reorder — or Alt+Left/Right');
+        addClass(chip, 'zs-chip--reorderable');
+      } else if (self.mode === 'tags' && self.opts.editable) {
+        chip.setAttribute('tabindex', '0');
+      }
+      if (self.mode === 'tags' && self.opts.editable) {
+        chip.setAttribute('title', 'Double-click to edit');
+        addClass(chip, 'zs-chip--editable');
+      }
 
       var labelNode;
       var custom = typeof self.opts.renderTag === 'function' && self.mode === 'tags'
@@ -1577,16 +1693,33 @@
     return this.items;
   };
 
+  /* Diacritic folding: "Cafe" matches "Café", "Zurich" matches "Zürich".
+     NFKD + combining-mark strip keeps the comparison length stable for the
+     common Latin cases; highlight() falls back when it is not. */
+  function foldText(value, keepCase) {
+    var text = String(value === null || value === undefined ? '' : value);
+    if (text.normalize) {
+      try { text = text.normalize('NFKD').replace(/[̀-ͯ]/g, ''); } catch (error) { /* keep text */ }
+    }
+    return keepCase ? text : text.toLowerCase();
+  }
+
   ZidanSelect.prototype._visibleItems = function () {
     var self = this;
     var query = this.query.trim();
     var source = this._sourceItems();
     var isCaseSensitive = !!this.opts.caseSensitive;
+    var accent = !!this.opts.accentInsensitive;
     var remote = typeof this.opts.fetchOptions === 'function' && !!this.asyncItems;
 
     if (!query) return source.slice();
     // the server already filtered this page; only an explicit filterOption re-checks it
-    if (remote && typeof this.opts.filterOption !== 'function') return source.slice();
+    if (remote && typeof self.opts.filterOption !== 'function') return source.slice();
+
+    var normalize = function (value) {
+      return accent ? foldText(value, isCaseSensitive) : (isCaseSensitive ? String(value) : String(value).toLowerCase());
+    };
+    var needle = normalize(query);
 
     return source.filter(function (item) {
       if (typeof self.opts.filterOption === 'function') {
@@ -1597,15 +1730,91 @@
           selected: self._hasValue(item.value)
         });
       }
-      var label = isCaseSensitive ? item.label : item.label.toLowerCase();
-      var needle = isCaseSensitive ? query : query.toLowerCase();
-      if (label.indexOf(needle) !== -1) return true;
-      if (self.opts.searchValues) {
-        var value = isCaseSensitive ? item.value : item.value.toLowerCase();
-        if (value.indexOf(needle) !== -1) return true;
-      }
+      if (normalize(item.label).indexOf(needle) !== -1) return true;
+      if (self.opts.searchValues && normalize(item.value).indexOf(needle) !== -1) return true;
       return false;
     });
+  };
+
+  ZidanSelect.prototype._virtualWindow = function (items, scrollOffset, viewportOverride) {
+    var setting = this.opts.virtual;
+    var threshold;
+    if (setting === true) threshold = 1;
+    else if (typeof setting === 'number') threshold = setting;
+    else if (setting === 'auto') threshold = this.opts.virtualThreshold || 150;
+    else return null;
+    /* custom row renderers and paged lists can change row heights / append
+       footers, so only flat, fully-local lists are windowed */
+    if (this.hasMore || typeof this.opts.renderOption === 'function') return null;
+    if (items.length < threshold) return null;
+    for (var g = 0; g < items.length; g += 1) {
+      if (items[g].group) return null;
+    }
+    var viewport = typeof viewportOverride === 'number' ? viewportOverride : this.dropdown.clientHeight;
+    if (!viewport) return null;
+    /* opening animations and re-renders measure a shrunken box; the configured
+       cap is the height the list will settle at, so it must cover the viewport */
+    if (this.opts.maxDropdownHeight) viewport = Math.max(viewport, this.opts.maxDropdownHeight);
+    var rowHeight = this.opts.itemHeight || this._rowHeight || 38;
+    var pad = 4;
+    var count = Math.max(1, Math.ceil(viewport / rowHeight));
+    /* the caller clears the list before rendering, which resets the live
+       scrollTop, so re-renders must pass the position they saved first */
+    var offset = typeof scrollOffset === 'number' ? scrollOffset : this.dropdown.scrollTop;
+    var start = Math.max(0, Math.floor(offset / rowHeight) - pad);
+    /* filtering can shrink the list under an old scroll position; clamping keeps
+       the window populated instead of slicing past the end */
+    start = Math.min(start, Math.max(0, items.length - (count + pad * 2)));
+    var end = Math.min(items.length, start + count + pad * 2);
+    return {
+      start: start,
+      end: end,
+      top: start * rowHeight,
+      bottom: (items.length - end) * rowHeight,
+      rowHeight: rowHeight
+    };
+  };
+
+  /* Keyboard navigation must move the scroll position itself: the window is
+     derived from scrollTop, so a far jump (End, type-ahead) would otherwise
+     render a slice that does not contain the new active row. */
+  ZidanSelect.prototype._revealActiveRow = function () {
+    if (!this._virtualState || this.activeIndex < 0) return;
+    var rowHeight = this._virtualState.rowHeight;
+    var viewport = this.dropdown.clientHeight;
+    if (!viewport) return;
+    if (this.opts.maxDropdownHeight) viewport = Math.max(viewport, this.opts.maxDropdownHeight);
+    var top = this.activeIndex * rowHeight;
+    var current = this.dropdown.scrollTop;
+    if (top < current) this.dropdown.scrollTop = top;
+    else if (top + rowHeight > current + viewport) this.dropdown.scrollTop = top + rowHeight - viewport;
+  };
+
+  ZidanSelect.prototype._virtualSpacer = function (height) {
+    var spacer = el('div', 'zs-virtual-space', { 'aria-hidden': 'true' });
+    spacer.style.height = Math.max(0, height) + 'px';
+    return spacer;
+  };
+
+  ZidanSelect.prototype._labelNode = function (item, query) {
+    var label = el('span', 'zs-option-label');
+    var text = item.label === null || item.label === undefined ? '' : String(item.label);
+    if (!this.opts.highlightMatches || !query) {
+      label.textContent = text;
+      return label;
+    }
+    var folded = foldText(text);
+    var needle = foldText(query);
+    var at = folded.length === text.length ? folded.indexOf(needle) : -1;
+    if (at === -1) at = text.toLowerCase().indexOf(String(query).toLowerCase());
+    if (at === -1 || !needle) {
+      label.textContent = text;
+      return label;
+    }
+    label.appendChild(doc.createTextNode(text.slice(0, at)));
+    label.appendChild(el('mark', 'zs-match', null, text.slice(at, at + String(query).length)));
+    label.appendChild(doc.createTextNode(text.slice(at + String(query).length)));
+    return label;
   };
 
   ZidanSelect.prototype._renderDropdown = function () {
@@ -1613,8 +1822,10 @@
     if (!this.opened) return;
 
     var scrollTop = this.dropdown.scrollTop;
+    var viewport = this.dropdown.clientHeight;
     this.dropdown.textContent = '';
     this.rendered = [];
+    this._virtualState = null;
 
     if (this.loading) {
       var loading = el('div', 'zs-state zs-state--loading', { role: 'status' });
@@ -1632,12 +1843,32 @@
         this.dropdown.appendChild(el('div', 'zs-state zs-state--empty', { role: 'status' }, emptyText));
         this.emit('no-results', { query: this.query, instance: this });
       } else {
+        var virtualWindow = self._virtualWindow(items, scrollTop, viewport);
+        var firstIndex = virtualWindow ? virtualWindow.start : 0;
+        var lastIndex = virtualWindow ? virtualWindow.end : items.length;
         var lastGroup = null;
-        items.forEach(function (item, index) {
-          if (item.group && item.group !== lastGroup) {
-            var header = el('div', 'zs-group', { role: 'presentation' }, item.group);
-            self.dropdown.appendChild(header);
-            lastGroup = item.group;
+        var groupWrap = null;
+        var groupSeq = 0;
+
+        if (virtualWindow && virtualWindow.top > 0) {
+          self.dropdown.appendChild(self._virtualSpacer(virtualWindow.top));
+        }
+
+        items.slice(firstIndex, lastIndex).forEach(function (item, offset) {
+          var index = firstIndex + offset;
+
+          if (!virtualWindow) {
+            if (item.group && item.group !== lastGroup) {
+              groupSeq += 1;
+              var groupId = self.id + '-grp-' + groupSeq;
+              groupWrap = el('div', 'zs-group', { role: 'group', 'aria-labelledby': groupId });
+              groupWrap.appendChild(el('div', 'zs-group-label', { id: groupId }, item.group));
+              self.dropdown.appendChild(groupWrap);
+              lastGroup = item.group;
+            } else if (!item.group) {
+              groupWrap = null;
+              lastGroup = null;
+            }
           }
 
           var selected = self._hasValue(item.value);
@@ -1647,6 +1878,10 @@
             'data-zs-option': index
           });
           option.setAttribute('aria-selected', String(selected));
+          if (virtualWindow) {
+            option.setAttribute('aria-setsize', String(items.length));
+            option.setAttribute('aria-posinset', String(index + 1));
+          }
           if (item.disabled) {
             option.setAttribute('aria-disabled', 'true');
             option.classList.add('zs-option--disabled');
@@ -1672,7 +1907,7 @@
           } else if (content !== null && content !== undefined && content !== '') {
             option.innerHTML = String(content);
           } else {
-            option.appendChild(el('span', 'zs-option-label', null, item.label));
+            option.appendChild(self._labelNode(item, self.query));
           }
 
           if (index === self.activeIndex) {
@@ -1680,9 +1915,14 @@
             self._applyCustomClass(option, 'active');
           }
 
-          self.rendered.push({ element: option, item: item, index: index });
-          self.dropdown.appendChild(option);
+          self.rendered[index] = { element: option, item: item, index: index };
+          (groupWrap || self.dropdown).appendChild(option);
         });
+
+        if (virtualWindow && virtualWindow.bottom > 0) {
+          self.dropdown.appendChild(self._virtualSpacer(virtualWindow.bottom));
+        }
+        self._virtualState = virtualWindow;
       }
 
       if (this.hasMore) {
@@ -1700,8 +1940,15 @@
       }
     }
 
+    if (this._virtualState) {
+      var firstOption = this.dropdown.querySelector('.zs-option');
+      if (firstOption && firstOption.offsetHeight && !this.opts.itemHeight) {
+        this._rowHeight = firstOption.offsetHeight;
+      }
+    }
+
     this.dropdown.scrollTop = scrollTop;
-    this._updateActiveDescendant(false);
+    this._updateActiveDescendant(!!this._virtualState);
     if (this.opened) this._position();
   };
 
@@ -2187,6 +2434,147 @@
     return this.value_.map(function (tag) { return tag.value; });
   };
 
+  ZidanSelect.prototype.getSelectedItems = function () {
+    return this.value_.map(function (item) {
+      return { value: item.value, label: item.label };
+    });
+  };
+
+  /* multiple-select helpers: they operate on every non-disabled item, not
+     only on the rows currently matching a search query */
+  ZidanSelect.prototype.selectAll = function (config) {
+    if (!this.opts.multiple || this.mode === 'tags') return this;
+    var self = this;
+    var values = this.value_.map(function (item) { return item.value; });
+    this.items.forEach(function (item) {
+      if (!item.disabled && !self._hasValue(item.value)) values.push(item.value);
+    });
+    return this.setValue(values, config);
+  };
+
+  ZidanSelect.prototype.deselectAll = function (config) {
+    return this.clear(config);
+  };
+
+  ZidanSelect.prototype.toggleAll = function (config) {
+    if (!this.opts.multiple || this.mode === 'tags') return this;
+    return this.areAllSelected() ? this.deselectAll(config) : this.selectAll(config);
+  };
+
+  ZidanSelect.prototype.areAllSelected = function () {
+    if (!this.opts.multiple || this.mode === 'tags') return false;
+    var self = this;
+    var selectable = this.items.filter(function (item) { return !item.disabled; });
+    if (!selectable.length) return false;
+    return selectable.every(function (item) { return self._hasValue(item.value); });
+  };
+
+  ZidanSelect.prototype.moveTag = function (from, to) {
+    if (this.mode !== 'tags') return false;
+    var fromIndex = typeof from === 'number' ? from : this.value_.findIndex(function (tag) {
+      return String(tag.value) === String(from) || String(tag.label) === String(from);
+    });
+    var toIndex = parseInt(to, 10);
+    if (fromIndex < 0 || fromIndex >= this.value_.length || isNaN(toIndex)) return false;
+    toIndex = Math.max(0, Math.min(this.value_.length - 1, toIndex));
+    if (fromIndex === toIndex) return false;
+    var moved = this.value_.splice(fromIndex, 1)[0];
+    this.value_.splice(toIndex, 0, moved);
+    this._render();
+    this._syncNative();
+    if (this.opened) this._renderDropdown();
+    this.announce(moved.label + ' moved to position ' + (toIndex + 1) + '.');
+    this.emit('tag-move', {
+      tag: moved.value, from: fromIndex, to: toIndex, value: this.getTags(), instance: this
+    });
+    this.call('onTagMove', {
+      tag: moved.value, from: fromIndex, to: toIndex, value: this.getTags(), instance: this
+    });
+    this.emit('change', { value: this.getTags(), instance: this });
+    this.call('onChange', { value: this.getTags(), instance: this });
+    return true;
+  };
+
+  ZidanSelect.prototype.editTag = function (tagOrIndex, label) {
+    if (this.mode !== 'tags') return false;
+    var index = typeof tagOrIndex === 'number'
+      ? tagOrIndex
+      : this.value_.findIndex(function (tag) {
+        return String(tag.value) === String(tagOrIndex) || String(tag.label) === String(tagOrIndex);
+      });
+    if (index < 0 || index >= this.value_.length) return false;
+    var next = String(label === null || label === undefined ? '' : label).trim();
+    var tag = this.value_[index];
+    if (!next || next === tag.label) return false;
+    var previous = tag.label;
+    tag.label = next;
+    /* keep a matching source option in step so the next render does not revert */
+    for (var i = 0; i < this.items.length; i += 1) {
+      if (String(this.items[i].value) === String(tag.value)) {
+        this.items[i].label = next;
+        break;
+      }
+    }
+    if (this.syncEl && this.syncEl.tagName === 'SELECT') {
+      for (var j = 0; j < this.syncEl.options.length; j += 1) {
+        if (String(this.syncEl.options[j].value) === String(tag.value)) {
+          this.syncEl.options[j].textContent = next;
+          break;
+        }
+      }
+    }
+    this._render();
+    if (this.opened) this._renderDropdown();
+    this.announce(next + ' renamed from ' + previous + '.');
+    this.emit('tag-edit', {
+      tag: tag.value, label: next, previousLabel: previous, index: index, instance: this
+    });
+    this.call('onTagEdit', {
+      tag: tag.value, label: next, previousLabel: previous, index: index, instance: this
+    });
+    return true;
+  };
+
+  ZidanSelect.prototype._startTagEdit = function (index, chip) {
+    var self = this;
+    if (!this.opts.editable || this._editingTag || !chip) return this;
+    var item = this.value_[index];
+    if (!item) return this;
+    var input = el('input', 'zs-chip-edit', { type: 'text', 'aria-label': 'Edit tag label' });
+    input.value = item.label;
+    var labelNode = chip.querySelector('.zs-chip-label');
+    if (labelNode) chip.replaceChild(input, labelNode);
+    else chip.insertBefore(input, chip.firstChild);
+    this._editingTag = true;
+    var finish = function (save) {
+      if (!self._editingTag) return;
+      self._editingTag = false;
+      if (save) {
+        if (!self.editTag(index, input.value)) self._render();
+      } else {
+        self._render();
+      }
+    };
+    input.focus();
+    try { input.select(); } catch (err) { /* older engines */ }
+    /* ZidanSelect#on() is the public custom-event API, not a DOM binder. */
+    input.addEventListener('pointerdown', function (event) { event.stopPropagation(); });
+    input.addEventListener('click', function (event) { event.stopPropagation(); });
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        event.stopPropagation();
+        finish(true);
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        finish(false);
+      }
+    });
+    input.addEventListener('blur', function () { finish(true); });
+    return this;
+  };
+
   /* ---------------- keyboard ---------------- */
 
   ZidanSelect.prototype._onKeyDown = function (event) {
@@ -2218,6 +2606,7 @@
         if (!items[next].disabled) break;
       }
       this.activeIndex = next;
+      this._revealActiveRow();
       this._renderDropdown();
       return;
     }
@@ -2233,6 +2622,7 @@
         for (i = items.length - 1; i >= 0; i -= 1) { if (!items[i].disabled) { found = i; break; } }
       }
       this.activeIndex = found;
+      this._revealActiveRow();
       this._renderDropdown();
       return;
     }
@@ -2301,7 +2691,52 @@
     if (key === 'Delete' && this.opts.clearable && this.value_.length) {
       event.preventDefault();
       this.clear();
+      return;
     }
+
+    /* Native selects jump to a matching option while you type. Enhanced
+       selects lost that, so restore it for the non-searchable variant. */
+    if (this.mode === 'select' && !this.opts.searchable && key.length === 1 && key !== ' ' &&
+        !event.ctrlKey && !event.metaKey && !event.altKey) {
+      if (this._typeAhead(key)) event.preventDefault();
+    }
+  };
+
+  ZidanSelect.prototype._typeAhead = function (key) {
+    if (this.opts.typeAhead === false) return false;
+    var self = this;
+    var items = this._visibleItems();
+    if (!items.length) return false;
+
+    var now = Date.now();
+    var timeout = this.opts.typeAheadTimeout || 600;
+    if (!this.typeBuffer || now - (this.typeTime || 0) > timeout) this.typeBuffer = '';
+    var repeated = this.typeBuffer === key;
+    this.typeBuffer = repeated ? key : this.typeBuffer + key;
+    this.typeTime = now;
+    clearTimeout(this.typeTimer);
+    this.typeTimer = setTimeout(function () { self.typeBuffer = ''; }, timeout);
+
+    var needle = foldText(repeated ? key : this.typeBuffer);
+    var start = repeated && this.activeIndex >= 0 ? this.activeIndex + 1 : 0;
+
+    for (var i = 0; i < items.length; i += 1) {
+      var index = (start + i) % items.length;
+      var item = items[index];
+      if (item.disabled) continue;
+      if (foldText(item.label).indexOf(needle) === 0) {
+        if (!this.opened) {
+          this._selectItem(item);
+        } else {
+          this.activeIndex = index;
+          this._revealActiveRow();
+          this._renderDropdown();
+          this.announce(String(item.label));
+        }
+        return true;
+      }
+    }
+    return false;
   };
 
   ZidanSelect.prototype._commitTypedTag = function () {
@@ -2422,6 +2857,72 @@
       self.clear();
     };
 
+    this._dragIndex = null;
+    this._editingTag = false;
+
+    this.onChipsDblClick = function (event) {
+      if (!self.opts.editable) return;
+      var chip = event.target.closest ? event.target.closest('.zs-chip') : null;
+      if (!chip) return;
+      if (event.target.closest && event.target.closest('[data-zs-remove]')) return;
+      event.preventDefault();
+      event.stopPropagation();
+      self._startTagEdit(parseInt(chip.getAttribute('data-zs-index'), 10), chip);
+    };
+
+    this.onChipsKeyDown = function (event) {
+      var chip = event.target.closest ? event.target.closest('.zs-chip') : null;
+      if (!chip) return;
+      var index = parseInt(chip.getAttribute('data-zs-index'), 10);
+      if (isNaN(index)) return;
+      if (self.opts.reorderable && event.altKey && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+        event.preventDefault();
+        var target = index + (event.key === 'ArrowLeft' ? -1 : 1);
+        if (self.moveTag(index, target)) {
+          var moved = self.chipsEl.querySelector('[data-zs-index="' + target + '"]');
+          if (moved) moved.focus();
+        }
+      } else if (self.opts.editable && (event.key === 'Enter' || event.key === 'F2')) {
+        event.preventDefault();
+        event.stopPropagation();
+        self._startTagEdit(index, chip);
+      } else if (event.key === 'Delete' || event.key === 'Backspace') {
+        event.preventDefault();
+        self.removeTag(index);
+      }
+    };
+
+    this.onChipsDragStart = function (event) {
+      var chip = event.target.closest ? event.target.closest('.zs-chip') : null;
+      if (!chip) return;
+      self._dragIndex = parseInt(chip.getAttribute('data-zs-index'), 10);
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        try { event.dataTransfer.setData('text/plain', String(self._dragIndex)); } catch (err) { /* IE */ }
+      }
+    };
+
+    this.onChipsDragOver = function (event) {
+      if (self._dragIndex === null) return;
+      var chip = event.target.closest ? event.target.closest('.zs-chip') : null;
+      if (!chip) return;
+      event.preventDefault();
+      if (event.dataTransfer) event.dataTransfer.dropEffect = 'move';
+    };
+
+    this.onChipsDrop = function (event) {
+      if (self._dragIndex === null) return;
+      var chip = event.target.closest ? event.target.closest('.zs-chip') : null;
+      if (!chip) return;
+      event.preventDefault();
+      var to = parseInt(chip.getAttribute('data-zs-index'), 10);
+      var from = self._dragIndex;
+      self._dragIndex = null;
+      if (!isNaN(to)) self.moveTag(from, to);
+    };
+
+    this.onChipsDragEnd = function () { self._dragIndex = null; };
+
     this.onChipsClick = function (event) {
       var button = event.target.closest ? event.target.closest('[data-zs-remove]') : null;
       if (!button) return;
@@ -2480,7 +2981,17 @@
     };
 
     this.onDropdownScroll = function () {
-      if (!self.opts.autoLoadMore || !self.opened || !self.hasMore) return;
+      if (!self.opened) return;
+      if (self.opts.virtual && !self.hasMore) {
+        var windowState = self._virtualWindow(self._visibleItems());
+        if (windowState && (!self._virtualState ||
+            windowState.start !== self._virtualState.start ||
+            windowState.end !== self._virtualState.end)) {
+          self._renderDropdown();
+          return;
+        }
+      }
+      if (!self.opts.autoLoadMore || !self.hasMore) return;
       if (self.loading || self.fetchingMore) return;
       var node = self.dropdown;
       if (node.scrollTop + node.clientHeight >= node.scrollHeight - 24) self.loadMore();
@@ -2503,6 +3014,12 @@
     this.controlEl.addEventListener('click', this.onControlClick);
     this.controlEl.addEventListener('mousedown', this.onControlMouseDown);
     this.chipsEl.addEventListener('click', this.onChipsClick);
+    this.chipsEl.addEventListener('dblclick', this.onChipsDblClick);
+    this.chipsEl.addEventListener('keydown', this.onChipsKeyDown);
+    this.chipsEl.addEventListener('dragstart', this.onChipsDragStart);
+    this.chipsEl.addEventListener('dragover', this.onChipsDragOver);
+    this.chipsEl.addEventListener('drop', this.onChipsDrop);
+    this.chipsEl.addEventListener('dragend', this.onChipsDragEnd);
     this.clearBtn.addEventListener('click', this.onClearClick);
     this.dropdown.addEventListener('mousedown', this.onDropdownMouseDown);
     this.dropdown.addEventListener('click', this.onDropdownClick);
@@ -2745,6 +3262,8 @@
   ZidanSelect.prototype.destroy = function () {
     if (this.destroyed) return this;
     this.destroyed = true;
+    if (this.root) untrackAutoTheme(this.root);
+    if (this.typeTimer) clearTimeout(this.typeTimer);
 
     if (this.debouncedFetch) this.debouncedFetch.cancel();
     if (this.asyncController) this.asyncController.abort();
@@ -2897,7 +3416,8 @@
   };
 
   ZidanFieldBase.prototype._applyScope = function (root) {
-    root.setAttribute('data-zs-theme', this.theme);
+    root.setAttribute('data-zs-theme', resolveThemeName(this.theme));
+    if (this.theme === 'auto') trackAutoTheme(root);
     root.setAttribute('data-zs-framework', this.framework);
     if (this.layout) root.setAttribute('data-zs-layout', this.layout);
     return root;
@@ -2905,7 +3425,13 @@
 
   ZidanFieldBase.prototype.setTheme = function (name) {
     this.theme = pickList(name, THEMES, this.theme);
-    if (this.root) this.root.setAttribute('data-zs-theme', this.theme);
+    if (this.root) {
+      if (this.theme === 'auto') trackAutoTheme(this.root);
+      else {
+        untrackAutoTheme(this.root);
+        this.root.setAttribute('data-zs-theme', this.theme);
+      }
+    }
     return this;
   };
 
@@ -3299,6 +3825,7 @@
     this._cleanups.forEach(function (fn) { fn(); });
     this._cleanups.length = 0;
     this.emit('destroy', {});
+    if (this.root) untrackAutoTheme(this.root);
     /* radio groups use the author's <fieldset> as their root: removing it would
        delete the original radios too, so only remove roots the field created. */
     if (this.root && this.root !== this.el && this.root.parentNode) this.root.parentNode.removeChild(this.root);
@@ -3710,6 +4237,9 @@
   }
 
   function fileKey(file) {
+    /* a downscaled upload keeps the key of the file it replaced, so its
+       progress row and state stay attached to the original pick */
+    if (file && file.__zidanKey) return file.__zidanKey;
     /* webkitRelativePath keeps two files from different dropped folders apart
        when name/size/lastModified/type happen to match */
     return [file.name, file.size, file.lastModified || 0, file.type || '', file.webkitRelativePath || ''].join('|');
@@ -3720,6 +4250,59 @@
     if (err && err.message) return err.message;
     if (err && err.status) return 'Upload failed (HTTP ' + err.status + ').';
     return fallback || 'Upload failed.';
+  }
+
+  /* Resize an image File before upload: returns a Promise resolving to the
+     original file when no work is needed (or when the browser cannot draw). */
+  function downscaleImage(file, options) {
+    return new Promise(function (resolve) {
+      if (!file || typeof file.type !== 'string' || file.type.indexOf('image/') !== 0) return resolve(file);
+      if (typeof document === 'undefined' || typeof Image === 'undefined' ||
+        typeof URL === 'undefined' || !URL.createObjectURL) return resolve(file);
+      var cfg = options && typeof options === 'object' ? options : {};
+      var maxWidth = cfg.maxWidth > 0 ? cfg.maxWidth : 1920;
+      var maxHeight = cfg.maxHeight > 0 ? cfg.maxHeight : 1920;
+      var quality = cfg.quality === undefined || cfg.quality === null
+        ? 0.85 : Math.max(0.1, Math.min(1, Number(cfg.quality) || 0.85));
+      var maxBytes = cfg.maxBytes > 0 ? cfg.maxBytes : 0;
+      var mime = cfg.mime || (file.type === 'image/png' ? 'image/png' : 'image/jpeg');
+      if (maxBytes && file.size && file.size <= maxBytes) return resolve(file);
+      var url = URL.createObjectURL(file);
+      var done = function (result) {
+        try { URL.revokeObjectURL(url); } catch (err) { /* already revoked */ }
+        resolve(result);
+      };
+      var image = new Image();
+      image.onload = function () {
+        var width = image.naturalWidth || image.width;
+        var height = image.naturalHeight || image.height;
+        if (!width || !height) return done(file);
+        var scale = Math.min(1, maxWidth / width, maxHeight / height);
+        if (scale >= 1 && (!cfg.mime || file.type === mime)) return done(file);
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(width * scale));
+        canvas.height = Math.max(1, Math.round(height * scale));
+        var context = canvas.getContext ? canvas.getContext('2d') : null;
+        if (!context || !canvas.toBlob) return done(file);
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(function (blob) {
+          if (!blob) return done(file);
+          if (file.size && blob.size >= file.size && !cfg.force) return done(file);
+          var output;
+          try {
+            output = new File([blob], file.name, {
+              type: blob.type || mime,
+              lastModified: file.lastModified || Date.now()
+            });
+          } catch (err) {
+            return done(file);
+          }
+          done(output);
+        }, mime, quality);
+      };
+      image.onerror = function () { done(file); };
+      image.src = url;
+    });
   }
 
   function ZidanFileUpload(target, options) {
@@ -3804,6 +4387,34 @@
     this.simulateUpload = fieldBool(input, opts, 'simulateUpload', 'simulate-upload', false);
     this.simulateDuration = Math.max(120, fieldNumber(input, opts, 'simulateDuration', 'simulate-duration', 900));
     this.autoUpload = fieldBool(input, opts, 'autoUpload', 'auto-upload', true);
+    var downscaleValue = opts.downscale !== undefined
+      ? opts.downscale
+      : fieldOption(input, opts, 'downscale', 'downscale', null);
+    var downscaleConfig = null;
+    if (downscaleValue === true || downscaleValue === '' || downscaleValue === 'true' || downscaleValue === 'on') {
+      downscaleConfig = {};
+    } else if (downscaleValue && typeof downscaleValue === 'object') {
+      downscaleConfig = downscaleValue;
+    } else if (typeof downscaleValue === 'string' && downscaleValue !== 'false' && downscaleValue !== 'off') {
+      try { downscaleConfig = JSON.parse(downscaleValue); } catch (err) { downscaleConfig = {}; }
+    }
+    if (downscaleConfig) {
+      this.downscale = {
+        maxWidth: fieldNumber(input, opts, 'downscaleMaxWidth', 'downscale-max-width',
+          downscaleConfig.maxWidth > 0 ? downscaleConfig.maxWidth : 1920),
+        maxHeight: fieldNumber(input, opts, 'downscaleMaxHeight', 'downscale-max-height',
+          downscaleConfig.maxHeight > 0 ? downscaleConfig.maxHeight : 1920),
+        quality: fieldNumber(input, opts, 'downscaleQuality', 'downscale-quality',
+          downscaleConfig.quality > 0 ? downscaleConfig.quality : 0.85),
+        maxBytes: fieldNumber(input, opts, 'downscaleMaxBytes', 'downscale-max-bytes',
+          downscaleConfig.maxBytes > 0 ? downscaleConfig.maxBytes : 0),
+        mime: fieldOption(input, opts, 'downscaleMime', 'downscale-mime', downscaleConfig.mime || ''),
+        force: fieldBool(input, opts, 'downscaleForce', 'downscale-force', !!downscaleConfig.force)
+      };
+    } else {
+      this.downscale = null;
+    }
+    root.setAttribute('data-zs-downscale', this.downscale ? 'true' : 'false');
     this.showFileMeta = fieldBool(input, opts, 'showFileMeta', 'show-file-meta', true);
     this.showPreview = fieldBool(input, opts, 'showPreview', 'preview', true);
     this.hasUploader = !!(this.uploadHandler || this.uploadUrl || this.simulateUpload);
@@ -4149,8 +4760,9 @@
     this.drop.classList.toggle('zs-file-drop--has-files', files.length > 0);
 
     var previewFile = this.showPreview ? files.filter(function (file) { return /^image\//.test(file.type); })[0] : null;
-    if (previewFile) {
-      var previewUrl = URL.createObjectURL(previewFile);
+    var previewUrl = previewFile && typeof URL !== 'undefined' && URL.createObjectURL
+      ? URL.createObjectURL(previewFile) : '';
+    if (previewUrl) {
       this._urls.push(previewUrl);
       this.avatarImg.src = previewUrl;
       this.avatarEl.hidden = false;
@@ -4170,8 +4782,8 @@
       item.setAttribute('data-zs-file-index', String(index));
 
       var thumb = el('span', 'zs-file-thumb');
-      if (/^image\//.test(file.type)) {
-        var url = URL.createObjectURL(file);
+      var url = typeof URL !== 'undefined' && URL.createObjectURL ? URL.createObjectURL(file) : '';
+      if (/^image\//.test(file.type) && url) {
         self._urls.push(url);
         var img = doc.createElement('img');
         img.src = url;
@@ -4307,6 +4919,25 @@
   ZidanFileUpload.prototype.uploadFile = function (file) {
     var self = this;
     var key = fileKey(file);
+    if (this.downscale && file && file.type && file.type.indexOf('image/') === 0 && !file.__zidanKey) {
+      downscaleImage(file, this.downscale).then(function (output) {
+        if (!output) output = file;
+        try {
+          Object.defineProperty(output, '__zidanKey', { value: key, configurable: true });
+        } catch (err) {
+          output.__zidanKey = key;
+        }
+        self.uploadFile(output);
+      }, function () {
+        try {
+          Object.defineProperty(file, '__zidanKey', { value: key, configurable: true });
+        } catch (err) {
+          file.__zidanKey = key;
+        }
+        self.uploadFile(file);
+      });
+      return this;
+    }
     var state = this._stateFor(file, true);
     if (state.status === 'uploading' || state.status === 'done') return this;
 
@@ -4514,6 +5145,72 @@
   var PICKER_TYPES = ['date', 'time', 'datetime-local', 'month', 'week', 'color'];
   var STEPPER_MODES = ['stacked', 'split', 'inline'];
 
+  /* ---------------- input mask ---------------- */
+
+  /* Tokens: # digit, A letter, * letter or digit. Everything else is a
+     literal inserted automatically; \ escapes the next character. */
+  var MASK_TOKENS = {
+    '#': function (ch) { return ch >= '0' && ch <= '9'; },
+    'A': function (ch) { return /[A-Za-z]/.test(ch); },
+    '*': function (ch) { return /[A-Za-z0-9]/.test(ch); }
+  };
+
+  function maskToken(ch) {
+    return MASK_TOKENS[ch] || null;
+  }
+
+  /* raw data is the alphanumeric content; mask literals are punctuation */
+  function maskRaw(value) {
+    return String(value === null || value === undefined ? '' : value).replace(/[^A-Za-z0-9]/g, '');
+  }
+
+  function maskBuild(pattern, raw) {
+    var out = '';
+    var caretMap = [0];
+    var pending = '';
+    var pos = 0;
+    var index = 0;
+    while (index < pattern.length) {
+      var ch = pattern.charAt(index);
+      if (ch === '\\' && index + 1 < pattern.length) {
+        pending += pattern.charAt(index + 1);
+        index += 2;
+        continue;
+      }
+      var test = maskToken(ch);
+      if (!test) {
+        pending += ch;
+        index += 1;
+        continue;
+      }
+      while (pos < raw.length && !test(raw.charAt(pos))) pos += 1;
+      if (pos >= raw.length) break;
+      if (pending) {
+        out += pending;
+        for (var p = 0; p < pending.length; p += 1) caretMap.push(pos);
+        pending = '';
+      }
+      out += raw.charAt(pos);
+      pos += 1;
+      caretMap.push(pos);
+      index += 1;
+    }
+    return { value: out, map: caretMap };
+  }
+
+  function maskCaret(map, consumed) {
+    var position = 0;
+    for (var i = 0; i < map.length; i += 1) {
+      if (map[i] <= consumed) position = i;
+      else break;
+    }
+    return position;
+  }
+
+  function formatMasked(value, pattern) {
+    return maskBuild(String(pattern || ''), maskRaw(value)).value;
+  }
+
   function decimalsOf(number) {
     var text = String(number);
     if (/e-/i.test(text)) return 10;
@@ -4581,14 +5278,21 @@
       var showCountry = phoneCfg.showCountry !== undefined ? !!phoneCfg.showCountry : fieldBool(input, opts, 'phoneCountrySelect', 'phone-country-select', true);
       var countryList = phoneCfg.countries || fieldList(input, opts, 'phoneCountries', 'phone-countries', PHONE_DEFAULT_COUNTRIES);
       var countrySelect = null;
+      var pickerButton = null;
+      var pickerMenu = null;
       if (showCountry) {
-        countrySelect = el('select', 'zs-phone-country', { 'aria-label': opts.phoneCountryLabel || 'Country code' });
+        /* the native select stays as the accessible value holder and keeps the
+           old `.zs-phone-country` API working; the visible control is the
+           searchable picker below */
+        countrySelect = el('select', 'zs-phone-country zs-phone-country--native', {
+          'aria-label': opts.phoneCountryLabel || 'Country code',
+          tabindex: '-1',
+          'aria-hidden': 'true'
+        });
         countryList.forEach(function (iso) {
           iso = String(iso).toUpperCase();
           var country = PHONE_COUNTRIES[iso];
           if (!country) return;
-          /* ISO + dial only: Windows renders flag emoji as the two ISO letters,
-             which duplicated the code ("GB GB +44"). */
           var optionNode = el('option', null, { value: iso },
             iso + ' +' + country.dial);
           countrySelect.appendChild(optionNode);
@@ -4596,14 +5300,166 @@
         countrySelect.value = phoneCountry;
         shell.appendChild(countrySelect);
         this.on(countrySelect, 'change', function () { self.setPhoneCountry(countrySelect.value); });
+
+        pickerButton = el('button', 'zs-phone-picker', {
+          type: 'button',
+          'aria-haspopup': 'listbox',
+          'aria-expanded': 'false',
+          'aria-label': opts.phoneCountryLabel || 'Country code'
+        });
+        var pickerIso = el('span', 'zs-phone-picker-iso');
+        var pickerDial = el('span', 'zs-phone-picker-dial');
+        var pickerChevron = el('span', 'zs-phone-picker-chevron', { 'aria-hidden': 'true' });
+        pickerChevron.textContent = '\u25be';
+        pickerButton.appendChild(pickerIso);
+        pickerButton.appendChild(pickerDial);
+        pickerButton.appendChild(pickerChevron);
+        shell.appendChild(pickerButton);
+
+        pickerMenu = el('div', 'zs-phone-menu', {
+          role: 'listbox',
+          'aria-label': opts.phoneCountryLabel || 'Country code',
+          hidden: ''
+        });
+        var pickerSearch = el('input', 'zs-phone-search', {
+          type: 'search',
+          placeholder: opts.phoneCountrySearchText || 'Search country or code',
+          'aria-label': opts.phoneCountrySearchText || 'Search country or code',
+          autocomplete: 'off'
+        });
+        var pickerList = el('div', 'zs-phone-list');
+        pickerMenu.appendChild(pickerSearch);
+        pickerMenu.appendChild(pickerList);
+        shell.appendChild(pickerMenu);
+        this.phoneCountryPicker = pickerButton;
+        this.phoneCountryMenu = pickerMenu;
       }
       this.phone = {
         country: phoneCountry,
         format: phoneFormat,
         select: countrySelect,
+        picker: pickerButton,
+        menu: pickerMenu,
         validate: phoneCfg.validate !== false,
-        countries: countryList.slice()
+        countries: countryList.slice(),
+        syncPicker: null
       };
+      if (showCountry) {
+        var activeCountry = null;
+        var syncPhonePicker = function () {
+          var country = PHONE_COUNTRIES[self.phone.country] || PHONE_COUNTRIES.US;
+          pickerIso.textContent = self.phone.country;
+          pickerDial.textContent = '+' + country.dial;
+        };
+        var closePhoneMenu = function (focus) {
+          if (pickerMenu.hidden) return;
+          pickerMenu.hidden = true;
+          pickerButton.setAttribute('aria-expanded', 'false');
+          if (focus) pickerButton.focus();
+        };
+        var renderPhoneOptions = function (query) {
+          var text = String(query || '').trim().toLowerCase().replace(/^\+/, '');
+          pickerList.textContent = '';
+          var shown = 0;
+          self.phone.countries.forEach(function (iso) {
+            iso = String(iso).toUpperCase();
+            var country = PHONE_COUNTRIES[iso];
+            if (!country) return;
+            if (text &&
+              iso.toLowerCase().indexOf(text) === -1 &&
+              country.name.toLowerCase().indexOf(text) === -1 &&
+              String(country.dial).indexOf(text) === -1) return;
+            var optionNode = el('button', 'zs-phone-option', {
+              type: 'button',
+              role: 'option',
+              'aria-selected': iso === self.phone.country ? 'true' : 'false',
+              'data-iso': iso,
+              tabindex: '-1'
+            });
+            optionNode.appendChild(el('span', 'zs-phone-option-iso', null, iso));
+            optionNode.appendChild(el('span', 'zs-phone-option-name', null, country.name));
+            optionNode.appendChild(el('span', 'zs-phone-option-dial', null, '+' + country.dial));
+            pickerList.appendChild(optionNode);
+            shown += 1;
+          });
+          if (!shown) pickerList.appendChild(el('p', 'zs-phone-empty', null, opts.phoneCountryEmptyText || 'No countries found'));
+          activeCountry = pickerList.querySelector('[data-iso]');
+          if (activeCountry) activeCountry.classList.add('zs-phone-option--active');
+        };
+        var moveCountry = function (direction) {
+          var optionsList = Array.prototype.slice.call(pickerList.querySelectorAll('[data-iso]'));
+          if (!optionsList.length) return;
+          var at = optionsList.indexOf(activeCountry);
+          if (at === -1) at = direction > 0 ? -1 : optionsList.length;
+          at = Math.max(0, Math.min(optionsList.length - 1, at + direction));
+          if (activeCountry) activeCountry.classList.remove('zs-phone-option--active');
+          activeCountry = optionsList[at];
+          activeCountry.classList.add('zs-phone-option--active');
+          if (activeCountry.scrollIntoView) activeCountry.scrollIntoView({ block: 'nearest' });
+        };
+        var chooseCountry = function (iso) {
+          if (!iso) return;
+          closePhoneMenu(true);
+          self.setPhoneCountry(iso);
+        };
+        var openPhoneMenu = function () {
+          if (self.disabled_) return;
+          pickerMenu.hidden = false;
+          pickerButton.setAttribute('aria-expanded', 'true');
+          pickerSearch.value = '';
+          renderPhoneOptions('');
+          pickerSearch.focus();
+        };
+        this.phone.syncPicker = syncPhonePicker;
+        syncPhonePicker();
+        this.on(pickerButton, 'click', function (event) {
+          event.preventDefault();
+          if (pickerMenu.hidden) openPhoneMenu();
+          else closePhoneMenu(true);
+        });
+        this.on(pickerButton, 'keydown', function (event) {
+          if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openPhoneMenu();
+          } else if (event.key === 'Escape') {
+            closePhoneMenu(true);
+          }
+        });
+        this.on(pickerSearch, 'input', function () { renderPhoneOptions(pickerSearch.value); });
+        this.on(pickerSearch, 'keydown', function (event) {
+          if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            event.preventDefault();
+            moveCountry(event.key === 'ArrowDown' ? 1 : -1);
+          } else if (event.key === 'Enter') {
+            event.preventDefault();
+            chooseCountry(activeCountry && activeCountry.getAttribute('data-iso'));
+          } else if (event.key === 'Escape') {
+            event.preventDefault();
+            closePhoneMenu(true);
+          }
+        });
+        this.on(pickerList, 'click', function (event) {
+          var optionNode = event.target.closest ? event.target.closest('[data-iso]') : null;
+          if (!optionNode) return;
+          event.preventDefault();
+          chooseCountry(optionNode.getAttribute('data-iso'));
+        });
+        this.on(doc, 'pointerdown', function (event) {
+          if (pickerMenu.hidden) return;
+          var path = event.composedPath ? event.composedPath() : [];
+          if (path.indexOf(pickerMenu) !== -1 || path.indexOf(pickerButton) !== -1) return;
+          if (pickerMenu.contains(event.target) || pickerButton.contains(event.target)) return;
+          closePhoneMenu(false);
+        });
+        if (input.value) {
+          var initialCountry = detectPhoneCountry(input.value);
+          if (initialCountry && !phoneCfg.country && !input.getAttribute('data-zidan-phone-country')) {
+            this.phone.country = initialCountry;
+            countrySelect.value = initialCountry;
+            syncPhonePicker();
+          }
+        }
+      }
       root.classList.add('zs-field--phone');
 
       if (input.value) {
@@ -4611,12 +5467,52 @@
         if (detected && !phoneCfg.country && !input.getAttribute('data-zidan-phone-country')) {
           this.phone.country = detected;
           if (countrySelect) countrySelect.value = detected;
+          if (this.phone.syncPicker) this.phone.syncPicker();
         }
         this._applyPhoneFormat(false);
       }
       this.on(input, 'input', function () { self._applyPhoneFormat(true); });
       this.on(input, 'focus', function () { self._applyPhoneFormat(true); });
       this.on(input, 'blur', function () { self._applyPhoneFormat(false); });
+    }
+
+    /* ---------- input mask ---------- */
+    var maskPattern = opts.mask || fieldOption(input, opts, 'mask', 'mask', '');
+    maskPattern = typeof maskPattern === 'string' ? maskPattern.trim() : '';
+    var maskAllowed = !!maskPattern && !isTextarea && !isRange && !isPicker &&
+      ['text', 'tel', 'search', 'url', 'password', 'email'].indexOf(type) !== -1;
+    this.mask = maskAllowed ? { pattern: maskPattern } : null;
+    this._maskRaw = '';
+    this._maskValue = '';
+    this._maskCaret = 0;
+    this._maskKey = null;
+    if (this.mask) {
+      root.classList.add('zs-field--masked');
+      var initialMask = formatMasked(input.value, maskPattern);
+      if (initialMask !== input.value) input.value = initialMask;
+      this._maskRaw = maskRaw(input.value);
+      this._maskValue = input.value;
+      this.on(input, 'beforeinput', function () {
+        self._maskCaret = input.selectionStart === null ? input.value.length : input.selectionStart;
+      });
+      this.on(input, 'keydown', function (event) {
+        if (event.key === 'Backspace' || event.key === 'Delete') self._maskKey = event.key;
+      });
+      this.on(input, 'input', function () { self._applyMask(); });
+    }
+
+    /* ---------- textarea autogrow ---------- */
+    var autogrowOn = isTextarea && fieldBool(input, opts, 'autogrow', 'autogrow', false);
+    this.autogrow = autogrowOn ? { max: fieldNumber(input, opts, 'autogrowMax', 'autogrow-max', 0) } : null;
+    if (this.autogrow) {
+      root.classList.add('zs-field--autogrow');
+      /* A textarea inside a hidden tab/dialog has scrollHeight 0, so grow it
+         once the layout becomes visible (and after width changes). */
+      if (typeof ResizeObserver !== 'undefined') {
+        var growObserver = new ResizeObserver(function () { self._autogrow(); });
+        growObserver.observe(input);
+        this._cleanups.push(function () { growObserver.disconnect(); });
+      }
     }
 
     /* ---------- icons ---------- */
@@ -4865,8 +5761,8 @@
     }
 
     /* ---------- explicit picker button ---------- */
-    var pickerButton = fieldBool(input, opts, 'pickerButton', 'picker-button', false);
-    if (isPicker && pickerButton && !iconControl) {
+    var pickerButtonOption = fieldBool(input, opts, 'pickerButton', 'picker-button', false);
+    if (isPicker && pickerButtonOption && !iconControl) {
       var pickerIcon = opts.pickerIcon || fieldOption(input, opts, 'pickerIcon', 'picker-icon', iconForType(type) || 'calendar');
       var pickerControl = el('button', 'zs-input-icon zs-input-icon--action zs-input-picker', {
         type: 'button',
@@ -5124,6 +6020,69 @@
     return this;
   };
 
+  ZidanTextField.prototype._applyMask = function () {
+    if (!this.mask) return this;
+    var input = this.el;
+    var value = input.value;
+    var caret = input.selectionStart === null || input.selectionStart === undefined ? value.length : input.selectionStart;
+    var previousValue = this._maskValue || '';
+    var previousRaw = this._maskRaw || '';
+    var raw = maskRaw(value);
+    var key = this._maskKey;
+    var deletedLiteral = false;
+    var consumedBefore = maskRaw(value.slice(0, caret)).length;
+    this._maskKey = null;
+    if (previousValue && value.length < previousValue.length && raw === previousRaw) {
+      deletedLiteral = true;
+      if (key === 'Delete') {
+        if (consumedBefore < raw.length) raw = raw.slice(0, consumedBefore) + raw.slice(consumedBefore + 1);
+      } else if (consumedBefore > 0) {
+        raw = raw.slice(0, consumedBefore - 1) + raw.slice(consumedBefore);
+      }
+    }
+    var result = maskBuild(this.mask.pattern, raw);
+    if (result.value !== value) {
+      input.value = result.value;
+      var target;
+      if (caret >= value.length && value.length > previousValue.length) {
+        target = result.value.length;
+      } else if (deletedLiteral) {
+        target = maskCaret(result.map, key === 'Delete' ? consumedBefore : Math.max(0, consumedBefore - 1));
+      } else {
+        target = maskCaret(result.map, consumedBefore);
+      }
+      try { input.setSelectionRange(target, target); } catch (err) { /* older engines */ }
+    }
+    this._maskRaw = maskRaw(input.value);
+    this._maskValue = input.value;
+    return this;
+  };
+
+  ZidanTextField.prototype._autogrow = function () {
+    if (!this.autogrow) return this;
+    var input = this.el;
+    if (!input || !input.scrollHeight) return this;
+    var max = this.autogrow.max;
+    input.style.height = 'auto';
+    var next = input.scrollHeight;
+    if (max > 0 && next > max) {
+      next = max;
+      input.style.overflowY = 'auto';
+    } else {
+      input.style.overflowY = '';
+    }
+    input.style.height = next + 'px';
+    return this;
+  };
+
+  ZidanTextField.prototype.refreshAutogrow = function () {
+    return this._autogrow();
+  };
+
+  ZidanTextField.prototype.getUnmaskedValue = function () {
+    return this.mask ? maskRaw(this.el.value) : this.el.value;
+  };
+
   ZidanTextField.prototype._stepBy = function (direction, times) {
     var input = this.el;
     if (!this.stepper || !direction || input.disabled || input.readOnly) return this;
@@ -5202,6 +6161,7 @@
     if (!PHONE_COUNTRIES[iso]) return this;
     this.phone.country = iso;
     if (this.phone.select) this.phone.select.value = iso;
+    if (this.phone.syncPicker) this.phone.syncPicker();
     this._applyPhoneFormat(false);
     this.update();
     this.emit('phone-country', { country: iso });
@@ -5299,6 +6259,7 @@
       this.stepper.minus.disabled = blocked || (!this.stepper.wrap && isFinite(min) && current <= min);
       this.stepper.plus.disabled = blocked || (!this.stepper.wrap && isFinite(max) && current >= max);
     }
+    if (this.autogrow) this._autogrow();
   };
 
   ZidanTextField.prototype.getValue = function () {
@@ -5306,7 +6267,13 @@
   };
 
   ZidanTextField.prototype.setValue = function (value) {
-    this.el.value = value === null || value === undefined ? '' : String(value);
+    var next = value === null || value === undefined ? '' : String(value);
+    if (this.mask) next = formatMasked(next, this.mask.pattern);
+    this.el.value = next;
+    if (this.mask) {
+      this._maskRaw = maskRaw(next);
+      this._maskValue = next;
+    }
     if (this.phone) this._applyPhoneFormat(false);
     return this.update();
   };
@@ -5427,6 +6394,78 @@
     return initFieldList(nodes, options);
   }
 
+  function formElementFor(target) {
+    var node = typeof target === 'string' ? doc.querySelector(target) : target;
+    if (!node) return null;
+    if (node.tagName === 'FORM') return node;
+    if (node.form) return node.form;
+    if (node.querySelector) return node.querySelector('form');
+    return null;
+  }
+
+  function serializeForm(target, options) {
+    var cfg = options || {};
+    var form = formElementFor(target);
+    if (!form) throw new TypeError('ZidanForm.serialize: expected a <form> or a form control.');
+    var out = {};
+    new FormData(form).forEach(function (value, key) {
+      if (!cfg.files && typeof File !== 'undefined' && value instanceof File) return;
+      if (Object.prototype.hasOwnProperty.call(out, key)) {
+        if (!Array.isArray(out[key])) out[key] = [out[key]];
+        out[key].push(value);
+      } else {
+        out[key] = value;
+      }
+    });
+    return out;
+  }
+
+  /* resolves boolean after every enhanced field (and native constraint) ran */
+  function validateForm(target, options) {
+    var cfg = options || {};
+    var form = formElementFor(target);
+    if (!form) return Promise.reject(new TypeError('ZidanForm.validate: expected a <form> or a form control.'));
+    var fields = ZidanForm.fields.filter(function (field) {
+      return field.el && field.el.form === form;
+    });
+    var checks = fields.map(function (field) {
+      var result;
+      try { result = field.validate(); } catch (err) { result = false; }
+      return Promise.resolve(result).catch(function () { return false; });
+    });
+    return Promise.all(checks).then(function (results) {
+      var nativeValid = true;
+      try { nativeValid = form.checkValidity(); } catch (err) { nativeValid = true; }
+      var valid = nativeValid && results.every(function (value) { return value !== false; });
+      var invalidField = null;
+      for (var i = 0; i < fields.length; i += 1) {
+        if (results[i] === false) { invalidField = fields[i]; break; }
+      }
+      if (!valid && cfg.focus !== false) {
+        var focusTarget = null;
+        try { focusTarget = form.querySelector(':invalid'); } catch (err) { focusTarget = null; }
+        if (invalidField && invalidField.el) {
+          /* choose whichever comes first in the document, so a native email
+             error above a failing textarea wins */
+          if (!focusTarget || (focusTarget.compareDocumentPosition &&
+            (focusTarget.compareDocumentPosition(invalidField.el) & 2))) {
+            focusTarget = invalidField.el;
+          }
+        }
+        if (focusTarget && focusTarget.focus) {
+          try { focusTarget.focus(); } catch (err) { /* detached */ }
+        }
+      }
+      var detail = { valid: valid, form: form, fields: fields };
+      try {
+        form.dispatchEvent(new CustomEvent('zidan:validate', { detail: detail, bubbles: true }));
+      } catch (err) {
+        try { form.dispatchEvent(new Event('zidan:validate')); } catch (ignored) { /* old browsers */ }
+      }
+      return valid;
+    });
+  }
+
   var ZidanForm = {
     version: VERSION,
     __zidanFormGuard: VERSION,
@@ -5434,6 +6473,7 @@
     themes: THEMES,
     frameworks: FRAMEWORKS.slice(),
     fieldLayouts: FIELD_LAYOUTS,
+    locales: LOCALES,
     fields: [],
     _register: function (field) {
       if (ZidanForm.fields.indexOf(field) === -1) ZidanForm.fields.push(field);
@@ -5450,6 +6490,8 @@
       return initZidanForms(scope || doc, options || {});
     },
     field: zidanField,
+    serialize: serializeForm,
+    validate: validateForm,
     refresh: function (scope) {
       initZidanForms(scope || doc, {});
       ZidanForm.fields.slice().forEach(function (field) { field.update(); });
@@ -5500,6 +6542,18 @@
     ZidanForm.detectPhoneCountry = detectPhoneCountry;
   }
   ZidanForm.messages = FIELD_MESSAGES;
+  /* input-mask helpers: mask(value, pattern) formats, unmask strips literals */
+  if (typeof maskBuild === 'function') {
+    ZidanForm.mask = function (value, pattern) {
+      return formatMasked(value, pattern);
+    };
+    ZidanForm.unmask = function (value) {
+      return maskRaw(value);
+    };
+  }
+  if (typeof downscaleImage === 'function') {
+    ZidanForm.downscaleImage = downscaleImage;
+  }
   ZidanForm.variants = {};
   if (typeof CHECKBOX_VARIANTS !== 'undefined') ZidanForm.variants.checkbox = CHECKBOX_VARIANTS.slice();
   if (typeof SWITCH_STYLES !== 'undefined') ZidanForm.variants.switch = SWITCH_STYLES.slice();
@@ -5517,6 +6571,7 @@
     ZidanSelect.frameworks = FRAMEWORKS.slice();
     ZidanSelect.scrollbars = SCROLLBARS.slice();
     ZidanSelect.defaults = DEFAULTS;
+    ZidanSelect.locales = LOCALES;
     ZidanSelect.registerIcon = registerIcon;
     ZidanSelect.icons = ICON_REGISTRY;
     ZidanSelect.cacheLimit = 50;
@@ -5700,6 +6755,11 @@
   if (typeof formatPhone === 'function') {
     api.formatPhone = formatPhone;
     api.detectPhoneCountry = detectPhoneCountry;
+  }
+  if (typeof downscaleImage === 'function') api.downscaleImage = downscaleImage;
+  if (typeof maskBuild === 'function') {
+    api.mask = formatMasked;
+    api.unmask = maskRaw;
   }
 
   ZidanForm.api = api;
