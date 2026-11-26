@@ -100,9 +100,9 @@ Without esbuild the build still succeeds and prints that minification was skippe
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | `/dist/zidan-form.min.js` — ≈132 kB | `/dist/plugin-core.min.css` — ≈31 kB | `/dist/plugin-theme.min.css` — ≈39 kB |
-| Select-only | `/dist/select/zidan-select.min.js` — ≈68 kB | `/dist/select/plugin-select-core.min.css` — ≈9 kB | `/dist/select/plugin-select-theme.min.css` — ≈27 kB |
-| File-only | `/dist/file/zidan-file.min.js` — ≈50 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈29 kB |
+| Full | `/dist/zidan-form.min.js` — ≈159 kB | `/dist/plugin-core.min.css` — ≈33 kB | `/dist/plugin-theme.min.css` — ≈41 kB |
+| Select-only | `/dist/select/zidan-select.min.js` — ≈86 kB | `/dist/select/plugin-select-core.min.css` — ≈10 kB | `/dist/select/plugin-select-theme.min.css` — ≈29 kB |
+| File-only | `/dist/file/zidan-file.min.js` — ≈57 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈31 kB |
 
 Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.5.0` to each path (or your own origin). These are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
 Use these package files rather than relying on a CDN's auto-minification.

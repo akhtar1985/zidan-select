@@ -41,6 +41,9 @@ heading, bumps every version site in the repository, commits and tags. See
   examples, and link the new request lab.
 - `docs/frameworks.md` documents stylesheet load order and no longer claims a fixed 4px
   Bulma radius; the adapter follows `--bulma-radius`.
+- Corrected stale select-only and file-only minified sizes in the README, `docs/build.md`
+  and the advanced build table; `npm run sizes` now keeps those CDN rows and CSS figures
+  in sync with the built files.
 
 ## [2.5.0] - 2026-11-26
 

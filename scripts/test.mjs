@@ -464,24 +464,46 @@ check('subset CSS carries the current framework adapters', () => {
 
 check('documented sizes match the built assets', () => {
   const builds = [
-    ['zidan-form.js', 'dist/zidan-form.min.js'],
-    ['dist/select/zidan-select.js', 'dist/select/zidan-select.min.js'],
-    ['dist/file/zidan-file.js', 'dist/file/zidan-file.min.js']
+    { label: 'Full', raw: 'zidan-form.js', min: 'dist/zidan-form.min.js',
+      core: 'plugin-core.css', coreMin: 'dist/plugin-core.min.css',
+      theme: 'plugin-theme.css', themeMin: 'dist/plugin-theme.min.css' },
+    { label: 'Select-only', raw: 'dist/select/zidan-select.js', min: 'dist/select/zidan-select.min.js',
+      core: 'dist/select/plugin-select-core.css', coreMin: 'dist/select/plugin-select-core.min.css',
+      theme: 'dist/select/plugin-select-theme.css', themeMin: 'dist/select/plugin-select-theme.min.css' },
+    { label: 'File-only', raw: 'dist/file/zidan-file.js', min: 'dist/file/zidan-file.min.js',
+      core: 'dist/file/plugin-file-core.css', coreMin: 'dist/file/plugin-file-core.min.css',
+      theme: 'dist/file/plugin-file-theme.css', themeMin: 'dist/file/plugin-file-theme.min.css' }
   ];
+  const sizeKb = (file) => Math.round(fs.statSync(path.join(root, file)).size / 1024);
   const home = read('index.html');
   const advanced = read('advanced.html');
   const readme = read('README.md');
-  for (const [raw, min] of builds) {
-    const rawSize = fs.statSync(path.join(root, raw)).size;
-    const minSize = fs.statSync(path.join(root, min)).size;
-    const rawKb = Math.round(rawSize / 1024);
-    const minKb = Math.round(minSize / 1024);
-    assert(home.includes(`≈${rawKb} kB JS · ≈${minKb} kB minified`), 'home build picker has stale sizes for ' + raw);
-    assert(home.includes(`≈${rawKb} kB · ≈${minKb} kB min`), 'home build card has stale sizes for ' + raw);
-    assert(advanced.includes(`${rawKb} kB raw · ${minKb} kB min`), 'advanced page has stale sizes for ' + raw);
-    assert(readme.includes(`≈${rawKb} kB raw · ≈${minKb} kB minified`), 'README has stale sizes for ' + raw);
+  const version = JSON.parse(read('package.json')).version;
+  const cdn = 'https://cdn.jsdelivr.net/npm/zidan-select@' + version + '/';
+  for (const b of builds) {
+    const rawKb = sizeKb(b.raw);
+    const minKb = sizeKb(b.min);
+    const coreKb = sizeKb(b.core);
+    const coreMinKb = sizeKb(b.coreMin);
+    const themeKb = sizeKb(b.theme);
+    const themeMinKb = sizeKb(b.themeMin);
+    assert(home.includes(`≈${rawKb} kB JS · ≈${minKb} kB minified`), 'home build picker has stale sizes for ' + b.raw);
+    assert(home.includes(`≈${rawKb} kB · ≈${minKb} kB min`), 'home build card has stale sizes for ' + b.raw);
+    assert(advanced.includes(`${rawKb} kB raw · ${minKb} kB min`), 'advanced page has stale JS sizes for ' + b.raw);
+    assert(advanced.includes(`<code>${path.basename(b.core)}</code> ${coreKb} → ${coreMinKb} kB<br><code>${path.basename(b.theme)}</code> ${themeKb} → ${themeMinKb} kB`), 'advanced page has stale CSS sizes for ' + b.label);
+    assert(readme.includes(`≈${rawKb} kB raw · ≈${minKb} kB minified`), 'README has stale raw/min sizes for ' + b.raw);
+    const cdnRow = `| ${b.label} | [${path.basename(b.min)}](${cdn}${b.min}) — ≈${minKb} kB | [${path.basename(b.coreMin)}](${cdn}${b.coreMin}) — ≈${coreMinKb} kB + [${path.basename(b.themeMin)}](${cdn}${b.themeMin}) — ≈${themeMinKb} kB |`;
+    assert(readme.includes(cdnRow), 'README CDN table has stale minified sizes for ' + b.label);
+    if (b.label !== 'Full') {
+      const intro = b.label === 'Select-only' ? 'Select / combobox / tags only' : 'File upload only';
+      assert(readme.includes(`${intro} (≈${rawKb} kB raw / ≈${minKb} kB minified JS, ≈${coreKb} → ${coreMinKb} kB core CSS,\n≈${themeKb} → ${themeMinKb} kB theme CSS):`), 'README subset prose has stale sizes for ' + b.label);
+    }
   }
   const docsBuild = read('docs/build.md');
+  for (const b of builds) {
+    const quickRow = `| ${b.label} | \`/${b.min}\` — ≈${sizeKb(b.min)} kB | \`/${b.coreMin}\` — ≈${sizeKb(b.coreMin)} kB | \`/${b.themeMin}\` — ≈${sizeKb(b.themeMin)} kB |`;
+    assert(docsBuild.includes(quickRow), 'build guide CDN table has stale minified sizes for ' + b.label);
+  }
   for (const file of [
     'zidan-form.js', 'dist/zidan-form.min.js',
     'plugin-core.css', 'dist/plugin-core.min.css', 'plugin-theme.css', 'dist/plugin-theme.min.css',

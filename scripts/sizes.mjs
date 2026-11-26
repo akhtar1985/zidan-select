@@ -8,6 +8,9 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const stat = (file) => fs.statSync(path.join(root, file)).size;
 const kb = (bytes) => Math.round(bytes / 1024);
 const comma = (bytes) => bytes.toLocaleString('en-US');
+const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
+const escapeRe = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const basename = (file) => file.split('/').pop();
 
 const BASE = [
   { id: 'full', label: 'Full', title: 'Full build', raw: 'zidan-form.js', min: 'dist/zidan-form.min.js',
@@ -26,7 +29,9 @@ const builds = BASE.map((b) => ({
   rawBytes: stat(b.raw), minBytes: stat(b.min),
   rawKb: kb(stat(b.raw)), minKb: kb(stat(b.min)),
   coreBytes: stat(b.core), coreMinBytes: stat(b.coreMin),
-  themeBytes: stat(b.theme), themeMinBytes: stat(b.themeMin)
+  coreKb: kb(stat(b.core)), coreMinKb: kb(stat(b.coreMin)),
+  themeBytes: stat(b.theme), themeMinBytes: stat(b.themeMin),
+  themeKb: kb(stat(b.theme)), themeMinKb: kb(stat(b.themeMin))
 }));
 
 const docs = new Map();
@@ -44,6 +49,9 @@ for (const b of builds) {
   const row = '| ' + b.label + ' | ' + comma(b.rawBytes) + ' B (≈' + kb(b.rawBytes) + ' kB) → ' + comma(b.minBytes) + ' B (≈' + kb(b.minBytes) + ' kB) | ' + comma(b.coreBytes) + ' B (≈' + kb(b.coreBytes) + ' kB) → ' + comma(b.coreMinBytes) + ' B (≈' + kb(b.coreMinBytes) + ' kB) | ' + comma(b.themeBytes) + ' B (≈' + kb(b.themeBytes) + ' kB) → ' + comma(b.themeMinBytes) + ' B (≈' + kb(b.themeMinBytes) + ' kB) |';
   const re = new RegExp('^\\| ' + b.label + ' \\| [\\d,]+ B \\(≈\\d+ kB\\) → [\\d,]+ B \\(≈\\d+ kB\\) \\|.*$', 'm');
   out = must(b.label + ' row', out, re, () => row);
+  const quickRe = new RegExp('^\\| ' + escapeRe(b.label) + ' \\| `[^`]+` — ≈\\d+ kB \\| `[^`]+` — ≈\\d+ kB \\| `[^`]+` — ≈\\d+ kB \\|$', 'm');
+  const quickRow = '| ' + b.label + ' | `/' + b.min + '` — ≈' + b.minKb + ' kB | `/' + b.coreMin + '` — ≈' + b.coreMinKb + ' kB | `/' + b.themeMin + '` — ≈' + b.themeMinKb + ' kB |';
+  out = must(b.label + ' CDN row', out, quickRe, () => quickRow);
 }
 docs.set('docs/build.md', out);
 
@@ -60,16 +68,30 @@ let advanced = read('advanced.html');
 for (const b of builds) {
   const re = new RegExp('(<code>' + b.raw + '</code><br>)\\d+ kB raw · \\d+ kB min');
   advanced = must(b.raw + ' row', advanced, re, (match, before) => before + b.rawKb + ' kB raw · ' + b.minKb + ' kB min');
+  const cssRe = new RegExp('(<code>' + escapeRe(basename(b.core)) + '</code> )\\d+( → )\\d+( kB<br><code>' + escapeRe(basename(b.theme)) + '</code> )\\d+( → )\\d+( kB)');
+  advanced = must(b.core + ' CSS row', advanced, cssRe, (match, p1, p2, p3, p4, p5) => p1 + b.coreKb + p2 + b.coreMinKb + p3 + b.themeKb + p4 + b.themeMinKb + p5);
 }
 docs.set('advanced.html', advanced);
 
 const readme = read('README.md').split('\n');
 for (const b of builds) {
-  const i = readme.findIndex((line) => line.indexOf('@2.5.0/' + b.raw + ')') !== -1 && /≈\d+ kB raw · ≈\d+ kB minified/.test(line));
+  const i = readme.findIndex((line) => line.indexOf('@' + version + '/' + b.raw + ')') !== -1 && /≈\d+ kB raw · ≈\d+ kB minified/.test(line));
   if (i === -1) throw new Error('sizes: no README row for ' + b.raw);
   readme[i] = readme[i].replace(/≈\d+ kB raw · ≈\d+ kB minified/, () => '≈' + b.rawKb + ' kB raw · ≈' + b.minKb + ' kB minified');
 }
-docs.set('README.md', readme.join('\n'));
+let readmeText = readme.join('\n');
+for (const b of builds) {
+  const cdn = 'https://cdn.jsdelivr.net/npm/zidan-select@' + version + '/';
+  const cdnRow = '| ' + b.label + ' | [' + basename(b.min) + '](' + cdn + b.min + ') — ≈' + b.minKb + ' kB | [' + basename(b.coreMin) + '](' + cdn + b.coreMin + ') — ≈' + b.coreMinKb + ' kB + [' + basename(b.themeMin) + '](' + cdn + b.themeMin + ') — ≈' + b.themeMinKb + ' kB |';
+  const cdnRe = new RegExp('^\\| ' + escapeRe(b.label) + ' \\| \\[[^\\]]+\\]\\([^)]*\\) — ≈\\d+ kB \\| \\[[^\\]]+\\]\\([^)]*\\) — ≈\\d+ kB \\+ \\[[^\\]]+\\]\\([^)]*\\) — ≈\\d+ kB \\|$', 'm');
+  readmeText = must(b.label + ' README CDN row', readmeText, cdnRe, () => cdnRow);
+
+  const intro = b.id === 'select' ? 'Select / combobox / tags only' : (b.id === 'file' ? 'File upload only' : '');
+  if (!intro) continue;
+  const proseRe = new RegExp('(' + escapeRe(intro) + ' \\(≈)\\d+( kB raw / ≈)\\d+( kB minified JS, ≈)\\d+( → )\\d+( kB core CSS,\\n≈)\\d+( → )\\d+( kB theme CSS\\))');
+  readmeText = must(intro + ' README prose', readmeText, proseRe, (match, p1, p2, p3, p4, p5, p6, p7) => p1 + b.rawKb + p2 + b.minKb + p3 + b.coreKb + p4 + b.coreMinKb + p5 + b.themeKb + p6 + b.themeMinKb + p7);
+}
+docs.set('README.md', readmeText);
 
 const full = builds[0];
 docs.set('docs/comparison.md', must('comparison weight', read('docs/comparison.md'), /≈\d+ kB raw JS/, () => '≈' + full.rawKb + ' kB raw JS'));
