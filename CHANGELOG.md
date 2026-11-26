@@ -20,6 +20,15 @@ heading, bumps every version site in the repository, commits and tags. See
   unless a content type was supplied; `GET`/`HEAD` ignore the body.
 - `api.html` request lab: live GET headers/params against DummyJSON, a deterministic JSON POST
   mock with an exact request inspector, and buttons for the remote instance methods.
+- File uploads gained a configurable AJAX transport (`uploadMethod`, `uploadParams`,
+  `uploadHeaders`, `uploadTimeout`, `uploadResponsePath`, `uploadErrorPath`,
+  `withCredentials`), automatic retries, a concurrency queue, `whenUploaded()` and
+  `upload-queued` / `upload-retry` events.
+- File selection validates `minFiles`, `maxTotalSize` and `maxTotalSizeMB`; `getFileState()`,
+  `removeFiles()`, `retryAll()`, `setUploadUrl()` and `setUploadOptions()` complete the
+  programmatic API, while `show*` flags, `allowPaste` and `statusFormat` control the UI.
+- The separate file-only JS and CSS builds include the upload queue, AJAX transport and
+  file-specific Bootstrap, Tailwind, Bulma and Foundation adapter rules.
 
 ### Fixed
 
@@ -34,6 +43,8 @@ heading, bumps every version site in the repository, commits and tags. See
   and Bulma and Tailwind map dropdown/chip radii, instead of leaving the default indigo.
 - The demo's framework buttons call `setFramework()`, so Bootstrap `.form-control`,
   `.form-select` and badge classes are added and removed when switching adapters.
+- File `clear()` now empties the native input through `DataTransfer` and falls back to
+  `input.value = ''`, so programmatic clears cannot leave stale files behind.
 
 ### Documentation
 

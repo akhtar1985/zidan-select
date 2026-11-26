@@ -193,7 +193,7 @@ export { default } from '../../zidan-form';
     theme: 'plugin-file-theme.css',
     jsSections: ['shared', 'shared2', 'fields', 'file', 'factory'],
     coreSections: ['scope', 'fields-shared', 'file', 'form-layout', 'focus'],
-    themeSections: ['tokens', 'field-paint', 'preset-themes', 'field-layout-paint', 'adapters', 'forced'],
+    themeSections: ['tokens', 'field-paint', 'preset-themes', 'field-layout-paint', 'adapters', 'file-adapters', 'forced'],
     jsHead: jsBanner(
       'File-only',
       'Zero-dependency drag & drop file upload with variants, previews, limits and progress.',

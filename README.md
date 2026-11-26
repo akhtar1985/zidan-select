@@ -30,9 +30,9 @@ Sizes measure the current source build; CDN links pin the 2.5.0 release.
 
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈277 kB raw · ≈159 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css) |
+| Full — every control | ≈298 kB raw · ≈171 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css) |
 | Select-only | ≈148 kB raw · ≈86 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.css) |
-| File-only | ≈99 kB raw · ≈57 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.css) |
+| File-only | ≈120 kB raw · ≈70 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
 [Select-only and file-only builds](#select-only-and-file-only-builds); the
@@ -50,9 +50,9 @@ same pinned bytes:
 
 | Build | JS (min) | CSS (min) |
 | --- | --- | --- |
-| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/zidan-form.min.js) — ≈159 kB | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/plugin-core.min.css) — ≈33 kB + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/plugin-theme.min.css) — ≈41 kB |
+| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/zidan-form.min.js) — ≈171 kB | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/plugin-core.min.css) — ≈33 kB + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/plugin-theme.min.css) — ≈44 kB |
 | Select-only | [zidan-select.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.min.js) — ≈86 kB | [plugin-select-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.min.css) — ≈10 kB + [plugin-select-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.min.css) — ≈29 kB |
-| File-only | [zidan-file.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.min.js) — ≈57 kB | [plugin-file-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.min.css) — ≈7 kB + [plugin-file-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.min.css) — ≈31 kB |
+| File-only | [zidan-file.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.min.js) — ≈70 kB | [plugin-file-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.min.css) — ≈7 kB + [plugin-file-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.min.css) — ≈34 kB |
 
 - **One file of JS** — `zidan-form.js` (classic script, UMD-ish) + `zidan-form.mjs` (ESM wrapper).
 - **Split CSS** — `plugin-core.css` (structure only) and `plugin-theme.css` (tokens, presets, skins).
@@ -81,8 +81,9 @@ same pinned bytes:
 - **More skins** — checkbox `default · switch · card · button · minimal`; five switch styles
   (`ios · material · square · labeled · icon`); radio `stacked · inline · card · button · tile`
   with click-to-deselect; file `dropzone · button · avatar · gallery · compact`.
-- **Upload API** — `simulateUpload`, custom `upload()` handler, XHR `uploadUrl`, progress,
-  cancel, retry, `getUploadState()`, per-file `renderFile` hook.
+- **Upload API** — `simulateUpload`, custom `upload()` handler or XHR with method, params,
+  headers, timeout, response paths, automatic retries and a concurrency queue; progress, cancel,
+  `whenUploaded()`, `getUploadState()`, `removeFiles()` and per-file `renderFile` hook.
 - **Phone picker & image downscale (2.5)** — a searchable country menu instead of a long native
   list, and `downscale` / `ZidanForm.downscaleImage()` to resize images in the browser before
   upload.
@@ -317,8 +318,8 @@ Select / combobox / tags only (≈148 kB raw / ≈86 kB minified JS, ≈13 → 1
 </script>
 ```
 
-File upload only (≈99 kB raw / ≈57 kB minified JS, ≈10 → 7 kB core CSS,
-≈36 → 31 kB theme CSS):
+File upload only (≈120 kB raw / ≈70 kB minified JS, ≈10 → 7 kB core CSS,
+≈39 → 34 kB theme CSS):
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.css">
@@ -604,9 +605,14 @@ keys, Home/End and Space keep browser semantics; the wrapper adds `role="radiogr
 
 - Variants: `dropzone`, `button`, `avatar`, `gallery`, `compact`.
 - Native `input.files` is the source of truth; removing a file rebuilds it with `DataTransfer`.
-- `maxFiles`, `maxSize` (bytes) / `maxSizeMB`, `accept` are validated with a live status message.
+- `minFiles`, `maxFiles`, `maxSize` (bytes) / `maxSizeMB`, `maxTotalSize` /
+  `maxTotalSizeMB` and `accept` are validated with a live status message.
 - Real uploads: set `data-zidan-upload-url` (XHR multipart) or pass `upload(file, context)` in JS.
-- Progress, cancel, retry, `getUploadState()`, `renderFile(item, info)` and `zidan:upload-*`
+  Configure `uploadMethod`, `uploadParams`, `uploadData`, `uploadHeaders`,
+  `uploadResponsePath`, `uploadErrorPath`, `uploadTimeout`, `uploadRetries` and
+  `uploadConcurrency`; `whenUploaded()` resolves when the queue and retries finish.
+- Progress, queue, automatic/manual retry, cancel, `getUploadState()`, `getFileState()`,
+  `removeFiles()`, `renderFile(item, info)`, the visibility flags and `zidan:upload-*`
   events are all available; files stay put during `simulateUpload`.
 
 ```js
@@ -924,9 +930,10 @@ Per-field instance: `getValue()`, `setValue(v)`, `update()`, `refresh()`,
 `destroy()`, plus `setIndeterminate()`/`isChecked()` (checkbox), `setValue()` (radio group),
 `stepUp()`/`stepDown()`/`setStepper()` (number), `getPhoneCountry()`/`setPhoneCountry()`/
 `setPhoneFormat()`/`formatPhone()` (phone), `openPicker()`/`showPicker()` (date/time),
-and `getFiles()`/`getUploadState()`/`addFiles()`/`replaceFiles()`/`removeFile()`/`clear()`/
-`setVariant()`/`setUploader()`/`uploadAll()`/`uploadFile()`/`cancelUpload()`/`cancelAll()`/
-`retryUpload()` (file).
+and `getFiles()`/`getUploadState()`/`getFileState()`/`addFiles()`/`replaceFiles()`/
+`removeFile()`/`removeFiles()`/`clear()`/`isUploading()`/`whenUploaded()`/`setVariant()`/
+`setUploader()`/`setUploadUrl()`/`setUploadOptions()`/`uploadAll()`/`uploadFile()`/
+`cancelUpload()`/`cancelAll()`/`retryUpload()`/`retryAll()` (file).
 
 Events bubble from the wrapper. Removing an already-selected option from a multi-select, or
 a tag from a tag field, reports only via `zidan:change` — it is a removal, not a new

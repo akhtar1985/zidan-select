@@ -205,18 +205,18 @@
           <a class="build-pick" href="#build-file">
             <strong>Only file uploads</strong>
             <span>Load the file-only JS plus its core and theme CSS and leave every other input as it is.</span>
-            <em>≈99 kB JS · ≈57 kB minified</em>
+            <em>≈120 kB JS · ≈70 kB minified</em>
           </a>
           <a class="build-pick" href="#build-full">
             <strong>Every input in the form</strong>
             <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
-            <em>≈277 kB JS · ≈159 kB minified</em>
+            <em>≈298 kB JS · ≈171 kB minified</em>
           </a>
         </div>
       </div>
       <div class="grid-3">
         <article class="card build-card" id="build-full">
-          <h3>Full build <span class="build-size">≈277 kB · ≈159 kB min</span></h3>
+          <h3>Full build <span class="build-size">≈298 kB · ≈171 kB min</span></h3>
           <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js">JS</a>
@@ -246,7 +246,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-file">
-          <h3>File-only <span class="build-size">≈99 kB · ≈57 kB min</span></h3>
+          <h3>File-only <span class="build-size">≈120 kB · ≈70 kB min</span></h3>
           <p>Dropzone, picker and inline file upload with progress, cancel and previews.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js">JS</a>
@@ -1039,6 +1039,35 @@ owner.getAsyncState();     owner.refreshOptions();   owner.clearCache();</code><
                    data-zidan-simulate-duration="1800" data-zidan-max-size-mb="8"
                    data-zidan-title="Upload media" data-zidan-upload-icon="cloud">
             <p class="form-status" id="file-status" role="status" aria-live="polite"></p>
+          </div>
+          <div class="card" id="file-ajax" style="grid-column:1 / -1">
+            <h3>AJAX upload with a real XHR</h3>
+            <p>Multipart upload to <code>httpbin.org/post</code>. The demo sets the method, query
+              params, extra form fields, headers, timeout, one automatic retry and a response path. Pick one or
+              more files, then press upload; the JSON response URL is shown below.</p>
+            <input id="file-ajax-input" name="ajax-docs" type="file" multiple>
+            <div class="lab-form-actions">
+              <button type="button" class="btn" id="file-ajax-start">Upload via XHR</button>
+              <button type="button" class="btn" id="file-ajax-clear">Clear</button>
+            </div>
+            <p class="form-status" id="file-ajax-status" role="status" aria-live="polite">
+              Choose a file to test the AJAX transport. Network access to httpbin.org is required.
+            </p>
+            <pre id="file-ajax-result" class="snippet-block snippet-block--inline" hidden></pre>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>zidanField('#file-ajax-input', {
+  uploadUrl: 'https://httpbin.org/post',
+  uploadMethod: 'POST',
+  uploadParams: { demo: 'zidan-form' },
+  uploadData: { source: 'demo' },
+  uploadHeaders: { 'X-Zidan-Demo': 'file-upload' },
+  uploadTimeout: 30000,
+  uploadRetries: 1,
+  uploadConcurrency: 2,
+  uploadResponsePath: 'url',
+  autoUpload: false
+});</code></pre>
+            </div>
           </div>
           <div class="card" id="file-downscale" style="grid-column:1 / -1">
             <h3>Client-side image downscale</h3>

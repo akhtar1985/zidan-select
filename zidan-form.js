@@ -370,6 +370,8 @@
     fileType: 'This file type is not allowed.',
     fileSize: 'This file is too large.',
     fileCount: 'Too many files.',
+    fileMin: 'Select at least {min} files.',
+    fileTotalSize: 'The selected files exceed {limit}.',
     pending: 'Checking…',
     generic: 'Please check this field.'
   };
@@ -4407,6 +4409,60 @@
     });
   }
 
+  function fileReadPath(source, path) {
+    if (!path) return source;
+    return String(path).split('.').reduce(function (node, key) {
+      return node === null || node === undefined ? undefined : node[key];
+    }, source);
+  }
+
+  function fileQueryString(params) {
+    if (!params) return '';
+    if (typeof params === 'string') return params.replace(/^[?&]/, '');
+    if (typeof URLSearchParams !== 'undefined' && params instanceof URLSearchParams) return params.toString();
+    var parts = [];
+    Object.keys(params).forEach(function (key) {
+      var value = params[key];
+      if (value === undefined || value === null) return;
+      if (Array.isArray(value)) {
+        value.forEach(function (item) {
+          if (item !== undefined && item !== null) parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(item));
+        });
+        return;
+      }
+      parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+    });
+    return parts.join('&');
+  }
+
+  function fileWithQuery(url, params) {
+    var query = fileQueryString(params);
+    if (!query) return url;
+    return url + (url.indexOf('?') === -1 ? '?' : '&') + query;
+  }
+
+  function fileAppendData(data, key, value) {
+    if (value === undefined || value === null) return;
+    if (Array.isArray(value)) {
+      value.forEach(function (item) { fileAppendData(data, key, item); });
+      return;
+    }
+    data.append(key, value);
+  }
+
+  function fileErrorText(body, fallback) {
+    if (body && typeof body === 'object') {
+      var keys = ['message', 'error', 'detail', 'reason', 'title'];
+      for (var i = 0; i < keys.length; i += 1) {
+        var value = body[keys[i]];
+        if (typeof value === 'string' && value) return value;
+        if (value && typeof value.message === 'string' && value.message) return value.message;
+      }
+    }
+    if (typeof body === 'string' && body.trim() && body.length < 240) return body.trim();
+    return fallback;
+  }
+
   function ZidanFileUpload(target, options) {
     if (!(this instanceof ZidanFileUpload)) return new ZidanFileUpload(target, options);
     if (!/^file$/i.test(target.type)) {
@@ -4484,11 +4540,28 @@
       (typeof opts.uploadHandler === 'function' ? opts.uploadHandler : null);
     this.uploadUrl = fieldOption(input, opts, 'uploadUrl', 'upload-url', '');
     this.uploadField = fieldOption(input, opts, 'uploadField', 'upload-field', 'file');
-    this.withCredentials = fieldBool(input, opts, 'withCredentials', 'with-credentials', false);
+    this.uploadMethod = fieldOption(input, opts, 'uploadMethod', 'upload-method', 'POST');
+    this.uploadParams = fieldOption(input, opts, 'uploadParams', 'upload-params', null);
+    this.uploadResponsePath = fieldOption(input, opts, 'uploadResponsePath', 'upload-response-path', '');
+    this.uploadErrorPath = fieldOption(input, opts, 'uploadErrorPath', 'upload-error-path', '');
+    this.uploadTimeout = Math.max(0, fieldNumber(input, opts, 'uploadTimeout', 'upload-timeout', 0));
+    this.uploadRetries = Math.max(0, parseInt(fieldOption(input, opts, 'uploadRetries', 'upload-retries', 0), 10) || 0);
+    this.uploadRetryDelay = Math.max(0, fieldNumber(input, opts, 'uploadRetryDelay', 'upload-retry-delay', 700));
+    this.uploadConcurrency = Math.max(0, parseInt(fieldOption(input, opts, 'uploadConcurrency', 'upload-concurrency', 0), 10) || 0);
+    this.withCredentials = fieldBool(input, opts, 'withCredentials', 'with-credentials',
+      fieldBool(input, opts, 'uploadWithCredentials', 'upload-with-credentials', false));
     this.uploadHeaders = opts.uploadHeaders || opts.headers || null;
     this.simulateUpload = fieldBool(input, opts, 'simulateUpload', 'simulate-upload', false);
     this.simulateDuration = Math.max(120, fieldNumber(input, opts, 'simulateDuration', 'simulate-duration', 900));
     this.autoUpload = fieldBool(input, opts, 'autoUpload', 'auto-upload', true);
+    this.allowPaste = fieldBool(input, opts, 'allowPaste', 'allow-paste', false);
+    this.showClear = fieldBool(input, opts, 'showClear', 'show-clear', true);
+    this.showRemove = fieldBool(input, opts, 'showRemove', 'show-remove', true);
+    this.showCancel = fieldBool(input, opts, 'showCancel', 'show-cancel', true);
+    this.showRetry = fieldBool(input, opts, 'showRetry', 'show-retry', true);
+    this.showStatus = fieldBool(input, opts, 'showStatus', 'show-status', true);
+    if (this.showStatus === false) status.hidden = true;
+    if (this.showClear === false) clearBtn.hidden = true;
     var downscaleValue = opts.downscale !== undefined
       ? opts.downscale
       : fieldOption(input, opts, 'downscale', 'downscale', null);
@@ -4524,6 +4597,12 @@
 
     this._uploads = Object.create(null);
     this._active = Object.create(null);
+    this._queue = [];
+    this._retryTimers = Object.create(null);
+    this._waiters = [];
+    this._pendingStarts = 0;
+    this._uploadEpoch = 0;
+    this._batch = 0;
     this._urls = [];
     this._renderQueued = false;
     this.fileError = '';
@@ -4566,6 +4645,18 @@
       self.addFiles(incoming);
     });
 
+    if (self.allowPaste) {
+      drop.setAttribute('tabindex', '0');
+      self.on(drop, 'paste', function (event) {
+        var data = event.clipboardData || global.clipboardData;
+        if (!data || !data.files || !data.files.length) return;
+        event.preventDefault();
+        var incoming = Array.prototype.slice.call(data.files);
+        if (!input.multiple) incoming = incoming.slice(0, 1);
+        self.addFiles(incoming);
+      });
+    }
+
     self.on(clearBtn, 'click', function () { self.clear(); });
 
     /* Delegated once: the list is rebuilt on every upload progress tick, so
@@ -4597,6 +4688,7 @@
     });
 
     input.__zidanField = this;
+    this.setFramework(this.framework);
     this._render();
     this.emit('init', {});
     ZidanForm._register(this);
@@ -4605,6 +4697,27 @@
   ZidanFileUpload.prototype = Object.create(ZidanFieldBase.prototype);
   ZidanFileUpload.prototype.constructor = ZidanFileUpload;
 
+  ZidanFileUpload.prototype._adapterButton = function (button, tone) {
+    if (!button || this.framework !== 'bootstrap') return button;
+    button.classList.add('btn', 'btn-sm', 'zs-bootstrap-btn');
+    button.classList.add('btn-outline-' + (tone || 'secondary'));
+    return button;
+  };
+
+  ZidanFileUpload.prototype.setFramework = function (name) {
+    ZidanFieldBase.prototype.setFramework.call(this, name);
+    if (!this.drop) return this;
+    var bootstrap = this.framework === 'bootstrap';
+    this.root.classList.toggle('zs-file--bootstrap', bootstrap);
+    this.drop.classList.toggle('form-control', bootstrap);
+    this.drop.classList.toggle('zs-bootstrap-drop', bootstrap);
+    this.clearBtn.classList.toggle('btn', bootstrap);
+    this.clearBtn.classList.toggle('btn-sm', bootstrap);
+    this.clearBtn.classList.toggle('btn-outline-secondary', bootstrap);
+    this.clearBtn.classList.toggle('zs-bootstrap-btn', bootstrap);
+    return this;
+  };
+
   ZidanFileUpload.prototype.getFiles = function () {
     return this.el.files ? Array.prototype.slice.call(this.el.files) : [];
   };
@@ -4612,7 +4725,7 @@
   ZidanFileUpload.prototype.getUploadState = function () {
     var self = this;
     return this.getFiles().map(function (file) {
-      var state = self._stateFor(file, false) || { status: 'idle', progress: 0, error: '', result: null };
+      var state = self._stateFor(file, false) || { status: 'idle', progress: 0, error: '', result: null, attempts: 0 };
       return {
         file: file,
         name: file.name,
@@ -4620,9 +4733,28 @@
         status: state.status,
         progress: state.progress,
         error: state.error,
-        result: state.result
+        result: state.result,
+        attempts: state.attempts || 0
       };
     });
+  };
+
+  ZidanFileUpload.prototype._fileIndex = function (target) {
+    var files = this.getFiles();
+    if (typeof target === 'number') return target;
+    if (typeof target === 'string') {
+      for (var i = 0; i < files.length; i += 1) {
+        if (files[i].name === target) return i;
+      }
+      return -1;
+    }
+    return files.indexOf(target);
+  };
+
+  ZidanFileUpload.prototype.getFileState = function (target) {
+    var index = this._fileIndex(target);
+    if (index < 0) return null;
+    return this.getUploadState()[index] || null;
   };
 
   ZidanFileUpload.prototype._stateFor = function (file, create) {
@@ -4630,7 +4762,7 @@
     var state = this._uploads[key];
     if (!state && create) {
       state = this._uploads[key] = {
-        status: 'idle', progress: 0, error: '', result: null
+        status: 'idle', progress: 0, error: '', result: null, attempts: 0
       };
     }
     return state;
@@ -4690,7 +4822,7 @@
 
   ZidanFileUpload.prototype.removeFile = function (target) {
     var files = this.getFiles();
-    var index = typeof target === 'number' ? target : files.indexOf(target);
+    var index = this._fileIndex(target);
     if (index === -1 || !files[index]) return this;
     var file = files[index];
     this.cancelUpload(file);
@@ -4704,20 +4836,46 @@
     this.emit('remove', { file: file, index: index });
     this.call('onChange', { files: next, instance: this });
     this.call('onRemove', { file: file, index: index, instance: this });
+    this._flushWaiters();
+    return this;
+  };
+
+  ZidanFileUpload.prototype.removeFiles = function (targets) {
+    var list = targets && targets.length !== undefined ? Array.prototype.slice.call(targets) : [targets];
+    var files = this.getFiles();
+    var self = this;
+    var indexes = list.map(function (target) {
+      return self._fileIndex(target);
+    }).filter(function (index, position, all) {
+      return index >= 0 && index < files.length && all.indexOf(index) === position;
+    }).sort(function (a, b) { return b - a; });
+    indexes.forEach(function (index) { self.removeFile(index); });
     return this;
   };
 
   ZidanFileUpload.prototype.clear = function () {
+    var waiters = this._waiters;
+    this._uploadEpoch += 1;
+    this._pendingStarts = 0;
+    this._batch = 0;
+    this._waiters = [];
     this.cancelAll();
     this._uploads = Object.create(null);
     this.fileError = '';
-    this.el.value = '';
+    if (!this._setFiles([])) this.el.value = '';
     if (this.el.setCustomValidity) this.el.setCustomValidity('');
     this._validate();
     this._render();
     this.emit('change', { files: [] });
     this.emit('clear', {});
     this.call('onChange', { files: [], instance: this });
+    this._flushWaiters();
+    // a clear ends the current upload session: settle anyone waiting for it
+    // instead of leaving their whenUploaded() promise pending forever
+    if (waiters.length) {
+      var states = this.getUploadState();
+      waiters.forEach(function (resolve) { resolve(states); });
+    }
     return this;
   };
 
@@ -4725,7 +4883,9 @@
     var input = this.el;
     var opts = this.opts;
     var maxFiles = parseInt(opts.maxFiles || input.getAttribute('data-zidan-max-files'), 10);
+    var minFiles = parseInt(opts.minFiles || input.getAttribute('data-zidan-min-files'), 10);
     var maxSize = parseInt(opts.maxSize || input.getAttribute('data-zidan-max-size'), 10);
+    var maxTotalSize = parseInt(opts.maxTotalSize || input.getAttribute('data-zidan-max-total-size'), 10);
     if (!(maxSize > 0)) {
       var sizeMb = opts.maxSizeMB;
       if (sizeMb === undefined || sizeMb === null || sizeMb === '') sizeMb = input.getAttribute('data-zidan-max-size-mb');
@@ -4734,9 +4894,19 @@
         if (sizeMbValue > 0) maxSize = Math.round(sizeMbValue * 1024 * 1024);
       }
     }
+    if (!(maxTotalSize > 0)) {
+      var totalMb = opts.maxTotalSizeMB;
+      if (totalMb === undefined || totalMb === null || totalMb === '') totalMb = input.getAttribute('data-zidan-max-total-size-mb');
+      if (totalMb !== null && totalMb !== undefined && totalMb !== '') {
+        var totalMbValue = parseFloat(totalMb);
+        if (totalMbValue > 0) maxTotalSize = Math.round(totalMbValue * 1024 * 1024);
+      }
+    }
     return {
+      minFiles: minFiles > 0 ? minFiles : 0,
       maxFiles: maxFiles > 0 ? maxFiles : 0,
       maxSize: maxSize > 0 ? maxSize : 0,
+      maxTotalSize: maxTotalSize > 0 ? maxTotalSize : 0,
       accept: opts.accept || input.accept || ''
     };
   };
@@ -4767,6 +4937,15 @@
       error = fillTemplate(messages.fileCount, { max: limits.maxFiles });
       files = files.slice(0, limits.maxFiles);
       this._setFiles(files);
+    }
+    if (!error && limits.minFiles && files.length && files.length < limits.minFiles) {
+      error = fillTemplate(messages.fileMin, { min: limits.minFiles });
+    }
+    if (!error && limits.maxTotalSize) {
+      var totalSize = files.reduce(function (sum, file) { return sum + file.size; }, 0);
+      if (totalSize > limits.maxTotalSize) {
+        error = fillTemplate(messages.fileTotalSize, { limit: formatBytes(limits.maxTotalSize) });
+      }
     }
     if (!error && limits.maxSize) {
       for (var i = 0; i < files.length; i += 1) {
@@ -4841,6 +5020,24 @@
       }
     }
 
+    if (typeof this.opts.statusFormat === 'function') {
+      try {
+        var custom = this.opts.statusFormat({
+          files: files,
+          states: states,
+          total: total,
+          uploading: uploading.length,
+          failed: failed.length,
+          done: done.length,
+          error: this.fileError,
+          field: this
+        });
+        if (custom !== undefined && custom !== null) text = String(custom);
+      } catch (err) {
+        this.emit('error', { error: err, callback: 'statusFormat' });
+      }
+    }
+
     this.status.textContent = text;
     this.status.classList.toggle('zs-file-status--error', !!this.fileError);
     this.status.classList.toggle('zs-file-status--success', !this.fileError && files.length > 0 && done.length === files.length && this.hasUploader);
@@ -4857,7 +5054,7 @@
     this._revokeLater(this._urls);
     this._urls = [];
     this.list.hidden = files.length === 0;
-    this.clearBtn.hidden = files.length === 0;
+    this.clearBtn.hidden = files.length === 0 || !this.showClear;
     this.root.classList.toggle('zs-field--filled', files.length > 0);
     this.drop.classList.toggle('zs-file-drop--has-files', files.length > 0);
 
@@ -4878,7 +5075,7 @@
     }
 
     files.forEach(function (file, index) {
-      var state = self._stateFor(file, false) || { status: 'idle', progress: 0, error: '', result: null };
+      var state = self._stateFor(file, false) || { status: 'idle', progress: 0, error: '', result: null, attempts: 0 };
       var item = el('li', 'zs-file-item');
       item.setAttribute('data-zs-upload-state', state.status);
       item.setAttribute('data-zs-file-index', String(index));
@@ -4923,24 +5120,33 @@
           stateLine.textContent = (opts.failedLabel || 'Upload failed') + (state.error ? ' — ' + state.error : '');
         } else if (state.status === 'canceled') {
           stateLine.textContent = opts.canceledLabel || 'Upload canceled';
+        } else if (state.status === 'queued') {
+          stateLine.textContent = opts.queuedLabel || 'Queued';
+        } else if (state.status === 'retrying') {
+          stateLine.textContent = fillTemplate(opts.retryingLabel || 'Retrying attempt {attempt}…', { attempt: state.attempts });
         }
         if (stateLine.textContent) meta.appendChild(stateLine);
       }
 
       var actions = el('span', 'zs-file-actions');
-      if (state.status === 'uploading') {
+      if (self.showCancel && (state.status === 'uploading' || state.status === 'queued' || state.status === 'retrying')) {
         var cancel = el('button', 'zs-file-cancel', { type: 'button', 'aria-label': 'Cancel upload of ' + file.name });
         cancel.textContent = opts.cancelLabel || 'Cancel';
+        self._adapterButton(cancel, 'danger');
         actions.appendChild(cancel);
-      } else if (state.status === 'error' || state.status === 'canceled') {
+      } else if (self.showRetry && (state.status === 'error' || state.status === 'canceled')) {
         var retry = el('button', 'zs-file-retry', { type: 'button', 'aria-label': 'Retry upload of ' + file.name });
         retry.textContent = opts.retryLabel || 'Retry';
+        self._adapterButton(retry, 'primary');
         actions.appendChild(retry);
       }
 
-      var remove = el('button', 'zs-file-remove', { type: 'button', 'aria-label': 'Remove ' + file.name });
-      remove.textContent = '\u00d7';
-      actions.appendChild(remove);
+      if (self.showRemove) {
+        var remove = el('button', 'zs-file-remove', { type: 'button', 'aria-label': 'Remove ' + file.name });
+        remove.textContent = '\u00d7';
+        self._adapterButton(remove, 'secondary');
+        actions.appendChild(remove);
+      }
 
       item.appendChild(thumb);
       item.appendChild(meta);
@@ -4995,11 +5201,48 @@
     var extra = typeof this.opts.uploadData === 'function' ? this.opts.uploadData(file, this) : this.opts.uploadData;
     if (extra && typeof extra === 'object') {
       Object.keys(extra).forEach(function (key) {
-        var value = extra[key];
-        if (value !== undefined && value !== null) data.append(key, value);
+        fileAppendData(data, key, extra[key]);
       });
     }
     return data;
+  };
+
+  ZidanFileUpload.prototype.setUploadUrl = function (url) {
+    this.uploadHandler = null;
+    this.uploadUrl = url ? String(url) : '';
+    this.hasUploader = !!(this.uploadHandler || this.uploadUrl || this.simulateUpload);
+    this.root.setAttribute('data-zs-upload', this.hasUploader ? 'true' : 'false');
+    this._render();
+    return this;
+  };
+
+  ZidanFileUpload.prototype.setUploadOptions = function (options) {
+    var opts = options || {};
+    if ('upload' in opts) this.uploadHandler = typeof opts.upload === 'function' ? opts.upload : null;
+    if ('uploadHandler' in opts) this.uploadHandler = typeof opts.uploadHandler === 'function' ? opts.uploadHandler : null;
+    if ('uploadUrl' in opts) {
+      this.uploadUrl = typeof opts.uploadUrl === 'function'
+        ? opts.uploadUrl
+        : (opts.uploadUrl ? String(opts.uploadUrl) : '');
+    }
+    if ('uploadField' in opts && opts.uploadField) this.uploadField = String(opts.uploadField);
+    if ('uploadMethod' in opts && opts.uploadMethod) this.uploadMethod = opts.uploadMethod;
+    if ('uploadParams' in opts) this.uploadParams = opts.uploadParams;
+    if ('uploadData' in opts) this.opts.uploadData = opts.uploadData;
+    if ('uploadHeaders' in opts) this.uploadHeaders = opts.uploadHeaders;
+    if ('headers' in opts) this.uploadHeaders = opts.headers;
+    if ('withCredentials' in opts) this.withCredentials = !!opts.withCredentials;
+    if ('uploadWithCredentials' in opts) this.withCredentials = !!opts.uploadWithCredentials;
+    if ('uploadResponsePath' in opts) this.uploadResponsePath = opts.uploadResponsePath || '';
+    if ('uploadErrorPath' in opts) this.uploadErrorPath = opts.uploadErrorPath || '';
+    if ('uploadTimeout' in opts) this.uploadTimeout = Math.max(0, Number(opts.uploadTimeout) || 0);
+    if ('uploadRetries' in opts) this.uploadRetries = Math.max(0, parseInt(opts.uploadRetries, 10) || 0);
+    if ('uploadRetryDelay' in opts) this.uploadRetryDelay = Math.max(0, Number(opts.uploadRetryDelay) || 0);
+    if ('uploadConcurrency' in opts) this.uploadConcurrency = Math.max(0, parseInt(opts.uploadConcurrency, 10) || 0);
+    this.hasUploader = !!(this.uploadHandler || this.uploadUrl || this.simulateUpload);
+    this.root.setAttribute('data-zs-upload', this.hasUploader ? 'true' : 'false');
+    this._render();
+    return this;
   };
 
   ZidanFileUpload.prototype.uploadAll = function () {
@@ -5007,39 +5250,126 @@
     if (!this.hasUploader) return this;
     if (!this._validate()) return this;
     var check = this.validate();
+    var epoch = this._uploadEpoch;
+    var release = function () {
+      self._batch = Math.max(0, self._batch - 1);
+      self._drainQueue();
+      self._flushWaiters();
+    };
+    var run = function (valid) {
+      try {
+        if (valid && !self.destroyed && epoch === self._uploadEpoch) {
+          self.getFiles().forEach(function (file) { self.uploadFile(file); });
+        }
+      } finally {
+        release();
+      }
+      return valid;
+    };
     if (isThenable(check)) {
-      return check.then(function (valid) {
-        if (valid && !self.destroyed) self.getFiles().forEach(function (file) { self.uploadFile(file); });
-        return valid;
+      this._batch += 1;
+      return check.then(run, function (err) {
+        release();
+        throw err;
       });
     }
     if (!check) return this;
-    this.getFiles().forEach(function (file) { self.uploadFile(file); });
+    this._batch += 1;
+    try {
+      run(true);
+    } finally {
+      /* run() releases on its own; only release when it never ran */
+      if (this._batch > 0) release();
+    }
     return this;
+  };
+
+  ZidanFileUpload.prototype._isBusy = function () {
+    return this._batch > 0 || this._pendingStarts > 0 || this._queue.length > 0 ||
+      Object.keys(this._active).length > 0 || Object.keys(this._retryTimers).length > 0;
+  };
+
+  ZidanFileUpload.prototype.isUploading = function () { return this._isBusy(); };
+
+  ZidanFileUpload.prototype.whenUploaded = function () {
+    var self = this;
+    if (!this._isBusy()) return Promise.resolve(this.getUploadState());
+    return new Promise(function (resolve) { self._waiters.push(resolve); });
+  };
+
+  ZidanFileUpload.prototype._flushWaiters = function () {
+    if (this._cancelingAll || !this._waiters.length || this._isBusy()) return;
+    var waiters = this._waiters;
+    this._waiters = [];
+    var states = this.getUploadState();
+    waiters.forEach(function (resolve) { resolve(states); });
+  };
+
+  ZidanFileUpload.prototype._drainQueue = function () {
+    if (this.destroyed) return this;
+    var limit = this.uploadConcurrency;
+    while (this._queue.length && (!limit || Object.keys(this._active).length < limit)) {
+      var file = this._queue.shift();
+      var state = this._stateFor(file, false);
+      if (!state || state.status !== 'queued') continue;
+      this._startUpload(file);
+    }
+    this._flushWaiters();
+    return this;
+  };
+
+  ZidanFileUpload.prototype._enqueueUpload = function (file) {
+    var state = this._stateFor(file, true);
+    if (state.status === 'uploading' || state.status === 'queued' ||
+        state.status === 'done' || state.status === 'retrying') return this;
+    if (this.uploadConcurrency > 0 && Object.keys(this._active).length >= this.uploadConcurrency) {
+      state.status = 'queued';
+      state.progress = 0;
+      state.error = '';
+      this._queue.push(file);
+      this._queueRender();
+      this.emit('upload-queued', { file: file, name: file.name, size: file.size, position: this._queue.length });
+      this.call('onUploadQueued', { file: file, name: file.name, size: file.size, position: this._queue.length, instance: this });
+      this._flushWaiters();
+      return this;
+    }
+    return this._startUpload(file);
   };
 
   ZidanFileUpload.prototype.uploadFile = function (file) {
     var self = this;
     var key = fileKey(file);
+    var epoch = this._uploadEpoch;
     if (this.downscale && file && file.type && file.type.indexOf('image/') === 0 && !file.__zidanKey) {
-      downscaleImage(file, this.downscale).then(function (output) {
+      this._pendingStarts += 1;
+      var ready = function (output) {
+        self._pendingStarts = Math.max(0, self._pendingStarts - 1);
+        if (self.destroyed || epoch !== self._uploadEpoch) {
+          self._flushWaiters();
+          return;
+        }
+        var stillSelected = self.getFiles().some(function (item) { return item === file || fileKey(item) === key; });
+        if (!stillSelected) {
+          self._flushWaiters();
+          return;
+        }
         if (!output) output = file;
         try {
           Object.defineProperty(output, '__zidanKey', { value: key, configurable: true });
         } catch (err) {
           output.__zidanKey = key;
         }
-        self.uploadFile(output);
-      }, function () {
-        try {
-          Object.defineProperty(file, '__zidanKey', { value: key, configurable: true });
-        } catch (err) {
-          file.__zidanKey = key;
-        }
-        self.uploadFile(file);
-      });
+        self._enqueueUpload(output);
+      };
+      downscaleImage(file, this.downscale).then(ready, function () { ready(file); });
       return this;
     }
+    return this._enqueueUpload(file);
+  };
+
+  ZidanFileUpload.prototype._startUpload = function (file) {
+    var self = this;
+    var key = fileKey(file);
     var state = this._stateFor(file, true);
     if (state.status === 'uploading' || state.status === 'done') return this;
 
@@ -5047,9 +5377,14 @@
     state.progress = 0;
     state.error = '';
     state.result = null;
+    state.attempts = (state.attempts || 0) + 1;
     this._queueRender();
-    this.emit('upload-start', { file: file, name: file.name, size: file.size });
-    this.call('onUploadStart', { file: file, name: file.name, size: file.size, instance: this });
+    this.emit('upload-start', {
+      file: file, name: file.name, size: file.size, attempt: state.attempts
+    });
+    this.call('onUploadStart', {
+      file: file, name: file.name, size: file.size, attempt: state.attempts, instance: this
+    });
 
     if (this.uploadHandler) {
       var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
@@ -5057,10 +5392,17 @@
         type: 'handler',
         abort: function () { if (controller) controller.abort(); }
       };
+      var formData;
+      try {
+        formData = this._formData(file);
+      } catch (err) {
+        this._fail(file, err);
+        return this;
+      }
       var context = {
         file: file,
         field: this,
-        formData: this._formData(file),
+        formData: formData,
         signal: controller ? controller.signal : null,
         onProgress: function (percent) { self._setProgress(file, percent); },
         complete: function (value) { self._finish(file, value); },
@@ -5088,33 +5430,74 @@
     }
 
     if (this.uploadUrl) {
-      var xhr = new global.XMLHttpRequest();
+      var xhr;
+      try {
+        xhr = new global.XMLHttpRequest();
+        var url = typeof this.uploadUrl === 'function' ? this.uploadUrl(file, this) : this.uploadUrl;
+        var method = typeof this.uploadMethod === 'function' ? this.uploadMethod(file, this) : this.uploadMethod;
+        var params = typeof this.uploadParams === 'function' ? this.uploadParams(file, this) : this.uploadParams;
+        url = fileWithQuery(String(url || ''), params);
+        xhr.open(String(method || 'POST').toUpperCase(), url, true);
+      } catch (err) {
+        this._fail(file, err);
+        return this;
+      }
       this._active[key] = {
         type: 'xhr',
         abort: function () { try { xhr.abort(); } catch (err) { /* already done */ } }
       };
-      xhr.open('POST', this.uploadUrl, true);
       if (this.withCredentials) xhr.withCredentials = true;
-      var headers = typeof this.uploadHeaders === 'function' ? this.uploadHeaders(file, this) : this.uploadHeaders;
-      if (headers && typeof headers === 'object') {
-        Object.keys(headers).forEach(function (name) { xhr.setRequestHeader(name, headers[name]); });
-      }
-      xhr.upload.onprogress = function (event) {
-        if (!event.lengthComputable) return;
-        self._setProgress(file, Math.min(99, Math.round((event.loaded / event.total) * 100)));
-      };
-      xhr.onload = function () {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          var body = xhr.responseText;
-          try { body = JSON.parse(body); } catch (err) { /* plain text response */ }
-          self._finish(file, body);
-        } else {
-          self._fail(file, { status: xhr.status, message: 'Upload failed (HTTP ' + xhr.status + ').' });
+      if (this.uploadTimeout) xhr.timeout = this.uploadTimeout;
+      try {
+        var headers = typeof this.uploadHeaders === 'function' ? this.uploadHeaders(file, this) : this.uploadHeaders;
+        if (headers && typeof headers === 'object') {
+          Object.keys(headers).forEach(function (name) {
+            var value = headers[name];
+            if (Array.isArray(value)) value = value.join(', ');
+            if (value !== undefined && value !== null) xhr.setRequestHeader(name, value);
+          });
         }
+      } catch (err) {
+        this._fail(file, err);
+        return this;
+      }
+      if (xhr.upload) {
+        xhr.upload.onprogress = function (event) {
+          if (!event.lengthComputable) return;
+          self._setProgress(file, Math.min(99, Math.round((event.loaded / event.total) * 100)));
+        };
+      }
+      xhr.onload = function () {
+        var body = xhr.responseText;
+        try { body = JSON.parse(body); } catch (err) { /* plain text response */ }
+        if (xhr.status >= 200 && xhr.status < 300) {
+          self._finish(file, self.uploadResponsePath ? fileReadPath(body, self.uploadResponsePath) : body);
+          return;
+        }
+        var detail = self.uploadErrorPath ? fileReadPath(body, self.uploadErrorPath) : body;
+        self._fail(file, {
+          status: xhr.status,
+          body: body,
+          message: fileErrorText(detail, 'Upload failed (HTTP ' + xhr.status + ').'),
+          retryable: xhr.status === 0 || xhr.status === 408 || xhr.status === 429 || xhr.status >= 500
+        });
       };
-      xhr.onerror = function () { self._fail(file, { message: 'Network error while uploading.' }); };
+      xhr.onerror = function () {
+        self._fail(file, { message: 'Network error while uploading.', retryable: true });
+      };
+      xhr.ontimeout = function () {
+        self._fail(file, {
+          message: 'Upload timed out after ' + Math.round(self.uploadTimeout / 1000) + 's.',
+          timeout: true,
+          retryable: true
+        });
+      };
       xhr.onabort = function () { self._canceledUpload(file); };
-      xhr.send(this._formData(file));
+      try {
+        xhr.send(this._formData(file));
+      } catch (err) {
+        this._fail(file, err);
+      }
       return this;
     }
 
@@ -5137,8 +5520,10 @@
       return this;
     }
 
+    delete this._active[key];
     state.status = 'idle';
     this._queueRender();
+    this._drainQueue();
     return this;
   };
 
@@ -5161,25 +5546,62 @@
     state.progress = 100;
     state.result = result === undefined ? null : result;
     this._queueRender();
-    this.emit('upload-success', { file: file, name: file.name, result: state.result });
-    this.call('onUploadSuccess', { file: file, name: file.name, result: state.result, instance: this });
-    this.call('onUpload', { file: file, name: file.name, result: state.result, instance: this });
+    this.emit('upload-success', { file: file, name: file.name, result: state.result, attempts: state.attempts || 1 });
+    this.call('onUploadSuccess', { file: file, name: file.name, result: state.result, attempts: state.attempts || 1, instance: this });
+    this.call('onUpload', { file: file, name: file.name, result: state.result, attempts: state.attempts || 1, instance: this });
+    this._drainQueue();
+    this._flushWaiters();
+  };
+
+  ZidanFileUpload.prototype._scheduleRetry = function (file, err, message) {
+    var state = this._stateFor(file, false);
+    if (!state || !err || err.retryable !== true) return false;
+    if (!this.uploadRetries || state.attempts > this.uploadRetries) return false;
+    var self = this;
+    var key = fileKey(file);
+    var delay = this.uploadRetryDelay;
+    delete this._active[key];
+    state.status = 'retrying';
+    state.error = message;
+    this._queueRender();
+    this.emit('upload-retry', {
+      file: file, name: file.name, attempt: state.attempts,
+      nextAttempt: state.attempts + 1, delay: delay, error: err, message: message
+    });
+    this.call('onUploadRetry', {
+      file: file, name: file.name, attempt: state.attempts,
+      nextAttempt: state.attempts + 1, delay: delay, error: err, message: message, instance: this
+    });
+    this._retryTimers[key] = global.setTimeout(function () {
+      delete self._retryTimers[key];
+      if (self.destroyed) return;
+      var current = self._stateFor(file, false);
+      if (!current || current.status !== 'retrying') return;
+      current.status = 'idle';
+      self._enqueueUpload(file);
+      self._flushWaiters();
+    }, delay);
+    this._drainQueue();
+    return true;
   };
 
   ZidanFileUpload.prototype._fail = function (file, err) {
     var state = this._stateFor(file, false);
     if (!state || state.status !== 'uploading') return;
     delete this._active[fileKey(file)];
-    state.status = 'error';
     state.error = uploadErrorText(err, this.opts.messages.upload || 'Upload failed.');
+    if (this._scheduleRetry(file, err, state.error)) return;
+    state.status = 'error';
     this._queueRender();
-    this.emit('upload-error', { file: file, name: file.name, error: err, message: state.error });
-    this.call('onUploadError', { file: file, name: file.name, error: err, message: state.error, instance: this });
+    this.emit('upload-error', { file: file, name: file.name, error: err, message: state.error, attempts: state.attempts || 1 });
+    this.call('onUploadError', { file: file, name: file.name, error: err, message: state.error, attempts: state.attempts || 1, instance: this });
+    this._drainQueue();
+    this._flushWaiters();
   };
 
   ZidanFileUpload.prototype._canceledUpload = function (file) {
     var state = this._stateFor(file, false);
-    if (!state || state.status !== 'uploading') return;
+    if (!state || (state.status !== 'uploading' && state.status !== 'retrying')) return;
     delete this._active[fileKey(file)];
     state.status = 'canceled';
     state.progress = 0;
@@ -5187,18 +5609,51 @@
     this._queueRender();
     this.emit('upload-cancel', { file: file, name: file.name });
     this.call('onUploadCancel', { file: file, name: file.name, instance: this });
+    this._drainQueue();
+    this._flushWaiters();
   };
 
   ZidanFileUpload.prototype.cancelUpload = function (file) {
     var key = fileKey(file);
+    var state = this._stateFor(file, false);
+    if (!state) return this;
+
+    if (state.status === 'queued') {
+      var index = this._queue.indexOf(file);
+      if (index !== -1) this._queue.splice(index, 1);
+      state.status = 'canceled';
+      state.progress = 0;
+      state.error = '';
+      this._queueRender();
+      this.emit('upload-cancel', { file: file, name: file.name });
+      this.call('onUploadCancel', { file: file, name: file.name, instance: this });
+      this._flushWaiters();
+      return this;
+    }
+
+    if (state.status === 'retrying') {
+      if (this._retryTimers[key]) global.clearTimeout(this._retryTimers[key]);
+      delete this._retryTimers[key];
+      state.status = 'canceled';
+      state.progress = 0;
+      state.error = '';
+      this._queueRender();
+      this.emit('upload-cancel', { file: file, name: file.name });
+      this.call('onUploadCancel', { file: file, name: file.name, instance: this });
+      this._drainQueue();
+      this._flushWaiters();
+      return this;
+    }
+
     var active = this._active[key];
     if (active) {
       try { active.abort(); } catch (err) { /* already stopped */ }
       delete this._active[key];
       /* an abort settles through the transport's own handler; only finish the
          state here when that handler never ran (e.g. a custom uploader) */
-      var state = this._stateFor(file, false);
-      if (state && state.status === 'uploading') this._canceledUpload(file);
+      if (state.status === 'uploading') this._canceledUpload(file);
+      this._drainQueue();
+      this._flushWaiters();
       return this;
     }
     this._canceledUpload(file);
@@ -5207,9 +5662,48 @@
 
   ZidanFileUpload.prototype.cancelAll = function () {
     var self = this;
+    this._cancelingAll = true;
+    var files = this.getFiles();
+    var queued = this._queue.slice();
+    this._queue = [];
+    Object.keys(this._retryTimers).forEach(function (key) {
+      global.clearTimeout(self._retryTimers[key]);
+      delete self._retryTimers[key];
+    });
     Object.keys(this._active).forEach(function (key) {
       try { self._active[key].abort(); } catch (err) { /* already stopped */ }
       delete self._active[key];
+    });
+    var keys = Object.keys(this._uploads);
+    keys.forEach(function (key) {
+      var state = self._uploads[key];
+      if (!state || (state.status !== 'uploading' && state.status !== 'retrying')) return;
+      var file = files.filter(function (item) { return fileKey(item) === key; })[0];
+      if (!file) return;
+      state.status = 'canceled';
+      state.progress = 0;
+      state.error = '';
+      self.emit('upload-cancel', { file: file, name: file.name });
+      self.call('onUploadCancel', { file: file, name: file.name, instance: self });
+    });
+    queued.forEach(function (file) {
+      var state = self._stateFor(file, false);
+      if (state && state.status === 'queued') {
+        state.status = 'canceled';
+        self.emit('upload-cancel', { file: file, name: file.name });
+        self.call('onUploadCancel', { file: file, name: file.name, instance: self });
+      }
+    });
+    this._cancelingAll = false;
+    this._queueRender();
+    this._flushWaiters();
+    return this;
+  };
+
+  ZidanFileUpload.prototype.retryAll = function () {
+    var self = this;
+    this.getUploadState().forEach(function (entry) {
+      if (entry.status === 'error' || entry.status === 'canceled') self.retryUpload(entry.file);
     });
     return this;
   };
@@ -5217,9 +5711,15 @@
   ZidanFileUpload.prototype.retryUpload = function (file) {
     var state = this._stateFor(file, false);
     if (!state) return this;
+    var key = fileKey(file);
+    if (this._retryTimers[key]) {
+      global.clearTimeout(this._retryTimers[key]);
+      delete this._retryTimers[key];
+    }
     state.status = 'idle';
     state.progress = 0;
     state.error = '';
+    state.attempts = 0;
     return this.uploadFile(file);
   };
 
@@ -5234,6 +5734,10 @@
 
   ZidanFileUpload.prototype._teardown = function () {
     this.cancelAll();
+    this._uploadEpoch += 1;
+    this._pendingStarts = 0;
+    this._batch = 0;
+    this._waiters = [];
     this._uploads = Object.create(null);
     this._revokeLater(this._urls);
     this._urls = [];

@@ -206,14 +206,15 @@ Set the adapter once — on the form, a wrapper or `<html>`:
 | Adapter | What changes |
 | --- | --- |
 | `none` / `vanilla` | Plugin's own tokens. |
-| `bootstrap` | Maps `--bs-*` colours/radius, `.form-control`/`.form-select` sizing, input-group corners, is-valid/is-invalid. |
-| `tailwind` | Slate/indigo palette, 0.5rem radius, tighter shadows. |
-| `bulma` | `--bulma-*` palette and radius, Bulma shadow. |
-| `foundation` | Square corners, Foundation blue, `#cacaca` borders. |
+| `bootstrap` | Maps `--bs-*` colours/radius, `.form-control`/`.form-select` sizing, input-group corners, is-valid/is-invalid. File drops get `.form-control`, generated actions get `.btn` sizing and the drop frame follows the Bootstrap control height. |
+| `tailwind` | Slate/indigo palette, 0.5rem radius, tighter shadows. File drops use the same surface/border tokens and a visible focus ring. |
+| `bulma` | `--bulma-*` palette and radius, Bulma shadow. File drops and their action buttons share Bulma's radius and shadow scale. |
+| `foundation` | Square corners, Foundation blue, `#cacaca` borders. File drops and buttons are square with Foundation's control height. |
 
 Load the plugin stylesheets after the framework stylesheet so adapter layout and
 the framework's own component rules resolve in the right order. No framework JavaScript
-is required.
+is required. File adapters style the generated drop target, file rows and action
+buttons; the native file input remains the value source.
 
 Bootstrap 5 example:
 

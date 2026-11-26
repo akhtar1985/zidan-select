@@ -215,10 +215,14 @@ export interface FieldMessages {
   fileType: string;
   fileSize: string;
   fileCount: string;
+  fileMin: string;
+  fileTotalSize: string;
   pending: string;
   generic: string;
   [key: string]: string;
 }
+
+export type UploadUrl = string | ((file: File, field: ZidanFileUpload) => string);
 
 export interface FieldOptions {
   theme?: Theme | string;
@@ -232,7 +236,7 @@ export interface FieldOptions {
   showValidState?: boolean;
   label?: string;
   hint?: string;
-  uploadUrl?: string;
+  uploadUrl?: UploadUrl;
   uploadHandler?: UploadHandler;
   [key: string]: unknown;
 }
@@ -241,13 +245,16 @@ export interface UploadContext {
   file: File;
   field: ZidanFileUpload;
   formData: FormData;
-  signal: AbortSignal;
+  signal: AbortSignal | null;
   onProgress(percent: number): void;
   complete(result?: unknown): void;
   fail(error?: unknown): void;
 }
 
 export type UploadHandler = (file: File, context: UploadContext) => void | Promise<unknown>;
+export type UploadMethod = string | ((file: File, field: ZidanFileUpload) => string);
+export type UploadParams = string | URLSearchParams | Record<string, unknown> |
+  ((file: File, field: ZidanFileUpload) => string | URLSearchParams | Record<string, unknown>);
 
 export interface DownscaleOptions {
   /** Longest edge in px (default 1920) */
@@ -267,13 +274,62 @@ export interface FileFieldOptions extends FieldOptions {
   variant?: string;
   accept?: string;
   multiple?: boolean;
+  /** Minimum selection size before the field is invalid (0 = no minimum) */
+  minFiles?: number;
   maxFiles?: number;
+  /** Per-file byte limit */
   maxSize?: number;
-  uploadUrl?: string;
+  maxSizeMB?: number;
+  /** Combined bytes for all selected files */
+  maxTotalSize?: number;
+  maxTotalSizeMB?: number;
+  uploadUrl?: UploadUrl;
   uploadHandler?: UploadHandler;
+  uploadField?: string;
+  uploadMethod?: UploadMethod;
+  uploadParams?: UploadParams;
+  uploadData?: Record<string, unknown> | ((file: File, field: ZidanFileUpload) => Record<string, unknown>);
+  uploadHeaders?: Record<string, string | string[]> | ((file: File, field: ZidanFileUpload) => Record<string, string | string[]>);
+  uploadResponsePath?: string;
+  uploadErrorPath?: string;
+  /** Abort and report a timeout after this many milliseconds (0 = no timeout) */
+  uploadTimeout?: number;
+  /** Automatic retries for retryable failures (network, 408, 429, 5xx) */
+  uploadRetries?: number;
+  uploadRetryDelay?: number;
+  /** Parallel XHR/handler uploads; 0 means unlimited */
+  uploadConcurrency?: number;
+  withCredentials?: boolean;
+  uploadWithCredentials?: boolean;
   simulateUpload?: boolean;
+  simulateDuration?: number;
   autoUpload?: boolean;
   previews?: boolean;
+  showFileMeta?: boolean;
+  showPreview?: boolean;
+  showClear?: boolean;
+  showRemove?: boolean;
+  showCancel?: boolean;
+  showRetry?: boolean;
+  showStatus?: boolean;
+  allowPaste?: boolean;
+  statusFormat?: (context: UploadStatusContext) => string;
+  onUploadQueued?: (context: {
+    file: File; name: string; size: number; position: number; instance: ZidanFileUpload;
+  }) => void;
+  onUploadRetry?: (context: {
+    file: File; name: string; attempt: number; nextAttempt: number; delay: number;
+    error: unknown; message: string; instance: ZidanFileUpload;
+  }) => void;
+  queuedLabel?: string;
+  retryingLabel?: string;
+  uploadedLabel?: string;
+  failedLabel?: string;
+  canceledLabel?: string;
+  cancelLabel?: string;
+  retryLabel?: string;
+  progressTemplate?: string;
+  replaceTitle?: string;
   /** Resize images in the browser before upload: true or limits */
   downscale?: boolean | DownscaleOptions;
   downscaleMaxWidth?: number;
@@ -330,10 +386,22 @@ export interface UploadState {
   file: File;
   name: string;
   size: number;
-  status: 'idle' | 'uploading' | 'success' | 'error' | 'canceled' | string;
+  status: 'idle' | 'queued' | 'uploading' | 'retrying' | 'done' | 'error' | 'canceled' | string;
   progress: number;
   error: string;
   result: unknown;
+  attempts: number;
+}
+
+export interface UploadStatusContext {
+  files: File[];
+  states: UploadState[];
+  total: number;
+  uploading: number;
+  failed: number;
+  done: number;
+  error: string;
+  field: ZidanFileUpload;
 }
 
 export class ZidanFieldBase {
@@ -450,17 +518,24 @@ export class ZidanFileUpload extends ZidanFieldBase {
   readonly hasUploader: boolean;
   getFiles(): File[];
   getUploadState(): UploadState[];
+  getFileState(target: number | File | string): UploadState | null;
   addFiles(files: File[] | FileList): this;
   replaceFiles(files: File[] | FileList): this;
-  removeFile(index: number | File): this;
+  removeFile(target: number | File | string): this;
+  removeFiles(targets: Array<number | File | string> | FileList): this;
   clear(): this;
   uploadAll(): this | Promise<boolean>;
-  uploadFile(file: File): this | Promise<unknown>;
+  uploadFile(file: File): this;
+  isUploading(): boolean;
+  whenUploaded(): Promise<UploadState[]>;
   cancelUpload(file: File): this;
   cancelAll(): this;
   retryUpload(file: File): this;
+  retryAll(): this;
   setVariant(variant: string): this;
   setUploader(handler: UploadHandler | string | null): this;
+  setUploadUrl(url: string | null): this;
+  setUploadOptions(options: FileFieldOptions): this;
 }
 
 export class ZidanTextField extends ZidanFieldBase {

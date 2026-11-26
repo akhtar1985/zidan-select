@@ -451,6 +451,14 @@ check('subset CSS carries the current framework adapters', () => {
       assert(adapterBlock(css, framework) === expected, name + '-only theme has a stale ' + framework + ' adapter');
     }
   }
+  const fileTheme = subsetThemes.file;
+  for (const framework of ['bootstrap', 'tailwind', 'bulma', 'foundation']) {
+    assert(fileTheme.includes('.zs-field--file[data-zs-framework="' + framework + '"]'),
+      'file-only theme omits the ' + framework + ' file adapter');
+    assert(!subsetThemes.select.includes('.zs-field--file[data-zs-framework="' + framework + '"]'),
+      'select-only theme should not ship file adapter rules');
+  }
+  assert(fileTheme.includes('.zs-file-drop.form-control'), 'file-only theme omits Bootstrap drop sizing');
   for (const name of [
     'dist/select/plugin-select-theme.min.css', 'dist/file/plugin-file-theme.min.css'
   ]) {

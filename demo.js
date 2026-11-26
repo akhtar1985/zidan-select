@@ -82,6 +82,76 @@
     });
   }
 
+  var ajaxFile = document.getElementById('file-ajax-input');
+  if (ajaxFile) {
+    var ajaxStart = document.getElementById('file-ajax-start');
+    var ajaxClear = document.getElementById('file-ajax-clear');
+    var ajaxStatus = document.getElementById('file-ajax-status');
+    var ajaxResult = document.getElementById('file-ajax-result');
+    var sayAjax = function (message) {
+      if (ajaxStatus) ajaxStatus.textContent = message;
+    };
+    var ajaxUpload = window.zidanField(ajaxFile, {
+      autoUpload: false,
+      uploadUrl: 'https://httpbin.org/post',
+      uploadMethod: 'POST',
+      uploadField: 'file',
+      uploadParams: { demo: 'zidan-form' },
+      uploadData: { source: 'demo', tags: ['upload', 'xhr'] },
+      uploadHeaders: { 'X-Zidan-Demo': 'file-upload' },
+      uploadTimeout: 30000,
+      uploadRetries: 1,
+      uploadRetryDelay: 900,
+      uploadConcurrency: 2,
+      uploadResponsePath: 'url',
+      uploadErrorPath: 'error',
+      onUploadQueued: function (event) {
+        sayAjax('Queued ' + event.name + ' (position ' + event.position + ').');
+      },
+      onUploadRetry: function (event) {
+        sayAjax('Retrying ' + event.name + ' — attempt ' + event.nextAttempt + ' in ' + event.delay + 'ms.');
+      },
+      onUploadError: function (event) {
+        sayAjax('Upload failed: ' + event.message);
+      }
+    });
+    if (ajaxStart) {
+      ajaxStart.addEventListener('click', function () {
+        if (!ajaxUpload.getFiles().length) {
+          sayAjax('Choose a file first.');
+          return;
+        }
+        if (ajaxResult) {
+          ajaxResult.hidden = true;
+          ajaxResult.textContent = '';
+        }
+        sayAjax('Uploading ' + ajaxUpload.getFiles().length + ' file(s) to httpbin.org/post…');
+        ajaxUpload.uploadAll();
+        ajaxUpload.whenUploaded().then(function (states) {
+          var done = states.filter(function (state) { return state.status === 'done'; });
+          var failed = states.filter(function (state) { return state.status === 'error'; });
+          sayAjax(done.length + ' uploaded' + (failed.length ? ', ' + failed.length + ' failed' : '') + '.');
+          if (ajaxResult && done.length) {
+            ajaxResult.hidden = false;
+            ajaxResult.textContent = done.map(function (state) {
+              return state.name + '\n' + JSON.stringify(state.result, null, 2);
+            }).join('\n\n');
+          }
+        });
+      });
+    }
+    if (ajaxClear) {
+      ajaxClear.addEventListener('click', function () {
+        ajaxUpload.clear();
+        if (ajaxResult) {
+          ajaxResult.hidden = true;
+          ajaxResult.textContent = '';
+        }
+        sayAjax('Cleared. Choose a file to upload.');
+      });
+    }
+  }
+
   /* ---------------- remote pagination ---------------- */
 
   var remotePeople = document.getElementById('remote-people');

@@ -36,7 +36,8 @@
       'validation', 'alwaysValidate', 'indeterminate', 'clearable', 'reveal',
       'prefix', 'suffix', 'counter', 'output', 'title', 'dropHint', 'accept',
       'mask', 'autogrow', 'autogrowMax',
-      'maxFiles', 'maxSize', 'maxSizeMB', 'labels', 'clearLabel',
+      'minFiles', 'maxFiles', 'maxSize', 'maxSizeMB', 'maxTotalSize', 'maxTotalSizeMB',
+      'labels', 'clearLabel',
       'showPasswordLabel', 'hidePasswordLabel',
       'autoIcon', 'icon', 'iconPosition', 'iconClickable', 'iconLabel', 'validationIcon',
       'stepper', 'stepperPosition', 'stepperWrap', 'stepperLongPress', 'stepperDelay',
@@ -49,9 +50,13 @@
       'pickerButton', 'pickerIcon', 'pickerLabel', 'disableWeekends', 'disabledDates',
       'validateDate',
       'fileVariant', 'uploadIcon', 'upload', 'uploadHandler', 'uploadUrl', 'uploadField',
-      'uploadData', 'withCredentials', 'uploadHeaders', 'headers',
+      'uploadMethod', 'uploadParams', 'uploadData', 'withCredentials', 'uploadWithCredentials',
+      'uploadHeaders', 'headers', 'uploadResponsePath', 'uploadErrorPath',
+      'uploadTimeout', 'uploadRetries', 'uploadRetryDelay', 'uploadConcurrency',
       'simulateUpload', 'simulateDuration', 'autoUpload', 'showFileMeta', 'showPreview',
-      'replaceTitle', 'progressTemplate', 'uploadedLabel', 'failedLabel', 'canceledLabel',
+      'showClear', 'showRemove', 'showCancel', 'showRetry', 'showStatus', 'allowPaste',
+      'statusFormat', 'replaceTitle', 'progressTemplate', 'uploadedLabel', 'failedLabel',
+      'canceledLabel', 'queuedLabel', 'retryingLabel',
       'cancelLabel', 'retryLabel', 'renderFile', 'downscale',
       'downscaleMaxWidth', 'downscaleMaxHeight', 'downscaleQuality', 'downscaleMaxBytes',
       'downscaleMime', 'downscaleForce',
@@ -66,7 +71,7 @@
       'onInit', 'onChange', 'onValidation', 'onRemove', 'onInput', 'onIconClick',
       'onStep', 'onPicker', 'onPhoneCountry', 'onPhoneFormat',
       'onUploadStart', 'onUploadProgress', 'onUploadSuccess', 'onUpload',
-      'onUploadError', 'onUploadCancel'
+      'onUploadError', 'onUploadCancel', 'onUploadQueued', 'onUploadRetry'
     ],
     selectMethods: [
       'open', 'close', 'toggle', 'isOpen', 'getValue', 'setValue', 'clear', 'setOptions',
@@ -84,16 +89,17 @@
       'stepUp', 'stepDown', 'setStepper', 'openPicker', 'showPicker',
       'getPhoneCountry', 'setPhoneCountry', 'setPhoneFormat', 'formatPhone',
       'getUnmaskedValue', 'refreshAutogrow',
-      'getFiles', 'getUploadState', 'addFiles', 'replaceFiles', 'removeFile', 'clear',
-      'setVariant', 'setUploader', 'uploadAll', 'uploadFile', 'cancelUpload', 'cancelAll',
-      'retryUpload'
+      'getFiles', 'getUploadState', 'getFileState', 'addFiles', 'replaceFiles',
+      'removeFile', 'removeFiles', 'clear', 'isUploading', 'whenUploaded',
+      'setVariant', 'setUploader', 'setUploadUrl', 'setUploadOptions',
+      'uploadAll', 'uploadFile', 'cancelUpload', 'cancelAll', 'retryUpload', 'retryAll'
     ],
     events: [
       'async-validation', 'change', 'clear', 'close', 'destroy', 'error', 'icon-click',
       'init', 'input', 'load-more', 'no-results', 'open', 'phone-country', 'phone-format',
       'picker', 'remove', 'reveal', 'select', 'step', 'tag-add', 'tag-remove', 'tag-move', 'tag-edit',
-      'upload-cancel', 'upload-error', 'upload-progress', 'upload-start',
-      'upload-success', 'validation', 'validate'
+      'upload-cancel', 'upload-error', 'upload-progress', 'upload-queued',
+      'upload-retry', 'upload-start', 'upload-success', 'validation', 'validate'
     ]
   };
 
@@ -710,11 +716,36 @@
     hint: 'Used by the method self-tests',
     variant: 'default',
     fileVariant: 'compact',
+    minFiles: 1,
     maxFiles: 4,
     maxSize: 1048576,
+    maxTotalSize: 4194304,
+    maxTotalSizeMB: 4,
     autoUpload: false,
     uploadHandler: stallUploader,
-    headers: { 'X-Probe': '1' }
+    uploadField: 'file',
+    uploadMethod: 'POST',
+    uploadParams: { probe: '1' },
+    uploadResponsePath: 'url',
+    uploadErrorPath: 'message',
+    uploadTimeout: 30000,
+    uploadRetries: 0,
+    uploadRetryDelay: 1,
+    uploadConcurrency: 0,
+    uploadWithCredentials: false,
+    uploadHeaders: { 'X-Probe': '1' },
+    headers: { 'X-Probe': '1' },
+    showClear: true,
+    showRemove: true,
+    showCancel: true,
+    showRetry: true,
+    showStatus: true,
+    allowPaste: true,
+    statusFormat: function (context) { return context.files.length + ' probe file(s)'; },
+    queuedLabel: 'Queued in the probe',
+    retryingLabel: 'Retrying probe attempt {attempt}',
+    onUploadQueued: hook('fieldCallbacks', 'onUploadQueued'),
+    onUploadRetry: hook('fieldCallbacks', 'onUploadRetry')
   });
 
   /* ---------------- method runners ---------------- */
@@ -747,6 +778,12 @@
   function resetProbe() {
     probe.clear();
     probe.setUploader(stallUploader);
+    probe.setUploadOptions({
+      uploadConcurrency: 0,
+      uploadRetries: 0,
+      uploadRetryDelay: 1,
+      uploadMethod: 'POST'
+    });
     pendingUpload = null;
     return probe;
   }
@@ -991,12 +1028,28 @@
       methods: [
         { name: 'getFiles', run: function () { var f = resetProbe(); f.addFiles([asFile('get.txt')]); return 'files=' + f.getFiles().length; } },
         { name: 'getUploadState', run: function () { var f = resetProbe(); f.addFiles([asFile('state.txt')]); return JSON.stringify(f.getUploadState()[0].status); } },
+        { name: 'getFileState', run: function () { var f = resetProbe(); f.addFiles([asFile('one-state.txt')]); return 'status=' + f.getFileState('one-state.txt').status; } },
+        { name: 'removeFiles', run: function () { var f = resetProbe(); f.addFiles([asFile('a.txt'), asFile('b.txt'), asFile('c.txt')]); f.removeFiles([0, 2]); return 'files=' + f.getFiles().map(function (file) { return file.name; }).join(','); } },
         { name: 'addFiles', run: function () { var f = resetProbe(); f.addFiles([asFile('one.txt'), asFile('two.txt')]); return 'files=' + f.getFiles().length; } },
         { name: 'replaceFiles', run: function () { var f = resetProbe(); f.replaceFiles([asFile('new-one.txt'), asFile('new-two.txt')]); return 'files=' + f.getFiles().length; } },
         { name: 'removeFile', run: function () { var f = resetProbe(); f.addFiles([asFile('keep.txt'), asFile('drop.txt')]); f.removeFile(1); return 'files=' + f.getFiles().length; } },
         { name: 'clear', run: function () { var f = resetProbe(); f.addFiles([asFile('clear.txt')]); f.clear(); return 'files=' + f.getFiles().length; } },
         { name: 'setVariant', run: function () { var f = resetProbe(); f.setVariant('button'); var variant = f.variant; f.setVariant('compact'); return 'variant=' + variant; } },
         { name: 'setUploader', run: function () { var f = resetProbe(); f.setUploader('/lab-upload'); f.setUploader(stallUploader); return 'uploader swapped twice'; } },
+        { name: 'setUploadUrl', run: function () { var f = resetProbe(); f.setUploadUrl('/lab-endpoint'); var url = f.uploadUrl; f.setUploader(stallUploader); return 'url=' + url; } },
+        { name: 'setUploadOptions', run: function () { var f = resetProbe(); f.setUploadOptions({ uploadMethod: 'PATCH', uploadRetries: 2, uploadConcurrency: 1 }); var opts = f.uploadMethod + '/' + f.uploadRetries + '/' + f.uploadConcurrency; resetProbe(); return 'options=' + opts; } },
+        { name: 'isUploading', run: function () { var f = resetProbe(); f.addFiles([asFile('busy.txt')]); f.uploadAll(); var busy = f.isUploading(); f.cancelAll(); return 'busy=' + busy; } },
+        {
+          name: 'whenUploaded',
+          run: function () {
+            var f = resetProbe();
+            f.addFiles([asFile('wait.txt')]);
+            f.uploadAll();
+            var waiting = f.whenUploaded();
+            if (pendingUpload) pendingUpload.complete({ url: 'lab://wait' });
+            return waiting.then(function (states) { return 'status=' + states[0].status; });
+          }
+        },
         {
           name: 'uploadAll',
           run: function () {
@@ -1052,6 +1105,45 @@
             var status = f.getUploadState()[0].status;
             if (pendingUpload) pendingUpload.complete({ url: 'lab://retry' });
             return 'status=' + status;
+          }
+        },
+        {
+          name: 'retryAll',
+          run: function () {
+            var f = resetProbe();
+            f.addFiles([asFile('retry-all.txt')]);
+            f.uploadAll();
+            f.cancelAll();
+            f.retryAll();
+            var status = f.getUploadState()[0].status;
+            if (pendingUpload) pendingUpload.complete({ url: 'lab://retry-all' });
+            return 'status=' + status;
+          }
+        },
+        {
+          name: 'upload-queued event',
+          run: function () {
+            var f = resetProbe();
+            f.setUploadOptions({ uploadConcurrency: 1 });
+            f.addFiles([asFile('queue-a.txt'), asFile('queue-b.txt')]);
+            f.uploadAll();
+            if (pendingUpload) pendingUpload.complete({ url: 'lab://queue-a' });
+            if (pendingUpload) pendingUpload.complete({ url: 'lab://queue-b' });
+            return 'queue event observed';
+          }
+        },
+        {
+          name: 'upload-retry event',
+          run: function () {
+            var f = resetProbe();
+            f.setUploadOptions({ uploadConcurrency: 0, uploadRetries: 1, uploadRetryDelay: 1 });
+            f.addFiles([asFile('retry-event.txt')]);
+            f.uploadAll();
+            if (pendingUpload) pendingUpload.fail({ message: 'retry event', retryable: true });
+            return delay(12).then(function () {
+              if (pendingUpload) pendingUpload.complete({ url: 'lab://retry-event' });
+              return 'retry event observed';
+            });
           }
         }
       ]

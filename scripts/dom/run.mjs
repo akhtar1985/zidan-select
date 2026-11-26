@@ -654,6 +654,145 @@ test('pagination: initial fetch errors render a retryable state', async () => {
 
 /* ---------------- uploads ---------------- */
 
+test('file upload: AJAX request options and response paths', async () => {
+  const window = boot('<input id="docs" type="file">');
+  const requests = [];
+  window.XMLHttpRequest = class FakeXHR {
+    constructor() {
+      this.upload = {};
+      this.headers = {};
+      this.status = 0;
+      this.responseText = '';
+      requests.push(this);
+    }
+    open(method, url) { this.method = method; this.url = url; }
+    setRequestHeader(name, value) { this.headers[name] = value; }
+    send(body) {
+      this.body = body;
+      this.upload.onprogress({ lengthComputable: true, loaded: 5, total: 10 });
+      this.status = 201;
+      this.responseText = JSON.stringify({ data: { url: 'https://cdn.test/a.pdf' } });
+      this.onload();
+    }
+    abort() { if (this.onabort) this.onabort(); }
+  };
+  const field = window.zidanField(fileInput(window, 'docs'), {
+    uploadUrl: 'https://api.test/upload',
+    uploadMethod: 'PUT',
+    uploadParams: { folder: 'docs', tag: ['a', 'b'] },
+    uploadField: 'document',
+    uploadData: { token: 'secret', note: ['one', 'two'] },
+    uploadHeaders: (file) => ({ 'X-File': file.name, 'X-Multi': ['a', 'b'] }),
+    withCredentials: true,
+    uploadTimeout: 5000,
+    uploadResponsePath: 'data.url',
+    autoUpload: false
+  });
+  field.addFiles([new window.File(['pdf'], 'a.pdf', { type: 'application/pdf' })]);
+  field.uploadAll();
+
+  const xhr = requests[0];
+  assert.equal(xhr.method, 'PUT');
+  assert.match(xhr.url, /^https:\/\/api\.test\/upload\?/);
+  assert.match(xhr.url, /folder=docs/);
+  assert.match(xhr.url, /tag=a&tag=b/);
+  assert.equal(xhr.withCredentials, true);
+  assert.equal(xhr.timeout, 5000);
+  assert.equal(xhr.headers['X-File'], 'a.pdf');
+  assert.equal(xhr.headers['X-Multi'], 'a, b');
+  assert.equal(xhr.body.get('document').name, 'a.pdf');
+  assert.equal(xhr.body.get('token'), 'secret');
+  assert.deepEqual(xhr.body.getAll('note'), ['one', 'two']);
+
+  const states = await field.whenUploaded();
+  assert.equal(states[0].status, 'done');
+  assert.equal(states[0].progress, 100);
+  assert.equal(states[0].result, 'https://cdn.test/a.pdf');
+  field.destroy();
+});
+
+test('file upload: concurrency, automatic retry and whenUploaded', async () => {
+  const window = boot('<input id="docs" type="file" multiple>');
+  const contexts = new Map();
+  let active = 0;
+  let maxActive = 0;
+  const retries = [];
+  const queued = [];
+  const field = window.zidanField(fileInput(window, 'docs'), {
+    uploadConcurrency: 2,
+    uploadRetries: 1,
+    uploadRetryDelay: 2,
+    autoUpload: false,
+    uploadHandler: (file, context) => {
+      contexts.set(file.name, context);
+      active += 1;
+      maxActive = Math.max(maxActive, active);
+      context.signal.addEventListener('abort', () => { active = Math.max(0, active - 1); });
+    },
+    onUploadQueued: (event) => queued.push(event.name),
+    onUploadRetry: (event) => retries.push(event.attempt)
+  });
+  const finish = (name, value) => {
+    active = Math.max(0, active - 1);
+    contexts.get(name).complete(value);
+  };
+  const fail = (name, error) => {
+    active = Math.max(0, active - 1);
+    contexts.get(name).fail(error);
+  };
+  field.addFiles([
+    new window.File(['a'], 'a.txt'),
+    new window.File(['b'], 'b.txt'),
+    new window.File(['c'], 'c.txt')
+  ]);
+  const bFile = field.getFiles()[1];
+  field.uploadAll();
+  assert.equal(active, 2);
+  assert.equal(maxActive, 2);
+  assert.equal(field.getUploadState()[2].status, 'queued');
+  assert.deepEqual(queued, ['c.txt']);
+  assert.equal(field.isUploading(), true);
+
+  finish('a.txt', { ok: true });
+  assert.equal(contexts.has('c.txt'), true);
+  assert.equal(active, 2);
+  fail('b.txt', { message: 'Try again', retryable: true });
+  assert.equal(field.getFileState(bFile).status, 'retrying');
+  finish('c.txt', { ok: true });
+  const pending = field.whenUploaded();
+  await wait(10);
+  assert.equal(contexts.get('b.txt').signal.aborted, false);
+  assert.equal(field.getFileState(bFile).attempts, 2);
+  assert.deepEqual(retries, [1]);
+  finish('b.txt', { ok: true });
+  const states = await pending;
+  assert.deepEqual(Array.from(states, (state) => state.status), ['done', 'done', 'done']);
+  assert.equal(field.isUploading(), false);
+  field.destroy();
+});
+
+test('file upload: selection limits, bulk removal and custom status', async () => {
+  const window = boot('<input id="docs" type="file" multiple>');
+  const field = window.zidanField(fileInput(window, 'docs'), {
+    minFiles: 2,
+    maxTotalSize: 6,
+    statusFormat: (context) => context.files.length + '/' + context.total + ' bytes'
+  });
+  field.addFiles([new window.File(['abc'], 'a.txt'), new window.File(['def'], 'b.txt')]);
+  assert.equal(field.fileError, '');
+  assert.equal(field.status.textContent, '2/6 bytes');
+  field.addFiles([new window.File(['ghi'], 'c.txt')]);
+  assert.equal(field.getFiles().length, 3, 'files are kept, the total-size error explains why');
+  assert.match(field.fileError, /exceed/);
+  field.removeFiles([0, field.getFiles()[1]]);
+  assert.equal(field.getFiles().length, 1);
+  assert.match(field.fileError, /at least 2/);
+  field.addFiles([new window.File(['xyz'], 'd.txt')]);
+  assert.equal(field.getFiles().length, 2);
+  assert.equal(field.fileError, '');
+  field.destroy();
+});
+
 test('file upload: custom uploader, progress and cancel', async () => {
   const window = boot('<input id="docs" type="file">');
   const input = fileInput(window, 'docs');
@@ -671,6 +810,13 @@ test('file upload: custom uploader, progress and cancel', async () => {
   assert.equal(state.status, 'done');
   assert.equal(state.progress, 100);
   assert.equal(pending, field);
+
+  field.addFiles([new window.File(['next'], 'b.pdf', { type: 'application/pdf' })]);
+  field.uploadAll();
+  const settled = field.whenUploaded();
+  field.clear();
+  assert.equal(field.getFiles().length, 0);
+  assert.deepEqual(Array.from(await settled), [], 'clear settles a pending whenUploaded() promise');
   field.destroy();
 });
 
@@ -892,6 +1038,10 @@ test('file-only build: async validation and uploads work without select code', a
   assert.equal(await field.validate(), true);
   await field.uploadAll();
   assert.equal(uploads, 1);
+  assert.equal(field.getFileState('x.txt').status, 'done');
+  assert.equal((await field.whenUploaded())[0].status, 'done');
+  field.removeFiles(['x.txt']);
+  assert.equal(field.getFiles().length, 0);
   field.destroy();
 });
 
@@ -1033,7 +1183,7 @@ test('API lab: every documented option, callback and method is demonstrated', as
   for (const category of Object.keys(missing)) {
     assert.deepEqual(Array.from(missing[category]), [], category + ' coverage is incomplete');
   }
-  assert.equal(lab.expected.events.length, 30, 'event inventory is incomplete');
+  assert.equal(lab.expected.events.length, 32, 'event inventory is incomplete');
   const selectDefaults = Object.keys(window.ZidanSelect.defaults);
   assert.deepEqual(Array.from(selectDefaults.filter(name => !lab.expected.selectOptions.includes(name))), [], 'API lab inventory omits select defaults');
   const optionsDoc = fs.readFileSync(path.join(root, 'docs/options.md'), 'utf8');

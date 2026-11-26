@@ -449,11 +449,28 @@ Variants are set with `fileVariant` / `data-zidan-file-variant` (defaults to `dr
 | `fileVariant` | `data-zidan-file-variant` | string | `dropzone` | `dropzone`, `button`, `avatar`, `gallery`, `compact`. |
 | `uploadIcon` | `data-zidan-upload-icon` | string | `upload` | Icon in the drop target (any registered name or `icon`). |
 | `upload` / `uploadHandler` | — | function | — | Custom uploader, see contract below. |
-| `uploadUrl` | `data-zidan-upload-url` | string | — | XHR endpoint; `POST` multipart. |
+| `minFiles` | `data-zidan-min-files` | number | `0` | Minimum selection before the field reports an error; checked only after files exist. |
+| `maxFiles` | `data-zidan-max-files` | number | `0` | Extra files are dropped when the list is already full. |
+| `maxSize` / `maxSizeMB` | `data-zidan-max-size` / `-max-size-mb` | number | `0` | Per-file byte (or MB) limit. |
+| `maxTotalSize` / `maxTotalSizeMB` | `data-zidan-max-total-size` / `-max-total-size-mb` | number | `0` | Combined selection limit; the list stays intact with an explanatory error. |
+| `uploadUrl` | `data-zidan-upload-url` | string \| function | — | XHR endpoint; `POST` multipart by default. |
 | `uploadField` | `data-zidan-upload-field` | string | `file` | FormData field name. |
-| `uploadData` | — | object \| function | — | Extra FormData fields (`(file, field) => object`). |
-| `withCredentials` | `data-zidan-with-credentials` | boolean | `false` | XHR credentials. |
-| `uploadHeaders` / `headers` | — | object \| function | — | Extra request headers (`(file, field) => object`). |
+| `uploadMethod` | `data-zidan-upload-method` | string \| function | `POST` | HTTP method, or `(file, field) => method`. |
+| `uploadParams` | `data-zidan-upload-params` | object \| string \| function | — | Query-string params, or `(file, field) => object`. |
+| `uploadData` | — | object \| function | — | Extra FormData fields (`(file, field) => object`); array values append repeated keys. |
+| `uploadHeaders` / `headers` | — | object \| function | — | Extra request headers (`(file, field) => object`); array values become comma-joined headers. |
+| `uploadResponsePath` | `data-zidan-upload-response-path` | string | — | Dot path into the JSON response, e.g. `data.url`. |
+| `uploadErrorPath` | `data-zidan-upload-error-path` | string | — | Dot path used to read a failure message from the JSON body. |
+| `uploadTimeout` | `data-zidan-upload-timeout` | number | `0` | Abort and report a timeout after this many ms; `0` disables it. |
+| `uploadRetries` | `data-zidan-upload-retries` | number | `0` | Automatic retries for network errors, timeouts, `408`, `429` and `5xx`. |
+| `uploadRetryDelay` | `data-zidan-upload-retry-delay` | number | `700` | Delay before an automatic retry, ms. |
+| `uploadConcurrency` | `data-zidan-upload-concurrency` | number | `0` | Maximum parallel uploads; `0` means unlimited. Extra files wait as `queued`. |
+| `withCredentials` / `uploadWithCredentials` | `data-zidan-with-credentials` / `data-zidan-upload-with-credentials` | boolean | `false` | Send cookies and HTTP auth on the XHR. |
+| `showClear` / `showRemove` / `showCancel` / `showRetry` | `data-zidan-show-clear` / `-remove` / `-cancel` / `-retry` | boolean | `true` | Hide individual generated actions while keeping the API available. |
+| `showStatus` | `data-zidan-show-status` | boolean | `true` | Hide the shared live status line. |
+| `allowPaste` | `data-zidan-allow-paste` | boolean | `false` | Paste clipboard files onto the drop target (where the browser exposes them). |
+| `statusFormat` | — | function | — | `(context) => string`; receives `{ files, states, total, uploading, failed, done, error, field }`. |
+| `queuedLabel` / `retryingLabel` | — | string | `Queued` / `Retrying attempt {attempt}…` | Per-file queue and retry text. |
 | `simulateUpload` | `data-zidan-simulate-upload` | boolean | `false` | Visual upload only; files never leave the browser. |
 | `simulateDuration` | `data-zidan-simulate-duration` | number | `900` | Simulation length, ms (min 120). |
 | `autoUpload` | `data-zidan-auto-upload` | boolean | `true` | Start uploading as soon as files are picked. |
@@ -492,18 +509,28 @@ const upload = zidanField('#files', {
 
   /* Rules */
   accept: 'image/*,.pdf',           // shown in the hint, checked against the picker
+  minFiles: 1,
   maxFiles: 4,
   maxSizeMB: 5,                     // or maxSize: 5242880 (bytes)
+  maxTotalSizeMB: 12,               // or maxTotalSize: 12582912 (bytes)
   showFileMeta: true,
   showPreview: true,
   replaceTitle: 'Change image',
 
   /* Upload pipeline */
   // upload: function (file, context) { … }, // custom uploader, contract below
-  // uploadUrl: '/api/files',                // or XHR endpoint
+  // uploadUrl: function (file) { return '/api/files/' + file.name; },
   uploadField: 'file',
+  uploadMethod: 'POST',             // or (file, field) => 'PUT'
+  uploadParams: { folder: 'avatars' },
   // uploadData: function (file, field) { return { folder: 'avatars' }; },
   // uploadHeaders: function (file, field) { return { 'X-Token': '…' }; },
+  uploadResponsePath: 'data.url',   // dot path into the JSON response
+  uploadErrorPath: 'error.message',
+  uploadTimeout: 30000,             // abort after 30s; 0 disables
+  uploadRetries: 2,                 // network, timeout, 408, 429 and 5xx
+  uploadRetryDelay: 700,
+  uploadConcurrency: 2,             // 0 = unlimited; extra files wait as queued
   withCredentials: false,
   autoUpload: true,
   simulateUpload: false,            // visual-only pipeline
@@ -514,16 +541,27 @@ const upload = zidanField('#files', {
   uploadedLabel: 'Uploaded',
   failedLabel: 'Upload failed',
   canceledLabel: 'Upload canceled',
+  queuedLabel: 'Queued',
+  retryingLabel: 'Retrying attempt {attempt}…',
   cancelLabel: 'Cancel',
   retryLabel: 'Retry',
+  showClear: true,
+  showRemove: true,
+  showCancel: true,
+  showRetry: true,
+  showStatus: true,
+  allowPaste: true,
+  // statusFormat: function (context) { return context.done + '/' + context.total + ' uploaded'; },
   // renderFile: function (itemElement, state) { … },
 
-  /* Callbacks — also zidan:upload-start/progress/success/error/cancel */
+  /* Callbacks — also zidan:upload-start/progress/success/error/cancel/queued/retry */
   onUploadStart: function (event) { console.log('start', event.file); },
   onUploadProgress: function (event) { console.log(event.progress); },
   onUploadSuccess: function (event) { console.log('done', event.result); },
   onUploadError: function (event) { console.log('failed', event.error); },
-  onUploadCancel: function (event) { console.log('canceled', event.file); }
+  onUploadCancel: function (event) { console.log('canceled', event.file); },
+  onUploadQueued: function (event) { console.log('queued at', event.position); },
+  onUploadRetry: function (event) { console.log('retry', event.nextAttempt, event.delay); }
 });
 ```
 
@@ -550,18 +588,67 @@ zidanField('#files', {
 - `context.signal` aborts when the user cancels or the field is destroyed.
 - `input.files` is always authoritative; `DataTransfer` rebuilds it on remove/clear.
 
-Methods: `getFiles()`, `getUploadState()` (`[{ file, name, size, status, progress, error, result }]`),
-`addFiles(files)`, `replaceFiles(files)`, `removeFile(fileNameOrIndex)`, `clear()`,
-`setVariant(name)`, `setUploader(fnOrUrl)`, `uploadAll()`, `uploadFile(file)`,
-`cancelUpload(file)`, `cancelAll()`, `retryUpload(file)`.
+Methods: `getFiles()`, `getUploadState()` and `getFileState(fileOrNameOrIndex)`
+(`{ file, name, size, status, progress, error, result, attempts }`),
+`addFiles(files)`, `replaceFiles(files)`, `removeFile(fileOrNameOrIndex)`,
+`removeFiles([fileOrNameOrIndex, …])`, `clear()`, `isUploading()`,
+`whenUploaded()` (resolves all states after the queue drains), `uploadAll()`,
+`uploadFile(file)`, `cancelUpload(file)`, `cancelAll()`, `retryUpload(file)`,
+`retryAll()`, `setVariant(name)`, `setUploader(fnOrUrl)`, `setUploadUrl(url)`
+and `setUploadOptions({ … })`.
 
-Events: `zidan:upload-start` `{ file, name, size }`, `zidan:upload-progress`
-`{ file, name, progress }`, `zidan:upload-success` `{ file, name, result }`,
-`zidan:upload-error` `{ file, name, error, message }`, `zidan:upload-cancel` `{ file, name }`,
+`uploadAll()` returns the field for synchronous validation and a
+`Promise<boolean>` when an async rule runs. `whenUploaded()` is the reliable way
+to wait for AJAX uploads, retries and queued files.
+
+Events: `zidan:upload-queued` `{ file, name, size, position }`,
+`zidan:upload-start` `{ file, name, size }`, `zidan:upload-progress`
+`{ file, name, progress }`, `zidan:upload-retry`
+`{ file, name, attempt, nextAttempt, delay, error, message }`,
+`zidan:upload-success` `{ file, name, result }`, `zidan:upload-error`
+`{ file, name, error, message }`, `zidan:upload-cancel` `{ file, name }`,
 plus the shared `zidan:change`, `zidan:remove` (`{ file, index }`) and `zidan:clear`.
 
 Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
-`onUploadError`, `onUploadCancel`.
+`onUploadError`, `onUploadCancel`, `onUploadQueued`, `onUploadRetry`.
+
+### AJAX transport, queue and retries
+
+When `uploadUrl` is set, each file is sent as `FormData` with the configured
+field name. `uploadParams` are appended to the URL as a query string (arrays
+repeat the key), while `uploadData` and the file itself become multipart fields.
+Array values in `uploadData` append repeated form keys. `uploadHeaders` may be
+an object or a `(file, field) => object` function; array header values are joined
+with `", "`.
+
+The response is parsed as JSON when possible. `uploadResponsePath` selects a
+nested value with dot notation (for example `data.url`); `uploadErrorPath` reads
+a message from a failed body. HTTP statuses `408`, `429`, `5xx`, network errors
+and timeouts are retryable. Automatic retries use `uploadRetries` and
+`uploadRetryDelay`; a manual retry is available through the per-file button,
+`retryUpload(file)` or `retryAll()`. Set `uploadConcurrency` to cap parallel
+requests; the remaining files stay `queued` and start automatically.
+
+```js
+const field = zidanField('#files', {
+  uploadUrl: 'https://httpbin.org/post',
+  uploadMethod: 'POST',
+  uploadParams: { demo: 'zidan-form' },
+  uploadData: { source: 'demo' },
+  uploadHeaders: { 'X-Demo': 'file-upload' },
+  uploadTimeout: 30000,
+  uploadRetries: 1,
+  uploadConcurrency: 2,
+  uploadResponsePath: 'url',
+  autoUpload: false
+});
+
+field.uploadAll();
+const states = await field.whenUploaded();
+```
+
+A custom `uploadHandler` still runs instead of XHR and keeps the same queue,
+retry, cancel and `whenUploaded()` behaviour.
 
 ### Browser-side image downscale
 
