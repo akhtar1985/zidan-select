@@ -208,8 +208,12 @@ Set the adapter once — on the form, a wrapper or `<html>`:
 | `none` / `vanilla` | Plugin's own tokens. |
 | `bootstrap` | Maps `--bs-*` colours/radius, `.form-control`/`.form-select` sizing, input-group corners, is-valid/is-invalid. |
 | `tailwind` | Slate/indigo palette, 0.5rem radius, tighter shadows. |
-| `bulma` | `--bulma-*` palette, 4px radius, Bulma shadow. |
+| `bulma` | `--bulma-*` palette and radius, Bulma shadow. |
 | `foundation` | Square corners, Foundation blue, `#cacaca` borders. |
+
+Load the plugin stylesheets after the framework stylesheet so adapter layout and
+the framework's own component rules resolve in the right order. No framework JavaScript
+is required.
 
 Bootstrap 5 example:
 

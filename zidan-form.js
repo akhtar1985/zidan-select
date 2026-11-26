@@ -1215,6 +1215,10 @@
   ZidanSelect.prototype._resolveFramework = function () {
     if (this.opts.themeFramework && this.opts.themeFramework !== 'auto') return this.opts.themeFramework;
     if (!doc) return 'vanilla';
+    var declared = inheritedAttr(this.el, ['data-zidan-framework', 'data-zs-framework']);
+    if (!declared) declared = doc.documentElement.getAttribute('data-zs-framework') || '';
+    declared = declared ? String(declared).toLowerCase() : '';
+    if (declared && declared !== 'auto' && FRAMEWORKS.indexOf(declared) !== -1) return declared;
     try {
       var rootStyle = global.getComputedStyle(doc.documentElement);
       var bsBg = rootStyle.getPropertyValue('--bs-body-bg');

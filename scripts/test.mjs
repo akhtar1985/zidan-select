@@ -56,8 +56,16 @@ check('theme ships presets and adapters', () => {
     assert(theme.includes('[data-zs-theme="' + themeName + '"]'), 'missing theme ' + themeName);
   }
   for (const framework of ['bootstrap', 'tailwind', 'bulma', 'foundation']) {
-    assert(theme.includes('[data-zs-framework="' + framework + '"]'), 'missing adapter ' + framework);
+    const marker = '.zs-root[data-zs-framework="' + framework + '"],';
+    const start = theme.indexOf(marker);
+    assert(start !== -1, 'missing adapter ' + framework);
+    const block = theme.slice(start, theme.indexOf('\n}', start));
+    for (const token of ['--zs-input-height', '--zs-chip-bg', '--zs-option-selected-bg']) {
+      assert(block.includes(token + ':'), 'adapter ' + framework + ' omits ' + token);
+    }
   }
+  assert(theme.includes('.input-group > .zs-root[data-zs-framework="bootstrap"]'), 'input-group rules are not scoped to Bootstrap');
+  assert(!/(^|\n)\.input-group > \.zs-root \{/.test(theme), 'unscoped input-group rule can break other frameworks');
   assert(theme.includes('--zs-check-checked-bg'), 'missing field tokens');
 });
 

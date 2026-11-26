@@ -108,6 +108,51 @@ test('select defaults resolve the theme and mode-dependent free text', () => {
   tags.destroy();
 });
 
+test('select framework adapters inherit scope and update Bootstrap markup', () => {
+  const window = boot([
+    '<div data-zs-framework="bulma">',
+    '  <select id="s"><option value="a">Alpha</option></select>',
+    '  <select id="tags" multiple data-zidan-select="tags"><option selected>One</option><option selected>Two</option></select>',
+    '</div>',
+    '<div data-zs-framework="bootstrap"><select id="bs"><option value="b">Beta</option></select></div>',
+    '<select id="page-fw"><option value="a">Alpha</option></select>'
+  ].join(''));
+  const select = window.zidanSelect('#s');
+  const tags = window.zidanSelect('#tags');
+  const bootstrap = window.zidanSelect('#bs');
+  tags.setValue(['One', 'Two']);
+
+  assert.equal(bootstrap.framework, 'bootstrap');
+  assert.equal(bootstrap.controlEl.classList.contains('form-control'), true);
+  assert.equal(bootstrap.controlEl.classList.contains('form-select'), true);
+
+  assert.equal(select.framework, 'bulma');
+  assert.equal(select.root.getAttribute('data-zs-framework'), 'bulma');
+  assert.equal(select.controlEl.classList.contains('form-control'), false);
+
+  select.setFramework('bootstrap');
+  assert.equal(select.root.getAttribute('data-zs-framework'), 'bootstrap');
+  assert.equal(select.controlEl.classList.contains('form-control'), true);
+  assert.equal(select.controlEl.classList.contains('form-select'), true);
+
+  assert.equal(tags.chipsEl.querySelectorAll('.zs-chip.badge').length, 0);
+  tags.setFramework('bootstrap');
+  assert.equal(tags.chipsEl.querySelectorAll('.zs-chip.badge').length, 2);
+  tags.setFramework('tailwind');
+  assert.equal(tags.chipsEl.querySelectorAll('.zs-chip.badge').length, 0);
+  assert.equal(tags.root.getAttribute('data-zs-framework'), 'tailwind');
+
+  window.document.documentElement.setAttribute('data-zs-framework', 'foundation');
+  const page = window.zidanSelect('#page-fw');
+  assert.equal(page.framework, 'foundation');
+  assert.equal(page.root.getAttribute('data-zs-framework'), 'foundation');
+
+  select.destroy();
+  tags.destroy();
+  bootstrap.destroy();
+  page.destroy();
+});
+
 test('declarative select attributes control closing, accessibility and required state', () => {
   const window = boot('<form><select id="s" data-zidan-close-on-select="false" data-zidan-aria-label="Pick a plan" data-zidan-required="true"><option value="">Pick</option><option value="a">A</option></select></form>');
   const select = window.zidanSelect('#s');
@@ -982,6 +1027,22 @@ test('API lab: every documented option, callback and method is demonstrated', as
     const el = window.document.getElementById(id);
     assert.ok(el && (el.__zidanSelect || el.__zidanField), 'API lab control #' + id + ' was not enhanced');
   }
+});
+
+test('demo framework buttons update adapter markup and clear Bootstrap classes', async () => {
+  const window = await bootDemoLab();
+  const doc = window.document;
+  const select = doc.getElementById('tp-select').__zidanSelect;
+
+  doc.querySelector('[data-framework="bootstrap"]').click();
+  assert.equal(select.root.getAttribute('data-zs-framework'), 'bootstrap');
+  assert.equal(select.controlEl.classList.contains('form-control'), true);
+  assert.equal(select.controlEl.classList.contains('form-select'), true);
+
+  doc.querySelector('[data-framework="tailwind"]').click();
+  assert.equal(select.root.getAttribute('data-zs-framework'), 'tailwind');
+  assert.equal(select.controlEl.classList.contains('form-control'), false);
+  assert.equal(select.controlEl.classList.contains('form-select'), false);
 });
 
 test('playground emits supported attributes and complete JavaScript options', () => {

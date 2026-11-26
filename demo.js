@@ -278,6 +278,12 @@
     return theme === 'auto' ? (autoThemeQuery && autoThemeQuery.matches ? 'dark' : 'default') : theme;
   }
 
+  function setFramework(instance, name) {
+    if (!instance || !instance.root) return;
+    if (typeof instance.setFramework === 'function') instance.setFramework(name);
+    else instance.root.setAttribute('data-zs-framework', name);
+  }
+
   function applyScope() {
     var pageTheme = resolvePageTheme(state.theme);
     document.documentElement.setAttribute('data-zs-theme', pageTheme);
@@ -287,7 +293,7 @@
       if (excludesShowcase(instance.root)) return;
       if (instance.setTheme) instance.setTheme(state.theme === 'auto' ? 'auto' : pageTheme);
       else instance.root.setAttribute('data-zs-theme', pageTheme);
-      instance.root.setAttribute('data-zs-framework', state.framework);
+      setFramework(instance, state.framework);
       // an element that chose its own layout keeps it
       if (!instance.el.hasAttribute('data-zidan-layout')) {
         instance.root.setAttribute('data-zs-layout', state.selectLayout);
@@ -298,7 +304,7 @@
       if (!field.root || excludesShowcase(field.root)) return;
       if (field.setTheme) field.setTheme(state.theme === 'auto' ? 'auto' : pageTheme);
       else field.root.setAttribute('data-zs-theme', pageTheme);
-      field.root.setAttribute('data-zs-framework', state.framework);
+      setFramework(field, state.framework);
       var declared = field.el.hasAttribute('data-zidan-layout') || field.el.hasAttribute('data-zs-layout');
       // per-element layouts win over the playground default
       if (!declared && (field.kind === 'input' || field.kind === 'textarea')) {
@@ -399,13 +405,13 @@
       if (!preview.contains(instance.root)) return;
       if (instance.setTheme) instance.setTheme(requestedTheme);
       else instance.root.setAttribute('data-zs-theme', resolvePageTheme(requestedTheme));
-      instance.root.setAttribute('data-zs-framework', framework);
+      setFramework(instance, framework);
     });
     form.fields.forEach(function (field) {
       if (!field.root || !preview.contains(field.root)) return;
       if (field.setTheme) field.setTheme(requestedTheme);
       else field.root.setAttribute('data-zs-theme', resolvePageTheme(requestedTheme));
-      field.root.setAttribute('data-zs-framework', framework);
+      setFramework(field, framework);
     });
   }
 

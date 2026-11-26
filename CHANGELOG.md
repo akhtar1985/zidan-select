@@ -21,10 +21,26 @@ heading, bumps every version site in the repository, commits and tags. See
 - `api.html` request lab: live GET headers/params against DummyJSON, a deterministic JSON POST
   mock with an exact request inspector, and buttons for the remote instance methods.
 
+### Fixed
+
+- CSS-framework adapters now inherit `data-zs-framework` from a wrapper or `<html>` when
+  the select itself has no `themeFramework` option; before this only auto-detection ran.
+- Bootstrap `input-group` selects shrink to fit beside addons instead of overflowing, and
+  their corner rules are scoped to the Bootstrap adapter so Bulma and Foundation layouts
+  are not affected.
+- Adapter controls now derive their inner input height from each framework's control
+  height, matching Bootstrap 38px, Bulma 40px, Foundation 39px and Tailwind 42px controls.
+- Bulma, Tailwind and Foundation adapters now map chip colours and selected-option colours,
+  and Bulma and Tailwind map dropdown/chip radii, instead of leaving the default indigo.
+- The demo's framework buttons call `setFramework()`, so Bootstrap `.form-control`,
+  `.form-select` and badge classes are added and removed when switching adapters.
+
 ### Documentation
 
 - `docs/options.md` and the README document both new options with data-attribute and POST
   examples, and link the new request lab.
+- `docs/frameworks.md` documents stylesheet load order and no longer claims a fixed 4px
+  Bulma radius; the adapter follows `--bulma-radius`.
 
 ## [2.5.0] - 2026-11-26
 

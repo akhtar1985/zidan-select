@@ -1484,6 +1484,7 @@
   --zs-dropdown-radius: var(--bs-border-radius, 0.375rem);
   --zs-option-radius: var(--bs-border-radius-sm, 0.25rem);
   --zs-height: 38px;
+  --zs-input-height: calc(var(--zs-height) - 12px);
   --zs-padding-x: 0.75rem;
   --zs-check-radius: var(--bs-border-radius-sm, 0.25rem);
   --zs-chip-bg: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.1);
@@ -1569,20 +1570,25 @@
 }
 
 .zs-root[data-zs-framework="bootstrap"] .zs-input {
-  height: 1.9rem;
   font-size: var(--zs-font-size);
 }
 
-.input-group > .zs-root .zs-control {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+.input-group > .zs-root[data-zs-framework="bootstrap"] {
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
 }
 
-.input-group > .zs-root:first-child .zs-control {
-  border-top-left-radius: var(--bs-border-radius, 0.375rem);
-  border-bottom-left-radius: var(--bs-border-radius, 0.375rem);
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+.input-group > .zs-root[data-zs-framework="bootstrap"]:not(:first-child) .zs-control {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+
+.input-group > .zs-root[data-zs-framework="bootstrap"]:has(~ .input-group-text) .zs-control,
+.input-group > .zs-root[data-zs-framework="bootstrap"]:has(~ .zs-root) .zs-control,
+.input-group > .zs-root[data-zs-framework="bootstrap"]:has(~ .btn) .zs-control {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
 }
 
 .zs-root[data-zs-framework="tailwind"],
@@ -1590,12 +1596,16 @@
 .zs-radio-group[data-zs-framework="tailwind"] {
   --zs-font-size: 0.875rem;
   --zs-radius: 0.5rem;
+  --zs-dropdown-radius: 0.5rem;
+  --zs-chip-radius: 0.375rem;
   --zs-height: 42px;
+  --zs-input-height: calc(var(--zs-height) - 12px);
   --zs-border-color: #e5e7eb;
   --zs-border-color-hover: #d1d5db;
   --zs-text: #111827;
   --zs-text-muted: #6b7280;
   --zs-primary: #6366f1;
+  --zs-primary-soft: #eef2ff;
   --zs-focus-ring: rgba(99, 102, 241, 0.25);
   --zs-check-checked-bg: #6366f1;
   --zs-check-checked-border: #6366f1;
@@ -1603,7 +1613,9 @@
   --zs-chip-text: #3730a3;
   --zs-chip-border: #e0e7ff;
   --zs-option-active-bg: #f5f3ff;
+  --zs-option-active-text: #312e81;
   --zs-option-selected-bg: #eef2ff;
+  --zs-option-selected-text: #312e81;
   --zs-dropdown-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   --zs-file-drop-bg: #f9fafb;
   --zs-file-drop-border: #d1d5db;
@@ -1629,11 +1641,14 @@
   --zs-border-color-hover: var(--bulma-border-hover, #b5b5b5);
   --zs-primary: var(--bulma-primary, #00d1b2);
   --zs-primary-contrast: var(--bulma-primary-invert, #ffffff);
-  --zs-primary-soft: rgba(0, 209, 178, 0.12);
+  --zs-primary-soft: hsla(var(--bulma-primary-h, 171deg), var(--bulma-primary-s, 100%), var(--bulma-primary-l, 41%), 0.12);
   --zs-border-color-focus: var(--bulma-primary, #00d1b2);
-  --zs-focus-ring: rgba(0, 209, 178, 0.25);
+  --zs-focus-ring: hsla(var(--bulma-primary-h, 171deg), var(--bulma-primary-s, 100%), var(--bulma-primary-l, 41%), 0.25);
   --zs-radius: var(--bulma-radius, 4px);
+  --zs-dropdown-radius: var(--bulma-radius, 4px);
+  --zs-chip-radius: var(--bulma-radius, 4px);
   --zs-height: 40px;
+  --zs-input-height: calc(var(--zs-height) - 12px);
   --zs-check-radius: var(--bulma-radius-small, 2px);
   --zs-check-checked-bg: var(--bulma-primary, #00d1b2);
   --zs-check-checked-border: var(--bulma-primary, #00d1b2);
@@ -1642,11 +1657,17 @@
   --zs-dropdown-border: var(--bulma-border, #dbdbdb);
   --zs-dropdown-shadow: var(--bulma-shadow, 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1));
   --zs-option-hover-bg: var(--bulma-scheme-main-bis, #f5f5f5);
-  --zs-option-active-bg: rgba(0, 209, 178, 0.12);
+  --zs-option-active-bg: hsla(var(--bulma-primary-h, 171deg), var(--bulma-primary-s, 100%), var(--bulma-primary-l, 41%), 0.12);
+  --zs-option-active-text: var(--bulma-text, #363636);
+  --zs-option-selected-bg: hsla(var(--bulma-primary-h, 171deg), var(--bulma-primary-s, 100%), var(--bulma-primary-l, 41%), 0.16);
+  --zs-option-selected-text: var(--bulma-text, #363636);
+  --zs-chip-bg: hsla(var(--bulma-primary-h, 171deg), var(--bulma-primary-s, 100%), var(--bulma-primary-l, 41%), 0.1);
+  --zs-chip-text: var(--bulma-primary-dark, #00947e);
+  --zs-chip-border: transparent;
   --zs-file-drop-bg: var(--bulma-scheme-main-bis, #f5f5f5);
   --zs-file-drop-border: var(--bulma-border, #dbdbdb);
-  --zs-file-thumb-bg: rgba(0, 209, 178, 0.12);
-  --zs-file-thumb-text: var(--bulma-primary, #00947e);
+  --zs-file-thumb-bg: hsla(var(--bulma-primary-h, 171deg), var(--bulma-primary-s, 100%), var(--bulma-primary-l, 41%), 0.12);
+  --zs-file-thumb-text: var(--bulma-primary-dark, #00947e);
   --zs-radius-pill: var(--bulma-radius-rounded, 9999px);
   --zs-icon-color: var(--bulma-text-weak, #7a7a7a);
   --zs-phone-border: var(--bulma-border, #dbdbdb);
@@ -1671,14 +1692,21 @@
   --zs-dropdown-radius: 0;
   --zs-option-radius: 0;
   --zs-height: 39px;
+  --zs-input-height: calc(var(--zs-height) - 12px);
   --zs-check-radius: 0;
   --zs-check-checked-bg: #1779ba;
   --zs-check-checked-border: #1779ba;
   --zs-chip-radius: 0;
+  --zs-chip-bg: #d9edf7;
+  --zs-chip-text: #0a0a0a;
+  --zs-chip-border: transparent;
   --zs-dropdown-border: #cacaca;
   --zs-dropdown-shadow: 0 10px 20px rgba(10, 10, 10, 0.12);
   --zs-option-hover-bg: #e6e6e6;
   --zs-option-active-bg: #d9edf7;
+  --zs-option-active-text: #0a0a0a;
+  --zs-option-selected-bg: #c7e7f8;
+  --zs-option-selected-text: #0a0a0a;
   --zs-file-drop-bg: #fefefe;
   --zs-file-drop-border: #cacaca;
   --zs-file-thumb-bg: #d9edf7;
