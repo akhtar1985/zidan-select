@@ -33,6 +33,8 @@ heading, bumps every version site in the repository, commits and tags. See
   untrimmed `inheritedAttr` and the tag reset path skipping `String()`.
 - Fix `initFieldList` ignoring `force`, and identical live-region announcements not
   re-triggering screen readers.
+- Throw a clear error when a field is enhanced before it has a parent element, and type
+  `ZidanSelect#getValue()` as `string | string[] | null` so an empty single select is honest.
 - Add `npm run sizes` to regenerate the documented asset sizes from the built files, so the
   build guide cannot drift from `dist/`.
 

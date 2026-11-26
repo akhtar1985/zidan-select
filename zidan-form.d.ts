@@ -312,7 +312,8 @@ export class ZidanSelect {
   open(): this;
   close(): this;
   toggle(): this;
-  getValue(): string | string[];
+  /** Single mode returns null when nothing is selected; multiple/tags always return an array. */
+  getValue(): string | string[] | null;
   setValue(value: string | number | Array<string | number> | null, options?: { silent?: boolean }): this;
   /** Resets the value; `{ silent: true }` skips `zidan:change` and `onChange`. */
   clear(config?: { silent?: boolean }): this;

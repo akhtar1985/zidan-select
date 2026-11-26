@@ -5347,6 +5347,14 @@
   function createField(node, kind, options) {
     var opts = mergeOptions(parseOptionsAttr(node), options);
     if (node.__zidanField && !opts.force) return node.__zidanField;
+    /* { force: true } rebuilds the field, so tear the old wrapper down first
+       instead of wrapping the element a second time */
+    if (node.__zidanField) node.__zidanField.destroy();
+    /* the generated wrapper is inserted next to the original element, so a node
+       with no parent cannot be enhanced — say so instead of failing deeper in */
+    if (!node.parentNode) {
+      throw new Error('ZidanForm: a ' + kind + ' field needs a parent element before it can be enhanced.');
+    }
     switch (kind) {
       case 'checkbox':
         return typeof ZidanCheckbox !== 'undefined' ? new ZidanCheckbox(node, opts) : null;

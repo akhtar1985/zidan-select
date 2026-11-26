@@ -31,9 +31,9 @@ Sizes measure the current source build, including Unreleased fixes; CDN links pi
 
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈226 kB raw · ≈132 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-theme.css) |
+| Full — every control | ≈227 kB raw · ≈132 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-theme.css) |
 | Select-only | ≈116 kB raw · ≈68 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-theme.css) |
-| File-only | ≈86 kB raw · ≈50 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-theme.css) |
+| File-only | ≈87 kB raw · ≈51 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
 [Select-only and file-only builds](#select-only-and-file-only-builds); the
@@ -385,6 +385,7 @@ select-only bundle and the file-only bundle:
 | Path | Markup | Enhanced |
 | --- | --- | --- |
 | Marker class | `<select class="zidan-select">`, `<input class="zidan-field">` | That control. `zidan-field` covers file, checkbox and text/textarea inputs; radio groups go on the `<fieldset class="zidan-field">`. |
+| Opt-in attribute | `data-zidan-checkbox`, `data-zidan-switch`, `data-zidan-radio`, `data-zidan-radio-group`, `data-zidan-file`, `data-zidan-input`, `data-zidan-textarea`, or `data-zidan="kind"` | That field. The value on `data-zidan` picks the type (`checkbox`, `radio`, `radio-group`, `file`, `input`, `textarea`); a bare `data-zidan` detects it from the element. |
 | Form wrapper | `<form class="zidan-form">` (or `data-zidan-form` on any element) | Every `<select>` and every `<input type="file">` inside, marked or not. |
 | Config targets | `window.ZIDAN_FORM_CONFIG` | Anything matching an ID, class or full CSS selector. |
 

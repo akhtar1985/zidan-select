@@ -44,7 +44,9 @@ is the targeted form for IDs, classes and elements you already have a reference 
 
 Both bulk helpers skip elements that are already enhanced. Pass `{ force: true }`
 (`initZidanForms(scope, { force: true })`, `ZidanForm.init(scope, { force: true })`) to
-re-initialise them, for example after swapping markup.
+re-initialise them, for example after swapping markup. The same entry points are on the global
+object as `ZidanForm.init()`, `ZidanForm.get()`, `ZidanForm.observe()`, `ZidanForm.destroyAll()`
+and `ZidanForm.version`.
 
 ### Read values and option details
 
@@ -82,6 +84,10 @@ file-only bundle.
 | --- | --- | --- |
 | Marker class | `<select class="zidan-select">` | That select, or a mount `<div>`. Mode comes from `data-zidan-options` / `data-zidan-mode`. |
 | Marker class | `<input class="zidan-field">` | A checkbox, file or text/textarea input. Put it on the `<fieldset>` for a radio group. |
+| Opt-in attribute | `data-zidan-checkbox`, `data-zidan-switch` | That checkbox input; `switch` renders a switch, `checkbox` a box. |
+| Opt-in attribute | `data-zidan-radio` on an `<input type="radio">`, `data-zidan-radio-group` on its `<fieldset>` | That radio, or the group container. A lone radio without its group is skipped. |
+| Opt-in attribute | `data-zidan-file`, `data-zidan-input`, `data-zidan-textarea` | That file input, supported text-ish input, or textarea. |
+| Explicit kind | `data-zidan="checkbox" \| "radio" \| "radio-group" \| "file" \| "input" \| "textarea"` | The value picks the field type; without a value the type is detected from the element. |
 | Form wrapper | `<form class="zidan-form">` or `data-zidan-form` on any element | Every `<select>` and every `<input type="file">` inside, marked or not. |
 | Config targets | `window.ZIDAN_FORM_CONFIG` (alias `ZIDAN_SELECT_CONFIG`) | Anything matched by an ID, class or full CSS selector. |
 
@@ -867,6 +873,10 @@ Checkbox adds `setIndeterminate(bool)`, `setChecked(bool)` and `isChecked()`.
 Text inputs add `stepUp(times?)`, `stepDown(times?)`, `setStepper(bool)`,
 `getPhoneCountry()`, `setPhoneCountry(iso)`, `setPhoneFormat(format)`, `formatPhone(value?)`
 and `openPicker()` / `showPicker()`.
+
+Fields are enhanced in place: the generated wrapper is inserted next to the original element,
+so the element needs a parent node before `zidanField()`, `initZidanForms()` or auto-init
+reaches it. A node built with `document.createElement()` throws until it is appended.
 
 File adds `getFiles()`, `getUploadState()`, `addFiles()`, `replaceFiles()`, `removeFile()`,
 `clear()`, `setVariant()`, `setUploader()`, `uploadAll()`, `uploadFile()`, `cancelUpload()`,
