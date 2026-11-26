@@ -60,7 +60,7 @@ function inline(text, tokens = []) {
   out = out.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) =>
     hold(`<img src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" loading="lazy">`));
   out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, label, href) => {
-    const sitePage = /^\.\.\/(?:index|advanced|playground|ajax|shopify)\.html(?:#.*)?$/.test(href);
+    const sitePage = /^\.\.\/(?:index|advanced|playground|api|ajax|shopify)\.html(?:#.*)?$/.test(href);
     const target = href.startsWith('../') && !sitePage
       ? 'https://github.com/akhtar1985/zidan-select/blob/main/' + href.slice(3)
       : href.replace(/\.md(#[^)]*)?$/, (_, hash) => '.html' + (hash || ''));
@@ -207,6 +207,7 @@ function siteHeader(page) {
       <a href="../index.html">Demo</a>
       <a href="../advanced.html">Advanced</a>
       <a href="../playground.html">Playground</a>
+      <a href="../api.html">API</a>
       <a href="../ajax.html">AJAX</a>
       <a href="../shopify.html">Shopify</a>
       <a href="../index.html#compare">Compare</a>

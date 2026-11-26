@@ -131,6 +131,10 @@ export interface SelectOptions extends SelectCallbacks {
   /** When set, send skip = page * pageSize instead of fetchPageParam */
   fetchSkipParam?: string | null;
   fetchPageSizeParam?: string;
+  /** Extra query parameters merged into every declarative request */
+  fetchParams?: Record<string, string | number | boolean | null | undefined> | null;
+  /** POST/PUT/PATCH body; objects serialise to JSON with a Content-Type header */
+  fetchBody?: Record<string, unknown> | unknown[] | string | null;
   /** Dot path to the array of rows in the JSON body, e.g. 'data.items' */
   fetchItemsPath?: string | null;
   /** Dot path to the total row count, used to decide hasMore */

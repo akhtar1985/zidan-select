@@ -443,8 +443,8 @@ test('declarative fetchUrl builds the request and maps the response', async () =
   select.destroy();
 });
 
-test('declarative fetch attributes set headers, credentials and omitted parameters', async () => {
-  const window = boot(`<select id="api" data-zidan-fetch-url="https://api.test/rows" data-zidan-fetch-method="POST" data-zidan-fetch-headers='{"X-Tenant":"north"}' data-zidan-fetch-credentials="include" data-zidan-fetch-query-param="" data-zidan-fetch-page-param="" data-zidan-fetch-page-size-param=""></select>`);
+test('declarative fetch attributes set headers, params, body, credentials and omitted parameters', async () => {
+  const window = boot(`<select id="api" data-zidan-fetch-url="https://api.test/rows" data-zidan-fetch-method="POST" data-zidan-fetch-headers='{"X-Tenant":"north"}' data-zidan-fetch-params='{"tenant":"north","debug":true}' data-zidan-fetch-body='{"query":"phone","page":1}' data-zidan-fetch-credentials="include" data-zidan-fetch-query-param="" data-zidan-fetch-page-param="" data-zidan-fetch-page-size-param=""></select>`);
   const requests = [];
   window.fetch = (url, init) => {
     requests.push({ url: String(url), init });
@@ -461,10 +461,72 @@ test('declarative fetch attributes set headers, credentials and omitted paramete
   await wait(20);
 
   assert.equal(requests.length, 1);
-  assert.equal(requests[0].url, 'https://api.test/rows', 'empty parameter names omit query, page and page size');
+  assert.equal(requests[0].url, 'https://api.test/rows?tenant=north&debug=true', 'extra fetchParams merge into the URL while empty parameter names omit query, page and page size');
   assert.equal(requests[0].init.method, 'POST');
   assert.equal(requests[0].init.headers['X-Tenant'], 'north');
+  assert.equal(requests[0].init.headers['Content-Type'], 'application/json', 'object bodies get a JSON content type');
+  assert.equal(requests[0].init.body, '{"query":"phone","page":1}', 'fetchBody serialises objects to JSON');
   assert.equal(requests[0].init.credentials, 'include');
+  select.destroy();
+});
+
+test('declarative fetchBody strings keep an explicit content type', async () => {
+  const window = boot('<select id="api"></select>');
+  const requests = [];
+  window.fetch = (url, init) => {
+    requests.push({ url: String(url), init });
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve({ items: [{ value: 'a', label: 'A' }] })
+    });
+  };
+
+  const select = window.zidanSelect('#api', {
+    mode: 'combobox',
+    fetchUrl: 'https://api.test/rows',
+    fetchMethod: 'PUT',
+    fetchBody: 'raw=1',
+    fetchHeaders: { 'Content-Type': 'text/plain' }
+  });
+  select.open();
+  await wait(20);
+
+  assert.equal(requests.length, 1);
+  assert.equal(requests[0].init.method, 'PUT');
+  assert.equal(requests[0].init.body, 'raw=1', 'string bodies are sent unchanged');
+  assert.equal(requests[0].init.headers['Content-Type'], 'text/plain', 'an explicit content type is not overwritten');
+  select.destroy();
+});
+
+test('declarative fetchBody is ignored for GET requests', async () => {
+  const window = boot('<select id="api"></select>');
+  const requests = [];
+  window.fetch = (url, init) => {
+    requests.push({ url: String(url), init });
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve({ items: [{ value: 'a', label: 'A' }] })
+    });
+  };
+
+  const select = window.zidanSelect('#api', {
+    mode: 'combobox',
+    fetchUrl: 'https://api.test/rows',
+    fetchBody: { ignored: true },
+    fetchParams: { pageSizeHint: 1 }
+  });
+  select.open();
+  await wait(20);
+
+  assert.equal(requests.length, 1);
+  assert.equal(requests[0].init.method, 'GET');
+  assert.equal(requests[0].init.body, undefined, 'GET must not send a body');
+  assert.equal(requests[0].init.headers['Content-Type'], undefined, 'GET must not claim a JSON body');
+  assert.ok(requests[0].url.includes('pageSizeHint=1'), 'fetchParams still applies to GET');
   select.destroy();
 });
 

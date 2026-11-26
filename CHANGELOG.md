@@ -11,6 +11,21 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+### Added
+
+- Declarative `fetchParams` (`data-zidan-fetch-params`) merges extra query parameters into
+  every remote request; `null` and `undefined` values are skipped.
+- Declarative `fetchBody` (`data-zidan-fetch-body`) sends a JSON-serialised object/array, or a
+  raw string, on `POST`/`PUT`/`PATCH` requests. Objects add `Content-Type: application/json`
+  unless a content type was supplied; `GET`/`HEAD` ignore the body.
+- `api.html` request lab: live GET headers/params against DummyJSON, a deterministic JSON POST
+  mock with an exact request inspector, and buttons for the remote instance methods.
+
+### Documentation
+
+- `docs/options.md` and the README document both new options with data-attribute and POST
+  examples, and link the new request lab.
+
 ## [2.5.0] - 2026-11-26
 
 ### Added

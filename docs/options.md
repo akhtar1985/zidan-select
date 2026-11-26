@@ -640,10 +640,12 @@ be larger than the original, the original file is uploaded unchanged.
 | `fetchPageParam` | `'page'` | 1-based page number sent with every request (`''` omits it). |
 | `fetchSkipParam` | `null` | Send `skip = page × pageSize` instead of `fetchPageParam`, for APIs that page by offset (dummyjson, Laravel, many REST APIs). |
 | `fetchPageSizeParam` | `'limit'` | Parameter that receives `fetchPageSize`. |
+| `fetchParams` | `null` | Extra query parameters merged into every request. Attribute: `data-zidan-fetch-params='{"tenant":"north"}'`. Values are stringified; `null`/`undefined` keys are skipped. |
+| `fetchBody` | `null` | Body for `POST`/`PUT`/`PATCH` requests. Objects and arrays serialise to JSON and add `Content-Type: application/json` unless you supplied one; strings are sent unchanged. Ignored for `GET`/`HEAD`. Attribute: `data-zidan-fetch-body='{"query":"phone"}'`. |
 | `fetchItemsPath` | `null` | Dot path to the array of rows in the JSON body (`products`, `data.items`). Without it the plugin looks for `items`, `data`, `results`, `options`, `rows`, `products` or `records`. |
 | `fetchTotalPath` | `null` | Dot path to the total row count; with `fetchPageSize` it decides `hasMore`. Falls back to a top-level `total`. |
 | `fetchHasMorePath` | `null` | Dot path to a boolean instead of a count. |
-| `fetchMethod` | `'GET'` | HTTP method for `fetchUrl`; attribute: `data-zidan-fetch-method`. |
+| `fetchMethod` | `'GET'` | HTTP method for `fetchUrl`; attribute: `data-zidan-fetch-method`. Pair with `fetchBody` for a JSON search endpoint. |
 | `fetchHeaders` | `null` | JSON object of request headers; attribute: `data-zidan-fetch-headers='{"X-Tenant":"north"}'`. |
 | `fetchCredentials` | `'same-origin'` | `omit`, `same-origin` or `include`; attribute: `data-zidan-fetch-credentials`. |
 | `autoLoadMore` | `true` | Scrolling near the dropdown bottom fetches the next page automatically. |
@@ -703,15 +705,36 @@ abort, cache, load-more, errors) identical to a hand-written `fetchOptions`.
         data-zidan-fetch-items-path="data.items"
         data-zidan-fetch-total-path="data.total"
         data-zidan-fetch-skip-param="skip"
+        data-zidan-fetch-params='{"tenant":"north"}'
         data-zidan-fetch-page-size="20">
 </select>
 ```
 
-That markup calls `GET /api/products/search?q=…&limit=20&skip=0`, then `skip=20` for the next
-page, and stops when `skip + limit >= data.total`. Rows map automatically: `value` / `label`, or
-`id` / `slug` / `code` for the value and `name` / `title` / `full_name` for the label. A live page
-with both modes, against a real API and a static JSON file, ships as
+That markup calls `GET /api/products/search?q=…&limit=20&skip=0&tenant=north`, then `skip=20`
+for the next page, and stops when `skip + limit >= data.total`. Rows map automatically:
+`value` / `label`, or `id` / `slug` / `code` for the value and `name` / `title` / `full_name`
+for the label. A live page with both modes, against a real API and a static JSON file, ships as
 [`ajax.html`](https://akhtar1985.github.io/zidan-select/ajax.html).
+
+For an endpoint that expects a JSON search body, keep the same declarative setup and add a
+method, params and body — no `fetchOptions` function required:
+
+```html
+<select id="order" name="order"
+        data-zidan-select="combobox"
+        data-zidan-fetch-url="/api/orders/search"
+        data-zidan-fetch-method="POST"
+        data-zidan-fetch-params='{"scope":"open"}'
+        data-zidan-fetch-body='{"status":["open","paid"]}'
+        data-zidan-fetch-items-path="rows"
+        data-zidan-fetch-total-path="total">
+</select>
+```
+
+`POST /api/orders/search?q=…&scope=open` is sent with
+`Content-Type: application/json` and the JSON body. Use the
+[`api.html`](https://akhtar1985.github.io/zidan-select/api.html) request lab to inspect the exact
+URL, headers and body the plugin builds before pointing it at your own endpoint.
 
 ### Tags
 
@@ -897,6 +920,8 @@ const picker = zidanSelect('#mymov', {
   fetchPageParam: 'page',           // 1-based; '' omits it
   fetchSkipParam: null,             // e.g. 'skip' sends page × fetchPageSize
   fetchPageSizeParam: 'limit',      // '' omits the page-size parameter
+  fetchParams: null,                // extra query params, e.g. { tenant: 'north' }
+  fetchBody: null,                  // POST/PUT/PATCH body; objects serialise to JSON
   fetchItemsPath: null,             // e.g. 'data.items'; common array names are auto-detected
   fetchTotalPath: null,             // row count used to calculate hasMore
   fetchHasMorePath: null,           // boolean path used instead of a total

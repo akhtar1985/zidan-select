@@ -207,6 +207,34 @@ check('AJAX / remote data is supported and demoed', () => {
   assert(read('README.md').includes('ajax.html'), 'the README does not mention the AJAX page');
 });
 
+check('API request options and the request lab are supported', () => {
+  const library = read('zidan-form.js');
+  assert(library.includes('fetchParams: null'), 'DEFAULTS is missing fetchParams');
+  assert(library.includes('fetchBody: null'), 'DEFAULTS is missing fetchBody');
+  assert(library.includes("data-zidan-fetch-params"), 'fetchParams data attribute is not normalised');
+  assert(library.includes("d.zidanFetchBody"), 'fetchBody data attribute is not normalised');
+  assert(library.includes("method !== 'GET' && method !== 'HEAD'"), 'fetchBody must be ignored for GET and HEAD');
+  assert(library.includes("headers['Content-Type'] = 'application/json'"), 'object bodies must add a JSON content type');
+
+  const page = read('api.html');
+  for (const needle of [
+    'data-zidan-fetch-params=', 'data-zidan-fetch-headers=',
+    'data-zidan-fetch-method="POST"', 'api-get-request', 'api-post-request',
+    'api-method-output', 'fetchParams', 'fetchBody', 'docs/options.html#combobox-async'
+  ]) {
+    assert(page.includes(needle), 'API lab is missing ' + needle);
+  }
+  assert(page.includes('api.css') && page.includes('api.js'), 'API lab is missing its assets');
+  assert(read('api.js').includes('https://api.zidanform.test/search'), 'API lab POST demo is not wired to its mock endpoint');
+  assert(read('api.js').includes('window.fetch ='), 'API lab does not expose the request inspector hook');
+  assert(read('docs/options.md').includes('fetchParams') && read('docs/options.md').includes('fetchBody'), 'options docs do not document the new request options');
+  assert(read('README.md').includes('api.html'), 'README does not link the API request lab');
+  assert(read('index.html').includes('api.html'), 'demo does not link the API request lab');
+  assert(read('docs/index.html').includes('../api.html'), 'docs index does not link the API request lab');
+  const lab = read('lab.js');
+  assert(lab.includes('fetchParams') && lab.includes('fetchBody'), 'API lab inventory does not claim the new request options');
+});
+
 check('field playground is wired up', () => {
   const playground = read('playground.html');
   assert(playground.includes('plugin-core.css') && playground.includes('plugin-theme.css'), 'playground does not load both stylesheets');
@@ -239,7 +267,7 @@ check('advanced page and shared header are wired up', () => {
   assert(read('README.md').includes('advanced.html'), 'README does not link the advanced page');
   assert(read('docs/index.html').includes('../advanced.html'), 'docs index does not link the advanced page');
 
-  const pages = ['index.html', 'advanced.html', 'playground.html', 'shopify.html', 'ajax.html'];
+  const pages = ['index.html', 'advanced.html', 'playground.html', 'api.html', 'shopify.html', 'ajax.html'];
   const navs = pages.map(name => {
     const page = read(name);
     const match = page.match(/<nav[^>]*class="header-nav"[^>]*>[\s\S]*?<\/nav>/);
@@ -253,7 +281,7 @@ check('advanced page and shared header are wired up', () => {
   assert(new Set(navs).size === 1, 'demo pages do not share the same header links');
   const navLinks = navs[0].split('|');
   assert(new Set(navLinks).size >= 17, 'shared header should expose every demo page and docs page');
-  for (const target of ['advanced.html', 'shopify.html', 'ajax.html', 'docs/']) {
+  for (const target of ['advanced.html', 'api.html', 'shopify.html', 'ajax.html', 'docs/']) {
     assert(navLinks.includes(target), 'shared header is missing ' + target);
   }
   for (const target of ['docs/options.html', 'docs/comparison.html', 'docs/frameworks.html', 'docs/html-and-wordpress.html']) {
@@ -262,6 +290,7 @@ check('advanced page and shared header are wired up', () => {
   }
   assert(read('nav.css').includes('.nav-docs-panel'), 'docs submenu styles are missing');
   assert(read('.github/workflows/pages.yml').includes('ajax.html'), 'Pages workflow does not publish the AJAX page');
+  assert(read('.github/workflows/pages.yml').includes('api.html') && read('.github/workflows/pages.yml').includes('api.js'), 'Pages workflow does not publish the API request lab');
   const navCss = read('nav.css');
   assert(!/header-nav a:nth-child/.test(read('demo.css') + navCss), 'mobile CSS still hides header links');
   assert(!/header-nav[\s\S]{0,400}?overflow-x:\s*auto/.test(navCss), 'mobile header still relies on a silent horizontal scroller');
@@ -271,7 +300,7 @@ check('advanced page and shared header are wired up', () => {
 });
 
 check('demo and documentation pages share the home visual system', () => {
-  const rootPages = ['index.html', 'advanced.html', 'playground.html', 'ajax.html', 'shopify.html'];
+  const rootPages = ['index.html', 'advanced.html', 'playground.html', 'api.html', 'ajax.html', 'shopify.html'];
   const docsPages = ['docs/index.html', 'docs/validation.html'];
   // Read the version instead of pinning it, so a release never leaves this check behind.
   const brand = 'v' + JSON.parse(read('package.json')).version + ' · zero dependencies';
@@ -290,6 +319,7 @@ check('demo and documentation pages share the home visual system', () => {
   const docsIndex = read('docs/index.html');
   assert(docsIndex.includes('href="validation-guide.html"') && docsIndex.includes('href="validation.html"'), 'docs index lost the validation guide or live test bench link');
   assert(read('ajax.html').includes('docs/options.html#combobox-async'), 'AJAX demo links to a missing remote-options anchor');
+  assert(read('api.html').includes('docs/options.html#combobox-async'), 'API lab links to a missing remote-options anchor');
   assert(read('.github/workflows/pages.yml').includes('docs.css'), 'Pages workflow does not publish docs.css');
 
   const target = path.join(root, '.build', 'docs-ui-check');
@@ -353,6 +383,7 @@ check('Pages metadata is complete', () => {
   assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/playground.html'), 'sitemap missing the playground');
   assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/shopify.html'), 'sitemap missing the Shopify demo');
   assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/advanced.html'), 'sitemap missing the advanced page');
+  assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/api.html'), 'sitemap missing the API request lab');
   const workflow = read('.github/workflows/pages.yml');
   assert(workflow.includes('robots.txt') && workflow.includes('sitemap.xml'), 'Pages workflow does not publish robots/sitemap');
   assert(workflow.includes('shopify.html'), 'Pages workflow does not publish the Shopify demo');
@@ -362,6 +393,8 @@ check('Pages metadata is complete', () => {
   assert(html.includes('<link rel="canonical"'), 'demo missing canonical URL');
   assert(html.includes('property="og:image"'), 'demo missing Open Graph image');
   assert(read('playground.html').includes('<link rel="canonical"'), 'playground missing canonical URL');
+  assert(read('api.html').includes('<link rel="canonical"'), 'API lab missing canonical URL');
+  assert(read('api.html').includes('property="og:image"'), 'API lab missing Open Graph image');
   const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
   assert(ld, 'demo missing JSON-LD structured data');
   try {

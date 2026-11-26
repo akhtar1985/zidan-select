@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="modern">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API request options lab — headers, params and JSON bodies | ZidanForm</title>
+  <meta name="description" content="Build declarative ZidanForm API requests: custom headers, credentials, extra query parameters, JSON POST bodies and response paths, with the exact request visible on screen.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/api.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ZidanForm API request options lab">
+  <meta property="og:description" content="Headers, credentials, extra params and JSON bodies for declarative remote selects — inspect the request the plugin builds.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/api.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="plugin-core.css">
+  <link rel="stylesheet" href="plugin-theme.css">
+  <link rel="stylesheet" href="demo.css">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="ajax.css">
+  <link rel="stylesheet" href="api.css">
+</head>
+<body>
+  <a class="skip-link" href="#api-main">Skip to the API lab</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="index.html">Demo</a>
+      <a href="advanced.html">Advanced</a>
+      <a href="playground.html">Playground</a>
+      <a href="api.html" aria-current="page">API</a>
+      <a href="ajax.html">AJAX</a>
+      <a href="shopify.html">Shopify</a>
+      <a href="index.html#compare">Compare</a>
+      <a href="index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="docs/">Documentation index</a>
+          <a href="docs/options.html">Options &amp; data attributes</a>
+          <a href="docs/comparison.html">Why &amp; comparison</a>
+          <a href="docs/frameworks.html">Frameworks</a>
+          <a href="docs/html-and-wordpress.html">HTML &amp; WordPress</a>
+          <a href="docs/validation-guide.html">Validation</a>
+          <a href="docs/theming.html">Theming</a>
+          <a href="docs/build.html">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
+      </select>
+    </nav>
+  </header>
+
+  <main id="api-main" class="wrap api-main">
+    <section class="hero api-hero">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> API options · request lab</p>
+      <h1>Configure the request. <span>Keep the combobox.</span></h1>
+      <p class="api-lead">
+        Declarative remote selects now accept extra query parameters and a JSON request body as
+        well as headers and credentials. Watch the exact method, URL, headers and payload the
+        plugin builds before you point it at your own API. No wrapper, no hand-written fetch
+        unless you want one.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#get">GET with options</a>
+        <a class="btn" href="#post">JSON POST</a>
+        <a class="btn" href="#methods">Instance methods</a>
+        <a class="btn" href="#options">Option reference</a>
+      </div>
+    </section>
+
+    <section class="card ajax-card" id="get">
+      <header>
+        <h2>1. GET — headers and extra query parameters</h2>
+        <p>
+          The select is initialised from its data attributes. Every request carries
+          <code>tenant=north</code> and <code>X-Demo-Client: zidanform-api</code>; typing adds
+          <code>q</code>, paging adds <code>limit</code> and <code>skip</code>. The inspector below
+          is filled from the real <code>fetch()</code> call, not a mock description.
+        </p>
+      </header>
+
+      <div class="ajax-grid">
+        <div class="ajax-demo">
+          <label class="ajax-label" for="api-get">Search DummyJSON products</label>
+          <select id="api-get" name="api-product"
+                  data-zidan-select="combobox"
+                  data-zidan-clearable="true"
+                  data-zidan-placeholder="Type to search products…"
+                  data-zidan-fetch-url="https://dummyjson.com/products/search"
+                  data-zidan-fetch-items-path="products"
+                  data-zidan-fetch-total-path="total"
+                  data-zidan-fetch-skip-param="skip"
+                  data-zidan-fetch-page-size="6"
+                  data-zidan-fetch-page-size-param="limit"
+                  data-zidan-fetch-headers='{"X-Demo-Client":"zidanform-api"}'
+                  data-zidan-fetch-params='{"tenant":"north"}'>
+            <option value="">Pick a product…</option>
+          </select>
+
+          <div class="ajax-actions">
+            <button type="button" class="btn btn-primary" id="api-get-more">loadMore()</button>
+            <button type="button" class="btn" id="api-get-refresh">refreshOptions()</button>
+            <button type="button" class="btn" id="api-get-header">Toggle demo header</button>
+          </div>
+
+          <pre class="ajax-state" id="api-get-state" aria-live="polite">open the list to send the first request</pre>
+          <div class="api-inspector">
+            <span class="api-inspector-title">Request built by ZidanForm</span>
+            <pre id="api-get-request">no request yet</pre>
+          </div>
+        </div>
+
+        <div class="ajax-snippet">
+          <span class="ajax-tag">Declarative HTML</span>
+          <pre><code>&lt;select id="api-get"
+        data-zidan-select="combobox"
+        data-zidan-fetch-url="https://dummyjson.com/products/search"
+        data-zidan-fetch-items-path="products"
+        data-zidan-fetch-total-path="total"
+        data-zidan-fetch-skip-param="skip"
+        data-zidan-fetch-page-size="6"
+        data-zidan-fetch-page-size-param="limit"
+        data-zidan-fetch-headers='{"X-Demo-Client":"zidanform-api"}'
+        data-zidan-fetch-params='{"tenant":"north"}'&gt;&lt;/select&gt;</code></pre>
+          <span class="ajax-tag api-tag-spaced">JavaScript equivalent</span>
+          <pre><code>zidanSelect('#api-get', {
+  mode: 'combobox',
+  fetchUrl: 'https://dummyjson.com/products/search',
+  fetchItemsPath: 'products',
+  fetchTotalPath: 'total',
+  fetchSkipParam: 'skip',
+  fetchPageSize: 6,
+  fetchPageSizeParam: 'limit',
+  fetchHeaders: { 'X-Demo-Client': 'zidanform-api' },
+  fetchParams: { tenant: 'north' }
+});</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="card ajax-card" id="post">
+      <header>
+        <h2>2. POST — JSON body and static parameters</h2>
+        <p>
+          This endpoint expects a JSON search body. <code>fetchBody</code> is serialised once and
+          sent with <code>Content-Type: application/json</code>; <code>fetchParams</code> adds
+          <code>scope=demo</code> to the URL. The endpoint is a demo-only local mock so this card
+          works offline and deterministically — swap the URL and body for your API and the same
+          options apply.
+        </p>
+      </header>
+
+      <div class="ajax-grid">
+        <div class="ajax-demo">
+          <label class="ajax-label" for="api-post">Search a mocked order API</label>
+          <select id="api-post" name="api-order"
+                  data-zidan-select="combobox"
+                  data-zidan-clearable="true"
+                  data-zidan-placeholder="Type to search orders…"
+                  data-zidan-fetch-url="https://api.zidanform.test/search"
+                  data-zidan-fetch-method="POST"
+                  data-zidan-fetch-skip-param="skip"
+                  data-zidan-fetch-page-size="3"
+                  data-zidan-fetch-page-size-param="limit"
+                  data-zidan-fetch-items-path="rows"
+                  data-zidan-fetch-total-path="total">
+            <option value="">Pick an order…</option>
+          </select>
+
+          <div class="ajax-actions">
+            <button type="button" class="btn btn-primary" id="api-post-open">Send first request</button>
+            <button type="button" class="btn" id="api-post-more">loadMore()</button>
+          </div>
+
+          <pre class="ajax-state" id="api-post-state" aria-live="polite">the mock waits 300 ms, like a small API</pre>
+          <div class="api-inspector">
+            <span class="api-inspector-title">POST body and headers</span>
+            <pre id="api-post-request">no request yet</pre>
+          </div>
+        </div>
+
+        <div class="ajax-snippet">
+          <span class="ajax-tag">JavaScript options</span>
+          <pre><code>zidanSelect('#api-post', {
+  mode: 'combobox',
+  fetchUrl: 'https://api.example.com/search',
+  fetchMethod: 'POST',
+  fetchHeaders: { 'X-Demo-Client': 'zidanform-api' },
+  fetchParams: { scope: 'demo' },
+  fetchBody: {
+    status: ['open', 'paid'],
+    sort: 'newest'
+  },
+  fetchPageSize: 3,
+  fetchSkipParam: 'skip',
+  fetchPageSizeParam: 'limit',
+  fetchItemsPath: 'rows',
+  fetchTotalPath: 'total'
+});</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="card ajax-card" id="methods">
+      <header>
+        <h2>3. Read and control the request lifecycle</h2>
+        <p>
+          These buttons call the public instance API on the GET select. The output is the live
+          value returned by the method, so you can see exactly what a consumer sees.
+        </p>
+      </header>
+      <div class="api-methods" role="group" aria-label="Instance API methods">
+        <button type="button" class="btn" data-api-method="getAsyncState">getAsyncState()</button>
+        <button type="button" class="btn" data-api-method="hasMoreResults">hasMoreResults()</button>
+        <button type="button" class="btn" data-api-method="loadMore">loadMore()</button>
+        <button type="button" class="btn" data-api-method="refreshOptions">refreshOptions()</button>
+        <button type="button" class="btn" data-api-method="clearCache">clearCache()</button>
+        <button type="button" class="btn" data-api-method="open">open()</button>
+        <button type="button" class="btn" data-api-method="close">close()</button>
+      </div>
+      <pre class="ajax-state" id="api-method-output" aria-live="polite">click a method to run it against #api-get</pre>
+    </section>
+
+    <section class="card ajax-card" id="options">
+      <h2>4. The request option reference</h2>
+      <p>Every declarative request option is listed here; the full select options live in the
+        <a href="docs/options.html#combobox-async">remote select documentation</a>.</p>
+      <div class="table-wrap">
+        <table class="api-table">
+          <thead><tr><th>Option</th><th>Data attribute</th><th>Default</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>fetchUrl</code></td><td><code>data-zidan-fetch-url</code></td><td><code>null</code></td><td>Endpoint that enables declarative fetching.</td></tr>
+            <tr><td><code>fetchMethod</code></td><td><code>data-zidan-fetch-method</code></td><td><code>GET</code></td><td>HTTP method; use POST/PUT/PATCH with a body.</td></tr>
+            <tr><td><code>fetchParams</code></td><td><code>data-zidan-fetch-params</code></td><td><code>null</code></td><td>Extra query parameters merged into every request.</td></tr>
+            <tr><td><code>fetchBody</code></td><td><code>data-zidan-fetch-body</code></td><td><code>null</code></td><td>JSON-serialisable object/array, or a raw string, sent on non-GET requests.</td></tr>
+            <tr><td><code>fetchHeaders</code></td><td><code>data-zidan-fetch-headers</code></td><td><code>null</code></td><td>Extra request headers, including auth and tenant headers.</td></tr>
+            <tr><td><code>fetchCredentials</code></td><td><code>data-zidan-fetch-credentials</code></td><td><code>same-origin</code></td><td><code>omit</code>, <code>same-origin</code> or <code>include</code>.</td></tr>
+            <tr><td><code>fetchQueryParam</code></td><td><code>data-zidan-fetch-query-param</code></td><td><code>q</code></td><td>Search-term parameter; set empty to omit.</td></tr>
+            <tr><td><code>fetchPageParam</code></td><td><code>data-zidan-fetch-page-param</code></td><td><code>page</code></td><td>1-based page number; set empty to omit.</td></tr>
+            <tr><td><code>fetchSkipParam</code></td><td><code>data-zidan-fetch-skip-param</code></td><td><code>null</code></td><td>Send <code>skip = page × pageSize</code> instead of a page number.</td></tr>
+            <tr><td><code>fetchPageSizeParam</code></td><td><code>data-zidan-fetch-page-size-param</code></td><td><code>limit</code></td><td>Page-size parameter; set empty to omit.</td></tr>
+            <tr><td><code>fetchPageSize</code></td><td><code>data-zidan-fetch-page-size</code></td><td><code>0</code></td><td>Rows per request; enables paging and load-more.</td></tr>
+            <tr><td><code>fetchItemsPath</code></td><td><code>data-zidan-fetch-items-path</code></td><td><code>null</code></td><td>Dot path to the row array, e.g. <code>data.rows</code>.</td></tr>
+            <tr><td><code>fetchTotalPath</code></td><td><code>data-zidan-fetch-total-path</code></td><td><code>null</code></td><td>Dot path to the total count, used for <code>hasMore</code>.</td></tr>
+            <tr><td><code>fetchHasMorePath</code></td><td><code>data-zidan-fetch-has-more-path</code></td><td><code>null</code></td><td>Dot path to a boolean instead of a count.</td></tr>
+            <tr><td><code>fetchOptions</code></td><td>—</td><td><code>null</code></td><td>Full escape hatch: <code>(query, signal, context) =&gt; items</code>.</td></tr>
+            <tr><td><code>debounce</code>, <code>minChars</code></td><td>—</td><td><code>250</code>, <code>0</code></td><td>When typing triggers a request.</td></tr>
+            <tr><td><code>cacheResults</code>, <code>autoLoadMore</code></td><td><code>data-zidan-cache-results</code>, <code>data-zidan-auto-load-more</code></td><td><code>true</code>, <code>true</code></td><td>Page cache and scroll-to-load behaviour.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        The POST card is served by a demo-only fetch mock in <code>api.js</code>; the GET card uses
+        <a href="https://dummyjson.com" rel="noopener">dummyjson.com</a>.
+        Full option table: <a href="docs/options.html#combobox-async">remote selects</a>.
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="index.html">Demo</a> ·
+        <a href="ajax.html">AJAX</a> ·
+        <a href="docs/">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="zidan-form.js"></script>
+  <script src="nav.js"></script>
+  <script src="api.js"></script>
+</body>
+</html>

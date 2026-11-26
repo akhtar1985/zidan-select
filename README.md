@@ -30,8 +30,8 @@ Sizes measure the current source build; CDN links pin the 2.5.0 release.
 
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈275 kB raw · ≈157 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css) |
-| Select-only | ≈145 kB raw · ≈84 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.css) |
+| Full — every control | ≈277 kB raw · ≈158 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css) |
+| Select-only | ≈147 kB raw · ≈85 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.css) |
 | File-only | ≈99 kB raw · ≈57 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
@@ -188,7 +188,9 @@ radios, upload dropzone and the Liquid install snippets — runs at
 
 A dedicated **[AJAX & remote data demo](https://akhtar1985.github.io/zidan-select/ajax.html)** wires
 `data-zidan-fetch-url` to a real API and shows the hand-written `fetchOptions` contract with live
-paging, abort and cache state.
+paging, abort and cache state. The **[API request lab](https://akhtar1985.github.io/zidan-select/api.html)**
+adds custom headers, extra query parameters, JSON POST bodies and the remote instance methods, with
+the exact request visible as it is built.
 
 Below the tabs sits the **[controls reference]**(https://akhtar1985.github.io/zidan-select/#controls)**
 — all nine control families on one page with the options you reach for most, the two ways to
@@ -251,6 +253,8 @@ override presets.
 | `index.html`, `demo.css`, `demo.js` | The tabbed demo / theme showcase plus the controls reference section (not shipped logic). |
 | `advanced.html`, `advanced.css`, `advanced.js` | Advanced reference: init and precedence, async paging, Promise validation, uploads, events, RTL and TypeScript, with copyable HTML/JS examples (not shipped logic). |
 | `playground.html`, `playground.css`, `playground.js` | Per-field option builder with live preview and copyable HTML / JS output (not shipped logic). |
+| `api.html`, `api.css`, `api.js` | Request lab for headers, params, JSON bodies and response paths, with a deterministic POST mock (not shipped logic). |
+| `ajax.html`, `ajax.css`, `ajax.js` | Declarative remote GET and hand-written `fetchOptions` with paging, abort and retry (not shipped logic). |
 | `nav.css`, `nav.js` | Shared header, navigation and mobile menu button for the demo pages (not shipped logic). |
 | `robots.txt`, `sitemap.xml` | Crawler directives and the public page list for GitHub Pages (not shipped on npm). |
 | `docs/` | Comparison, options, validation, frameworks, theming, build and the static HTML/WordPress cookbook. |
@@ -864,8 +868,10 @@ const picker = zidanSelect('#owner', {
 | `fetchPageParam` | `'page'` | 1-based page parameter (`''` omits it). |
 | `fetchSkipParam` | `null` | Send `skip = page × pageSize` instead — for dummyjson/Laravel-style APIs. |
 | `fetchPageSizeParam` | `'limit'` | Parameter that carries `fetchPageSize`. |
+| `fetchParams` | `null` | Extra query parameters, e.g. `{ tenant: 'north' }`; JSON via `data-zidan-fetch-params`. |
+| `fetchBody` | `null` | POST/PUT/PATCH body; objects serialise to JSON and set `Content-Type`. JSON via `data-zidan-fetch-body`. |
 | `fetchItemsPath`, `fetchTotalPath`, `fetchHasMorePath` | `null` | Dot paths into the JSON body (`data.items`, `data.total`). |
-| `fetchMethod`, `fetchHeaders`, `fetchCredentials` | `'GET'`, `null`, `'same-origin'` | Request tuning (JavaScript only). |
+| `fetchMethod`, `fetchHeaders`, `fetchCredentials` | `'GET'`, `null`, `'same-origin'` | Request tuning. Headers and credentials also have data attributes. |
 | `debounce`, `minChars` | `250`, `0` | When typing starts a request. |
 | `cacheResults`, `autoLoadMore`, `loadMoreText` | `true`, `true`, `Load more` | Paging behaviour. |
 
@@ -875,7 +881,8 @@ Rows map without a mapping function: `value`/`label`, or `id`/`slug`/`code` plus
 
 **[Live AJAX demo](https://akhtar1985.github.io/zidan-select/ajax.html)** — one card uses the
 attributes above against a public API, the other a hand-written `fetchOptions`, with paging,
-abort and cache state on screen.
+abort and cache state on screen. The **[API request lab](https://akhtar1985.github.io/zidan-select/api.html)**
+shows custom headers, extra params and JSON POST bodies beside the exact request the plugin built.
 
 ---
 

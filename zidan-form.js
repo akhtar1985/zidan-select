@@ -744,6 +744,8 @@
     fetchPageParam: 'page',    // 1-based page number sent with every request
     fetchSkipParam: null,      // when set, send skip = page * pageSize instead of fetchPageParam
     fetchPageSizeParam: 'limit',
+    fetchParams: null,         // extra static query parameters merged into every request
+    fetchBody: null,           // POST/PUT/PATCH body; objects serialise to JSON
     fetchItemsPath: null,      // dot path to the array in the JSON body ('data.items')
     fetchTotalPath: null,      // dot path to the number of rows available
     fetchHasMorePath: null,    // dot path to a boolean
@@ -856,6 +858,13 @@
       } catch (error) {
         return Promise.reject(new Error('Invalid fetchUrl: ' + opts.fetchUrl));
       }
+      if (opts.fetchParams && typeof opts.fetchParams === 'object' && !Array.isArray(opts.fetchParams)) {
+        Object.keys(opts.fetchParams).forEach(function (key) {
+          var value = opts.fetchParams[key];
+          if (value === null || value === undefined) return;
+          url.searchParams.set(key, typeof value === 'object' ? JSON.stringify(value) : String(value));
+        });
+      }
       if (opts.fetchQueryParam) url.searchParams.set(opts.fetchQueryParam, query || '');
       if (pageSize > 0 && opts.fetchPageSizeParam) {
         url.searchParams.set(opts.fetchPageSizeParam, String(pageSize));
@@ -873,12 +882,30 @@
         });
       }
 
-      return fetch(url.toString(), {
-        method: opts.fetchMethod || 'GET',
+      var method = String(opts.fetchMethod || 'GET').toUpperCase();
+      var init = {
+        method: method,
         headers: headers,
         signal: signal,
         credentials: opts.fetchCredentials || 'same-origin'
-      }).then(function (response) {
+      };
+      if (opts.fetchBody !== null && opts.fetchBody !== undefined && method !== 'GET' && method !== 'HEAD') {
+        if (typeof opts.fetchBody === 'string') {
+          init.body = opts.fetchBody;
+        } else {
+          try {
+            init.body = JSON.stringify(opts.fetchBody);
+          } catch (error) {
+            return Promise.reject(new Error('fetchBody must be JSON-serialisable.'));
+          }
+          var hasContentType = Object.keys(headers).some(function (key) {
+            return key.toLowerCase() === 'content-type';
+          });
+          if (!hasContentType) headers['Content-Type'] = 'application/json';
+        }
+      }
+
+      return fetch(url.toString(), init).then(function (response) {
         if (!response.ok) {
           throw new Error('Request failed (' + response.status + ' ' + (response.statusText || 'error') + ')');
         }
@@ -1003,6 +1030,23 @@
         if (typeof console !== 'undefined' && console.warn) console.warn('ZidanSelect: data-zidan-fetch-headers must be a JSON object.');
       }
     }
+    var fetchParams = null;
+    if (d.zidanFetchParams) {
+      try {
+        var parsedParams = JSON.parse(d.zidanFetchParams);
+        if (parsedParams && typeof parsedParams === 'object' && !Array.isArray(parsedParams)) fetchParams = parsedParams;
+      } catch (error) {
+        if (typeof console !== 'undefined' && console.warn) console.warn('ZidanSelect: data-zidan-fetch-params must be a JSON object.');
+      }
+    }
+    var fetchBody = null;
+    if (d.zidanFetchBody !== undefined && d.zidanFetchBody !== '') {
+      try {
+        fetchBody = JSON.parse(d.zidanFetchBody);
+      } catch (error) {
+        fetchBody = d.zidanFetchBody;
+      }
+    }
 
     var merged = {};
     Object.keys(DEFAULTS).forEach(function (key) {
@@ -1041,6 +1085,8 @@
     merged.fetchMethod = pick('fetchMethod', d.zidanFetchMethod || DEFAULTS.fetchMethod);
     merged.fetchHeaders = pick('fetchHeaders', fetchHeaders);
     merged.fetchCredentials = pick('fetchCredentials', d.zidanFetchCredentials || DEFAULTS.fetchCredentials);
+    merged.fetchParams = pick('fetchParams', fetchParams);
+    merged.fetchBody = pick('fetchBody', fetchBody);
     merged.fetchQueryParam = pick('fetchQueryParam', d.zidanFetchQueryParam !== undefined ? d.zidanFetchQueryParam : DEFAULTS.fetchQueryParam);
     merged.fetchPageParam = pick('fetchPageParam', d.zidanFetchPageParam !== undefined ? d.zidanFetchPageParam : DEFAULTS.fetchPageParam);
     merged.fetchSkipParam = pick('fetchSkipParam', d.zidanFetchSkipParam || null);

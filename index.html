@@ -112,6 +112,7 @@
       <a href="index.html" aria-current="page">Demo</a>
       <a href="advanced.html">Advanced</a>
       <a href="playground.html">Playground</a>
+      <a href="api.html">API</a>
       <a href="ajax.html">AJAX</a>
       <a href="shopify.html">Shopify</a>
       <a href="index.html#compare">Compare</a>
@@ -199,7 +200,7 @@
           <a class="build-pick" href="#build-select">
             <strong>Only custom select dropdowns</strong>
             <span>Load the select-only JS plus its core and theme CSS. The rest of the page stays untouched — no full bundle.</span>
-            <em>≈145 kB JS · ≈84 kB minified</em>
+            <em>≈147 kB JS · ≈85 kB minified</em>
           </a>
           <a class="build-pick" href="#build-file">
             <strong>Only file uploads</strong>
@@ -209,13 +210,13 @@
           <a class="build-pick" href="#build-full">
             <strong>Every input in the form</strong>
             <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
-            <em>≈275 kB JS · ≈157 kB minified</em>
+            <em>≈277 kB JS · ≈158 kB minified</em>
           </a>
         </div>
       </div>
       <div class="grid-3">
         <article class="card build-card" id="build-full">
-          <h3>Full build <span class="build-size">≈275 kB · ≈157 kB min</span></h3>
+          <h3>Full build <span class="build-size">≈277 kB · ≈158 kB min</span></h3>
           <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js">JS</a>
@@ -230,7 +231,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-select">
-          <h3>Select-only <span class="build-size">≈145 kB · ≈84 kB min</span></h3>
+          <h3>Select-only <span class="build-size">≈147 kB · ≈85 kB min</span></h3>
           <p>Select, combobox, tags and multi-select — everything the select family needs.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js">JS</a>
@@ -860,7 +861,9 @@ window.ZIDAN_FORM_CONFIG = { targets: ['#cms-country'] };</code></pre>
             <h3>Remote pagination &amp; cache</h3>
             <p>Simulated server with 47 people, five per page. Open the list, scroll to the bottom
               or press <strong>Load more</strong>; typing filters on the “server” and pages are
-              cached until you call <code>clearCache()</code> or <code>refreshOptions()</code>.</p>
+              cached until you call <code>clearCache()</code> or <code>refreshOptions()</code>.
+              For declarative headers, query params and JSON bodies, open the
+              <a href="api.html">API request lab</a>.</p>
             <select id="remote-people" name="owner"></select>
             <p id="remote-status" class="direct-hint" aria-live="polite">Open the list to load page 1.</p>
             <div class="snippet-block snippet-block--inline">

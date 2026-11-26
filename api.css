@@ -1,0 +1,68 @@
+.api-main { padding-bottom: 72px; }
+
+.api-hero h1 { max-width: 25ch; }
+
+.api-lead {
+  max-width: 74ch;
+  margin: 0 0 18px;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+}
+
+.api-tag-spaced { margin-top: 16px; }
+
+.api-inspector {
+  margin-top: 14px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.api-inspector-title {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.api-inspector pre {
+  margin: 0;
+  max-height: 220px;
+  overflow: auto;
+  color: var(--ink);
+  font: 0.75rem/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.api-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 16px;
+}
+
+.api-methods .btn,
+.ajax-actions .btn { padding: 9px 13px; font-size: 0.8rem; }
+
+.table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.api-table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 0.86rem; }
+.api-table th,
+.api-table td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.api-table th { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.api-table tr:last-child td { border-bottom: 0; }
+.api-table code { font-size: 0.78rem; }
+
+@media (max-width: 640px) {
+  .api-main { padding-bottom: 54px; }
+  .api-inspector pre { font-size: 0.7rem; }
+}
