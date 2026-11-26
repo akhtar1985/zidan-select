@@ -41,7 +41,7 @@
       'stepper', 'stepperPosition', 'stepperWrap', 'stepperLongPress', 'stepperDelay',
       'stepperInterval', 'stepperUpLabel', 'stepperDownLabel', 'stepperStep',
       'phone', 'phoneCountry', 'phoneFormat', 'phoneCountrySelect', 'phoneCountries',
-      'phoneCountryLabel',
+      'phoneCountryLabel', 'phoneCountrySearchText', 'phoneCountryEmptyText',
       'rangeVariant', 'rangeBubble', 'rangeBubbleMode', 'rangeBubblePosition', 'rangeFill',
       'rangeMinMax', 'rangeMinLabel', 'rangeMaxLabel', 'rangeTicks', 'rangeTickLabels',
       'rangeLabels', 'rangeFormat',
@@ -52,6 +52,8 @@
       'simulateUpload', 'simulateDuration', 'autoUpload', 'showFileMeta', 'showPreview',
       'replaceTitle', 'progressTemplate', 'uploadedLabel', 'failedLabel', 'canceledLabel',
       'cancelLabel', 'retryLabel', 'renderFile', 'downscale',
+      'downscaleMaxWidth', 'downscaleMaxHeight', 'downscaleQuality', 'downscaleMaxBytes',
+      'downscaleMime', 'downscaleForce',
       'switchStyle', 'onLabel', 'offLabel', 'deselectable', 'messages',
       'validate', 'showValidState'
     ],
@@ -69,7 +71,7 @@
       'open', 'close', 'toggle', 'isOpen', 'getValue', 'setValue', 'clear', 'setOptions',
       'addTag', 'removeTag', 'getTags', 'getSelectedItems', 'moveTag', 'editTag',
       'selectAll', 'deselectAll', 'toggleAll', 'areAllSelected', 'enable', 'disable',
-      'setLayout', 'setFramework', 'setScrollbar', 'setValidation', 'refresh',
+      'setTheme', 'setLayout', 'setFramework', 'setScrollbar', 'setValidation', 'refresh',
       'clearCache', 'loadMore', 'hasMoreResults', 'getAsyncState', 'refreshOptions',
       'on', 'off', 'announce', 'destroy'
     ],
@@ -80,6 +82,7 @@
       'setIndeterminate', 'setChecked', 'isChecked',
       'stepUp', 'stepDown', 'setStepper', 'openPicker', 'showPicker',
       'getPhoneCountry', 'setPhoneCountry', 'setPhoneFormat', 'formatPhone',
+      'getUnmaskedValue', 'refreshAutogrow',
       'getFiles', 'getUploadState', 'addFiles', 'replaceFiles', 'removeFile', 'clear',
       'setVariant', 'setUploader', 'uploadAll', 'uploadFile', 'cancelUpload', 'cancelAll',
       'retryUpload'
@@ -89,7 +92,7 @@
       'init', 'input', 'load-more', 'no-results', 'open', 'phone-country', 'phone-format',
       'picker', 'remove', 'reveal', 'select', 'step', 'tag-add', 'tag-remove', 'tag-move', 'tag-edit',
       'upload-cancel', 'upload-error', 'upload-progress', 'upload-start',
-      'upload-success', 'validation'
+      'upload-success', 'validation', 'validate'
     ]
   };
 
@@ -437,7 +440,7 @@
     })
   });
 
-  initField('#lab-mask', {
+  var labMask = initField('#lab-mask', {
     label: 'Masked phone',
     mask: '(###) ###-####',
     hint: 'Type digits — literals are inserted automatically.',
@@ -459,7 +462,7 @@
     validationIcon: true
   });
 
-  initField('#lab-note', {
+  var labNote = initField('#lab-note', {
     label: 'Lab textarea',
     counter: 120,
     autogrow: true,
@@ -504,6 +507,8 @@
     phoneCountrySelect: true,
     phoneCountries: 'US,GB,DE,PK',
     phoneCountryLabel: 'Lab country code',
+    phoneCountrySearchText: 'Search the lab countries',
+    phoneCountryEmptyText: 'No lab country matches',
     onPhoneCountry: hook('fieldCallbacks', 'onPhoneCountry', function (payload) {
       if (phoneStatus) phoneStatus.textContent = 'country=' + payload.country
         + ' · format=' + phone.getPhoneCountry();
@@ -575,7 +580,13 @@
     accept: 'image/*,.pdf,.txt',
     maxFiles: 2,
     maxSizeMB: 2,
-    downscale: { maxWidth: 1024, maxHeight: 1024, quality: 0.85 },
+    downscale: true,
+    downscaleMaxWidth: 1024,
+    downscaleMaxHeight: 1024,
+    downscaleQuality: 0.85,
+    downscaleMaxBytes: 0,
+    downscaleMime: 'image/jpeg',
+    downscaleForce: false,
     autoUpload: true,
     showFileMeta: true,
     showPreview: true,
@@ -633,6 +644,50 @@
     showPreview: true,
     replaceTitle: 'Swap attachment'
   });
+
+  /* form-level helpers: serialize() and validate() */
+  var helperForm = document.getElementById('lab-form');
+  var helperOutput = document.getElementById('lab-form-output');
+  var helperName = initField('#lab-form-name', {
+    label: 'Full name',
+    hint: 'A custom rule requires at least two characters.',
+    validate: function (value) {
+      return String(value || '').trim().length >= 2 || 'Please enter at least two characters.';
+    }
+  });
+  var helperEmail = initField('#lab-form-email', {
+    label: 'Email',
+    autoIcon: true
+  });
+  initField('#lab-form-note', {
+    label: 'Note',
+    counter: 120,
+    autogrow: true,
+    autogrowMax: 140
+  });
+
+  var serializeButton = document.getElementById('lab-form-serialize');
+  if (serializeButton && helperForm) {
+    serializeButton.addEventListener('click', function () {
+      var data = form.serialize(helperForm);
+      if (helperOutput) helperOutput.textContent = JSON.stringify(data, null, 2);
+    });
+  }
+  var validateButton = document.getElementById('lab-form-validate');
+  if (validateButton && helperForm) {
+    validateButton.addEventListener('click', function () {
+      if (helperOutput) helperOutput.textContent = 'Validating…';
+      form.validate(helperForm, { focus: false }).then(function (valid) {
+        if (helperOutput) {
+          helperOutput.textContent = valid
+            ? 'form is valid — every field rule and native constraint passed'
+            : 'form is invalid — focus the highlighted control and fix it';
+        }
+      }, function (error) {
+        if (helperOutput) helperOutput.textContent = 'validation failed: ' + error.message;
+      });
+    });
+  }
 
   /* a throwaway field used by the method tests; hidden from the page */
   var probeHost = document.getElementById('lab-probe-host');
@@ -773,6 +828,7 @@
 
         { name: 'enable', run: function () { selectA.enable(); return 'disabled=' + selectA.input.disabled; } },
         { name: 'disable', run: function () { selectA.disable(); var off = selectA.input.disabled; selectA.enable(); return 'disabled while running=' + off; } },
+        { name: 'setTheme', run: function () { selectA.setTheme('auto'); var auto = selectA.root.getAttribute('data-zs-theme'); selectA.setTheme('modern'); return 'auto resolved to ' + auto + ', restored modern'; } },
         { name: 'setLayout', run: function () { selectA.setLayout('classic-clean'); selectA.setLayout('floating-label'); return 'layout restored'; } },
         { name: 'setFramework', run: function () { selectA.setFramework('none'); return 'framework=' + selectA.framework; } },
         { name: 'setScrollbar', run: function () { selectA.setScrollbar('fancy'); selectA.setScrollbar('thin'); return 'scrollbar cycled'; } },
@@ -873,6 +929,22 @@
         { name: 'setValue', run: function () { labText.setValue('written by setValue'); return 'value=' + labText.getValue(); } },
         { name: 'update', run: function () { labText.update(); return 'native state mirrored'; } },
         { name: 'refresh', run: function () { labText.refresh(); return 're-rendered'; } },
+        {
+          name: 'getUnmaskedValue',
+          run: function () {
+            labMask.setValue('5551234567');
+            var value = labMask.getUnmaskedValue();
+            labMask.setValue('');
+            return 'unmasked=' + value;
+          }
+        },
+        {
+          name: 'refreshAutogrow',
+          run: function () {
+            labNote.refreshAutogrow();
+            return 'height=' + (labNote.el.style.height || 'auto');
+          }
+        },
         {
           name: 'destroy',
           run: function () {
@@ -987,7 +1059,45 @@
         { name: 'ZidanSelect.get', run: function () { return selectApi.get('#lab-select') === selectA ? 'instance found by selector' : 'unexpected instance'; } },
         { name: 'ZidanForm.formatPhone', run: function () { return form.formatPhone('2025550134', 'US', 'e164'); } },
         { name: 'ZidanForm.detectPhoneCountry', run: function () { return form.detectPhoneCountry('+44 7700 900123'); } },
-        { name: 'ZidanForm.registerIcon', run: function () { form.registerIcon('lab-check', '<path d="M4 12l5 5 11-11"/>'); return 'registered lab-check'; } }
+        { name: 'ZidanForm.registerIcon', run: function () { form.registerIcon('lab-check', '<path d="M4 12l5 5 11-11"/>'); return 'registered lab-check'; } },
+        { name: 'ZidanForm.mask', run: function () { return form.mask('5551234567', '(###) ###-####'); } },
+        { name: 'ZidanForm.unmask', run: function () { return form.unmask('(555) 123-4567'); } },
+        {
+          name: 'ZidanForm.serialize',
+          run: function () {
+            var data = form.serialize(helperForm);
+            return 'keys=' + Object.keys(data).join(',');
+          }
+        },
+        {
+          name: 'ZidanForm.validate',
+          run: function () {
+            var nameInput = helperName.el;
+            var emailInput = helperEmail.el;
+            var oldName = nameInput.value;
+            var oldEmail = emailInput.value;
+            nameInput.value = 'Ada Lovelace';
+            emailInput.value = 'ada@example.com';
+            return form.validate(helperForm, { focus: false }).then(function (valid) {
+              nameInput.value = oldName;
+              emailInput.value = oldEmail;
+              return 'valid=' + valid;
+            }, function (error) {
+              nameInput.value = oldName;
+              emailInput.value = oldEmail;
+              throw error;
+            });
+          }
+        },
+        {
+          name: 'ZidanForm.downscaleImage',
+          run: function () {
+            var file = new window.File(['lab-bytes'], 'lab.png', { type: 'image/png' });
+            return form.downscaleImage(file, { maxWidth: 10 }).then(function (output) {
+              return output === file ? 'original kept (no resampling needed)' : 'image resized';
+            });
+          }
+        }
       ]
     }
   ];

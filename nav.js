@@ -16,24 +16,41 @@
 
     var quickTheme = header.querySelector('#quick-theme');
     if (quickTheme) {
-      var initialTheme = document.documentElement.getAttribute('data-zs-theme') || 'default';
-      if (Array.prototype.some.call(quickTheme.options, function (option) { return option.value === initialTheme; })) {
-        quickTheme.value = initialTheme;
-      }
-      quickTheme.addEventListener('change', function () {
-        var theme = quickTheme.value;
-        document.documentElement.setAttribute('data-zs-theme', theme);
+      var autoQuery = typeof window.matchMedia === 'function'
+        ? window.matchMedia('(prefers-color-scheme: dark)')
+        : null;
+      var chosenTheme = 'default';
+      var applyPageTheme = function (theme) {
+        chosenTheme = theme;
+        /* demo pages have no [data-zs-theme="auto"] CSS block, so resolve it
+           here and keep every enhanced root on the same concrete theme */
+        var resolved = theme === 'auto' ? (autoQuery && autoQuery.matches ? 'dark' : 'default') : theme;
+        document.documentElement.setAttribute('data-zs-theme', resolved);
         if (window.ZidanSelect) {
           window.ZidanSelect.instances.forEach(function (instance) {
-            instance.root.setAttribute('data-zs-theme', theme);
+            if (instance.setTheme) instance.setTheme(theme === 'auto' ? 'auto' : resolved);
+            else instance.root.setAttribute('data-zs-theme', resolved);
           });
         }
         if (window.ZidanForm) {
           window.ZidanForm.fields.forEach(function (field) {
-            if (field.root) field.root.setAttribute('data-zs-theme', theme);
+            if (!field.root) return;
+            if (field.setTheme) field.setTheme(theme === 'auto' ? 'auto' : resolved);
+            else field.root.setAttribute('data-zs-theme', resolved);
           });
         }
-      });
+      };
+      var initialTheme = document.documentElement.getAttribute('data-zs-theme') || 'default';
+      if (Array.prototype.some.call(quickTheme.options, function (option) { return option.value === initialTheme; })) {
+        quickTheme.value = initialTheme;
+        chosenTheme = initialTheme;
+      }
+      quickTheme.addEventListener('change', function () { applyPageTheme(quickTheme.value); });
+      var onAutoChange = function () {
+        if (chosenTheme === 'auto') applyPageTheme('auto');
+      };
+      if (autoQuery && autoQuery.addEventListener) autoQuery.addEventListener('change', onAutoChange);
+      else if (autoQuery && autoQuery.addListener) autoQuery.addListener(onAutoChange);
     }
 
     // Only mark the header as enhanced once the toggle really works, so the links

@@ -396,6 +396,7 @@ export class ZidanSelect {
   areAllSelected(): boolean;
   enable(): this;
   disable(): this;
+  setTheme(theme: Theme | string): this;
   setLayout(layout: SelectLayout): this;
   setFramework(framework: Framework): this;
   setScrollbar(scrollbar: Scrollbar): this;

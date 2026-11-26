@@ -1338,6 +1338,21 @@
     this.liveEl = live;
   };
 
+  ZidanSelect.prototype.setTheme = function (name) {
+    var next = pickList(name, THEMES, this.themeMode);
+    this.themeMode = next;
+    this.opts.theme = next;
+    this.theme = resolveThemeName(next);
+    if (this.root) {
+      if (next === 'auto') trackAutoTheme(this.root);
+      else {
+        untrackAutoTheme(this.root);
+        this.root.setAttribute('data-zs-theme', next);
+      }
+    }
+    return this;
+  };
+
   ZidanSelect.prototype._prepareSync = function () {
     var self = this;
     var opts = this.opts;
@@ -2320,8 +2335,9 @@
 
   ZidanSelect.prototype._tagError = function (message) {
     this.announce(message);
-    this.emit('error', { message: message, instance: this });
-    this.call('onError', { message: message, instance: this });
+    var detail = { error: new Error(message), message: message, instance: this };
+    this.emit('error', detail);
+    this.call('onError', detail);
     this.root.classList.add('zs-root--shake');
     var rootEl = this.root;
     setTimeout(function () { rootEl.classList.remove('zs-root--shake'); }, 320);
@@ -2506,6 +2522,39 @@
     var next = String(label === null || label === undefined ? '' : label).trim();
     var tag = this.value_[index];
     if (!next || next === tag.label) return false;
+    if (next.length < this.opts.minTagLength) {
+      this._tagError('Tags need at least ' + this.opts.minTagLength + ' character' + (this.opts.minTagLength === 1 ? '' : 's') + '.');
+      return false;
+    }
+    if (next.length > this.opts.maxTagLength) {
+      this._tagError('Tags can be at most ' + this.opts.maxTagLength + ' characters.');
+      return false;
+    }
+    var duplicate = this.value_.some(function (item, at) {
+      if (at === index) return false;
+      return this.opts.caseSensitive
+        ? String(item.value) === next
+        : String(item.value).toLowerCase() === next.toLowerCase();
+    }, this);
+    if (duplicate) {
+      this._tagError('"' + next + '" is already added.');
+      return false;
+    }
+    if (typeof this.opts.formatTag === 'function') {
+      var formattedEdit = this.opts.formatTag(next, { instance: this, tags: this.getTags() });
+      if (typeof formattedEdit === 'string' && formattedEdit) next = formattedEdit;
+    }
+    if (typeof this.opts.validateTag === 'function') {
+      var validation = this.opts.validateTag(next, this.getTags(), { instance: this });
+      if (validation === false) {
+        this._tagError('"' + next + '" is not allowed.');
+        return false;
+      }
+      if (typeof validation === 'string') {
+        this._tagError(validation);
+        return false;
+      }
+    }
     var previous = tag.label;
     tag.label = next;
     /* keep a matching source option in step so the next render does not revert */
@@ -2542,6 +2591,7 @@
     if (!item) return this;
     var input = el('input', 'zs-chip-edit', { type: 'text', 'aria-label': 'Edit tag label' });
     input.value = item.label;
+    if (this.opts.maxTagLength !== Infinity) input.maxLength = this.opts.maxTagLength;
     var labelNode = chip.querySelector('.zs-chip-label');
     if (labelNode) chip.replaceChild(input, labelNode);
     else chip.insertBefore(input, chip.firstChild);
@@ -3400,7 +3450,9 @@
   ZidanFieldBase.prototype.call = function (name, payload) {
     var fn = this.opts[name];
     if (typeof fn !== 'function') return undefined;
-    try { return fn(payload); } catch (err) { this.emit('error', { error: err, callback: name }); }
+    try { return fn(payload); } catch (err) {
+      this.emit('error', { error: err, message: (err && err.message) || String(err), callback: name });
+    }
     return undefined;
   };
 
@@ -5383,7 +5435,10 @@
             shown += 1;
           });
           if (!shown) pickerList.appendChild(el('p', 'zs-phone-empty', null, opts.phoneCountryEmptyText || 'No countries found'));
-          activeCountry = pickerList.querySelector('[data-iso]');
+          /* opening the menu should keep the current country highlighted; a
+             search narrows the list, so the first match wins there */
+          activeCountry = (!text && pickerList.querySelector('[data-iso="' + self.phone.country + '"]')) ||
+            pickerList.querySelector('[data-iso]');
           if (activeCountry) activeCountry.classList.add('zs-phone-option--active');
         };
         var moveCountry = function (direction) {

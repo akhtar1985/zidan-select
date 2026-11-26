@@ -233,6 +233,7 @@ function siteHeader(page) {
         <option value="minimal">Minimal</option>
         <option value="dark">Dark</option>
         <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
       </select>
     </nav>
   </header>`;

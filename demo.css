@@ -1055,7 +1055,24 @@ fieldset.demo-fieldset {
   font-size: 0.78rem;
 }
 
+.lab-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 12px;
+}
 
+.lab-form-output {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  color: var(--code-foreground);
+  background: var(--code-background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
 
 .theme-preview[data-zs-theme="dark"] {
   background: #0f131c;

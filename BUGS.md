@@ -1,18 +1,22 @@
 # Bugs found in the ZidanForm codebase
 
-Audit performed against `zidan-form.js` (v2.4.2), `zidan-form.mjs`, the page
-scripts (`demo.js`, `lab.js`, `advanced.js`, `ajax.js`, `playground.js`,
-`nav.js`) and the documentation sources (`docs/build.md`, `README.md`,
-`index.html`, `advanced.html`). Severity follows:
+Initial audit performed against `zidan-form.js` (v2.4.2); re-checked against
+the v2.5.0 working tree, including `zidan-form.mjs`, the page scripts
+(`demo.js`, `lab.js`, `advanced.js`, `ajax.js`, `playground.js`, `nav.js`) and
+the documentation sources (`docs/*.md`, `README.md`, `index.html`,
+`advanced.html`). Severity follows:
 
 * **High** — incorrect behaviour or silent data loss in normal use.
 * **Medium** — wrong behaviour in edge cases, redundant work, or duplicate
   events a consumer can observe.
 * **Low** — code smell, dead variable, cosmetic inconsistency.
 
-The repository currently fails one test (`documented sizes match the built
-assets`), see **BUG-001 / BUG-002** below. Everything else is a separate
-review finding.
+**Current status (v2.5.0):** `npm run build`, `npm run sizes`, `npm run
+types` and `npm test` pass. The suite runs 63 DOM tests plus the static
+checks, and the API lab exercises every documented option, callback, method
+and event (92 self-test rows). The size failure described in BUG-001/002 was
+fixed before the v2.5.0 pass; the original verdicts are kept below as an
+audit trail.
 
 ---
 
@@ -316,9 +320,25 @@ Total: **30 findings**, 6 high, 18 medium, 6 low.
 
 ## Resolution status
 
-Re-checked against the working tree in a later pass. `npm test` passes (48 DOM
-tests), including the size check that was failing when this audit was written.
-The working tree already carried the BUG-001/002/003 fixes before the pass.
+Re-checked against the v2.5.0 working tree. `npm test` passes (63 DOM tests),
+including the size check that was failing when this audit was written. The
+working tree already carried the BUG-001/002/003 fixes before the pass.
+
+### v2.5.0 regression re-check
+
+| Area | Verdict | Notes |
+|------|---------|-------|
+| Select `setTheme()` | Fixed | A select only exposed `setLayout()` / `setFramework()`; `setTheme('auto')` now updates the resolved theme, tracks OS changes and untracks when a fixed theme is applied. |
+| Tag inline edit | Fixed | Renaming now enforces `minTagLength`, `maxTagLength`, duplicates, `formatTag` and `validateTag`; the editor also receives `maxlength`. Invalid edits keep the old label and report through `onTagEdit` / `zidan:error`. |
+| Tag move/edit events | Fixed | `zidan:tag-move` and `zidan:tag-edit` now feed the demo console, and the API lab observes both callbacks. |
+| Phone country picker | Fixed | Opening the picker with an empty query highlights the current country instead of the first row, so Enter keeps the selection. |
+| Error payloads | Fixed | Tag and callback errors consistently expose `{ error, message, callback?, instance }`; `zidan:validate` carries `{ valid, form, fields }`. |
+| Auto theme demos | Fixed | Header selectors, the homepage showcase and the API lab expose `auto`; page chrome and components re-resolve on a live `prefers-color-scheme` change. |
+| New option coverage | Fixed | The API lab inventories `phoneCountrySearchText`, `phoneCountryEmptyText`, the six `downscale*` aliases, `getUnmaskedValue()`, `refreshAutogrow()` and the `validate` event; the playground generates the matching attributes and JavaScript. |
+| Downscale documentation | Fixed | Homepage now ships a working 2400 × 1600 sample that reports original and resized dimensions/bytes; `docs/options.md` documents every alias. |
+| README tag claim | Fixed | The trade-offs section no longer says drag-reorder tag editors are missing; it names the remaining limitation (virtualised remote tag editors). |
+
+### Original v2.4.2 findings
 
 | # | Verdict | Notes |
 |---|---------|-------|
@@ -353,6 +373,7 @@ The working tree already carried the BUG-001/002/003 fixes before the pass.
 | 029 | Fixed | `initFieldList` forwards `force` |
 | 030 | Fixed | an identical announcement is repeated on the next tick |
 
-18 code fixes, 1 documentation fix, 3 already fixed before the pass, 6 confirmed
-not defects or intentional behaviour (#005, #020, #023, #024, #025, #026) and
-1 deferred with rationale (#018).
+For the original 30 findings: 18 code fixes, 1 documentation fix, 3 already
+fixed before the pass, 6 confirmed not defects or intentional behaviour (#005,
+#020, #023, #024, #025, #026) and 1 deferred with rationale (#018). The v2.5.0
+re-check above adds eight more code/documentation fixes.

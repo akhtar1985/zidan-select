@@ -271,13 +271,22 @@
 
   /* ---------------- scopes (theme / framework / layout) ---------------- */
 
+  var autoThemeQuery = typeof window.matchMedia === 'function'
+    ? window.matchMedia('(prefers-color-scheme: dark)')
+    : null;
+  function resolvePageTheme(theme) {
+    return theme === 'auto' ? (autoThemeQuery && autoThemeQuery.matches ? 'dark' : 'default') : theme;
+  }
+
   function applyScope() {
-    document.documentElement.setAttribute('data-zs-theme', state.theme);
+    var pageTheme = resolvePageTheme(state.theme);
+    document.documentElement.setAttribute('data-zs-theme', pageTheme);
     document.documentElement.setAttribute('data-zs-framework', state.framework);
 
     select.instances.forEach(function (instance) {
       if (excludesShowcase(instance.root)) return;
-      instance.root.setAttribute('data-zs-theme', state.theme);
+      if (instance.setTheme) instance.setTheme(state.theme === 'auto' ? 'auto' : pageTheme);
+      else instance.root.setAttribute('data-zs-theme', pageTheme);
       instance.root.setAttribute('data-zs-framework', state.framework);
       // an element that chose its own layout keeps it
       if (!instance.el.hasAttribute('data-zidan-layout')) {
@@ -287,7 +296,8 @@
 
     form.fields.forEach(function (field) {
       if (!field.root || excludesShowcase(field.root)) return;
-      field.root.setAttribute('data-zs-theme', state.theme);
+      if (field.setTheme) field.setTheme(state.theme === 'auto' ? 'auto' : pageTheme);
+      else field.root.setAttribute('data-zs-theme', pageTheme);
       field.root.setAttribute('data-zs-framework', state.framework);
       var declared = field.el.hasAttribute('data-zidan-layout') || field.el.hasAttribute('data-zs-layout');
       // per-element layouts win over the playground default
@@ -366,30 +376,42 @@
     });
   }
 
+  var onAutoThemeChange = function () {
+    if (state.theme !== 'auto') return;
+    applyScope();
+    renderSnippet();
+    applyShowcase();
+  };
+  if (autoThemeQuery && autoThemeQuery.addEventListener) autoThemeQuery.addEventListener('change', onAutoThemeChange);
+  else if (autoThemeQuery && autoThemeQuery.addListener) autoThemeQuery.addListener(onAutoThemeChange);
+
   /* ---------------- theme showcase ---------------- */
 
   var preview = document.getElementById('theme-preview');
 
   function applyShowcase() {
     if (!preview) return;
-    preview.setAttribute('data-zs-theme', preview.dataset.showcaseTheme || preview.getAttribute('data-zs-theme'));
+    var requestedTheme = preview.dataset.showcaseTheme || preview.getAttribute('data-zs-theme');
+    preview.setAttribute('data-zs-theme', resolvePageTheme(requestedTheme));
     preview.setAttribute('data-zs-framework', preview.dataset.showcaseFramework || preview.getAttribute('data-zs-framework'));
-    var theme = preview.getAttribute('data-zs-theme');
     var framework = preview.getAttribute('data-zs-framework');
     select.instances.forEach(function (instance) {
       if (!preview.contains(instance.root)) return;
-      instance.root.setAttribute('data-zs-theme', theme);
+      if (instance.setTheme) instance.setTheme(requestedTheme);
+      else instance.root.setAttribute('data-zs-theme', resolvePageTheme(requestedTheme));
       instance.root.setAttribute('data-zs-framework', framework);
     });
     form.fields.forEach(function (field) {
       if (!field.root || !preview.contains(field.root)) return;
-      field.root.setAttribute('data-zs-theme', theme);
+      if (field.setTheme) field.setTheme(requestedTheme);
+      else field.root.setAttribute('data-zs-theme', resolvePageTheme(requestedTheme));
       field.root.setAttribute('data-zs-framework', framework);
     });
   }
 
   document.querySelectorAll('[data-theme]').forEach(function (button) {
     button.addEventListener('click', function () {
+      preview.dataset.showcaseTheme = button.dataset.theme;
       preview.setAttribute('data-zs-theme', button.dataset.theme);
       document.querySelectorAll('[data-theme]').forEach(function (other) {
         other.setAttribute('aria-pressed', String(other === button));
@@ -674,6 +696,106 @@
     });
   }
 
+  /* ---------------- client-side image downscale ---------------- */
+
+  var resizeInput = document.getElementById('file-resize');
+  var resizeStatus = document.getElementById('file-resize-status');
+  var resizeSample = document.getElementById('file-resize-sample');
+  if (resizeInput && resizeStatus && window.zidanField) {
+    var resizeOriginal = null;
+
+    function resizeBytes(bytes) {
+      if (!bytes && bytes !== 0) return 'unknown size';
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(2) + ' MB';
+    }
+
+    function resizeInfo(file) {
+      return new Promise(function (resolve) {
+        if (!file || typeof window.Image === 'undefined' || !window.URL || !window.URL.createObjectURL) {
+          resolve(null);
+          return;
+        }
+        var url = window.URL.createObjectURL(file);
+        var image = new window.Image();
+        var finish = function (info) {
+          try { window.URL.revokeObjectURL(url); } catch (error) { /* already revoked */ }
+          resolve(info);
+        };
+        image.onload = function () {
+          finish({ width: image.naturalWidth || image.width, height: image.naturalHeight || image.height });
+        };
+        image.onerror = function () { finish(null); };
+        image.src = url;
+      });
+    }
+
+    var resizeField = window.zidanField(resizeInput, {
+      label: 'Photo',
+      title: 'Drop a large photo',
+      hint: 'Max 600 × 400 · JPEG quality 0.8 · resized in the browser',
+      accept: 'image/*',
+      maxFiles: 1,
+      autoUpload: true,
+      showPreview: true,
+      downscale: { maxWidth: 600, maxHeight: 400, quality: 0.8, mime: 'image/jpeg' },
+      onChange: function (payload) {
+        resizeOriginal = payload && payload.files && payload.files[0] ? payload.files[0] : null;
+      },
+      upload: function (file, context) {
+        var original = resizeOriginal || file;
+        Promise.all([resizeInfo(original), resizeInfo(file)]).then(function (sizes) {
+          var before = sizes[0];
+          var after = sizes[1];
+          var dimensions = function (info) { return info ? info.width + ' × ' + info.height : 'dimensions unavailable'; };
+          var saved = original.size - file.size;
+          var note = saved > 0
+            ? Math.round((saved / original.size) * 100) + '% smaller'
+            : 'already within the limit — original kept';
+          resizeStatus.textContent = 'Original ' + dimensions(before) + ' · ' + resizeBytes(original.size)
+            + ' → resized ' + dimensions(after) + ' · ' + resizeBytes(file.size)
+            + ' (' + note + '). Uploaded without leaving the browser.';
+        });
+        context.complete({ url: 'demo://photo' });
+      }
+    });
+
+    if (resizeSample) {
+      resizeSample.addEventListener('click', function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = 2400;
+        canvas.height = 1600;
+        var context = canvas.getContext && canvas.getContext('2d');
+        if (!context || !canvas.toBlob) {
+          resizeStatus.textContent = 'This browser cannot generate the sample — pick an image instead.';
+          return;
+        }
+        var gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, '#0f766e');
+        gradient.addColorStop(0.5, '#2563eb');
+        gradient.addColorStop(1, '#9333ea');
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = 'rgba(255, 255, 255, 0.92)';
+        context.font = 'bold 132px system-ui, sans-serif';
+        context.fillText('2400 × 1600', 150, 780);
+        context.font = '54px system-ui, sans-serif';
+        context.fillText('generated sample for the downscale demo', 154, 880);
+        canvas.toBlob(function (blob) {
+          if (!blob) {
+            resizeStatus.textContent = 'The sample could not be encoded — pick an image instead.';
+            return;
+          }
+          var sample = new window.File([blob], 'sample-2400x1600.jpg', { type: 'image/jpeg' });
+          resizeField.clear();
+          resizeOriginal = sample;
+          resizeField.addFiles([sample]);
+        }, 'image/jpeg', 0.92);
+      });
+    }
+  }
+
   /* ---------------- live event console ---------------- */
 
   var logList = document.getElementById('event-log');
@@ -688,7 +810,8 @@
     'phone-country', 'phone-format', 'icon-click',
     'upload-start', 'upload-progress', 'upload-success', 'upload-error', 'upload-cancel',
     'remove', 'clear', 'error', 'reveal', 'open', 'close', 'select',
-    'tag-add', 'tag-remove', 'no-results', 'load-more', 'destroy'
+    'tag-add', 'tag-remove', 'tag-move', 'tag-edit', 'no-results', 'load-more',
+    'validate', 'destroy'
   ];
 
   function refreshLogCount() {

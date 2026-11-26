@@ -28,7 +28,7 @@
         "alternateName": "zidan-select",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "Any",
-        "description": "Zero-dependency form enhancement library for select, combobox, tags, checkbox, switch, radio, file upload and text inputs, with split core/theme CSS, five themes and framework adapters.",
+        "description": "Zero-dependency form enhancement library for select, combobox, tags, checkbox, switch, radio, file upload and text inputs, with split core/theme CSS, five themes plus automatic OS dark mode and framework adapters.",
         "url": "https://akhtar1985.github.io/zidan-select/",
         "sameAs": [
           "https://github.com/akhtar1985/zidan-select",
@@ -138,6 +138,7 @@
         <option value="minimal">Minimal</option>
         <option value="dark">Dark</option>
         <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
       </select>
     </nav>
   </header>
@@ -163,7 +164,7 @@
       <ul class="feature-chips">
         <li>Zero dependencies</li>
         <li>Core + theme CSS</li>
-        <li>5 themes</li>
+        <li>5 themes + auto</li>
         <li>5 layouts</li>
         <li>Bootstrap · Tailwind · Bulma · Foundation</li>
         <li>Validation-library friendly</li>
@@ -198,7 +199,7 @@
           <a class="build-pick" href="#build-select">
             <strong>Only custom select dropdowns</strong>
             <span>Load the select-only JS plus its core and theme CSS. The rest of the page stays untouched — no full bundle.</span>
-            <em>≈144 kB JS · ≈83 kB minified</em>
+            <em>≈145 kB JS · ≈84 kB minified</em>
           </a>
           <a class="build-pick" href="#build-file">
             <strong>Only file uploads</strong>
@@ -208,13 +209,13 @@
           <a class="build-pick" href="#build-full">
             <strong>Every input in the form</strong>
             <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
-            <em>≈273 kB JS · ≈156 kB minified</em>
+            <em>≈275 kB JS · ≈157 kB minified</em>
           </a>
         </div>
       </div>
       <div class="grid-3">
         <article class="card build-card" id="build-full">
-          <h3>Full build <span class="build-size">≈273 kB · ≈156 kB min</span></h3>
+          <h3>Full build <span class="build-size">≈275 kB · ≈157 kB min</span></h3>
           <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js">JS</a>
@@ -229,7 +230,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-select">
-          <h3>Select-only <span class="build-size">≈144 kB · ≈83 kB min</span></h3>
+          <h3>Select-only <span class="build-size">≈145 kB · ≈84 kB min</span></h3>
           <p>Select, combobox, tags and multi-select — everything the select family needs.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js">JS</a>
@@ -487,6 +488,7 @@ const email = zidanField('#email', {
             <option value="minimal">minimal</option>
             <option value="dark">dark</option>
             <option value="glass">glass</option>
+            <option value="auto">auto (OS)</option>
           </select>
         </div>
         <div class="field-mini">
@@ -1035,6 +1037,27 @@ owner.getAsyncState();     owner.refreshOptions();   owner.clearCache();</code><
                    data-zidan-title="Upload media" data-zidan-upload-icon="cloud">
             <p class="form-status" id="file-status" role="status" aria-live="polite"></p>
           </div>
+          <div class="card" id="file-downscale" style="grid-column:1 / -1">
+            <h3>Client-side image downscale</h3>
+            <p>Large photos are resized before upload with canvas. This field caps the long edge at
+              <strong>600 × 400</strong> and re-encodes as JPEG at quality 0.8. Pick your own image, or
+              generate a 2400 × 1600 sample to see the before/after dimensions and bytes.</p>
+            <input id="file-resize" name="photo" type="file" accept="image/*">
+            <div class="lab-form-actions">
+              <button type="button" class="btn" id="file-resize-sample">Use a 2400 × 1600 sample</button>
+            </div>
+            <p class="form-status" id="file-resize-status" role="status" aria-live="polite">
+              Choose an image to compare the original with the resized upload.
+            </p>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>&lt;input id="photo" type="file" accept="image/*"
+       data-zidan="file" data-zidan-downscale
+       data-zidan-downscale-max-width="600"
+       data-zidan-downscale-max-height="400"
+       data-zidan-downscale-quality="0.8"
+       data-zidan-downscale-mime="image/jpeg"&gt;</code></pre>
+            </div>
+          </div>
           <div class="card" id="cms-file" style="grid-column:1 / -1">
             <h3>No-JS init for uploads</h3>
             <p>A plain file input is enough. Target it by ID in <code>ZIDAN_FORM_CONFIG</code>, or add the
@@ -1269,7 +1292,7 @@ window.ZIDAN_FORM_CONFIG = {
           <div class="card">
             <h3>Select options</h3>
             <p>A combobox wired with every select option: rendering hooks, text overrides,
-              scrollbar, custom classes, validation and all nine select callbacks. The second
+              scrollbar, custom classes, validation and every select callback, including tag move/edit. The second
               select stays disabled until the <code>enable()</code> self-test runs.</p>
             <select id="lab-select">
               <option value="starter">Starter</option>
@@ -1375,6 +1398,31 @@ window.ZIDAN_FORM_CONFIG = {
             <p style="margin-top:14px"><input id="lab-upload-xhr" type="file"></p>
             <div id="lab-probe-host" hidden></div>
           </div>
+          <div class="card" id="lab-form-card">
+            <h3>Form-level helpers</h3>
+            <p><code>ZidanForm.serialize()</code> returns one object with arrays for repeated
+              names; <code>ZidanForm.validate()</code> runs every field rule and native
+              constraint, then focuses the first invalid control. Both accept a form element or
+              selector.</p>
+            <form id="lab-form">
+              <p><input id="lab-form-name" name="name" type="text" value="Ada Lovelace" required></p>
+              <p><input id="lab-form-email" name="email" type="email" value="ada@example.com" required></p>
+              <p><textarea id="lab-form-note" name="note" rows="3">Hello from the API lab.</textarea></p>
+            </form>
+            <div class="lab-form-actions">
+              <button type="button" class="btn" id="lab-form-serialize">serialize()</button>
+              <button type="button" class="btn btn-primary" id="lab-form-validate">validate()</button>
+            </div>
+            <pre class="lab-form-output" id="lab-form-output" aria-live="polite">Pick a helper to see its result.</pre>
+            <div class="snippet-block snippet-block--inline">
+              <pre><code>const data = ZidanForm.serialize('#lab-form');
+// { name: 'Ada Lovelace', email: 'ada@example.com', note: '…' }
+
+ZidanForm.validate('#lab-form').then((valid) =&gt; {
+  console.log(valid ? 'ready to submit' : 'fix the highlighted field');
+});</code></pre>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1391,6 +1439,7 @@ window.ZIDAN_FORM_CONFIG = {
             <button type="button" data-theme="minimal" aria-pressed="false">minimal</button>
             <button type="button" data-theme="dark" aria-pressed="false">dark</button>
             <button type="button" data-theme="glass" aria-pressed="false">glass</button>
+            <button type="button" data-theme="auto" aria-pressed="false">auto</button>
           </div>
           <div class="swatch-row" role="group" aria-label="Preview framework adapter">
             <button type="button" data-framework="none" aria-pressed="true">standalone</button>
@@ -1459,10 +1508,10 @@ window.ZIDAN_FORM_CONFIG = {
                 <tr><th>Option</th><th>Data attribute</th><th>Default</th><th>Description</th></tr>
               </thead>
               <tbody>
-                <tr><td><code>theme</code></td><td><code>data-zidan-theme</code></td><td><code>default</code></td><td>Preset theme: default, modern, minimal, dark, glass.</td></tr>
+                <tr><td><code>theme</code></td><td><code>data-zidan-theme</code></td><td><code>default</code></td><td>Preset theme: default, modern, minimal, dark, glass, auto (follows <code>prefers-color-scheme</code>).</td></tr>
                 <tr><td><code>framework</code></td><td><code>data-zidan-framework</code></td><td><code>none</code></td><td>Adapter: none, bootstrap, tailwind, bulma, foundation.</td></tr>
                 <tr><td><code>layout</code></td><td><code>data-zidan-layout</code></td><td><code>stacked</code></td><td>Field layout: stacked, inline, compact, floating, outlined, card. Selects use their own five layouts.</td></tr>
-                <tr><td><code>variant</code></td><td><code>data-zidan-variant</code></td><td><code>default</code></td><td>Checkbox: default/switch/card. Radio groups: stacked/inline/card.</td></tr>
+                <tr><td><code>variant</code></td><td><code>data-zidan-variant</code></td><td><code>default</code></td><td>Checkbox: default/switch/card/button/minimal. Radio groups: stacked/inline/card/button/tile. File: dropzone/button/avatar/gallery/compact.</td></tr>
                 <tr><td><code>label</code></td><td><code>data-zidan-label</code></td><td>—</td><td>Label text when the markup has no <code>&lt;label&gt;</code>.</td></tr>
                 <tr><td><code>hint</code></td><td><code>data-zidan-hint</code></td><td>—</td><td>Helper text, wired through <code>aria-describedby</code>.</td></tr>
                 <tr><td><code>clearable</code></td><td><code>data-zidan-clear</code></td><td><code>search</code> only</td><td>Adds a clear button to text fields and textarea.</td></tr>
@@ -1475,6 +1524,11 @@ window.ZIDAN_FORM_CONFIG = {
                 <tr><td><code>indeterminate</code></td><td><code>data-zidan-indeterminate</code></td><td><code>false</code></td><td>Start a checkbox in the mixed state.</td></tr>
                 <tr><td><code>validation</code></td><td><code>data-zidan-validation</code></td><td><code>null</code></td><td>Force <code>valid</code> / <code>invalid</code> state.</td></tr>
                 <tr><td><code>scrollbar</code></td><td><code>data-zidan-scrollbar</code></td><td><code>default</code></td><td>Select listbox scrollbar: default, thin, fancy, hover, hidden.</td></tr>
+                <tr><td><code>mask</code></td><td><code>data-zidan-mask</code></td><td>—</td><td>Input mask; <code>#</code> digit, <code>A</code> letter, <code>*</code> letter or digit, other characters are literals.</td></tr>
+                <tr><td><code>autogrow</code> / <code>autogrowMax</code></td><td><code>data-zidan-autogrow</code> / <code>-max</code></td><td><code>false</code></td><td>Grow a textarea with its content, capped in pixels.</td></tr>
+                <tr><td><code>reorderable</code> / <code>editable</code></td><td><code>data-zidan-reorderable</code> / <code>-editable</code></td><td><code>false</code></td><td>Tags: drag or Alt+Arrow to reorder; F2 or double-click to rename.</td></tr>
+                <tr><td><code>downscale</code></td><td><code>data-zidan-downscale</code></td><td><code>false</code></td><td>Resize images before upload; tune with <code>downscaleMaxWidth</code>, <code>-MaxHeight</code>, <code>-Quality</code>, <code>-MaxBytes</code>, <code>-Mime</code> and <code>-Force</code>.</td></tr>
+                <tr><td><code>phoneCountrySearchText</code> / <code>phoneCountryEmptyText</code></td><td>—</td><td>English</td><td>Custom copy for the searchable phone country picker.</td></tr>
               </tbody>
             </table>
           </div>

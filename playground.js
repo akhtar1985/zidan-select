@@ -125,6 +125,8 @@
             number('maxTags', 'Max tags', '', function (s) { return s.mode === 'tags'; }),
             number('minTagLength', 'Min tag length', 1, function (s) { return s.mode === 'tags'; }),
             number('maxTagLength', 'Max tag length', '', function (s) { return s.mode === 'tags'; }),
+            bool('reorderable', 'Drag / Alt+Arrow reorder', false, function (s) { return s.mode === 'tags'; }, true),
+            bool('editable', 'F2 / double-click rename', false, function (s) { return s.mode === 'tags'; }, true),
             bool('allowFreeText', 'Allow free text', true, function (s) { return s.mode === 'tags'; }),
             bool('commitOnTab', 'Commit on Tab', false, function (s) { return s.mode === 'tags'; }),
             bool('commitOnBlur', 'Commit on blur', false, function (s) { return s.mode === 'tags'; })
@@ -137,8 +139,9 @@
           mode: 'combobox', layout: 'classic-clean', theme: 'default', framework: 'none', scrollbar: 'default',
           label: 'Favorite movie', placeholder: 'Choose a movie…', searchable: true, clearable: true,
           multiple: false, closeOnSelect: '', maxDropdownHeight: 280,
-          maxTags: '', minTagLength: 1, maxTagLength: '', allowFreeText: true,
-          commitOnTab: false, commitOnBlur: false, required: false, disabled: false, validation: ''
+          maxTags: '', minTagLength: 1, maxTagLength: '', reorderable: false, editable: false,
+          allowFreeText: true, commitOnTab: false, commitOnBlur: false, required: false,
+          disabled: false, validation: ''
         };
       }
     },
@@ -182,6 +185,18 @@
           ]
         },
         {
+          title: 'Image downscale',
+          fields: [
+            bool('downscale', 'Resize images before upload', false, null, true),
+            number('downscaleMaxWidth', 'Max width (px)', 1024, function (s) { return !!s.downscale; }),
+            number('downscaleMaxHeight', 'Max height (px)', 1024, function (s) { return !!s.downscale; }),
+            number('downscaleQuality', 'JPEG / WebP quality', 0.85, function (s) { return !!s.downscale; }),
+            number('downscaleMaxBytes', 'Skip files at or below (bytes)', 0, function (s) { return !!s.downscale; }),
+            choice('downscaleMime', 'Output format', [['', 'Auto'], ['image/jpeg', 'JPEG'], ['image/webp', 'WebP'], ['image/png', 'PNG']], '', function (s) { return !!s.downscale; }),
+            bool('downscaleForce', 'Keep output even if larger', false, function (s) { return !!s.downscale; })
+          ]
+        },
+        {
           title: 'Upload endpoint',
           fields: [
             text('uploadUrl', 'Upload URL (XHR)', '/api/files'),
@@ -202,6 +217,8 @@
           title: 'Drag & drop your files', dropHint: 'PNG, JPG or PDF up to 5 MB', accept: 'image/*,.pdf', hint: '',
           maxFiles: 4, maxSizeMB: 5, multiple: true, autoUpload: true, simulateUpload: false,
           simulateDuration: 900, showPreview: true, showFileMeta: true,
+          downscale: false, downscaleMaxWidth: 1024, downscaleMaxHeight: 1024,
+          downscaleQuality: 0.85, downscaleMaxBytes: 0, downscaleMime: '', downscaleForce: false,
           uploadUrl: '', uploadField: 'file', withCredentials: false,
           progressTemplate: 'Uploading {percent}%', uploadedLabel: 'Uploaded',
           failedLabel: 'Upload failed', cancelLabel: 'Cancel', retryLabel: 'Retry',
@@ -442,6 +459,8 @@
         bool('phoneCountrySelect', 'Country selector', true, function (s) { return s.type === 'tel' && s.phone; }),
         text('phoneCountries', 'Countries (ISO list)', '', function (s) { return s.type === 'tel' && s.phone; }),
         text('phoneCountryLabel', 'Country aria-label', '', function (s) { return s.type === 'tel' && s.phone; }),
+        text('phoneCountrySearchText', 'Country search placeholder', '', function (s) { return s.type === 'tel' && s.phone; }),
+        text('phoneCountryEmptyText', 'No-country message', '', function (s) { return s.type === 'tel' && s.phone; }),
         bool('phoneValidate', 'Validate length', true, function (s) { return s.type === 'tel' && s.phone; })
       ]
     });
@@ -519,7 +538,8 @@
     placeholderLabel: 'Phone number',
     defaults: {
       type: 'tel', label: 'Phone number', autoIcon: true, phone: true,
-      phoneCountry: 'GB', phoneFormat: 'international', value: '07700 900123'
+      phoneCountry: 'GB', phoneFormat: 'international', value: '07700 900123',
+      phoneCountrySearchText: '', phoneCountryEmptyText: ''
     }
   });
   KINDS.range = textKind('range', {
@@ -701,6 +721,8 @@
         attrs += attr('data-zidan-max-tags', s.maxTags);
         attrs += attr('data-zidan-min-tag-length', s.minTagLength);
         attrs += attr('data-zidan-max-tag-length', s.maxTagLength);
+        if (s.reorderable) attrs += flag('data-zidan-reorderable', true);
+        if (s.editable) attrs += flag('data-zidan-editable', true);
         attrs += attr('data-zidan-allow-free-text', s.allowFreeText ? 'true' : 'false');
       }
       attrs += attr('data-zidan-validation', s.validation);
@@ -738,6 +760,15 @@
       attrs += attr('data-zidan-simulate-duration', s.simulateUpload ? s.simulateDuration : '');
       attrs += attr('data-zidan-preview', s.showPreview ? 'true' : 'false');
       attrs += attr('data-zidan-show-file-meta', s.showFileMeta ? 'true' : 'false');
+      if (s.downscale) {
+        attrs += flag('data-zidan-downscale', true);
+        attrs += attr('data-zidan-downscale-max-width', s.downscaleMaxWidth);
+        attrs += attr('data-zidan-downscale-max-height', s.downscaleMaxHeight);
+        attrs += attr('data-zidan-downscale-quality', s.downscaleQuality);
+        attrs += attr('data-zidan-downscale-max-bytes', s.downscaleMaxBytes);
+        attrs += attr('data-zidan-downscale-mime', s.downscaleMime);
+        attrs += attr('data-zidan-downscale-force', s.downscaleForce ? 'true' : 'false');
+      }
       attrs += attr('data-zidan-validation', s.validation);
     }
     attrs += attr('accept', s.accept);
@@ -940,6 +971,8 @@
         if (Number(s.maxTags) > 0) add('maxTags', Number(s.maxTags));
         add('minTagLength', Number(s.minTagLength) || 1);
         if (Number(s.maxTagLength) > 0) add('maxTagLength', Number(s.maxTagLength));
+        add('reorderable', !!s.reorderable);
+        add('editable', !!s.editable);
         add('allowFreeText', !!s.allowFreeText);
         add('commitOnTab', !!s.commitOnTab);
         add('commitOnBlur', !!s.commitOnBlur);
@@ -961,6 +994,16 @@
       if (s.simulateUpload) add('simulateDuration', Number(s.simulateDuration) || 900);
       add('showPreview', s.showPreview);
       add('showFileMeta', s.showFileMeta);
+      if (s.downscale) {
+        add('downscale', {
+          maxWidth: Number(s.downscaleMaxWidth) || 1920,
+          maxHeight: Number(s.downscaleMaxHeight) || 1920,
+          quality: Number(s.downscaleQuality) || 0.85,
+          maxBytes: Number(s.downscaleMaxBytes) || 0,
+          mime: s.downscaleMime,
+          force: !!s.downscaleForce
+        });
+      }
       if (s.uploadUrl) {
         add('uploadUrl', s.uploadUrl);
         add('uploadField', s.uploadField);
@@ -1043,6 +1086,8 @@
         if (phoneCountries.length) phoneOptions.countries = phoneCountries;
         add('phone', phoneOptions);
         add('phoneCountryLabel', s.phoneCountryLabel);
+        add('phoneCountrySearchText', s.phoneCountrySearchText);
+        add('phoneCountryEmptyText', s.phoneCountryEmptyText);
       }
       if (type === 'range') {
         add('rangeVariant', s.rangeVariant);

@@ -910,7 +910,7 @@ test('API lab: every documented option, callback and method is demonstrated', as
   for (const category of Object.keys(missing)) {
     assert.deepEqual(Array.from(missing[category]), [], category + ' coverage is incomplete');
   }
-  assert.equal(lab.expected.events.length, 29, 'event inventory is incomplete');
+  assert.equal(lab.expected.events.length, 30, 'event inventory is incomplete');
   const selectDefaults = Object.keys(window.ZidanSelect.defaults);
   assert.deepEqual(Array.from(selectDefaults.filter(name => !lab.expected.selectOptions.includes(name))), [], 'API lab inventory omits select defaults');
   const optionsDoc = fs.readFileSync(path.join(root, 'docs/options.md'), 'utf8');
@@ -949,6 +949,15 @@ test('playground emits supported attributes and complete JavaScript options', ()
     assert.doesNotMatch(markup, new RegExp('data-zidan-' + name));
     assert.match(window.document.getElementById('pg-js').textContent, new RegExp(name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) + ':'));
   }
+
+  const downscale = window.document.getElementById('pg-opt-downscale');
+  downscale.checked = true;
+  downscale.dispatchEvent(new window.Event('change', { bubbles: true }));
+  markup = window.document.getElementById('pg-html').textContent;
+  assert.match(markup, /data-zidan-downscale/);
+  assert.match(markup, /data-zidan-downscale-max-width="1024"/);
+  assert.match(markup, /data-zidan-downscale-quality="0.85"/);
+  assert.match(window.document.getElementById('pg-js').textContent, /downscale: \{"maxWidth":1024/);
 });
 
 test('API lab: self-tests pass and every public event is observed', async () => {
@@ -956,7 +965,7 @@ test('API lab: self-tests pass and every public event is observed', async () => 
   const output = await window.DemoLab.runSelfTest();
   const results = Array.from(output.results);
   const failed = results.filter(result => !result.ok);
-  assert.ok(results.length >= 74, 'self-test did not exercise the full public API');
+  assert.ok(results.length >= 90, 'self-test did not exercise the full public API');
   assert.deepEqual(failed.map(result => result.name + ': ' + result.message), [], 'API lab self-test failures');
   assert.deepEqual(Array.from(output.missingEvents), [], 'API lab did not observe every public event');
   for (const category of Object.keys(output.missingCoverage)) {
@@ -973,6 +982,7 @@ test('shared header: mobile menu and quick theme work on every shell', () => {
         <select id="quick-theme">
           <option value="default">Default theme</option>
           <option value="dark">Dark</option>
+          <option value="auto">Auto</option>
         </select>
       </nav>
     </header>
@@ -981,7 +991,12 @@ test('shared header: mobile menu and quick theme work on every shell', () => {
   </body></html>`, { runScripts: 'dangerously', url: 'https://zidan.test/' });
   const { window } = dom;
   const media = { matches: false, addEventListener() {} };
-  window.matchMedia = () => media;
+  const autoListeners = [];
+  const autoMedia = {
+    matches: false,
+    addEventListener(type, listener) { if (type === 'change') autoListeners.push(listener); }
+  };
+  window.matchMedia = (query) => String(query).indexOf('prefers-color-scheme') !== -1 ? autoMedia : media;
   window.ZidanSelect = { instances: [{ root: window.document.getElementById('select-root') }] };
   window.ZidanForm = { fields: [{ root: window.document.getElementById('field-root') }] };
   window.eval(navSource());
@@ -1003,6 +1018,15 @@ test('shared header: mobile menu and quick theme work on every shell', () => {
   quick.dispatchEvent(new window.Event('change'));
   assert.equal(window.document.documentElement.getAttribute('data-zs-theme'), 'dark');
   assert.equal(window.document.getElementById('select-root').getAttribute('data-zs-theme'), 'dark');
+  assert.equal(window.document.getElementById('field-root').getAttribute('data-zs-theme'), 'dark');
+
+  quick.value = 'auto';
+  quick.dispatchEvent(new window.Event('change'));
+  assert.equal(window.document.documentElement.getAttribute('data-zs-theme'), 'default');
+  assert.equal(window.document.getElementById('select-root').getAttribute('data-zs-theme'), 'default');
+  autoMedia.matches = true;
+  autoListeners.forEach((listener) => listener());
+  assert.equal(window.document.documentElement.getAttribute('data-zs-theme'), 'dark', 'auto did not follow a live OS change');
   assert.equal(window.document.getElementById('field-root').getAttribute('data-zs-theme'), 'dark');
 });
 
@@ -1178,7 +1202,12 @@ test('input mask formats literals and exposes mask/unmask helpers', () => {
 
 test('tags can be reordered and renamed in place', () => {
   const window = boot('<select id="s" multiple></select>');
-  const select = window.zidanSelect('#s', { mode: 'tags', reorderable: true, editable: true, options: ['One', 'Two', 'Three'] });
+  const select = window.zidanSelect('#s', {
+    mode: 'tags', reorderable: true, editable: true,
+    minTagLength: 2, maxTagLength: 8,
+    validateTag: (value) => value !== 'Bad',
+    options: ['One', 'Two', 'Three']
+  });
   select.addTag('One');
   select.addTag('Two');
   select.addTag('Three');
@@ -1190,11 +1219,17 @@ test('tags can be reordered and renamed in place', () => {
   const nativeOne = Array.from(select.el.options).find((option) => option.value === 'One');
   assert.equal(nativeOne.textContent, 'Uno', 'native option label did not follow the edit');
   assert.equal(select.editTag('missing', 'x'), false);
+  assert.equal(select.editTag('Uno', 'X'), false, 'editTag should enforce minTagLength');
+  assert.equal(select.editTag('Uno', 'FarTooLong'), false, 'editTag should enforce maxTagLength');
+  assert.equal(select.editTag('Uno', 'Bad'), false, 'editTag should run validateTag');
+  assert.equal(select.editTag('Uno', 'Two'), false, 'editTag should reject duplicate labels');
+  assert.equal(select.getSelectedItems()[1].label, 'Uno', 'rejected edits must not change the tag');
   const chip = select.chipsEl.querySelector('.zs-chip[data-zs-index="0"]');
   chip.focus();
   chip.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'F2', bubbles: true, cancelable: true }));
   const editor = select.chipsEl.querySelector('.zs-chip-edit');
   assert.ok(editor, 'F2 did not open the inline tag editor');
+  assert.equal(editor.maxLength, 8, 'inline editor should inherit maxTagLength');
   editor.value = 'Third';
   editor.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
   assert.equal(select.chipsEl.querySelector('.zs-chip-edit'), null, 'Enter did not close the inline tag editor');
@@ -1244,8 +1279,8 @@ test('ZidanForm.validate runs field rules and native constraints', async () => {
   assert.deepEqual(events, [false, false, true]);
 });
 
-test('phone country picker searches and switches the dial code', () => {
-  const window = boot('<input id="p" type="tel" data-zidan-phone="true">');
+test('phone country picker keeps the current country active and searches', () => {
+  const window = boot('<input id="p" type="tel" data-zidan-phone="true" data-zidan-phone-country="GB">');
   const field = window.zidanField('#p');
   const button = field.root.querySelector('.zs-phone-picker');
   const menu = field.root.querySelector('.zs-phone-menu');
@@ -1254,7 +1289,11 @@ test('phone country picker searches and switches the dial code', () => {
   button.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
   assert.equal(menu.hidden, false);
   assert.equal(button.getAttribute('aria-expanded'), 'true');
+  const active = menu.querySelector('.zs-phone-option--active');
+  assert.equal(active && active.getAttribute('data-iso'), 'GB', 'opening should highlight the current country');
   const search = menu.querySelector('.zs-phone-search');
+  search.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+  assert.equal(field.getPhoneCountry(), 'GB', 'Enter should keep the current country');
   search.value = 'germany';
   search.dispatchEvent(new window.Event('input', { bubbles: true }));
   const options = menu.querySelectorAll('[data-iso]');

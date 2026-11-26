@@ -9,7 +9,7 @@ Contents:
 
 1. [Pick the files first](#1-pick-the-files-first)
 2. [Five ways to switch a control on](#2-five-ways-to-switch-a-control-on)
-3. [Complete static page — full build](#3-complete-static-page--full-build)
+3. [Complete static page — full build](#3-complete-static-page-full-build)
 4. [Complete select-only page](#4-complete-select-only-page)
 5. [Complete file-only page](#5-complete-file-only-page)
 6. [Enhance by ID or class from JavaScript](#6-enhance-by-id-or-class-from-javascript)

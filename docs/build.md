@@ -131,9 +131,9 @@ Regenerate them with `npm run build` followed by `npm run sizes`; `npm test` fai
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | 279,391 B (≈273 kB) → 159,804 B (≈156 kB) | 44,016 B (≈43 kB) → 33,862 B (≈33 kB) | 47,953 B (≈47 kB) → 40,219 B (≈39 kB) |
-| Select-only | 147,052 B (≈144 kB) → 85,306 B (≈83 kB) | 13,156 B (≈13 kB) → 10,092 B (≈10 kB) | 32,815 B (≈32 kB) → 27,741 B (≈27 kB) |
-| File-only | 101,720 B (≈99 kB) → 58,615 B (≈57 kB) | 9,939 B (≈10 kB) → 7,210 B (≈7 kB) | 35,241 B (≈34 kB) → 30,159 B (≈29 kB) |
+| Full | 281,567 B (≈275 kB) → 161,035 B (≈157 kB) | 44,016 B (≈43 kB) → 33,862 B (≈33 kB) | 47,953 B (≈47 kB) → 40,219 B (≈39 kB) |
+| Select-only | 148,930 B (≈145 kB) → 86,448 B (≈84 kB) | 13,156 B (≈13 kB) → 10,092 B (≈10 kB) | 32,815 B (≈32 kB) → 27,741 B (≈27 kB) |
+| File-only | 101,776 B (≈99 kB) → 58,647 B (≈57 kB) | 9,939 B (≈10 kB) → 7,210 B (≈7 kB) | 35,241 B (≈34 kB) → 30,159 B (≈29 kB) |
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their

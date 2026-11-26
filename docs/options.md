@@ -144,7 +144,7 @@ Applies to `ZidanCheckbox`, `ZidanRadioGroup`, `ZidanFileUpload`, `ZidanTextFiel
 | --- | --- | --- | --- | --- |
 | `variant` | `data-zidan-variant` | string | `default` | Checkbox: `default`, `switch`, `card`, `button`, `minimal`. Radio: `stacked`, `inline`, `card`, `button`, `tile`. File: `dropzone`, `button`, `avatar`, `gallery`, `compact`. Range uses `rangeVariant`. |
 | `layout` | `data-zidan-layout` | string | `stacked` | `stacked`, `inline`, `compact`, `floating`, `outlined`, `card`. |
-| `theme` | `data-zidan-theme`, `data-zs-theme` | string | `default` | `default`, `modern`, `minimal`, `dark`, `glass`. Resolves element → ancestor → `<html>`. |
+| `theme` | `data-zidan-theme`, `data-zs-theme` | string | `default` | `default`, `modern`, `minimal`, `dark`, `glass`, `auto`. Resolves element → ancestor → `<html>`; `auto` follows `prefers-color-scheme`. |
 | `framework` | `data-zidan-framework`, `data-zs-framework` | string | `none` | `none`, `bootstrap`, `tailwind`, `bulma`, `foundation`, `vanilla`. |
 | `label` | `data-zidan-label` | string | — | Used when the markup has no `<label>`; a generated label is `<label for>`. If the markup already has a `<label>`, the generated one replaces it and the original is hidden until `destroy()`. |
 | `hint` | `data-zidan-hint` | string | — | Rendered under the control and linked via `aria-describedby`. |
@@ -1033,7 +1033,7 @@ File adds `getFiles()`, `getUploadState()`, `addFiles()`, `replaceFiles()`, `rem
 
 `open()`, `close()`, `toggle()`, `isOpen()`, `getValue()`, `setValue(value, config?)`,
 `clear(config?)`, `setOptions(items)`, `addTag()`, `removeTag()`, `getTags()`, `enable()`,
-`disable()`, `setLayout()`, `setFramework()`, `setScrollbar()`, `setValidation()`,
+`disable()`, `setTheme()`, `setLayout()`, `setFramework()`, `setScrollbar()`, `setValidation()`,
 `refresh()`, `loadMore()`, `hasMoreResults()`, `getAsyncState()`, `refreshOptions()`,
 `clearCache()`, `on(event, handler)`, `off(event, handler)`, `announce(message)`, `destroy()`.
 
@@ -1101,4 +1101,5 @@ selection, so there is no matching `zidan:select` for it.
 | `zidan:upload-cancel` | `{ instance, file, name }` |
 | `zidan:clear` | `{ instance }` |
 | `zidan:destroy` | `{ instance }` |
-| `zidan:error` | `{ error, callback, instance }` |
+| `zidan:validate` | `{ valid, form, fields }` on the `<form>` after `ZidanForm.validate()` |
+| `zidan:error` | `{ error, message?, callback?, instance }` |

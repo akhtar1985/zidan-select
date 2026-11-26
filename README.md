@@ -30,8 +30,8 @@ Sizes measure the current source build; CDN links pin the 2.5.0 release.
 
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈273 kB raw · ≈156 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css) |
-| Select-only | ≈144 kB raw · ≈83 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.css) |
+| Full — every control | ≈275 kB raw · ≈157 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css) |
+| Select-only | ≈145 kB raw · ≈84 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.css) |
 | File-only | ≈99 kB raw · ≈57 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
@@ -133,8 +133,8 @@ the same two stylesheets and no dependencies.
 - **No build step** — classic script, ESM wrapper and plain CSS.
 
 **Trade-offs:** smaller community than Select2, no React/Vue component package, and for very
-complex comboboxes (tokenized multi-search, drag-reorder tag editors) Select2 or Tom Select
-still have deeper ecosystems. Full matrix, honest limitations and migration notes:
+complex comboboxes (tokenized multi-search, virtualised remote tag editors) Select2 or Tom
+Select still have deeper ecosystems. Full matrix, honest limitations and migration notes:
 **[`docs/comparison.md`](https://akhtar1985.github.io/zidan-select/docs/comparison.html)**.
 
 ---
@@ -755,7 +755,7 @@ per field; clickable icons call `input.showPicker()` when available.
 | --- | --- | --- | --- | --- |
 | `variant` | `data-zidan-variant` | string | `default` | Checkbox `default/switch/card/button/minimal`; radio `stacked/inline/card/button/tile`; file `dropzone/button/avatar/gallery/compact`; range `default/gradient/stepped/minimal`. |
 | `layout` | `data-zidan-layout` | string | `stacked` | `stacked`, `inline`, `compact`, `floating`, `outlined`, `card`. |
-| `theme` | `data-zidan-theme` | string | `default` | `default`, `modern`, `minimal`, `dark`, `glass`. |
+| `theme` | `data-zidan-theme` | string | `default` | `default`, `modern`, `minimal`, `dark`, `glass`, `auto`. |
 | `framework` | `data-zidan-framework` | string | `none` | `none`, `bootstrap`, `tailwind`, `bulma`, `foundation`. |
 | `label` | `data-zidan-label` | string | — | Label when no `<label>` exists. |
 | `hint` | `data-zidan-hint` | string | — | Helper text; linked with `aria-describedby`. |
