@@ -94,6 +94,59 @@ test('select multi value and clear', () => {
   select.destroy();
 });
 
+test('select defaults resolve the theme and mode-dependent free text', () => {
+  const window = boot('<select id="combo"><option value="a">A</option></select><select id="tags" multiple data-zidan-select="tags"></select>');
+  const combo = window.zidanSelect('#combo', { mode: 'combobox' });
+  const tags = window.zidanSelect('#tags');
+
+  assert.equal(window.ZidanSelect.defaults.theme, 'default');
+  assert.equal(combo.opts.theme, 'default');
+  assert.equal(combo.opts.allowFreeText, false);
+  assert.equal(tags.opts.allowFreeText, true);
+  assert.equal(tags.addTag('new'), true);
+  combo.destroy();
+  tags.destroy();
+});
+
+test('declarative select attributes control closing, accessibility and required state', () => {
+  const window = boot('<form><select id="s" data-zidan-close-on-select="false" data-zidan-aria-label="Pick a plan" data-zidan-required="true"><option value="">Pick</option><option value="a">A</option></select></form>');
+  const select = window.zidanSelect('#s');
+
+  assert.equal(select.opts.closeOnSelect, false);
+  assert.equal(select.input.getAttribute('aria-label'), 'Pick a plan');
+  assert.equal(select.opts.required, true);
+  assert.equal(select.native.required, true);
+  assert.equal(window.document.querySelector('form').checkValidity(), false);
+  select.open();
+  select.dropdown.querySelector('[data-zs-option="1"]').dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  assert.equal(select.isOpen(), true, 'data-zidan-close-on-select=false keeps the list open');
+  select.destroy();
+});
+
+test('callback exceptions reach onError with the callback name and error', () => {
+  const window = boot('<select id="s"><option value="">Pick</option><option value="a">A</option></select>');
+  const errors = [];
+  const select = window.zidanSelect('#s', {
+    onChange() { throw new Error('callback failed'); },
+    onError(detail) { errors.push(detail); }
+  });
+
+  select.setValue('a');
+  assert.equal(errors.length, 1);
+  assert.equal(errors[0].message, 'callback failed');
+  assert.equal(errors[0].callback, 'onChange');
+  assert.equal(errors[0].error.message, 'callback failed');
+  assert.equal(errors[0].instance, select);
+  select.destroy();
+});
+
+test('ZidanSelect exposes the shared icon registry in the full build', () => {
+  const window = boot('<select id="s"><option value="a">A</option></select>');
+  window.ZidanSelect.registerIcon('audit-star', '<path d="M12 2l3 6 6 1-4 5 1 6-6-3-6 3 1-6-4-5 6-1Z"/>');
+  assert.ok(window.ZidanSelect.icons['audit-star'].includes('path'));
+  assert.equal(window.ZidanSelect.registerIcon, window.ZidanForm.registerIcon);
+});
+
 test('a JS label replaces the author label instead of duplicating it', () => {
   const window = boot('<label class="field-label" for="s">Movie</label><select id="s"><option>A</option></select>');
   const authorLabel = window.document.querySelector('.field-label');
@@ -242,9 +295,11 @@ test('pagination: first page, load more, footer and cache', async () => {
   const window = boot('<select id="remote"><option value="">Pick</option></select>');
   const all = Array.from({ length: 25 }, (_, i) => ({ value: 'v' + i, label: 'Item ' + i }));
   const calls = [];
+  const loadedPages = [];
   const select = window.zidanSelect('#remote', {
     mode: 'combobox',
     fetchPageSize: 10,
+    onLoadMore(detail) { loadedPages.push(detail.page); },
     fetchOptions: (query, signal, context) => {
       calls.push({ query, page: context.page, append: context.append });
       return new Promise((resolve) => {
@@ -267,6 +322,7 @@ test('pagination: first page, load more, footer and cache', async () => {
   assert.equal(select.asyncItems.length, 20);
   assert.equal(select.asyncPage, 1);
   assert.deepEqual(calls[1], { query: '', page: 1, append: true });
+  assert.deepEqual(loadedPages, [1], 'onLoadMore receives the zero-based page index');
 
   const before = calls.length;
   select.close();
@@ -384,6 +440,31 @@ test('declarative fetchUrl builds the request and maps the response', async () =
   assert.equal(requests.length, 2);
   assert.ok(requests[1].url.includes('skip=2'), 'the second page skips the first page');
   assert.equal(select.hasMoreResults(), false, 'the last page clears hasMore');
+  select.destroy();
+});
+
+test('declarative fetch attributes set headers, credentials and omitted parameters', async () => {
+  const window = boot(`<select id="api" data-zidan-fetch-url="https://api.test/rows" data-zidan-fetch-method="POST" data-zidan-fetch-headers='{"X-Tenant":"north"}' data-zidan-fetch-credentials="include" data-zidan-fetch-query-param="" data-zidan-fetch-page-param="" data-zidan-fetch-page-size-param=""></select>`);
+  const requests = [];
+  window.fetch = (url, init) => {
+    requests.push({ url: String(url), init });
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: () => Promise.resolve({ items: [{ value: 'a', label: 'A' }] })
+    });
+  };
+
+  const select = window.zidanSelect('#api', { mode: 'combobox' });
+  select.open();
+  await wait(20);
+
+  assert.equal(requests.length, 1);
+  assert.equal(requests[0].url, 'https://api.test/rows', 'empty parameter names omit query, page and page size');
+  assert.equal(requests[0].init.method, 'POST');
+  assert.equal(requests[0].init.headers['X-Tenant'], 'north');
+  assert.equal(requests[0].init.credentials, 'include');
   select.destroy();
 });
 
@@ -667,6 +748,9 @@ test('select-only build: select, pagination and independent fields', async () =>
   const window = boot('<select id="s"><option value="a">A</option><option value="b">B</option></select>', selectSource());
   assert.equal(typeof window.zidanSelect, 'function');
   assert.equal(typeof window.zidanField, 'undefined');
+  assert.equal(typeof window.ZidanSelect.registerIcon, 'function');
+  window.ZidanSelect.registerIcon('subset-star', '<path d="M12 2l3 6 6 1-4 5 1 6-6-3-6 3 1-6-4-5 6-1Z"/>');
+  assert.ok(window.ZidanSelect.icons['subset-star']);
   const select = window.zidanSelect('#s', { mode: 'combobox', fetchPageSize: 2, fetchOptions: () => ({ items: [{ value: 'x', label: 'X' }], hasMore: true }) });
   select.open();
   await wait();

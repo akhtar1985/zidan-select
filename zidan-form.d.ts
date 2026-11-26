@@ -34,6 +34,7 @@ export interface SelectGroup {
 export type SelectItemInput = string | number | SelectItem | SelectGroup;
 
 export interface FetchContext {
+  /** Zero-based page index; the first request uses page 0. */
   page: number;
   pageSize: number;
   append: boolean;
@@ -70,8 +71,9 @@ export interface SelectCallbacks {
   onClose?(detail: { instance: ZidanSelect }): void;
   onTagAdd?(detail: { tag: string; value: SelectItem[]; instance: ZidanSelect }): void;
   onTagRemove?(detail: { tag: string; value: SelectItem[]; instance: ZidanSelect }): void;
+  /** `page` is the zero-based index used by fetchOptions; the first follow-up page is 1. */
   onLoadMore?(detail: { page: number; query: string; instance: ZidanSelect }): void;
-  onError?(detail: { error?: unknown; message: string; instance: ZidanSelect }): void;
+  onError?(detail: { error?: unknown; message: string; callback?: string; instance: ZidanSelect }): void;
 }
 
 export interface SelectOptions extends SelectCallbacks {
@@ -339,6 +341,8 @@ export class ZidanSelect {
   static readonly version: string;
   static cacheLimit: number;
   static defaults: SelectOptions;
+  static icons: Record<string, string>;
+  static registerIcon(name: string, markup: string): typeof ZidanSelect;
   static layouts: SelectLayout[];
   static frameworks: Framework[];
   static scrollbars: Scrollbar[];

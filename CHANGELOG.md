@@ -11,6 +11,31 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+### Fixed
+
+- Read `closeOnSelect`, `ariaLabel`, `required`, `fetchHeaders` and `fetchCredentials` from
+  declarative attributes, and expose the resolved default theme through `ZidanSelect.defaults`.
+- Report callback exceptions through `onError` with the error and callback name, and expose
+  `ZidanSelect.registerIcon` / `ZidanSelect.icons` in the full and select-only builds.
+- Clarify zero-based pagination contexts, mode-dependent `allowFreeText` defaults and the
+  declarative AJAX attribute contract.
+- Fix `setOptions()` leaving a stale fetch error and a dead active option, and keep the native
+  select's value in place while its options are rebuilt.
+- Fix `addTag()` rendering twice, `clear({ silent: true })` still emitting `change`, and the
+  unreachable branch in the control click handler.
+- Fix the multi-select remove path reporting through `change` only, and document it in the
+  events table.
+- Fix the phone formatter rewriting digit-less input, the custom-validity cache living on the
+  shared native input, and a resize callback running after `destroy()`.
+- Fix `webkitRelativePath` being ignored when deduplicating uploads, and `cancelUpload()`
+  finishing its state from two paths.
+- Fix the dead `savedInputText` state, the redundant assignment in `_renderInputValue`, the
+  untrimmed `inheritedAttr` and the tag reset path skipping `String()`.
+- Fix `initFieldList` ignoring `force`, and identical live-region announcements not
+  re-triggering screen readers.
+- Add `npm run sizes` to regenerate the documented asset sizes from the built files, so the
+  build guide cannot drift from `dist/`.
+
 ## [2.4.2] - 2026-11-24
 
 ### Changed

@@ -26,10 +26,13 @@ two separate stylesheets.
 Load **one** build per page. A subset is not an add-on: never load it together with the full
 bundle.
 
+Sizes measure the current source build, including Unreleased fixes; CDN links pin the published
+2.4.2 package.
+
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈224 kB raw · ≈131 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-theme.css) |
-| Select-only | ≈114 kB raw · ≈68 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-theme.css) |
+| Full — every control | ≈226 kB raw · ≈132 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/plugin-theme.css) |
+| Select-only | ≈116 kB raw · ≈68 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-theme.css) |
 | File-only | ≈86 kB raw · ≈50 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
@@ -48,7 +51,7 @@ same pinned bytes:
 
 | Build | JS (min) | CSS (min) |
 | --- | --- | --- |
-| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/zidan-form.min.js) — ≈131 kB | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/plugin-core.min.css) — ≈31 kB + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/plugin-theme.min.css) — ≈39 kB |
+| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/zidan-form.min.js) — ≈132 kB | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/plugin-core.min.css) — ≈31 kB + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/plugin-theme.min.css) — ≈39 kB |
 | Select-only | [zidan-select.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/zidan-select.min.js) — ≈68 kB | [plugin-select-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-core.min.css) — ≈9 kB + [plugin-select-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/plugin-select-theme.min.css) — ≈27 kB |
 | File-only | [zidan-file.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/zidan-file.min.js) — ≈50 kB | [plugin-file-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-core.min.css) — ≈7 kB + [plugin-file-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-theme.min.css) — ≈29 kB |
 
@@ -283,7 +286,7 @@ Copyable CDN URLs (pin the version):
 - `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-theme.css>
 - `plugin-file-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/file/plugin-file-theme.min.css>
 
-Select / combobox / tags only (≈114 kB raw / ≈68 kB minified JS, ≈12 → 9 kB core CSS,
+Select / combobox / tags only (≈115 kB raw / ≈68 kB minified JS, ≈12 → 9 kB core CSS,
 ≈32 → 27 kB theme CSS):
 
 ```html

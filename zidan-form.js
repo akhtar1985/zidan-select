@@ -570,7 +570,7 @@
     while (current && current.nodeType === 1) {
       for (var i = 0; i < names.length; i += 1) {
         var value = current.getAttribute(names[i]);
-        if (value) return value;
+        if (value) return value.trim();
       }
       current = current.parentElement;
     }
@@ -641,6 +641,7 @@
     /* core */
     mode: null,                // 'select' | 'combobox' | 'tags'
     layout: 'classic-clean',
+    theme: 'default',
     themeFramework: 'auto',    // 'auto' | 'vanilla' | 'bootstrap' | 'tailwind'
     id: null,
     name: null,
@@ -650,6 +651,7 @@
     options: null,
     value: null,
     label: null,               // floating label text (falls back to placeholder)
+    ariaLabel: null,
     placeholder: null,
     /* behaviour */
     multiple: false,
@@ -665,7 +667,7 @@
     fetchOptions: null,
     debounce: 250,
     minChars: 0,
-    allowFreeText: false,
+    allowFreeText: true,
     searchValues: true,
     fetchPageSize: 0,          // >0 enables paged fetchOptions({items, hasMore})
     autoLoadMore: true,
@@ -866,7 +868,7 @@
     this._fetchCache = Object.create(null);
     this._cacheKeys = [];
     this.timer = null;
-    this.savedInputText = '';
+
     this.disabled_ = !!this.opts.disabled;
     this.destroyed = false;
     this.resizeObserver = null;
@@ -916,6 +918,15 @@
     };
 
     var placeholderDefault = mode === 'tags' ? 'Add a tag…' : (mode === 'combobox' ? 'Type to search…' : 'Select an option…');
+    var fetchHeaders = null;
+    if (d.zidanFetchHeaders) {
+      try {
+        var parsedHeaders = JSON.parse(d.zidanFetchHeaders);
+        if (parsedHeaders && typeof parsedHeaders === 'object' && !Array.isArray(parsedHeaders)) fetchHeaders = parsedHeaders;
+      } catch (error) {
+        if (typeof console !== 'undefined' && console.warn) console.warn('ZidanSelect: data-zidan-fetch-headers must be a JSON object.');
+      }
+    }
 
     var merged = {};
     Object.keys(DEFAULTS).forEach(function (key) {
@@ -928,10 +939,13 @@
     merged.multiple = mode === 'tags' ? true : pick('multiple', nativeMultiple || readBoolAttr(d.zidanMultiple, false));
     merged.searchable = pick('searchable', readBoolAttr(d.zidanSearchable, mode !== 'select'));
     merged.clearable = pick('clearable', readBoolAttr(d.zidanClearable, false));
+    merged.closeOnSelect = pick('closeOnSelect', readBoolAttr(d.zidanCloseOnSelect, null));
     merged.disabled = pick('disabled', readBoolAttr(d.zidanDisabled, isNativeSelect ? this.el.disabled : false));
+    merged.required = pick('required', readBoolAttr(d.zidanRequired, isNativeSelect ? this.el.required : false));
     merged.placeholder = pick('placeholder',
       d.zidanPlaceholder || (this.el.getAttribute && this.el.getAttribute('placeholder')) || placeholderDefault);
     merged.label = pick('label', d.zidanLabel || null);
+    merged.ariaLabel = pick('ariaLabel', d.zidanAriaLabel || null);
     merged.name = pick('name', d.zidanName || (this.el.getAttribute && this.el.getAttribute('name')) || null);
     merged.allowFreeText = pick('allowFreeText', readBoolAttr(d.zidanAllowFreeText, mode === 'tags'));
     merged.maxTags = pick('maxTags', d.zidanMaxTags ? parseInt(d.zidanMaxTags, 10) || Infinity : DEFAULTS.maxTags);
@@ -947,6 +961,8 @@
     merged.loadMoreText = pick('loadMoreText', d.zidanLoadMoreText || DEFAULTS.loadMoreText);
     merged.fetchUrl = pick('fetchUrl', d.zidanFetchUrl || null);
     merged.fetchMethod = pick('fetchMethod', d.zidanFetchMethod || DEFAULTS.fetchMethod);
+    merged.fetchHeaders = pick('fetchHeaders', fetchHeaders);
+    merged.fetchCredentials = pick('fetchCredentials', d.zidanFetchCredentials || DEFAULTS.fetchCredentials);
     merged.fetchQueryParam = pick('fetchQueryParam', d.zidanFetchQueryParam !== undefined ? d.zidanFetchQueryParam : DEFAULTS.fetchQueryParam);
     merged.fetchPageParam = pick('fetchPageParam', d.zidanFetchPageParam !== undefined ? d.zidanFetchPageParam : DEFAULTS.fetchPageParam);
     merged.fetchSkipParam = pick('fetchSkipParam', d.zidanFetchSkipParam || null);
@@ -965,7 +981,7 @@
     merged.layout = layout;
     merged.themeFramework = framework;
     merged.scrollbar = scrollbar;
-    if (!merged.theme) merged.theme = d.zidanTheme || d.zsTheme || '';
+    merged.theme = pick('theme', d.zidanTheme || d.zsTheme || DEFAULTS.theme);
     if (mode === 'combobox') merged.searchable = true;
     if (mode === 'tags' && merged.searchable === false) merged.searchable = true;
     if (mode === 'tags') merged.multiple = true;
@@ -1239,10 +1255,6 @@
         this.native.setAttribute('tabindex', '-1');
         this.native.setAttribute('aria-hidden', 'true');
       }
-      // NOTE: `required` is intentionally NOT copied to the hidden native
-      // control — a display:none required field blocks submit with an
-      // unfocusable invalid control. We expose aria-required on our input
-      // and validation via setValidation('invalid').
       if (opts.required) this.input.setAttribute('aria-required', 'true');
       this.form = this.native.closest ? this.native.closest('form') : null;
     } else {
@@ -1324,7 +1336,7 @@
 
     if (this.mode === 'tags') {
       this.value_ = [];
-      toArray(initial).forEach(function (tag) { this._addTagObject(tag, { silent: true }); }, this);
+      toArray(initial).forEach(function (tag) { this._addTagObject(String(tag), { silent: true }); }, this);
       this._render();
       this._syncNative();
       return;
@@ -1554,7 +1566,7 @@
     }
     this.input.value = this.value_.length ? this.value_[0].label : '';
     this.input.placeholder = this.opts.placeholder || '';
-    if (!this.value_.length) this.input.value = '';
+
   };
 
   /* ---------------- dropdown ---------------- */
@@ -1741,9 +1753,7 @@
     this.activeIndex = -1;
     this.loadMoreError = null;
     this.fetchingMore = false;
-    if (this.mode === 'combobox' || (this.mode === 'select' && this.opts.searchable)) {
-      this.savedInputText = this.input.value;
-    }
+
     this.root.classList.add('zs-root--open');
     this.dropdown.setAttribute('data-zs-visible', 'true');
     this._render();
@@ -2146,10 +2156,9 @@
   };
 
   ZidanSelect.prototype.addTag = function (tag) {
-    var added = this._addTagObject(tag, {});
-    this._render();
-    if (this.opened) this._renderDropdown();
-    return added;
+    /* _addTagObject already renders, syncs and re-renders the dropdown when the
+       tag is accepted, so repeating those calls duplicated all of that work */
+    return this._addTagObject(tag, {});
   };
 
   ZidanSelect.prototype.removeTag = function (tagOrIndex) {
@@ -2387,7 +2396,8 @@
       if (target.closest && target.closest('.zs-clear')) return;
       if (target.closest && target.closest('.zs-chip-remove')) return;
       if (self.opened) {
-        if (!self.opts.searchable && !self.input.readOnly) return;
+        /* a non-searchable select is read-only by construction, so this used to
+           be an unreachable early return; closing is the only sensible action */
         if (!self.opts.searchable) self.close();
         return;
       }
@@ -2505,6 +2515,7 @@
     if (typeof ResizeObserver === 'undefined') return;
     var self = this;
     this.resizeObserver = new ResizeObserver(function () {
+      if (self.destroyed) return;
       if (self.opened) self._position();
     });
     this.resizeObserver.observe(this.controlEl);
@@ -2542,19 +2553,22 @@
     return this._setValueInternal(value, cfg);
   };
 
-  ZidanSelect.prototype.clear = function () {
+  ZidanSelect.prototype.clear = function (config) {
+    var cfg = config || {};
     if (this.mode === 'tags') {
       if (!this.value_.length) return this;
       this.value_ = [];
       this._render();
       this._syncNative();
       this.announce('All tags removed.');
-      this.emit('change', { value: [], instance: this });
-      this.call('onChange', { value: [], instance: this });
+      if (!cfg.silent) {
+        this.emit('change', { value: [], instance: this });
+        this.call('onChange', { value: [], instance: this });
+      }
       if (this.opened) this._renderDropdown();
       return this;
     }
-    this._setValueInternal([], {});
+    this._setValueInternal([], { silent: !!cfg.silent });
     this._render();
     return this;
   };
@@ -2579,6 +2593,9 @@
           option.value = item.value;
           option.textContent = item.label;
           if (item.disabled) option.disabled = true;
+          /* mark the preserved value straight away so select.value is never
+             empty between the rebuild and the later _syncNative() pass */
+          option.selected = self._hasValue(item.value);
           self.native.appendChild(option);
         });
       }
@@ -2587,8 +2604,9 @@
     this.asyncPage = 0;
     this.hasMore = false;
     this.loadMoreError = null;
+    this.error = null;
     this.clearCache();
-    this.activeIndex = -1;
+    this.activeIndex = this._firstEnabledIndex();
     this._render();
     this._syncNative();
     if (this.opened) this._renderDropdown();
@@ -2703,15 +2721,25 @@
     try {
       return fn(payload);
     } catch (err) {
-      this.emit('error', { error: err, message: (err && err.message) || String(err), callback: callbackName, instance: this });
+      var detail = { error: err, message: (err && err.message) || String(err), callback: callbackName, instance: this };
+      this.emit('error', detail);
+      if (callbackName !== 'onError') this.call('onError', detail);
       return undefined;
     }
   };
 
   ZidanSelect.prototype.announce = function (message) {
-    if (!this.liveEl || !message) return;
-    this.liveEl.textContent = '';
-    this.liveEl.textContent = message;
+    var live = this.liveEl;
+    if (!live || !message) return;
+    /* Writing the same string twice in one task is a no-op for some screen
+       readers, so an identical repeat is re-announced on the next tick. */
+    if (live.textContent === message) {
+      var self = this;
+      live.textContent = '';
+      setTimeout(function () { if (!self.destroyed) live.textContent = message; }, 0);
+      return;
+    }
+    live.textContent = message;
   };
 
   ZidanSelect.prototype.destroy = function () {
@@ -3520,10 +3548,10 @@
         var candidate = self._deselectCandidate;
         self._deselectCandidate = null;
         if (!candidate || !candidate.checked) return;
+        /* setting `checked = false` fires the native `change` event, which the
+           general radio-group change listener (above) already handles — emitting
+           here too would deliver `change`/`onChange` twice for one click. */
         candidate.checked = false;
-        self.update();
-        self.emit('change', { value: '' });
-        self.call('onChange', { value: '', instance: self });
       });
     }
     this.update();
@@ -3682,7 +3710,9 @@
   }
 
   function fileKey(file) {
-    return [file.name, file.size, file.lastModified || 0, file.type || ''].join('|');
+    /* webkitRelativePath keeps two files from different dropped folders apart
+       when name/size/lastModified/type happen to match */
+    return [file.name, file.size, file.lastModified || 0, file.type || '', file.webkitRelativePath || ''].join('|');
   }
 
   function uploadErrorText(err, fallback) {
@@ -4432,6 +4462,11 @@
     if (active) {
       try { active.abort(); } catch (err) { /* already stopped */ }
       delete this._active[key];
+      /* an abort settles through the transport's own handler; only finish the
+         state here when that handler never ran (e.g. a custom uploader) */
+      var state = this._stateFor(file, false);
+      if (state && state.status === 'uploading') this._canceledUpload(file);
+      return this;
     }
     this._canceledUpload(file);
     return this;
@@ -4940,9 +4975,11 @@
   ZidanTextField.prototype._setCustomValidity = function (message) {
     var input = this.el;
     if (!input.setCustomValidity) return;
-    if (input.__zidanCustomError !== message) {
+    /* the cache lives on the field instance: two wrappers can share one
+       native input, and a shared cache made the second wrapper skip updates */
+    if (this._customValidityCache !== message) {
       input.setCustomValidity(message);
-      input.__zidanCustomError = message;
+      this._customValidityCache = message;
     }
   };
 
@@ -5062,7 +5099,8 @@
     var input = this.el;
     var raw = input.value;
     if (!digitsOnly(raw)) {
-      if (raw && /\+/.test(raw)) input.value = '+';
+      /* no digits yet: leave the raw text alone — rewriting it to '+' on every
+         format pass made the field impossible to type into */
       return this;
     }
     var caret = null;
@@ -5356,7 +5394,8 @@
   function initFieldList(nodes, options) {
     var instances = [];
     nodes.forEach(function (node) {
-      if (!isElement(node) || node.__zidanField) return;
+      if (!isElement(node)) return;
+      if (node.__zidanField && !(options && options.force)) return;
       var kind = fieldKindFor(node);
       if (!kind) return;
       if (kind === 'radio' || kind === 'radio-group') {
@@ -5470,6 +5509,8 @@
     ZidanSelect.frameworks = FRAMEWORKS.slice();
     ZidanSelect.scrollbars = SCROLLBARS.slice();
     ZidanSelect.defaults = DEFAULTS;
+    ZidanSelect.registerIcon = registerIcon;
+    ZidanSelect.icons = ICON_REGISTRY;
     ZidanSelect.cacheLimit = 50;
     ZidanSelect.get = function (target) {
       var element = typeof target === 'string' ? doc.querySelector(target) : target;

@@ -198,7 +198,7 @@
           <a class="build-pick" href="#build-select">
             <strong>Only custom select dropdowns</strong>
             <span>Load the select-only JS plus its core and theme CSS. The rest of the page stays untouched — no full bundle.</span>
-            <em>≈114 kB JS · ≈68 kB minified</em>
+            <em>≈116 kB JS · ≈68 kB minified</em>
           </a>
           <a class="build-pick" href="#build-file">
             <strong>Only file uploads</strong>
@@ -208,13 +208,13 @@
           <a class="build-pick" href="#build-full">
             <strong>Every input in the form</strong>
             <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
-            <em>≈224 kB JS · ≈131 kB minified</em>
+            <em>≈226 kB JS · ≈132 kB minified</em>
           </a>
         </div>
       </div>
       <div class="grid-3">
         <article class="card build-card" id="build-full">
-          <h3>Full build <span class="build-size">≈224 kB · ≈131 kB min</span></h3>
+          <h3>Full build <span class="build-size">≈226 kB · ≈132 kB min</span></h3>
           <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/zidan-form.js">JS</a>
@@ -229,7 +229,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-select">
-          <h3>Select-only <span class="build-size">≈114 kB · ≈68 kB min</span></h3>
+          <h3>Select-only <span class="build-size">≈116 kB · ≈68 kB min</span></h3>
           <p>Select, combobox, tags and multi-select — everything the select family needs.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.4.2/dist/select/zidan-select.js">JS</a>
@@ -261,8 +261,8 @@
       </div>
       <p class="compare-note">
         The snippets load the real <code>.min</code> files shipped in the npm package — drop
-        <code>.min</code> to load the readable source. Sizes are rounded from the 2.4.2 build
-        (1 kB = 1,024 bytes). ESM variants and every per-file URL are listed in the
+        <code>.min</code> to load the readable source. Sizes are rounded from the current source build,
+        including Unreleased fixes (1 kB = 1,024 bytes); the snippets pin published 2.4.2 files. ESM variants and every per-file URL are listed in the
         <a href="https://github.com/akhtar1985/zidan-select#select-only-and-file-only-builds">README build section</a>
         and <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/build.md">docs/build.md</a>.
         Not sure which options to pick? <a href="playground.html">Build the field in the playground</a>.

@@ -99,7 +99,7 @@ Without esbuild the build still succeeds and prints that minification was skippe
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | `/dist/zidan-form.min.js` — ≈131 kB | `/dist/plugin-core.min.css` — ≈31 kB | `/dist/plugin-theme.min.css` — ≈39 kB |
+| Full | `/dist/zidan-form.min.js` — ≈132 kB | `/dist/plugin-core.min.css` — ≈31 kB | `/dist/plugin-theme.min.css` — ≈39 kB |
 | Select-only | `/dist/select/zidan-select.min.js` — ≈68 kB | `/dist/select/plugin-select-core.min.css` — ≈9 kB | `/dist/select/plugin-select-theme.min.css` — ≈27 kB |
 | File-only | `/dist/file/zidan-file.min.js` — ≈50 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈29 kB |
 
@@ -125,13 +125,14 @@ Both theme stylesheets keep the token set, the five preset themes (`default`, `m
 adapters, so `data-zidan-theme`, `data-zidan-layout` and `data-zidan-framework` behave the same
 as in the full build.
 
-Measured v2.4.2 sizes (1 kB = 1,024 bytes; readable → minified):
+Measured current source sizes, including Unreleased fixes (1 kB = 1,024 bytes; readable → minified).
+Regenerate them with `npm run build` followed by `npm run sizes`; `npm test` fails when they drift:
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | 229,274 B (≈224 kB) → 134,575 B (≈131 kB) | 41,054 B (≈40 kB) → 31,422 B (≈31 kB) | 47,697 B (≈47 kB) → 39,983 B (≈39 kB) |
-| Select-only | 116,926 B (≈114 kB) → 69,144 B (≈68 kB) | 12,456 B (≈12 kB) → 9,511 B (≈9 kB) | 32,559 B (≈32 kB) → 27,505 B (≈27 kB) |
-| File-only | 87,728 B (≈86 kB) → 51,406 B (≈50 kB) | 9,939 B (≈10 kB) → 7,210 B (≈7 kB) | 34,991 B (≈34 kB) → 29,929 B (≈29 kB) |
+| Full | 231,660 B (≈226 kB) → 135,214 B (≈132 kB) | 41,054 B (≈40 kB) → 31,422 B (≈31 kB) | 47,697 B (≈47 kB) → 39,983 B (≈39 kB) |
+| Select-only | 118,484 B (≈116 kB) → 69,769 B (≈68 kB) | 12,456 B (≈12 kB) → 9,511 B (≈9 kB) | 32,559 B (≈32 kB) → 27,505 B (≈27 kB) |
+| File-only | 88,333 B (≈86 kB) → 51,590 B (≈50 kB) | 9,939 B (≈10 kB) → 7,210 B (≈7 kB) | 34,991 B (≈34 kB) → 29,929 B (≈29 kB) |
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their

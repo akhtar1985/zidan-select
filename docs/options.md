@@ -228,7 +228,8 @@ Supports `text`, `email`, `password`, `number`, `tel`, `url`, `search`, `date`, 
 ```js
 // register your own icon (path markup or a full <svg>), then use its name anywhere
 ZidanForm.registerIcon('sparkle', '<path d="M12 3l1.9 5.3L19 10l-5.1 1.7L12 17Z"/>');
-window.registerZidanIcon('heart', '<path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9Z"/>');
+ZidanSelect.registerIcon('heart', '<path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9Z"/>');
+window.registerZidanIcon('star', '<path d="M12 2l3 6.3 6.9 1-5 4.9 1.2 6.8-6.1-3.2L5.9 21 7.1 14.2l-5-4.9 6.9-1Z"/>');
 
 // or configure a plain input entirely from JavaScript
 zidanField('#brand', {
@@ -531,7 +532,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | `id` | — | generated | Root id prefix. |
 | `name` | `data-zidan-name` | native name | Name for hidden mirror input in mount mode. |
 | `disabled` | `data-zidan-disabled` | native | Mirrors the native `disabled`. |
-| `required` | — | native | Mirrors native `required`. |
+| `required` | `data-zidan-required` | native | Mirrors native `required`; mount mode gets a submit guard. |
 | `validation` | `data-zidan-validation` | `null` | `valid` \| `invalid`. |
 | `scrollbar` | `data-zidan-scrollbar` | `default` | `default`, `thin`, `fancy`, `hover`, `hidden`. |
 | `customClasses` | — | `{}` | Map of `root/control/input` → class names. |
@@ -544,7 +545,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | `suggestions` | — | Tags suggestions. |
 | `value` | — | Initial value(s). |
 | `label` | `data-zidan-label` | Floating label text. An author `<label>` for the same control is hidden while the field is enhanced and restored by `destroy()`. |
-| `ariaLabel` | — | Accessible name for the generated combobox input; defaults to `label`. |
+| `ariaLabel` | `data-zidan-aria-label` | Accessible name for the generated combobox input; defaults to `label`. |
 | `placeholder` | `data-zidan-placeholder` | Trigger placeholder. |
 
 ### Behaviour
@@ -554,7 +555,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | `multiple` | `data-zidan-multiple` | from `multiple` | Multi-select. |
 | `searchable` | `data-zidan-searchable` | `true` except plain select | Type-to-filter. With `searchable: false` in `select` mode the text field is `readOnly`, so typing can never filter or hide the list — open it with a click, `Space`, `Enter` or `↓`. |
 | `clearable` | `data-zidan-clearable` | `false` | Clear button. |
-| `closeOnSelect` | — | single: `true` | Close after choosing. |
+| `closeOnSelect` | `data-zidan-close-on-select` | single: `true` | Close after choosing; defaults to open for multi-select and tags. |
 | `maxDropdownHeight` | — | `280` | Listbox max height in px. |
 | `noResultsText` | — | `No results found` | Empty search message. |
 | `emptyText` | — | `No options` | Empty source message. |
@@ -565,7 +566,7 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `fetchOptions(query, signal, context)` | — | Return an array of items, or a page `{ items, hasMore }` (or `{ items, total }`). `signal` aborts stale requests; `context` is `{ page, pageSize, append, instance }`. |
+| `fetchOptions(query, signal, context)` | — | Return an array of items, or a page `{ items, hasMore }` (or `{ items, total }`). `signal` aborts stale requests; `context` is `{ page, pageSize, append, instance }`, with a zero-based `page` (`0` is the first request). |
 | `fetchPageSize` | `0` | Page size handed to `fetchOptions`. `0` keeps the legacy single-request behaviour. |
 | `fetchUrl` | `null` | **Declarative AJAX.** GET this URL and the select builds its own `fetchOptions` — no JavaScript needed. Attribute: `data-zidan-fetch-url`. |
 | `fetchQueryParam` | `'q'` | Query-string parameter that receives the search term (`''` omits it). |
@@ -575,14 +576,16 @@ Callbacks: `onUploadStart`, `onUploadProgress`, `onUploadSuccess` / `onUpload`,
 | `fetchItemsPath` | `null` | Dot path to the array of rows in the JSON body (`products`, `data.items`). Without it the plugin looks for `items`, `data`, `results`, `options`, `rows`, `products` or `records`. |
 | `fetchTotalPath` | `null` | Dot path to the total row count; with `fetchPageSize` it decides `hasMore`. Falls back to a top-level `total`. |
 | `fetchHasMorePath` | `null` | Dot path to a boolean instead of a count. |
-| `fetchMethod`, `fetchHeaders`, `fetchCredentials` | `'GET'`, `null`, `'same-origin'` | Request tuning for `fetchUrl` (JavaScript only). |
+| `fetchMethod` | `'GET'` | HTTP method for `fetchUrl`; attribute: `data-zidan-fetch-method`. |
+| `fetchHeaders` | `null` | JSON object of request headers; attribute: `data-zidan-fetch-headers='{"X-Tenant":"north"}'`. |
+| `fetchCredentials` | `'same-origin'` | `omit`, `same-origin` or `include`; attribute: `data-zidan-fetch-credentials`. |
 | `autoLoadMore` | `true` | Scrolling near the dropdown bottom fetches the next page automatically. |
 | `loadMoreText` | `Load more` | Label of the footer button rendered while `hasMore` is true. |
 | `cacheResults` | `true` | Cache pages per query + page. Clear with `select.clearCache()`. |
-| `onLoadMore` | — | Called when a follow-up page starts loading: `{ page, query, instance }`. |
+| `onLoadMore` | — | Called when a follow-up page starts loading: `{ page, query, instance }`. `page` is zero-based (`1` is the second request); only the declarative `fetchPageParam` is converted to a one-based request value. |
 | `debounce` | `250` | Async debounce in ms. |
 | `minChars` | `0` | Characters before fetching. |
-| `allowFreeText` | tags only | Allow values not in the list. |
+| `allowFreeText` | tags: `true`; other modes: `false` | Allow values not in the list. |
 | `searchValues` | `true` | Match against values as well as labels. |
 
 Remote results are **not** filtered again on the client, so a server that already applied
@@ -682,15 +685,16 @@ control shows `"…" is not in the list.` through the tag error slot. Leave the 
 | `onOpen` / `onClose` | `{ instance }` |
 | `onTagAdd` | `{ instance, tag, value }` |
 | `onTagRemove` | `{ instance, tag, value }` |
-| `onLoadMore` | `{ instance, page, query }` |
-| `onError` | `{ instance, message, error?, callback? }` |
+| `onLoadMore` | `{ instance, page, query }`; `page` is zero-based. |
+| `onError` | `{ instance, message, error?, callback? }`; fetch failures include `error`, and callback exceptions include `error` plus the callback name. |
 
 Every callback receives a single payload object.
 
 ### Every select option in one object
 
-Copy the block, delete what you do not need. Values shown are the defaults; only clauses that
-change the shape of the result (options, value, callbacks) are commented out.
+Copy the block, delete what you do not need. Values reflect the combobox shown, except the
+tag-only section, which reflects tags mode; clauses that change the shape of the result
+(options, value, callbacks) are commented out.
 
 ```js
 const picker = zidanSelect('#mymov', {
@@ -759,7 +763,7 @@ const picker = zidanSelect('#mymov', {
   minTagLength: 1,
   maxTagLength: Infinity,
   caseSensitive: false,
-  allowFreeText: true,
+  allowFreeText: true,              // tags default; combobox/select default false
   delimiters: [','],
   commitOnTab: false,
   commitOnBlur: false,
@@ -798,12 +802,14 @@ as JSON.
 ### DOM data attributes
 
 `data-zidan-select`, `data-zidan-mode`, `data-zidan-layout`, `data-zidan-framework`,
-`data-zidan-theme`, `data-zidan-placeholder`, `data-zidan-label`, `data-zidan-name`,
-`data-zidan-multiple`, `data-zidan-searchable`, `data-zidan-clearable`, `data-zidan-disabled`,
+`data-zidan-theme`, `data-zidan-placeholder`, `data-zidan-label`, `data-zidan-aria-label`,
+`data-zidan-name`, `data-zidan-required`, `data-zidan-multiple`, `data-zidan-searchable`,
+`data-zidan-clearable`, `data-zidan-close-on-select`, `data-zidan-disabled`,
 `data-zidan-allow-free-text`, `data-zidan-max-tags`, `data-zidan-min-tag-length`,
 `data-zidan-max-tag-length`, `data-zidan-case-sensitive`, `data-zidan-validation`,
 `data-zidan-scrollbar`, `data-zidan-fetch-url`, `data-zidan-fetch-method`,
-`data-zidan-fetch-query-param`, `data-zidan-fetch-page-param`, `data-zidan-fetch-skip-param`,
+`data-zidan-fetch-headers`, `data-zidan-fetch-credentials`, `data-zidan-fetch-query-param`,
+`data-zidan-fetch-page-param`, `data-zidan-fetch-skip-param`,
 `data-zidan-fetch-page-size`, `data-zidan-fetch-page-size-param`, `data-zidan-fetch-items-path`,
 `data-zidan-fetch-total-path`, `data-zidan-fetch-has-more-path`, and the JSON escape hatch
 `data-zidan-options` (any JS option that takes a literal value). Marker classes:
@@ -823,6 +829,8 @@ ZidanForm.icons           // live icon registry (name → SVG markup)
 ZidanForm.messages        // default validation messages
 ZidanSelect.layouts       // five select layouts
 ZidanSelect.scrollbars    // ['default','thin','fancy','hover','hidden']
+ZidanSelect.icons         // live icon registry (also available in the select-only build)
+ZidanSelect.registerIcon(name, markup)
 ```
 
 `themes` and `fieldLayouts` are live arrays, so `ZidanForm.themes.push('brand')` registers a
@@ -869,6 +877,10 @@ File adds `getFiles()`, `getUploadState()`, `addFiles()`, `replaceFiles()`, `rem
 `on(event, handler)`, `off(event, handler)`, `announce(message)`, `destroy()`.
 
 ## Events
+
+Removing an already-selected option from a multi-select (or a tag from a tag
+field) reports only via `change`, not `select`: the removal is not a new
+selection, so there is no matching `zidan:select` for it.
 
 | Event | Detail |
 | --- | --- |
