@@ -29,6 +29,7 @@ export const zidanSelect = core.zidanSelect;
 export const zidanField = core.zidanField;
 export const initZidanSelects = core.initZidanSelects;
 export const initZidanForms = core.initZidanForms;
+export const downscaleImage = core.downscaleImage;
 export const registerIcon = core.registerIcon;
 export const formatPhone = core.formatPhone;
 export const detectPhoneCountry = core.detectPhoneCountry;

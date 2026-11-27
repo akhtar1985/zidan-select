@@ -26,7 +26,7 @@ const version = pkg.version;
 const PAGES = [
   {source: 'options', out: 'options', title: 'Options & data attributes', blurb: 'Every JS option, data attribute, callback, event and instance method.'},
   {source: 'theming', out: 'theming', title: 'Theming', blurb: 'Tokens, presets, layouts, framework adapters and custom themes.'},
-  {source: 'frameworks', out: 'frameworks', title: 'Framework integration', blurb: 'React, Next.js, Vue, Angular and state-sync patterns.'},
+  {source: 'frameworks', out: 'frameworks', title: 'Framework integration', blurb: 'React, Next.js, Vue, Svelte, Angular and SSR-safe state-sync patterns.'},
   {source: 'comparison', out: 'comparison', title: 'Why ZidanForm & comparison', blurb: 'Feature matrix, trade-offs and migration notes.'},
   {source: 'validation', out: 'validation-guide', title: 'Validation compatibility', blurb: 'Native constraints, jQuery Validation, JustValidate, Parsley and submit guards.'},
   {source: 'build', out: 'build', title: 'Build & publish', blurb: 'Repository layout, scripts, subset builds, releases and Pages.'},
@@ -83,7 +83,7 @@ function convert(markdown) {
   let index = 0;
 
   const isTable = line => /^\s*\|/.test(line);
-  const isFence = line => /^\s*```/.test(line);
+  const isFence = line => /^\s*(?:```|~~~)/.test(line);
 
   while (index < lines.length) {
     const line = lines[index];
@@ -94,10 +94,12 @@ function convert(markdown) {
     }
 
     if (isFence(line)) {
+      const marker = line.trim().slice(0, 3);
       const language = line.trim().slice(3).trim();
       const body = [];
       index += 1;
-      while (index < lines.length && !isFence(lines[index])) {
+      while (index < lines.length
+        && !(isFence(lines[index]) && lines[index].trim().slice(0, 3) === marker)) {
         body.push(lines[index]);
         index += 1;
       }

@@ -119,6 +119,21 @@
     return !!(value && typeof value === 'object' && value.nodeType === 1);
   }
 
+  /* resolve a document/element/selector cleanup scope; null means "nothing to do" */
+  function scopeRoot(scope) {
+    if (scope === undefined) return doc;
+    if (!scope) return null;
+    if (typeof scope === 'string') return doc.querySelector(scope);
+    if (scope === doc || scope.nodeType === 9) return scope;
+    return isElement(scope) ? scope : null;
+  }
+
+  function inScope(root, node) {
+    if (!root || root.nodeType === 9) return true;
+    if (root === node) return true;
+    return !!(root.contains && root.contains(node));
+  }
+
   function readBoolAttr(value, fallback) {
     if (value === undefined || value === null || value === '') return fallback;
     var v = String(value).toLowerCase();
@@ -7106,6 +7121,22 @@
       ZidanForm.fields.slice().forEach(function (field) { field.update(); });
       return ZidanForm.fields.slice();
     },
+    /* destroy only the fields/selects inside a subtree (framework unmount) */
+    destroy: function (scope) {
+      var root = scopeRoot(scope);
+      if (!root) return 0;
+      var count = 0;
+      ZidanForm.fields.slice().forEach(function (field) {
+        if (inScope(root, field.el)) {
+          field.destroy();
+          count += 1;
+        }
+      });
+      if (typeof ZidanSelect !== 'undefined' && ZidanSelect.destroy) {
+        count += ZidanSelect.destroy(root);
+      }
+      return count;
+    },
     destroyAll: function () {
       ZidanForm.fields.slice().forEach(function (field) { field.destroy(); });
       ZidanForm.fields = [];
@@ -7190,8 +7221,21 @@
       return element.__zidanSelect || null;
     };
     ZidanSelect.instances = [];
+    /* destroy only the selects inside a subtree; returns how many were removed */
+    ZidanSelect.destroy = function (scope) {
+      var root = scopeRoot(scope);
+      if (!root) return 0;
+      var count = 0;
+      ZidanSelect.instances.slice().forEach(function (instance) {
+        if (inScope(root, instance.el)) {
+          instance.destroy();
+          count += 1;
+        }
+      });
+      return count;
+    };
     ZidanSelect.destroyAll = function () {
-      ZidanSelect.instances.slice().forEach(function (instance) { instance.destroy(); });
+      ZidanSelect.destroy(doc);
       ZidanSelect.instances = [];
     };
   }

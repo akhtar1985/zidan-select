@@ -571,6 +571,15 @@
   gap: 10px;
 }
 
+/* The card layout is structural, so it belongs to the shared field section:
+   the file-only bundle keeps fields-shared and must render it too. */
+.zs-field[data-zs-layout="card"] {
+  padding: 14px;
+  border-width: var(--zs-border-width, 1px);
+  border-style: solid;
+  border-radius: var(--zs-radius, 10px);
+}
+
 .zs-field__label {
   display: block;
   font-size: var(--zs-label-size, 0.8125rem);
@@ -1932,13 +1941,6 @@ textarea.zs-input-native {
 .zs-field[data-zs-layout="compact"] .zs-input-shell,
 .zs-field[data-zs-layout="compact"] .zs-control {
   min-height: 34px;
-}
-
-.zs-field[data-zs-layout="card"] {
-  padding: 14px;
-  border-width: var(--zs-border-width, 1px);
-  border-style: solid;
-  border-radius: var(--zs-radius, 10px);
 }
 
 /* @zidan-build:form-layout */

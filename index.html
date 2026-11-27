@@ -54,7 +54,7 @@
           {
             "@type": "Question",
             "name": "Can ZidanForm be used with React, Vue or Angular?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Initialise in a mount or effect and call destroy() on cleanup; the framework guide covers React, Next.js SSR, Vue and Angular patterns." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Initialise in a mount or effect and call ZidanForm.destroy(root) on cleanup; the framework guide covers React, Next.js SSR, Vue/Nuxt, Svelte/SvelteKit and Angular patterns." }
           },
           {
             "@type": "Question",
@@ -200,23 +200,23 @@
           <a class="build-pick" href="#build-select">
             <strong>Only custom select dropdowns</strong>
             <span>Load the select-only JS plus its core and theme CSS. The rest of the page stays untouched — no full bundle.</span>
-            <em>≈148 kB JS · ≈86 kB minified</em>
+            <em>≈149 kB JS · ≈86 kB minified</em>
           </a>
           <a class="build-pick" href="#build-file">
             <strong>Only file uploads</strong>
             <span>Load the file-only JS plus its core and theme CSS and leave every other input as it is.</span>
-            <em>≈120 kB JS · ≈70 kB minified</em>
+            <em>≈121 kB JS · ≈70 kB minified</em>
           </a>
           <a class="build-pick" href="#build-full">
             <strong>Every input in the form</strong>
             <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
-            <em>≈298 kB JS · ≈171 kB minified</em>
+            <em>≈299 kB JS · ≈172 kB minified</em>
           </a>
         </div>
       </div>
       <div class="grid-3">
         <article class="card build-card" id="build-full">
-          <h3>Full build <span class="build-size">≈298 kB · ≈171 kB min</span></h3>
+          <h3>Full build <span class="build-size">≈299 kB · ≈172 kB min</span></h3>
           <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js">JS</a>
@@ -231,7 +231,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-select">
-          <h3>Select-only <span class="build-size">≈148 kB · ≈86 kB min</span></h3>
+          <h3>Select-only <span class="build-size">≈149 kB · ≈86 kB min</span></h3>
           <p>Select, combobox, tags and multi-select — everything the select family needs.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js">JS</a>
@@ -246,7 +246,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-file">
-          <h3>File-only <span class="build-size">≈120 kB · ≈70 kB min</span></h3>
+          <h3>File-only <span class="build-size">≈121 kB · ≈70 kB min</span></h3>
           <p>Dropzone, picker and inline file upload with progress, cancel and previews.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js">JS</a>
@@ -266,7 +266,7 @@
         <code>.min</code> to load the readable source. Sizes are rounded from the current source build
         (1 kB = 1,024 bytes); the snippets pin the 2.5.0 release. ESM variants and every per-file URL are listed in the
         <a href="https://github.com/akhtar1985/zidan-select#select-only-and-file-only-builds">README build section</a>
-        and <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/build.md">docs/build.md</a>.
+        and <a href="docs/build.html">the build guide</a>.
         Not sure which options to pick? <a href="playground.html">Build the field in the playground</a>.
       </p>
     </section>
@@ -332,7 +332,7 @@ const email = zidanField('#email', {
             <li><code>renderOption</code> <code>renderTag</code> <code>filterOption</code><span>Rendering hooks.</span></li>
           </ul>
           <p class="ctl-usage"><code>picker.getTags()</code> · <code>picker.addTag('css')</code> · <code>picker.setOptions(items)</code> · <code>picker.loadMore()</code></p>
-          <p class="ctl-links"><a href="playground.html#select">Playground</a><a href="#panel-select">Live demo</a><a href="docs/options.md">Options</a><a href="advanced.html#select">Async &amp; tags</a></p>
+          <p class="ctl-links"><a href="playground.html#select">Playground</a><a href="#panel-select">Live demo</a><a href="docs/options.html">Options</a><a href="advanced.html#select">Async &amp; tags</a></p>
         </article>
 
         <article class="ctl-card">
@@ -350,7 +350,7 @@ const email = zidanField('#email', {
             <li><code>validationIcon</code><span>Check/alert glyph driven by the validation state.</span></li>
           </ul>
           <p class="ctl-usage"><code>field.getValue()</code> · <code>field.validate()</code> · <code>field.setError('…')</code> · <code>field.clearError()</code></p>
-          <p class="ctl-links"><a href="playground.html#text">Playground</a><a href="playground.html#textarea">Textarea</a><a href="#panel-inputs">Live demo</a><a href="docs/options.md">Options</a></p>
+          <p class="ctl-links"><a href="playground.html#text">Playground</a><a href="playground.html#textarea">Textarea</a><a href="#panel-inputs">Live demo</a><a href="docs/options.html">Options</a></p>
         </article>
 
         <article class="ctl-card">
@@ -364,7 +364,7 @@ const email = zidanField('#email', {
             <li><code>stepperUpLabel</code> <code>stepperDownLabel</code><span>Aria labels for “+/−”.</span></li>
           </ul>
           <p class="ctl-usage"><code>field.stepUp(2)</code> · <code>field.stepDown()</code> · <code>field.setStepper(false)</code> · event <code>zidan:step</code></p>
-          <p class="ctl-links"><a href="playground.html#number">Playground</a><a href="#panel-inputs">Live demo</a><a href="docs/options.md">Options</a></p>
+          <p class="ctl-links"><a href="playground.html#number">Playground</a><a href="#panel-inputs">Live demo</a><a href="docs/options.html">Options</a></p>
         </article>
 
         <article class="ctl-card">
@@ -378,7 +378,7 @@ const email = zidanField('#email', {
             <li><code>phoneCountryLabel</code><span>Aria-label for the selector.</span></li>
           </ul>
           <p class="ctl-usage"><code>field.setPhoneCountry('DE')</code> · <code>field.setPhoneFormat('e164')</code> · <code>ZidanForm.formatPhone('07700900123','GB','e164')</code></p>
-          <p class="ctl-links"><a href="playground.html#phone">Playground</a><a href="#panel-inputs">Live demo</a><a href="docs/options.md">Options</a></p>
+          <p class="ctl-links"><a href="playground.html#phone">Playground</a><a href="#panel-inputs">Live demo</a><a href="docs/options.html">Options</a></p>
         </article>
 
         <article class="ctl-card">
@@ -393,7 +393,7 @@ const email = zidanField('#email', {
             <li><code>output</code><span>Mirror the formatted display value into an <code>&lt;output&gt;</code>.</span></li>
           </ul>
           <p class="ctl-usage"><code>field.getValue()</code> stays the raw value · <code>output</code> shows the formatted one</p>
-          <p class="ctl-links"><a href="playground.html#range">Playground</a><a href="#panel-inputs">Live demo</a><a href="docs/options.md">Options</a></p>
+          <p class="ctl-links"><a href="playground.html#range">Playground</a><a href="#panel-inputs">Live demo</a><a href="docs/options.html">Options</a></p>
         </article>
 
         <article class="ctl-card">
@@ -406,7 +406,7 @@ const email = zidanField('#email', {
             <li><code>validateDate</code><span><code>(value, date, field)</code> returns boolean or a message.</span></li>
           </ul>
           <p class="ctl-usage"><code>field.openPicker()</code> · <code>field.validate()</code> · event <code>zidan:picker</code></p>
-          <p class="ctl-links"><a href="playground.html#date">Playground</a><a href="#panel-inputs">Live demo</a><a href="docs/options.md">Options</a></p>
+          <p class="ctl-links"><a href="playground.html#date">Playground</a><a href="#panel-inputs">Live demo</a><a href="docs/options.html">Options</a></p>
         </article>
 
         <article class="ctl-card">
@@ -420,7 +420,7 @@ const email = zidanField('#email', {
             <li><code>indeterminate</code><span>Start in the mixed state.</span></li>
           </ul>
           <p class="ctl-usage"><code>field.isChecked()</code> · <code>field.setChecked(true)</code> · <code>field.setIndeterminate(true)</code></p>
-          <p class="ctl-links"><a href="playground.html#switch">Playground</a><a href="#panel-check">Live demo</a><a href="docs/options.md">Options</a></p>
+          <p class="ctl-links"><a href="playground.html#switch">Playground</a><a href="#panel-check">Live demo</a><a href="docs/options.html">Options</a></p>
         </article>
 
         <article class="ctl-card">
@@ -434,7 +434,7 @@ const email = zidanField('#email', {
             <li>native <code>required</code><span>One radio per group carries it; the browser blocks submit.</span></li>
           </ul>
           <p class="ctl-usage"><code>group.getValue()</code> · <code>group.setValue('pro')</code> · <code>group.destroy()</code> restores the fieldset</p>
-          <p class="ctl-links"><a href="playground.html#radio">Playground</a><a href="#panel-check">Live demo</a><a href="docs/options.md">Options</a></p>
+          <p class="ctl-links"><a href="playground.html#radio">Playground</a><a href="#panel-check">Live demo</a><a href="docs/options.html">Options</a></p>
         </article>
 
         <article class="ctl-card">
@@ -450,7 +450,7 @@ const email = zidanField('#email', {
             <li><code>progressTemplate</code> <code>uploadedLabel</code> <code>failedLabel</code> <code>cancelLabel</code> <code>retryLabel</code><span>Per-file copy.</span></li>
           </ul>
           <p class="ctl-usage"><code>upload.getFiles()</code> · <code>upload.uploadAll()</code> · <code>upload.cancelUpload(file)</code> · <code>upload.retryUpload(file)</code> · <code>upload.clear()</code></p>
-          <p class="ctl-links"><a href="playground.html#file">Playground</a><a href="#panel-file">Live demo</a><a href="docs/options.md">Options</a><a href="advanced.html#upload">Upload pipeline</a></p>
+          <p class="ctl-links"><a href="playground.html#file">Playground</a><a href="#panel-file">Live demo</a><a href="docs/options.html">Options</a><a href="advanced.html#upload">Upload pipeline</a></p>
         </article>
 
         <article class="ctl-card ctl-card--wide">
@@ -470,8 +470,43 @@ const email = zidanField('#email', {
             </ul>
           </div>
           <p class="ctl-usage"><code>setTheme()</code> <code>setFramework()</code> <code>setLayout()</code> <code>setValidation()</code> <code>update()</code> <code>destroy()</code></p>
-          <p class="ctl-links"><a href="docs/options.md">Full option tables</a><a href="docs/validation.md">Validation guide</a><a href="docs/theming.md">Theming</a></p>
+          <p class="ctl-links"><a href="docs/options.html">Full option tables</a><a href="docs/validation-guide.html">Validation guide</a><a href="docs/theming.html">Theming</a></p>
         </article>
+      </div>
+    </section>
+
+    <section class="compare-section" id="api-quick" aria-labelledby="api-quick-title">
+      <div class="panel-head">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Developer reference</p>
+        <h2 id="api-quick-title">JavaScript API at a glance</h2>
+        <p>
+          The same entry points work with plain HTML and every component framework. Initialise
+          after mount, push external state through the instance, then restore the subtree on
+          unmount. The full signatures, callbacks and data attributes are in the
+          <a href="docs/options.html">options reference</a> and
+          <a href="advanced.html#globals">advanced API guide</a>.
+        </p>
+      </div>
+      <div class="card compare-card">
+        <div class="table-scroll">
+          <table class="compare-table">
+            <caption class="sr-only">Common ZidanForm JavaScript entry points, instance methods and lifecycle helpers</caption>
+            <thead>
+              <tr><th scope="col">Task</th><th scope="col">Entry point / method</th><th scope="col">Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Initialise a subtree</th><td><code>initZidanSelects(root)</code><br><code>initZidanForms(root, options)</code></td><td>Call selects first, then fields. Safe to run again; existing instances are skipped.</td></tr>
+              <tr><th scope="row">Initialise one control</th><td><code>zidanSelect(target, options)</code><br><code>zidanField(target, options)</code></td><td>Accepts an element, ID, class or list. Use this for callbacks, fetchers and validators.</td></tr>
+              <tr><th scope="row">Find an existing instance</th><td><code>ZidanSelect.get(element)</code><br><code>ZidanForm.get(input)</code></td><td>Returns <code>null</code> when the control is not enhanced; use it before double-initialising.</td></tr>
+              <tr><th scope="row">Read and write state</th><td><code>getValue()</code> / <code>setValue(value, { silent: true })</code></td><td>Native controls stay the source of truth. <code>silent</code> avoids echoing framework state back as a change.</td></tr>
+              <tr><th scope="row">Upload files</th><td><code>addFiles()</code> / <code>uploadAll()</code><br><code>whenUploaded()</code> / <code>getUploadState()</code></td><td>XHR queue with retries, concurrency, progress, cancel and response paths. Or pass a custom <code>uploadHandler</code>.</td></tr>
+              <tr><th scope="row">Validate and submit</th><td><code>ZidanForm.validate(form)</code><br><code>ZidanForm.serialize(form)</code></td><td>Runs every enhanced rule plus native constraints, focuses the first invalid control and resolves to a boolean.</td></tr>
+              <tr><th scope="row">React to changes</th><td><code>onChange</code> callback<br><code>zidan:change</code> event</td><td>Events bubble from the wrapper, so one listener on the form covers every control.</td></tr>
+              <tr><th scope="row">Handle new DOM nodes</th><td><code>ZidanForm.observe(root)</code><br><code>ZidanForm.refresh(root)</code></td><td>The observer initialises added nodes; call <code>refresh()</code> after changing native attributes.</td></tr>
+              <tr><th scope="row">Tear down a component</th><td><code>ZidanForm.destroy(root)</code><br><code>ZidanForm.destroyAll()</code></td><td>Scoped destroy restores only fields and selects inside <code>root</code> and returns the count. Framework examples: <a href="docs/frameworks.html">React, Next.js, Vue, Svelte and Angular</a>.</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -1730,9 +1765,9 @@ ZidanForm.validate('#lab-form').then((valid) =&gt; {
         </div>
         <p class="compare-note">
           Describes each project's core package; plugins can close some gaps. Full matrix, trade-offs
-          and migration notes in <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/comparison.md">docs/comparison.md</a>. Trimmed
+          and migration notes in <a href="docs/comparison.html">the comparison guide</a>. Trimmed
           select-only and file-only bundles are listed in the README and
-          <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/build.md">docs/build.md</a>.
+          <a href="docs/build.html">the build guide</a>.
         </p>
       </div>
     </section>
@@ -1755,7 +1790,7 @@ ZidanForm.validate('#lab-form').then((valid) =&gt; {
         </details>
         <details class="faq-item">
           <summary>Can I use it with React, Vue or Angular?</summary>
-          <p>Yes — initialise in a mount/effect and call <code>destroy()</code> on cleanup. The <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/frameworks.md">framework guide</a> covers React, Next.js SSR, Vue and Angular patterns.</p>
+          <p>Yes — initialise in a mount/effect and call <code>ZidanForm.destroy(root)</code> on cleanup. The <a href="docs/frameworks.html">framework guide</a> covers React 18/19, Next.js App and Pages Router, Vue 3/Nuxt, Svelte/SvelteKit and Angular (including reactive forms and SSR), with copy-paste components and a shared lifecycle table.</p>
         </details>
         <details class="faq-item">
           <summary>Does it conflict with jQuery Validation, JustValidate or Parsley?</summary>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Options &amp; data attributes — ZidanForm docs</title>
+  <meta name="description" content="Every JS option, data attribute, callback, event and instance method.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/docs/options.html">
+  <meta name="theme-color" content="#4f6bed">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:title" content="Options &amp; data attributes — ZidanForm docs">
+  <meta property="og:description" content="Every JS option, data attribute, callback, event and instance method.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/docs/options.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../plugin-core.css">
+  <link rel="stylesheet" href="../plugin-theme.css">
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+  <a class="skip-link" href="#docs-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="../index.html">Demo</a>
+      <a href="../advanced.html">Advanced</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../api.html">API</a>
+      <a href="../ajax.html">AJAX</a>
+      <a href="../shopify.html">Shopify</a>
+      <a href="../index.html#compare">Compare</a>
+      <a href="../index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="index.html">Documentation index</a>
+          <a href="options.html" aria-current="page">Options &amp; data attributes</a>
+          <a href="comparison.html">Why &amp; comparison</a>
+          <a href="frameworks.html">Frameworks</a>
+          <a href="html-and-wordpress.html">HTML &amp; WordPress</a>
+          <a href="validation-guide.html">Validation</a>
+          <a href="theming.html">Theming</a>
+          <a href="build.html">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
+      </select>
+    </nav>
+  </header>
+  <main id="docs-main" class="wrap docs-main">
+    <section class="hero docs-hero" aria-labelledby="docs-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Documentation · reference</p>
+      <h1 id="docs-title">Options &amp; data attributes</h1>
+      <p class="doc-blurb">Every JS option, data attribute, callback, event and instance method.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="../playground.html">Try the playground</a>
+        <a class="btn" href="index.html">All documentation</a>
+        <a class="btn" href="../advanced.html">Advanced API</a>
+      </div>
+    </section>
+    <div class="docs-content">
+<h2 id="options-data-attributes">Options &amp; data attributes</h2>
+<p>Everything is opt-in. A control is enhanced only when it carries a <code>data-zidan*</code> attribute, carries a marker class, sits inside a form scope, is matched by a configured target, or is passed to <code>initZidanSelects()</code> / <code>initZidanForms()</code> / <code>zidanSelect()</code> / <code>zidanField()</code>. <code>zidanField()</code> itself accepts any supported <code>&lt;input&gt;</code>/<code>&lt;textarea&gt;</code>, with or without a <code>data-zidan*</code> attribute, which is how JS-only options are applied.</p>
+<blockquote><p><strong>Prefer to click through the options?</strong> The <a href="https://akhtar1985.github.io/zidan-select/playground.html" rel="noopener">field playground</a> exposes the main options for one control at a time and copies both supported HTML attributes and vanilla JavaScript. The <a href="https://akhtar1985.github.io/zidan-select/#lab" rel="noopener">API lab</a> exercises the complete option, callback, method and event inventory.</p></blockquote>
+<h2 id="direct-init-by-id-or-class">Direct init by ID or class</h2>
+<p>The first argument of <code>zidanSelect()</code> accepts a CSS selector, an element, or a NodeList. Plain selects are not auto-initialised, so you can enhance exactly the field you want. For complete copy-paste pages (static HTML, WordPress, page builders) see the <a href="html-and-wordpress.html">static HTML &amp; WordPress cookbook</a>.</p>
+<pre><code class="language-html">&lt;select id=&quot;mymov&quot;&gt;…&lt;/select&gt;
+&lt;select class=&quot;mymovclass&quot;&gt;…&lt;/select&gt;
+&lt;select class=&quot;mymovclass&quot;&gt;…&lt;/select&gt;</code></pre>
+<pre><code class="language-js">const picker = zidanSelect('#mymov', {
+  mode: 'combobox',
+  label: 'Movie',
+  placeholder: 'Search a movie…',
+  searchable: true,
+  clearable: true
+});
+
+const pickers = zidanSelect('.mymovclass', { mode: 'select', layout: 'soft-pill' });
+// one match → instance, several → array</code></pre>
+<p><code>initZidanSelects(scope, options)</code> still bulk-enhances every <code>[data-zidan-select]</code> and <code>.zidan-select</code> inside a scope; use it when the markup can carry attributes. <code>zidanSelect()</code> is the targeted form for IDs, classes and elements you already have a reference to.</p>
+<p>Both bulk helpers skip elements that are already enhanced. Pass <code>{ force: true }</code> (<code>initZidanForms(scope, { force: true })</code>, <code>ZidanForm.init(scope, { force: true })</code>) to re-initialise them, for example after swapping markup. The same entry points are on the global object as <code>ZidanForm.init()</code>, <code>ZidanForm.get()</code>, <code>ZidanForm.refresh()</code>, <code>ZidanForm.observe()</code>, <code>ZidanForm.destroy(scope?)</code>, <code>ZidanForm.destroyAll()</code> and <code>ZidanForm.version</code>.</p>
+<h3 id="read-values-and-option-details">Read values and option details</h3>
+<pre><code class="language-js">picker.getValue();                 // selected value; array for multiple/tags
+picker.setValue('dune');
+picker.getTags();                  // tags mode
+
+const native = picker.el;          // the original &lt;select&gt;
+native.selectedOptions;            // selected &lt;option&gt; elements
+Array.from(native.options).map(option =&gt; ({
+  value: option.value,
+  label: option.text,
+  disabled: option.disabled,
+  group: option.parentElement.tagName === 'OPTGROUP' ? option.parentElement.label : null
+}));
+
+picker.setOptions([                // rebuilds listbox and native &lt;option&gt;s
+  { value: 'inception', label: 'Inception' },
+  { value: 'dune', label: 'Dune', group: 'Villeneuve' },
+  { value: 'arrival', label: 'Arrival', disabled: true }
+]);</code></pre>
+<p>Listen to the library callback in the options (<code>onChange: ({ instance, value }) =&gt; …</code>) or to the native <code>change</code> event; the native <code>&lt;select&gt;</code> always holds the current value.</p>
+<h2 id="no-js-init-ids-classes-selectors-json">No-JS init (IDs, classes, selectors, JSON)</h2>
+<p>For CMS templates where attributes are limited and custom scripts are unwelcome, init can be entirely declarative. The same rules apply to the full build, the select-only bundle and the file-only bundle.</p>
+<div class="table-wrap"><table><thead><tr><th>Path</th><th>Markup</th><th>What is enhanced</th></tr></thead><tbody><tr><td>Marker class</td><td><code>&lt;select class=&quot;zidan-select&quot;&gt;</code></td><td>That select, or a mount <code>&lt;div&gt;</code>. Mode comes from <code>data-zidan-options</code> / <code>data-zidan-mode</code>.</td></tr><tr><td>Marker class</td><td><code>&lt;input class=&quot;zidan-field&quot;&gt;</code></td><td>A checkbox, file or text/textarea input. Put it on the <code>&lt;fieldset&gt;</code> for a radio group.</td></tr><tr><td>Opt-in attribute</td><td><code>data-zidan-checkbox</code>, <code>data-zidan-switch</code></td><td>That checkbox input; <code>switch</code> renders a switch, <code>checkbox</code> a box.</td></tr><tr><td>Opt-in attribute</td><td><code>data-zidan-radio</code> on an <code>&lt;input type=&quot;radio&quot;&gt;</code>, <code>data-zidan-radio-group</code> on its <code>&lt;fieldset&gt;</code></td><td>That radio, or the group container. A lone radio without its group is skipped.</td></tr><tr><td>Opt-in attribute</td><td><code>data-zidan-file</code>, <code>data-zidan-input</code>, <code>data-zidan-textarea</code></td><td>That file input, supported text-ish input, or textarea.</td></tr><tr><td>Explicit kind</td><td>`data-zidan=&quot;checkbox&quot; \</td><td>&quot;radio&quot; \</td><td>&quot;radio-group&quot; \</td><td>&quot;file&quot; \</td><td>&quot;input&quot; \</td><td>&quot;textarea&quot;`</td><td>The value picks the field type; without a value the type is detected from the element.</td></tr><tr><td>Form wrapper</td><td><code>&lt;form class=&quot;zidan-form&quot;&gt;</code> or <code>data-zidan-form</code> on any element</td><td>Every <code>&lt;select&gt;</code> and every <code>&lt;input type=&quot;file&quot;&gt;</code> inside, marked or not.</td></tr><tr><td>Config targets</td><td><code>window.ZIDAN_FORM_CONFIG</code> (alias <code>ZIDAN_SELECT_CONFIG</code>)</td><td>Anything matched by an ID, class or full CSS selector.</td></tr></tbody></table></div>
+<h3 id="data-zidan-options-json"><code>data-zidan-options</code> JSON</h3>
+<p>Plain options as JSON on the element itself, for selects and every field type:</p>
+<pre><code class="language-html">&lt;select class=&quot;zidan-select&quot; multiple
+        data-zidan-options='{&quot;mode&quot;:&quot;tags&quot;,&quot;maxTags&quot;:3,&quot;placeholder&quot;:&quot;Add a tag…&quot;}'&gt;…&lt;/select&gt;
+
+&lt;input type=&quot;file&quot; class=&quot;zidan-field&quot;
+       data-zidan-options='{&quot;variant&quot;:&quot;gallery&quot;,&quot;maxFiles&quot;:4,&quot;title&quot;:&quot;Add images&quot;}'&gt;</code></pre>
+<p>Values must be literal JSON; callbacks, upload functions and raw SVG icon markup still need a small JS block. Invalid JSON is ignored with one console warning.</p>
+<h3 id="windowzidan_form_config"><code>window.ZIDAN_FORM_CONFIG</code></h3>
+<div class="table-wrap"><table><thead><tr><th>Key</th><th>Type</th><th>Effect</th></tr></thead><tbody><tr><td><code>autoInit</code></td><td>boolean</td><td><code>false</code> disables every automatic pass (<code>data-zidan-auto-init=&quot;false&quot;</code> does the same).</td></tr><tr><td><code>targets</code> / <code>selectors</code></td><td>string or array</td><td>CSS selectors, or <code>{ selector, options }</code> entries, initialised as selects.</td></tr><tr><td><code>fieldTargets</code></td><td>string or array</td><td>Selectors initialised as fields; plain text inputs and textareas are accepted.</td></tr><tr><td><code>formTargets</code></td><td>string or array</td><td>Extra form scopes: every select and file input inside is initialised.</td></tr><tr><td><code>options</code></td><td>object</td><td>Shared select options for the attribute scan and for targets.</td></tr><tr><td><code>fieldOptions</code></td><td>object</td><td>Shared field options for the scan and for targets.</td></tr><tr><td><code>fields</code></td><td>object</td><td>Legacy alias of <code>fieldOptions</code>.</td></tr><tr><td><code>selector</code></td><td>string</td><td>Legacy: initialise only these selects and skip the attribute scan.</td></tr></tbody></table></div>
+<pre><code class="language-js">window.ZIDAN_FORM_CONFIG = {
+  targets: ['#country', 'select.product-variants',
+            { selector: '#brands', options: { mode: 'tags', maxTags: 3 } }],
+  fieldTargets: [
+    { selector: '#avatar', options: { variant: 'avatar' } },
+    { selector: 'input[name=&quot;email&quot;]', options: { icon: 'mail' } }
+  ],
+  formTargets: ['#checkout']
+};</code></pre>
+<p>Precedence for any single option: per-target <code>options</code> → <code>data-zidan-options</code> JSON → <code>data-zidan-*</code> attribute → default. Config is read during the <code>DOMContentLoaded</code> pass, so set it before the library script (or call <code>initZidanSelects()</code> / <code>initZidanForms()</code> yourself with the same values). Explicit targets run first so their options win over the generic scan.</p>
+<h2 id="field-options">Field options</h2>
+<p>Applies to <code>ZidanCheckbox</code>, <code>ZidanRadioGroup</code>, <code>ZidanFileUpload</code>, <code>ZidanTextField</code>.</p>
+<div class="table-wrap"><table><thead><tr><th>JS option</th><th>Data attribute</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>variant</code></td><td><code>data-zidan-variant</code></td><td>string</td><td><code>default</code></td><td>Checkbox: <code>default</code>, <code>switch</code>, <code>card</code>, <code>button</code>, <code>minimal</code>. Radio: <code>stacked</code>, <code>inline</code>, <code>card</code>, <code>button</code>, <code>tile</code>. File: <code>dropzone</code>, <code>button</code>, <code>avatar</code>, <code>gallery</code>, <code>compact</code>. Range uses <code>rangeVariant</code>.</td></tr><tr><td><code>layout</code></td><td><code>data-zidan-layout</code></td><td>string</td><td><code>stacked</code></td><td><code>stacked</code>, <code>inline</code>, <code>compact</code>, <code>floating</code>, <code>outlined</code>, <code>card</code>.</td></tr><tr><td><code>theme</code></td><td><code>data-zidan-theme</code>, <code>data-zs-theme</code></td><td>string</td><td><code>default</code></td><td><code>default</code>, <code>modern</code>, <code>minimal</code>, <code>dark</code>, <code>glass</code>, <code>auto</code>. Resolves element → ancestor → <code>&lt;html&gt;</code>; <code>auto</code> follows <code>prefers-color-scheme</code>.</td></tr><tr><td><code>framework</code></td><td><code>data-zidan-framework</code>, <code>data-zs-framework</code></td><td>string</td><td><code>none</code></td><td><code>none</code>, <code>bootstrap</code>, <code>tailwind</code>, <code>bulma</code>, <code>foundation</code>, <code>vanilla</code>.</td></tr><tr><td><code>label</code></td><td><code>data-zidan-label</code></td><td>string</td><td>—</td><td>Used when the markup has no <code>&lt;label&gt;</code>; a generated label is <code>&lt;label for&gt;</code>. If the markup already has a <code>&lt;label&gt;</code>, the generated one replaces it and the original is hidden until <code>destroy()</code>.</td></tr><tr><td><code>hint</code></td><td><code>data-zidan-hint</code></td><td>string</td><td>—</td><td>Rendered under the control and linked via <code>aria-describedby</code>.</td></tr><tr><td><code>description</code></td><td><code>data-zidan-description</code></td><td>string</td><td>—</td><td>Second line for card, tile, button and minimal checkbox/radio variants.</td></tr><tr><td><code>descriptions</code></td><td>—</td><td>object</td><td>—</td><td>Radio group: <code>{ value: 'Description' }</code> fallback descriptions.</td></tr><tr><td><code>messages</code></td><td>—</td><td>object</td><td>—</td><td>Override built-in validation messages, including <code>required</code>, <code>phone</code>, <code>weekend</code> and <code>generic</code>.</td></tr><tr><td><code>validate(value, field, context)</code></td><td>—</td><td>function</td><td>—</td><td>Custom rule for text, checkbox, radio or file fields. Return <code>true</code>, <code>false</code>, a message string, Error or Promise; <code>context</code> is <code>{ signal, field, instance }</code>.</td></tr><tr><td><code>showValidState</code></td><td>—</td><td>boolean</td><td><code>false</code></td><td>Show a positive state after a successful async rule.</td></tr><tr><td><code>validation</code></td><td><code>data-zidan-validation</code></td><td><code>valid</code> \</td><td><code>invalid</code></td><td>—</td><td>Initial state; later states come from validity or <code>setValidation()</code>. A preset <code>invalid</code> survives <code>update()</code> / <code>refresh()</code> and internal mirrors until user input/change/blur or <code>setValidation(null)</code>; programmatic value helpers that dispatch <code>change</code>, and a non-empty select value, also clear it.</td></tr><tr><td><code>alwaysValidate</code></td><td>—</td><td>boolean</td><td><code>false</code></td><td>Mark invalid as soon as native validity fails instead of on blur.</td></tr><tr><td><code>indeterminate</code></td><td><code>data-zidan-indeterminate</code></td><td>boolean</td><td><code>false</code></td><td>Checkbox starts mixed.</td></tr><tr><td><code>clearable</code></td><td><code>data-zidan-clear</code></td><td>boolean</td><td><code>search</code> only</td><td>Clear button for text inputs and textarea.</td></tr><tr><td><code>mask</code></td><td><code>data-zidan-mask</code></td><td>string</td><td>—</td><td>Input mask: <code>#</code> digit, <code>A</code> letter, <code>*</code> letter or digit; any other character is an auto-inserted literal (<code>(###) ###-####</code>).</td></tr><tr><td><code>autogrow</code></td><td><code>data-zidan-autogrow</code></td><td>boolean</td><td><code>false</code></td><td>Textarea grows to fit its content.</td></tr><tr><td><code>autogrowMax</code></td><td><code>data-zidan-autogrow-max</code></td><td>number</td><td><code>0</code> (no cap)</td><td>Maximum height in px; beyond it the textarea scrolls.</td></tr><tr><td><code>reveal</code></td><td><code>data-zidan-reveal</code></td><td>boolean</td><td><code>false</code></td><td>Password show/hide toggle.</td></tr><tr><td><code>prefix</code></td><td><code>data-zidan-prefix</code></td><td>string</td><td>—</td><td>Static text before the input.</td></tr><tr><td><code>suffix</code></td><td><code>data-zidan-suffix</code></td><td>string</td><td>—</td><td>Static text after the input.</td></tr><tr><td><code>counter</code></td><td><code>data-zidan-counter</code></td><td>number</td><td><code>maxlength</code></td><td>Counter maximum; wins over the <code>maxlength</code> default.</td></tr><tr><td><code>output</code></td><td><code>data-zidan-output</code></td><td>selector</td><td>—</td><td>Range display value (formatted when <code>rangeFormat</code> is set) is mirrored into this element.</td></tr><tr><td><code>title</code></td><td><code>data-zidan-title</code></td><td>string</td><td><code>Choose a file</code></td><td>Dropzone headline.</td></tr><tr><td><code>dropHint</code></td><td><code>data-zidan-drop-hint</code></td><td>string</td><td>—</td><td>Dropzone subtitle.</td></tr><tr><td><code>accept</code></td><td>native <code>accept</code></td><td>string</td><td>—</td><td>Validated on top of the native picker filter and shown in the dropzone hint.</td></tr><tr><td><code>maxFiles</code></td><td><code>data-zidan-max-files</code></td><td>number</td><td>—</td><td>Extra files are trimmed and reported.</td></tr><tr><td><code>maxSize</code></td><td><code>data-zidan-max-size</code></td><td>number</td><td>—</td><td>Bytes per file.</td></tr><tr><td><code>maxSizeMB</code></td><td><code>data-zidan-max-size-mb</code></td><td>number</td><td>—</td><td>Megabytes per file; <code>2</code> = 2 MB, decimals allowed. Ignored when <code>maxSize</code> is set.</td></tr><tr><td><code>labels</code></td><td>—</td><td>object</td><td>—</td><td>Radio group: <code>{ value: 'Label' }</code> fallback labels.</td></tr><tr><td><code>clearLabel</code></td><td>—</td><td>string</td><td><code>Clear all</code> / <code>Clear field</code></td><td>Button text/aria-label.</td></tr><tr><td><code>showPasswordLabel</code></td><td>—</td><td>string</td><td><code>Show</code></td><td>Password toggle labels.</td></tr><tr><td><code>hidePasswordLabel</code></td><td>—</td><td>string</td><td><code>Hide</code></td><td>Password toggle labels.</td></tr></tbody></table></div>
+<h3 id="field-callbacks">Field callbacks</h3>
+<div class="table-wrap"><table><thead><tr><th>Callback</th><th>Payload</th></tr></thead><tbody><tr><td><code>onInit</code></td><td><code>{ instance, variant?, type? }</code></td></tr><tr><td><code>onChange</code></td><td><code>{ instance, value }</code> (text/radio), <code>{ instance, checked, value }</code> (checkbox), <code>{ instance, files }</code> (file)</td></tr><tr><td><code>onInput</code></td><td><code>{ instance, value }</code> (text/range)</td></tr><tr><td><code>onValidation</code></td><td><code>{ instance, state, message? }</code> where <code>state</code> is <code>valid</code>, <code>invalid</code> or <code>null</code></td></tr><tr><td><code>onIconClick</code></td><td><code>{ instance, icon, position }</code></td></tr><tr><td><code>onStep</code></td><td><code>{ instance, value, direction }</code></td></tr><tr><td><code>onPicker</code></td><td><code>{ instance, type }</code></td></tr><tr><td><code>onPhoneCountry</code></td><td><code>{ instance, country }</code></td></tr><tr><td><code>onPhoneFormat</code></td><td><code>{ instance, format }</code></td></tr><tr><td><code>onRemove</code></td><td><code>{ instance, file, index }</code></td></tr><tr><td><code>onUploadStart</code> / <code>onUploadProgress</code> / <code>onUploadSuccess</code></td><td><code>{ instance, file, name, ... }</code> with size, progress or result</td></tr><tr><td><code>onUpload</code></td><td>Alias of <code>onUploadSuccess</code>.</td></tr><tr><td><code>onUploadError</code> / <code>onUploadCancel</code></td><td><code>{ instance, file, name, error?, message? }</code></td></tr></tbody></table></div>
+<p>DOM events with the same information: <code>zidan:init</code>, <code>zidan:change</code>, <code>zidan:input</code>, <code>zidan:validation</code>, <code>zidan:async-validation</code>, <code>zidan:remove</code>, <code>zidan:reveal</code>, <code>zidan:clear</code>, <code>zidan:icon-click</code>, <code>zidan:step</code>, <code>zidan:picker</code>, <code>zidan:phone-country</code>, <code>zidan:phone-format</code>, <code>zidan:upload-*</code>, <code>zidan:destroy</code> and <code>zidan:error</code>.</p>
+<h2 id="checkbox-switch-radio-variants">Checkbox, switch &amp; radio variants</h2>
+<div class="table-wrap"><table><thead><tr><th>Control</th><th>Option / attribute</th><th>Values</th><th>Notes</th></tr></thead><tbody><tr><td>Checkbox / switch</td><td><code>variant</code> / <code>data-zidan-variant</code></td><td><code>default</code>, <code>switch</code>, <code>card</code>, <code>button</code>, <code>minimal</code></td><td><code>button</code> is a filter-style pill; <code>minimal</code> removes the border for dense lists.</td></tr><tr><td>Switch</td><td><code>switchStyle</code> / <code>data-zidan-switch-style</code></td><td><code>ios</code>, <code>material</code>, <code>square</code>, <code>labeled</code>, <code>icon</code></td><td>Skin only — combine with <code>variant=&quot;switch&quot;</code>.</td></tr><tr><td>Switch</td><td><code>onLabel</code> / <code>data-zidan-on-label</code></td><td>string</td><td><code>labeled</code> and <code>icon</code> styles: checked text.</td></tr><tr><td>Switch</td><td><code>offLabel</code> / <code>data-zidan-off-label</code></td><td>string</td><td><code>labeled</code> and <code>icon</code> styles: unchecked text.</td></tr><tr><td>Checkbox / radio</td><td><code>description</code> / <code>data-zidan-description</code></td><td>string</td><td>Second line under the label (card, tile, button, minimal).</td></tr><tr><td>Radio group</td><td><code>variant</code> / <code>data-zidan-variant</code></td><td><code>stacked</code>, <code>inline</code>, <code>card</code>, <code>button</code>, <code>tile</code></td><td>Applies to the <code>&lt;fieldset&gt;</code>.</td></tr><tr><td>Radio group</td><td><code>deselectable</code> / <code>data-zidan-deselectable</code></td><td>boolean</td><td>Clicking the selected radio clears the group.</td></tr></tbody></table></div>
+<p><code>ZidanForm.variants</code> exposes the accepted names: <code>{ checkbox: [...], switch: [...], radio: [...], file: [...], range: [...] }</code>.</p>
+<h2 id="text-input-icons">Text input: icons</h2>
+<p>Supports <code>text</code>, <code>email</code>, <code>password</code>, <code>number</code>, <code>tel</code>, <code>url</code>, <code>search</code>, <code>date</code>, <code>time</code>, <code>datetime-local</code>, <code>month</code>, <code>week</code>, <code>range</code>, <code>color</code> and <code>&lt;textarea&gt;</code>.</p>
+<div class="table-wrap"><table><thead><tr><th>JS option</th><th>Data attribute</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>autoIcon</code></td><td><code>data-zidan-auto-icon</code></td><td>boolean</td><td><code>false</code></td><td>Uses the built-in icon for the input type (<code>mail</code>, <code>phone</code>, <code>calendar</code>, <code>clock</code>, <code>search</code>, <code>link</code>, <code>hash</code>, <code>palette</code>).</td></tr><tr><td><code>icon</code></td><td><code>data-zidan-icon</code></td><td>string</td><td>—</td><td>Any registered name, a raw <code>&lt;path&gt;</code>/SVG string, or <code>&quot;auto&quot;</code> (same as <code>autoIcon</code>).</td></tr><tr><td><code>iconPosition</code></td><td><code>data-zidan-icon-position</code></td><td><code>left</code> \</td><td><code>right</code></td><td><code>left</code></td><td>Right icons sit after suffix/actions.</td></tr><tr><td><code>iconClickable</code></td><td><code>data-zidan-icon-clickable</code></td><td>boolean</td><td><code>false</code></td><td>Renders a <code>&lt;button&gt;</code> and emits <code>zidan:icon-click</code>. Date/time pickers are always clickable.</td></tr><tr><td><code>iconLabel</code></td><td><code>data-zidan-icon-label</code></td><td>string</td><td>—</td><td>Accessible name for a decorative/custom icon.</td></tr><tr><td><code>validationIcon</code></td><td><code>data-zidan-validation-icon</code></td><td>boolean</td><td><code>false</code></td><td>Adds check/alert glyphs driven by <code>[data-zs-validation]</code>.</td></tr></tbody></table></div>
+<pre><code class="language-html">&lt;!-- type-based icon --&gt;
+&lt;input type=&quot;email&quot; data-zidan=&quot;input&quot; data-zidan-auto-icon=&quot;true&quot; data-zidan-clear&gt;
+
+&lt;!-- custom icon, right side, clickable --&gt;
+&lt;input type=&quot;url&quot; data-zidan=&quot;input&quot; data-zidan-icon=&quot;link&quot;
+       data-zidan-icon-position=&quot;right&quot; data-zidan-icon-clickable=&quot;true&quot;
+       data-zidan-icon-label=&quot;Open website&quot;&gt;</code></pre>
+<pre><code class="language-js">// register your own icon (path markup or a full &lt;svg&gt;), then use its name anywhere
+ZidanForm.registerIcon('sparkle', '&lt;path d=&quot;M12 3l1.9 5.3L19 10l-5.1 1.7L12 17Z&quot;/&gt;');
+ZidanSelect.registerIcon('heart', '&lt;path d=&quot;M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9Z&quot;/&gt;');
+window.registerZidanIcon('star', '&lt;path d=&quot;M12 2l3 6.3 6.9 1-5 4.9 1.2 6.8-6.1-3.2L5.9 21 7.1 14.2l-5-4.9 6.9-1Z&quot;/&gt;');
+
+// or configure a plain input entirely from JavaScript
+zidanField('#brand', {
+  icon: 'palette',
+  iconPosition: 'right',
+  iconClickable: true,
+  iconLabel: 'Pick a brand colour'
+});</code></pre>
+<p>Built-in names: <code>text</code>, <code>mail</code>, <code>phone</code>, <code>user</code>, <code>lock</code>, <code>search</code>, <code>calendar</code>, <code>clock</code>, <code>link</code>, <code>hash</code>, <code>palette</code>, <code>sliders</code>, <code>file</code>, <code>upload</code>, <code>eye</code>, <code>eye-off</code>, <code>check</code>, <code>x</code>, <code>plus</code>, <code>minus</code>, <code>chevron-down</code>, <code>chevron-up</code>, <code>chevron-left</code>, <code>chevron-right</code>, <code>alert</code>, <code>info</code>, <code>globe</code>, <code>map-pin</code>, <code>image</code>, <code>refresh</code>, <code>trash</code>. <code>icon</code> also accepts raw <code>&lt;path&gt;</code> or <code>&lt;svg&gt;</code> markup.</p>
+<p>Icons are sanitised with <code>DOMParser</code>: only SVG shape elements and safe attributes survive.</p>
+<h2 id="masks-and-textarea-autogrow">Masks and textarea autogrow</h2>
+<div class="table-wrap"><table><thead><tr><th>JS option</th><th>Data attribute</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>mask</code></td><td><code>data-zidan-mask</code></td><td>string</td><td>—</td><td><code>#</code> digit, <code>A</code> letter, <code>*</code> letter or digit; every other character is an auto-inserted literal.</td></tr><tr><td><code>autogrow</code></td><td><code>data-zidan-autogrow</code></td><td>boolean</td><td><code>false</code></td><td>Textarea height follows its content.</td></tr><tr><td><code>autogrowMax</code></td><td><code>data-zidan-autogrow-max</code></td><td>number</td><td><code>0</code></td><td>Maximum height in px (0 = unlimited); longer content scrolls.</td></tr></tbody></table></div>
+<pre><code class="language-html">&lt;input type=&quot;tel&quot; data-zidan=&quot;input&quot; data-zidan-mask=&quot;(###) ###-####&quot;
+       placeholder=&quot;(555) 123-4567&quot;&gt;
+&lt;textarea data-zidan=&quot;textarea&quot; data-zidan-autogrow=&quot;true&quot; data-zidan-autogrow-max=&quot;220&quot;&gt;&lt;/textarea&gt;</code></pre>
+<pre><code class="language-js">const card = zidanField('#card', { mask: '#### #### #### ####' });
+card.getUnmaskedValue();            // digits only, no spaces
+ZidanForm.mask('4111111111111111', '#### #### #### ####'); // '4111 1111 1111 1111'
+ZidanForm.unmask('(555) 123-4567'); // '5551234567'</code></pre>
+<p>The caret is preserved while typing and when a backspace/delete removes an auto-inserted literal. Invalid characters are discarded instead of stored. Call <code>field.refreshAutogrow()</code> after changing a textarea's value outside the field.</p>
+<h2 id="number-stepper">Number stepper (− / +)</h2>
+<div class="table-wrap"><table><thead><tr><th>JS option</th><th>Data attribute</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>stepper</code></td><td><code>data-zidan-stepper</code></td><td>boolean \</td><td>mode</td><td><code>false</code></td><td><code>true</code> = <code>stacked</code>; or <code>stacked</code>, <code>split</code>, <code>inline</code>. Any value except <code>false</code>/<code>&quot;false&quot;</code> enables it.</td></tr><tr><td><code>stepperPosition</code></td><td><code>data-zidan-stepper-position</code></td><td><code>left</code> \</td><td><code>right</code></td><td><code>right</code></td><td><code>inline</code> mode only.</td></tr><tr><td><code>stepperWrap</code></td><td><code>data-zidan-stepper-wrap</code></td><td>boolean</td><td><code>false</code></td><td>Adds a wrapping border around the field (theme hook).</td></tr><tr><td><code>stepperLongPress</code></td><td><code>data-zidan-stepper-long-press</code></td><td>boolean</td><td><code>true</code></td><td>Press and hold repeats.</td></tr><tr><td><code>stepperDelay</code></td><td><code>data-zidan-stepper-delay</code></td><td>number</td><td><code>420</code></td><td>Hold delay before repeating, ms.</td></tr><tr><td><code>stepperInterval</code></td><td><code>data-zidan-stepper-interval</code></td><td>number</td><td><code>90</code></td><td>Repeat interval, ms.</td></tr><tr><td><code>stepperUpLabel</code></td><td><code>data-zidan-stepper-up-label</code></td><td>string</td><td><code>Increase value</code></td><td>Aria-label of “+”.</td></tr><tr><td><code>stepperDownLabel</code></td><td><code>data-zidan-stepper-down-label</code></td><td>string</td><td><code>Decrease value</code></td><td>Aria-label of “−”.</td></tr><tr><td><code>stepperStep</code></td><td>—</td><td>number</td><td>native <code>step</code></td><td>Increment used by the stepper buttons and <code>stepUp()</code> / <code>stepDown()</code>.</td></tr></tbody></table></div>
+<pre><code class="language-html">&lt;input type=&quot;number&quot; min=&quot;0&quot; max=&quot;10&quot; value=&quot;3&quot; data-zidan=&quot;input&quot;
+       data-zidan-stepper=&quot;stacked&quot;&gt;
+&lt;input type=&quot;number&quot; min=&quot;0&quot; max=&quot;99&quot; data-zidan=&quot;input&quot;
+       data-zidan-stepper=&quot;split&quot;&gt;
+&lt;input type=&quot;number&quot; step=&quot;0.5&quot; data-zidan=&quot;input&quot;
+       data-zidan-stepper=&quot;inline&quot; data-zidan-stepper-position=&quot;left&quot;&gt;</code></pre>
+<p>Methods: <code>stepUp(times = 1)</code>, <code>stepDown(times = 1)</code>, <code>setStepper(enabled)</code>. <code>setStepper()</code> toggles the source attribute; destroy and reinitialise the field to add or remove the generated stepper buttons. Event: <code>zidan:step</code> → <code>{ value, direction, instance }</code>.</p>
+<h2 id="phone-formatting">Phone formatting</h2>
+<div class="table-wrap"><table><thead><tr><th>JS option</th><th>Data attribute</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>phone</code></td><td><code>data-zidan-phone</code></td><td>boolean \</td><td>object</td><td><code>false</code></td><td>Enables formatting. Object form: <code>{ country, format, showCountry, countries, validate }</code>.</td></tr><tr><td><code>phoneCountry</code></td><td><code>data-zidan-phone-country</code></td><td>ISO-2</td><td><code>US</code></td><td>One of <code>ZidanForm.phoneCountries</code>.</td></tr><tr><td><code>phoneFormat</code></td><td><code>data-zidan-phone-format</code></td><td><code>national</code> \</td><td><code>international</code> \</td><td><code>e164</code></td><td><code>national</code></td><td>Three styles per country.</td></tr><tr><td><code>phoneCountrySelect</code></td><td><code>data-zidan-phone-country-select</code></td><td>boolean</td><td><code>true</code></td><td>Show the searchable country picker (the native select stays as the value holder).</td></tr><tr><td><code>phoneCountries</code></td><td><code>data-zidan-phone-countries</code></td><td>list</td><td>common set</td><td>Comma-separated ISO codes for the selector.</td></tr><tr><td><code>phoneCountryLabel</code></td><td>—</td><td>string</td><td><code>Country code</code></td><td>Aria-label for the picker.</td></tr><tr><td><code>phoneCountrySearchText</code></td><td>—</td><td>string</td><td><code>Search country or code</code></td><td>Search field placeholder/label.</td></tr><tr><td><code>phoneCountryEmptyText</code></td><td>—</td><td>string</td><td><code>No countries found</code></td><td>Empty state for a search with no match.</td></tr><tr><td><code>phone.validate</code></td><td>—</td><td>boolean</td><td><code>true</code></td><td>Length check per country (uses <code>messages.phone</code>).</td></tr></tbody></table></div>
+<pre><code class="language-html">&lt;input type=&quot;tel&quot; data-zidan=&quot;input&quot; data-zidan-phone=&quot;true&quot;
+       data-zidan-phone-country=&quot;GB&quot; data-zidan-phone-format=&quot;international&quot;
+       data-zidan-phone-country-select=&quot;false&quot;&gt;</code></pre>
+<p>Methods: <code>getPhoneCountry()</code>, <code>setPhoneCountry('GB')</code>, <code>setPhoneFormat('e164')</code>, <code>formatPhone(value?)</code>. Events: <code>zidan:phone-country</code> → <code>{ country }</code>, <code>zidan:phone-format</code> → <code>{ format }</code>.</p>
+<p>Static helpers:</p>
+<pre><code class="language-js">ZidanForm.formatPhone('2025550134', 'US', 'e164');        // +12025550134
+ZidanForm.detectPhoneCountry('+44 7700 900123');          // 'GB'</code></pre>
+<p>Formatting is caret-safe: digits are re-masked around the caret while typing, and a leading national <code>0</code> is dropped in international/E.164 output.</p>
+<h2 id="range-inputs">Range inputs</h2>
+<div class="table-wrap"><table><thead><tr><th>JS option</th><th>Data attribute</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>rangeVariant</code></td><td><code>data-zidan-range-variant</code></td><td><code>default</code> \</td><td><code>gradient</code> \</td><td><code>stepped</code> \</td><td><code>minimal</code></td><td><code>default</code></td><td>Visual skin.</td></tr><tr><td><code>rangeBubble</code></td><td><code>data-zidan-range-bubble</code></td><td>boolean</td><td><code>true</code></td><td>Master switch for the floating value bubble.</td></tr><tr><td><code>rangeBubbleMode</code></td><td><code>data-zidan-range-bubble-mode</code></td><td><code>always</code> \</td><td><code>active</code> \</td><td><code>never</code></td><td><code>always</code></td><td><code>active</code> shows the bubble only on hover, focus or drag.</td></tr><tr><td><code>rangeBubblePosition</code></td><td><code>data-zidan-range-bubble-position</code></td><td><code>top</code> \</td><td><code>bottom</code></td><td><code>top</code></td><td>Bubble above the track or below the ticks/scale.</td></tr><tr><td><code>rangeFill</code></td><td><code>data-zidan-range-fill</code></td><td>boolean</td><td><code>true</code></td><td>Coloured progress fill; <code>false</code> keeps the neutral track (gradient skin keeps its gradient).</td></tr><tr><td><code>rangeMinMax</code></td><td><code>data-zidan-range-minmax</code></td><td>boolean</td><td><code>true</code></td><td>Min/max scale under the track. Hidden automatically when labeled ticks cover both ends, so 0 and the max print once.</td></tr><tr><td><code>rangeMinLabel</code> / <code>rangeMaxLabel</code></td><td><code>data-zidan-range-min-label</code> / <code>-range-max-label</code></td><td>string</td><td>—</td><td>Custom text for the scale ends (e.g. <code>Low</code> / <code>High</code>); <code>rangeFormat</code> is used when unset.</td></tr><tr><td><code>rangeTicks</code></td><td><code>data-zidan-range-ticks</code></td><td>number \</td><td>array \</td><td>string</td><td><code>0</code></td><td>Count, JS array, JSON array or comma list (<code>0,250,500</code>). Values are absolute and out-of-range ones sit at the nearest end.</td></tr><tr><td><code>rangeTickLabels</code></td><td><code>data-zidan-range-tick-labels</code></td><td>boolean</td><td><code>false</code></td><td>Text labels on ticks. Labels at both ends replace the min/max scale.</td></tr><tr><td><code>rangeLabels</code></td><td>—</td><td>object</td><td>—</td><td>Map <code>{ value: 'Label' }</code> used with labeled ticks.</td></tr><tr><td><code>rangeFormat</code></td><td><code>data-zidan-range-format</code></td><td>string \</td><td>function</td><td>—</td><td>Template with <code>{value}</code>, <code>{min}</code>, <code>{max}</code> (or <code>%s</code>), or <code>function(value, field)</code> in JS.</td></tr><tr><td><code>output</code></td><td><code>data-zidan-output</code></td><td>selector</td><td>—</td><td>Mirrors the display value (formatted when <code>rangeFormat</code> is set) into a <code>&lt;output&gt;</code>/element; <code>input.value</code> keeps the raw value.</td></tr></tbody></table></div>
+<pre><code class="language-html">&lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;1000&quot; step=&quot;50&quot; value=&quot;400&quot;
+       data-zidan=&quot;input&quot; data-zidan-range-variant=&quot;minimal&quot;
+       data-zidan-range-minmax=&quot;false&quot; data-zidan-output=&quot;#budget&quot;&gt;</code></pre>
+<pre><code class="language-js">zidanField('#price', {
+  rangeVariant: 'gradient',
+  rangeTicks: [0, 250, 500, 750, 1000],
+  rangeTickLabels: true,
+  rangeLabels: { 0: 'Free', 1000: 'Top' },
+  rangeFormat: value =&gt; '€' + Number(value).toLocaleString('en-US')
+});
+
+zidanField('#delivery', {
+  rangeBubbleMode: 'active',      // 'always' | 'active' | 'never'
+  rangeBubblePosition: 'bottom',  // 'top' | 'bottom'
+  rangeFill: false,               // neutral track, no progress colour
+  rangeTicks: '0,10,20,30',       // count, array, JSON or comma list
+  rangeTickLabels: true,
+  rangeMinLabel: 'Low',
+  rangeMaxLabel: 'High'
+});</code></pre>
+<p>The range keeps <code>input.value</code> native; only the visual chrome and bubble are added. Instance properties <code>range</code>, <code>rangeBubble</code>, <code>rangeTicksEl</code> and <code>rangeScale</code> are exposed if you need to re-render custom ticks.</p>
+<p>Labeled ticks and the scale do not stack: when <code>rangeTickLabels</code> is on and the tick values include both <code>min</code> and <code>max</code>, the scale row (<code>.zs-range-scale</code>) gets <code>zs-range-scale--hidden</code> and the tick labels are the single endpoint readout. <code>rangeLabels</code> entries win over <code>rangeFormat</code> for that value. Endpoint labels carry <code>zs-range-tick--start</code> / <code>--end</code> and the bubble gets <code>zs-range-bubble--start</code> / <code>--end</code>, so both stay inside the track at 0 and max, including in RTL. Without a scale row (<code>.zs-range--labels-no-scale</code>) the label height is reserved so labels cannot overlap the next element.</p>
+<p>Bubble behaviour is controlled by <code>rangeBubbleMode</code> (<code>always</code> / <code>active</code> / <code>never</code>) and <code>rangeBubblePosition</code> (<code>top</code> / <code>bottom</code>), the coloured progress by <code>rangeFill</code>, and the scale ends by <code>rangeMinLabel</code> / <code>rangeMaxLabel</code>. <code>rangeFill: false</code> keeps the neutral track but not the gradient skin, and <code>rangeFormat</code> also feeds <code>aria-valuetext</code> so assistive tech reads the formatted value.</p>
+<h2 id="date-time-pickers">Date &amp; time pickers</h2>
+<div class="table-wrap"><table><thead><tr><th>JS option</th><th>Data attribute</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>pickerButton</code></td><td><code>data-zidan-picker-button</code></td><td>boolean</td><td><code>false</code></td><td>Adds a picker button when no icon is present.</td></tr><tr><td><code>pickerIcon</code></td><td><code>data-zidan-picker-icon</code></td><td>string</td><td>per type</td><td>Any registered icon (default <code>calendar</code>/<code>clock</code>).</td></tr><tr><td><code>pickerLabel</code></td><td>—</td><td>string</td><td><code>Open &lt;type&gt; picker</code></td><td>Aria-label for the picker button.</td></tr><tr><td><code>disableWeekends</code></td><td><code>data-zidan-disable-weekends</code></td><td>boolean</td><td><code>false</code></td><td>Sat/Sun fail validation with <code>messages.weekend</code>.</td></tr><tr><td><code>disabledDates</code></td><td><code>data-zidan-disabled-dates</code></td><td>list \</td><td>function</td><td>—</td><td>Comma-separated ISO dates, array, or <code>(value, date, field) =&gt; true</code> in JS.</td></tr><tr><td><code>validateDate</code></td><td>—</td><td>function</td><td>—</td><td>`(value, date, field) =&gt; boolean \</td><td>string<code>; return </code>false<code> for </code>messages.date` or a custom string.</td></tr></tbody></table></div>
+<pre><code class="language-html">&lt;input type=&quot;date&quot; value=&quot;2026-11-23&quot; data-zidan=&quot;input&quot;
+       data-zidan-icon=&quot;calendar&quot; data-zidan-icon-position=&quot;left&quot;
+       data-zidan-disable-weekends=&quot;true&quot;&gt;
+&lt;input type=&quot;datetime-local&quot; data-zidan=&quot;input&quot; data-zidan-picker-button=&quot;true&quot;
+       data-zidan-picker-icon=&quot;calendar&quot;&gt;</code></pre>
+<p>Methods: <code>openPicker()</code> / <code>showPicker()</code>. Event: <code>zidan:picker</code> → <code>{ type }</code>.</p>
+<p>The native picker is used via <code>input.showPicker()</code> when available; icons keep the native input reachable, so form values and validation stay native.</p>
+<h2 id="file-upload-variants-uploading-rendering">File upload: variants, uploading &amp; rendering</h2>
+<p>Variants are set with <code>fileVariant</code> / <code>data-zidan-file-variant</code> (defaults to <code>dropzone</code>):</p>
+<div class="table-wrap"><table><thead><tr><th>Variant</th><th>Design</th></tr></thead><tbody><tr><td><code>dropzone</code></td><td>Full-width dashed target; thumbnail or extension badge in the list.</td></tr><tr><td><code>button</code></td><td>Entire target is a compact button, one row.</td></tr><tr><td><code>avatar</code></td><td>Circular 96 px target with a single-image preview (<code>--zs-avatar-size</code> to resize).</td></tr><tr><td><code>gallery</code></td><td>Wrap target plus a responsive thumbnail grid.</td></tr><tr><td><code>compact</code></td><td>One-line target for sidebars; combine with <code>showFileMeta: false</code>.</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>JS option</th><th>Data attribute</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead><tbody><tr><td><code>fileVariant</code></td><td><code>data-zidan-file-variant</code></td><td>string</td><td><code>dropzone</code></td><td><code>dropzone</code>, <code>button</code>, <code>avatar</code>, <code>gallery</code>, <code>compact</code>.</td></tr><tr><td><code>uploadIcon</code></td><td><code>data-zidan-upload-icon</code></td><td>string</td><td><code>upload</code></td><td>Icon in the drop target (any registered name or <code>icon</code>).</td></tr><tr><td><code>upload</code> / <code>uploadHandler</code></td><td>—</td><td>function</td><td>—</td><td>Custom uploader, see contract below.</td></tr><tr><td><code>minFiles</code></td><td><code>data-zidan-min-files</code></td><td>number</td><td><code>0</code></td><td>Minimum selection before the field reports an error; checked only after files exist.</td></tr><tr><td><code>maxFiles</code></td><td><code>data-zidan-max-files</code></td><td>number</td><td><code>0</code></td><td>Extra files are dropped when the list is already full.</td></tr><tr><td><code>maxSize</code> / <code>maxSizeMB</code></td><td><code>data-zidan-max-size</code> / <code>-max-size-mb</code></td><td>number</td><td><code>0</code></td><td>Per-file byte (or MB) limit.</td></tr><tr><td><code>maxTotalSize</code> / <code>maxTotalSizeMB</code></td><td><code>data-zidan-max-total-size</code> / <code>-max-total-size-mb</code></td><td>number</td><td><code>0</code></td><td>Combined selection limit; the list stays intact with an explanatory error.</td></tr><tr><td><code>uploadUrl</code></td><td><code>data-zidan-upload-url</code></td><td>string \</td><td>function</td><td>—</td><td>XHR endpoint; <code>POST</code> multipart by default.</td></tr><tr><td><code>uploadField</code></td><td><code>data-zidan-upload-field</code></td><td>string</td><td><code>file</code></td><td>FormData field name.</td></tr><tr><td><code>uploadMethod</code></td><td><code>data-zidan-upload-method</code></td><td>string \</td><td>function</td><td><code>POST</code></td><td>HTTP method, or <code>(file, field) =&gt; method</code>.</td></tr><tr><td><code>uploadParams</code></td><td><code>data-zidan-upload-params</code></td><td>object \</td><td>string \</td><td>function</td><td>—</td><td>Query-string params, or <code>(file, field) =&gt; object</code>.</td></tr><tr><td><code>uploadData</code></td><td>—</td><td>object \</td><td>function</td><td>—</td><td>Extra FormData fields (<code>(file, field) =&gt; object</code>); array values append repeated keys.</td></tr><tr><td><code>uploadHeaders</code> / <code>headers</code></td><td>—</td><td>object \</td><td>function</td><td>—</td><td>Extra request headers (<code>(file, field) =&gt; object</code>); array values become comma-joined headers.</td></tr><tr><td><code>uploadResponsePath</code></td><td><code>data-zidan-upload-response-path</code></td><td>string</td><td>—</td><td>Dot path into the JSON response, e.g. <code>data.url</code>.</td></tr><tr><td><code>uploadErrorPath</code></td><td><code>data-zidan-upload-error-path</code></td><td>string</td><td>—</td><td>Dot path used to read a failure message from the JSON body.</td></tr><tr><td><code>uploadTimeout</code></td><td><code>data-zidan-upload-timeout</code></td><td>number</td><td><code>0</code></td><td>Abort and report a timeout after this many ms; <code>0</code> disables it.</td></tr><tr><td><code>uploadRetries</code></td><td><code>data-zidan-upload-retries</code></td><td>number</td><td><code>0</code></td><td>Automatic retries for network errors, timeouts, <code>408</code>, <code>429</code> and <code>5xx</code>.</td></tr><tr><td><code>uploadRetryDelay</code></td><td><code>data-zidan-upload-retry-delay</code></td><td>number</td><td><code>700</code></td><td>Delay before an automatic retry, ms.</td></tr><tr><td><code>uploadConcurrency</code></td><td><code>data-zidan-upload-concurrency</code></td><td>number</td><td><code>0</code></td><td>Maximum parallel uploads; <code>0</code> means unlimited. Extra files wait as <code>queued</code>.</td></tr><tr><td><code>withCredentials</code> / <code>uploadWithCredentials</code></td><td><code>data-zidan-with-credentials</code> / <code>data-zidan-upload-with-credentials</code></td><td>boolean</td><td><code>false</code></td><td>Send cookies and HTTP auth on the XHR.</td></tr><tr><td><code>showClear</code> / <code>showRemove</code> / <code>showCancel</code> / <code>showRetry</code></td><td><code>data-zidan-show-clear</code> / <code>-remove</code> / <code>-cancel</code> / <code>-retry</code></td><td>boolean</td><td><code>true</code></td><td>Hide individual generated actions while keeping the API available.</td></tr><tr><td><code>showStatus</code></td><td><code>data-zidan-show-status</code></td><td>boolean</td><td><code>true</code></td><td>Hide the shared live status line.</td></tr><tr><td><code>allowPaste</code></td><td><code>data-zidan-allow-paste</code></td><td>boolean</td><td><code>false</code></td><td>Paste clipboard files onto the drop target (where the browser exposes them).</td></tr><tr><td><code>statusFormat</code></td><td>—</td><td>function</td><td>—</td><td><code>(context) =&gt; string</code>; receives <code>{ files, states, total, uploading, failed, done, error, field }</code>.</td></tr><tr><td><code>queuedLabel</code> / <code>retryingLabel</code></td><td>—</td><td>string</td><td><code>Queued</code> / <code>Retrying attempt {attempt}…</code></td><td>Per-file queue and retry text.</td></tr><tr><td><code>simulateUpload</code></td><td><code>data-zidan-simulate-upload</code></td><td>boolean</td><td><code>false</code></td><td>Visual upload only; files never leave the browser.</td></tr><tr><td><code>simulateDuration</code></td><td><code>data-zidan-simulate-duration</code></td><td>number</td><td><code>900</code></td><td>Simulation length, ms (min 120).</td></tr><tr><td><code>autoUpload</code></td><td><code>data-zidan-auto-upload</code></td><td>boolean</td><td><code>true</code></td><td>Start uploading as soon as files are picked.</td></tr><tr><td><code>showFileMeta</code></td><td><code>data-zidan-show-file-meta</code></td><td>boolean</td><td><code>true</code></td><td>Name + size line per file.</td></tr><tr><td><code>showPreview</code> / <code>preview</code></td><td><code>data-zidan-preview</code></td><td>boolean</td><td><code>true</code></td><td>Avatar preview for images.</td></tr><tr><td><code>replaceTitle</code></td><td>—</td><td>string</td><td><code>Change image</code></td><td>Avatar title once a preview exists.</td></tr><tr><td><code>progressTemplate</code></td><td>—</td><td>string</td><td><code>Uploading {percent}%</code></td><td>Progress text template.</td></tr><tr><td><code>uploadedLabel</code></td><td>—</td><td>string</td><td><code>Uploaded</code></td><td>Per-file success text.</td></tr><tr><td><code>failedLabel</code></td><td>—</td><td>string</td><td><code>Upload failed</code></td><td>Per-file error prefix.</td></tr><tr><td><code>canceledLabel</code></td><td>—</td><td>string</td><td><code>Upload canceled</code></td><td>Per-file canceled text.</td></tr><tr><td><code>cancelLabel</code> / <code>retryLabel</code></td><td>—</td><td>string</td><td><code>Cancel</code> / <code>Retry</code></td><td>Per-file action labels.</td></tr><tr><td><code>renderFile</code></td><td>—</td><td>function</td><td>—</td><td><code>(itemElement, { file, index, state, field })</code> after the default row renders.</td></tr><tr><td><code>downscale</code></td><td><code>data-zidan-downscale</code></td><td>boolean \</td><td>object</td><td><code>false</code></td><td>Resize images in the browser before upload; object form <code>{ maxWidth, maxHeight, quality, maxBytes, mime, force }</code>.</td></tr><tr><td><code>downscaleMaxWidth</code> / <code>downscaleMaxHeight</code></td><td><code>data-zidan-downscale-max-width</code> / <code>-max-height</code></td><td>number</td><td><code>1920</code></td><td>Longest-edge limits, px.</td></tr><tr><td><code>downscaleQuality</code></td><td><code>data-zidan-downscale-quality</code></td><td>number</td><td><code>0.85</code></td><td>JPEG/WebP quality, 0.1–1.</td></tr><tr><td><code>downscaleMaxBytes</code></td><td><code>data-zidan-downscale-max-bytes</code></td><td>number</td><td><code>0</code></td><td>Files at or below this size skip resizing.</td></tr><tr><td><code>downscaleMime</code></td><td><code>data-zidan-downscale-mime</code></td><td>string</td><td>image type</td><td>Output MIME; PNG stays PNG by default, other images become JPEG.</td></tr><tr><td><code>downscaleForce</code></td><td><code>data-zidan-downscale-force</code></td><td>boolean</td><td><code>false</code></td><td>Keep the resized file even when it is larger than the original.</td></tr></tbody></table></div>
+<h3 id="every-file-option-in-one-object">Every file option in one object</h3>
+<pre><code class="language-js">const upload = zidanField('#files', {
+  /* Target by ID, class or element; no data-* attribute required */
+
+  /* Variant &amp; copy */
+  variant: 'dropzone',              // dropzone | button | avatar | gallery | compact
+  uploadIcon: 'upload',             // any registered icon name or SVG markup
+  title: 'Choose a file',
+  dropHint: 'Drag &amp; drop or browse',
+  layout: 'stacked',                // stacked | inline | compact | floating | outlined | card
+  theme: 'default',
+  framework: 'none',
+  label: 'Attachments',
+  hint: 'PDF or images up to 5 MB.',
+
+  /* Rules */
+  accept: 'image/*,.pdf',           // shown in the hint, checked against the picker
+  minFiles: 1,
+  maxFiles: 4,
+  maxSizeMB: 5,                     // or maxSize: 5242880 (bytes)
+  maxTotalSizeMB: 12,               // or maxTotalSize: 12582912 (bytes)
+  showFileMeta: true,
+  showPreview: true,
+  replaceTitle: 'Change image',
+
+  /* Upload pipeline */
+  // upload: function (file, context) { … }, // custom uploader, contract below
+  // uploadUrl: function (file) { return '/api/files/' + file.name; },
+  uploadField: 'file',
+  uploadMethod: 'POST',             // or (file, field) =&gt; 'PUT'
+  uploadParams: { folder: 'avatars' },
+  // uploadData: function (file, field) { return { folder: 'avatars' }; },
+  // uploadHeaders: function (file, field) { return { 'X-Token': '…' }; },
+  uploadResponsePath: 'data.url',   // dot path into the JSON response
+  uploadErrorPath: 'error.message',
+  uploadTimeout: 30000,             // abort after 30s; 0 disables
+  uploadRetries: 2,                 // network, timeout, 408, 429 and 5xx
+  uploadRetryDelay: 700,
+  uploadConcurrency: 2,             // 0 = unlimited; extra files wait as queued
+  withCredentials: false,
+  autoUpload: true,
+  simulateUpload: false,            // visual-only pipeline
+  simulateDuration: 900,            // ms
+
+  /* Per-file UI */
+  progressTemplate: 'Uploading {percent}%',
+  uploadedLabel: 'Uploaded',
+  failedLabel: 'Upload failed',
+  canceledLabel: 'Upload canceled',
+  queuedLabel: 'Queued',
+  retryingLabel: 'Retrying attempt {attempt}…',
+  cancelLabel: 'Cancel',
+  retryLabel: 'Retry',
+  showClear: true,
+  showRemove: true,
+  showCancel: true,
+  showRetry: true,
+  showStatus: true,
+  allowPaste: true,
+  // statusFormat: function (context) { return context.done + '/' + context.total + ' uploaded'; },
+  // renderFile: function (itemElement, state) { … },
+
+  /* Callbacks — also zidan:upload-start/progress/success/error/cancel/queued/retry */
+  onUploadStart: function (event) { console.log('start', event.file); },
+  onUploadProgress: function (event) { console.log(event.progress); },
+  onUploadSuccess: function (event) { console.log('done', event.result); },
+  onUploadError: function (event) { console.log('failed', event.error); },
+  onUploadCancel: function (event) { console.log('canceled', event.file); },
+  onUploadQueued: function (event) { console.log('queued at', event.position); },
+  onUploadRetry: function (event) { console.log('retry', event.nextAttempt, event.delay); }
+});</code></pre>
+<p>Custom uploader contract:</p>
+<pre><code class="language-js">zidanField('#files', {
+  upload(file, context) {
+    // file: the File being uploaded
+    // context: { file, field, formData, signal, onProgress, complete, fail }
+    const xhr = new XMLHttpRequest();
+    // ...or return a promise / call context.complete(result) / context.fail(error)
+    context.onProgress(40);              // 0–99 while working
+    fetch('/upload', { method: 'POST', body: context.formData, signal: context.signal })
+      .then(res =&gt; res.ok ? res.json() : Promise.reject(res.status))
+      .then(data =&gt; context.complete(data))
+      .catch(err =&gt; context.fail(err));
+  }
+});</code></pre>
+<ul><li>A returned thenable resolves the upload; a non-<code>undefined</code> return value becomes the result.</li><li>Returning nothing means <em>you</em> will call <code>context.complete()</code> / <code>context.fail()</code>.</li><li><code>context.signal</code> aborts when the user cancels or the field is destroyed.</li><li><code>input.files</code> is always authoritative; <code>DataTransfer</code> rebuilds it on remove/clear.</li></ul>
+<p>Methods: <code>getFiles()</code>, <code>getUploadState()</code> and <code>getFileState(fileOrNameOrIndex)</code> (<code>{ file, name, size, status, progress, error, result, attempts }</code>), <code>addFiles(files)</code>, <code>replaceFiles(files)</code>, <code>removeFile(fileOrNameOrIndex)</code>, <code>removeFiles([fileOrNameOrIndex, …])</code>, <code>clear()</code>, <code>isUploading()</code>, <code>whenUploaded()</code> (resolves all states after the queue drains), <code>uploadAll()</code>, <code>uploadFile(file)</code>, <code>cancelUpload(file)</code>, <code>cancelAll()</code>, <code>retryUpload(file)</code>, <code>retryAll()</code>, <code>setVariant(name)</code>, <code>setUploader(fnOrUrl)</code>, <code>setUploadUrl(url)</code> and <code>setUploadOptions({ … })</code>.</p>
+<p><code>uploadAll()</code> returns the field for synchronous validation and a <code>Promise&lt;boolean&gt;</code> when an async rule runs. <code>whenUploaded()</code> is the reliable way to wait for AJAX uploads, retries and queued files.</p>
+<p>Events: <code>zidan:upload-queued</code> <code>{ file, name, size, position }</code>, <code>zidan:upload-start</code> <code>{ file, name, size }</code>, <code>zidan:upload-progress</code> <code>{ file, name, progress }</code>, <code>zidan:upload-retry</code> <code>{ file, name, attempt, nextAttempt, delay, error, message }</code>, <code>zidan:upload-success</code> <code>{ file, name, result }</code>, <code>zidan:upload-error</code> <code>{ file, name, error, message }</code>, <code>zidan:upload-cancel</code> <code>{ file, name }</code>, plus the shared <code>zidan:change</code>, <code>zidan:remove</code> (<code>{ file, index }</code>) and <code>zidan:clear</code>.</p>
+<p>Callbacks: <code>onUploadStart</code>, <code>onUploadProgress</code>, <code>onUploadSuccess</code> / <code>onUpload</code>, <code>onUploadError</code>, <code>onUploadCancel</code>, <code>onUploadQueued</code>, <code>onUploadRetry</code>.</p>
+<h3 id="ajax-transport-queue-and-retries">AJAX transport, queue and retries</h3>
+<p>When <code>uploadUrl</code> is set, each file is sent as <code>FormData</code> with the configured field name. <code>uploadParams</code> are appended to the URL as a query string (arrays repeat the key), while <code>uploadData</code> and the file itself become multipart fields. Array values in <code>uploadData</code> append repeated form keys. <code>uploadHeaders</code> may be an object or a <code>(file, field) =&gt; object</code> function; array header values are joined with <code>&quot;, &quot;</code>.</p>
+<p>The response is parsed as JSON when possible. <code>uploadResponsePath</code> selects a nested value with dot notation (for example <code>data.url</code>); <code>uploadErrorPath</code> reads a message from a failed body. HTTP statuses <code>408</code>, <code>429</code>, <code>5xx</code>, network errors and timeouts are retryable. Automatic retries use <code>uploadRetries</code> and <code>uploadRetryDelay</code>; a manual retry is available through the per-file button, <code>retryUpload(file)</code> or <code>retryAll()</code>. Set <code>uploadConcurrency</code> to cap parallel requests; the remaining files stay <code>queued</code> and start automatically.</p>
+<pre><code class="language-js">const field = zidanField('#files', {
+  uploadUrl: 'https://httpbin.org/post',
+  uploadMethod: 'POST',
+  uploadParams: { demo: 'zidan-form' },
+  uploadData: { source: 'demo' },
+  uploadHeaders: { 'X-Demo': 'file-upload' },
+  uploadTimeout: 30000,
+  uploadRetries: 1,
+  uploadConcurrency: 2,
+  uploadResponsePath: 'url',
+  autoUpload: false
+});
+
+field.uploadAll();
+const states = await field.whenUploaded();</code></pre>
+<p>A custom <code>uploadHandler</code> still runs instead of XHR and keeps the same queue, retry, cancel and <code>whenUploaded()</code> behaviour.</p>
+<h3 id="browser-side-image-downscale">Browser-side image downscale</h3>
+<p>Set <code>downscale: true</code> to resize images before any uploader runs. The default caps the longest edge at 1920 px and re-encodes as JPEG (PNG stays PNG) at quality 0.85, skipping files that are already small enough.</p>
+<pre><code class="language-js">zidanField('#avatar', {
+  downscale: { maxWidth: 800, maxHeight: 800, quality: 0.8, maxBytes: 300 * 1024 },
+  uploadUrl: '/api/avatar'
+});
+
+// standalone helper
+const smaller = await ZidanForm.downscaleImage(file, { maxWidth: 1280 });</code></pre>
+<p>The compressed file keeps the original file's upload state row, name and FormData field. If the browser has no canvas support, or the resized image would be larger than the original, the original file is uploaded unchanged.</p>
+<h2 id="select-options">Select options</h2>
+<p><code>ZidanSelect</code> keeps its full 1.x option set.</p>
+<h3 id="core">Core</h3>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Data attribute</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>mode</code></td><td><code>data-zidan-select</code>, <code>data-zidan-mode</code></td><td><code>select</code></td><td><code>select</code>, <code>combobox</code>, <code>tags</code>.</td></tr><tr><td><code>layout</code></td><td><code>data-zidan-layout</code></td><td><code>classic-clean</code></td><td>Five select layouts (see theming doc).</td></tr><tr><td><code>themeFramework</code></td><td><code>data-zidan-framework</code></td><td><code>auto</code></td><td><code>auto</code>, <code>none</code>, <code>vanilla</code>, <code>bootstrap</code>, <code>tailwind</code>, <code>bulma</code>, <code>foundation</code>.</td></tr><tr><td><code>theme</code></td><td><code>data-zidan-theme</code></td><td><code>default</code></td><td>Colour preset; <code>auto</code> follows <code>prefers-color-scheme</code> (see the search &amp; scale section).</td></tr><tr><td><code>id</code></td><td>—</td><td>generated</td><td>Root id prefix.</td></tr><tr><td><code>name</code></td><td><code>data-zidan-name</code></td><td>native name</td><td>Name for hidden mirror input in mount mode.</td></tr><tr><td><code>disabled</code></td><td><code>data-zidan-disabled</code></td><td>native</td><td>Mirrors the native <code>disabled</code>.</td></tr><tr><td><code>required</code></td><td><code>data-zidan-required</code></td><td>native</td><td>Mirrors native <code>required</code>; mount mode gets a submit guard.</td></tr><tr><td><code>validation</code></td><td><code>data-zidan-validation</code></td><td><code>null</code></td><td><code>valid</code> \</td><td><code>invalid</code>.</td></tr><tr><td><code>scrollbar</code></td><td><code>data-zidan-scrollbar</code></td><td><code>default</code></td><td><code>default</code>, <code>thin</code>, <code>fancy</code>, <code>hover</code>, <code>hidden</code>.</td></tr><tr><td><code>customClasses</code></td><td>—</td><td><code>{}</code></td><td>Map of <code>root/control/input</code> → class names.</td></tr></tbody></table></div>
+<h3 id="data">Data</h3>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Data attribute</th><th>Description</th></tr></thead><tbody><tr><td><code>options</code></td><td>—</td><td>Array of strings or <code>{value,label,disabled,group}</code>.</td></tr><tr><td><code>suggestions</code></td><td>—</td><td>Tags suggestions.</td></tr><tr><td><code>value</code></td><td>—</td><td>Initial value(s).</td></tr><tr><td><code>label</code></td><td><code>data-zidan-label</code></td><td>Floating label text. An author <code>&lt;label&gt;</code> for the same control is hidden while the field is enhanced and restored by <code>destroy()</code>.</td></tr><tr><td><code>ariaLabel</code></td><td><code>data-zidan-aria-label</code></td><td>Accessible name for the generated combobox input; defaults to <code>label</code>.</td></tr><tr><td><code>placeholder</code></td><td><code>data-zidan-placeholder</code></td><td>Trigger placeholder.</td></tr></tbody></table></div>
+<h3 id="behaviour">Behaviour</h3>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Data attribute</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>multiple</code></td><td><code>data-zidan-multiple</code></td><td>from <code>multiple</code></td><td>Multi-select.</td></tr><tr><td><code>searchable</code></td><td><code>data-zidan-searchable</code></td><td><code>true</code> except plain select</td><td>Type-to-filter. With <code>searchable: false</code> in <code>select</code> mode the text field is <code>readOnly</code>, so typing can never filter or hide the list — open it with a click, <code>Space</code>, <code>Enter</code> or <code>↓</code>.</td></tr><tr><td><code>clearable</code></td><td><code>data-zidan-clearable</code></td><td><code>false</code></td><td>Clear button.</td></tr><tr><td><code>closeOnSelect</code></td><td><code>data-zidan-close-on-select</code></td><td>single: <code>true</code></td><td>Close after choosing; defaults to open for multi-select and tags.</td></tr><tr><td><code>maxDropdownHeight</code></td><td>—</td><td><code>280</code></td><td>Listbox max height in px.</td></tr><tr><td><code>noResultsText</code></td><td>—</td><td><code>No results found</code></td><td>Empty search message.</td></tr><tr><td><code>emptyText</code></td><td>—</td><td><code>No options</code></td><td>Empty source message.</td></tr><tr><td><code>loadingText</code></td><td>—</td><td><code>Searching…</code></td><td>Async loading message.</td></tr><tr><td><code>clearText</code></td><td>—</td><td><code>Clear selection</code></td><td>Clear button label.</td></tr><tr><td><code>requiredText</code></td><td>—</td><td><code>Please select an option.</code></td><td>Message shown when a required select blocks submit.</td></tr></tbody></table></div>
+<h3 id="combobox-async">Combobox / async</h3>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>fetchOptions(query, signal, context)</code></td><td>—</td><td>Return an array of items, or a page <code>{ items, hasMore }</code> (or <code>{ items, total }</code>). <code>signal</code> aborts stale requests; <code>context</code> is <code>{ page, pageSize, append, instance }</code>, with a zero-based <code>page</code> (<code>0</code> is the first request).</td></tr><tr><td><code>fetchPageSize</code></td><td><code>0</code></td><td>Page size handed to <code>fetchOptions</code>. <code>0</code> keeps the legacy single-request behaviour.</td></tr><tr><td><code>fetchUrl</code></td><td><code>null</code></td><td><strong>Declarative AJAX.</strong> GET this URL and the select builds its own <code>fetchOptions</code> — no JavaScript needed. Attribute: <code>data-zidan-fetch-url</code>.</td></tr><tr><td><code>fetchQueryParam</code></td><td><code>'q'</code></td><td>Query-string parameter that receives the search term (<code>''</code> omits it).</td></tr><tr><td><code>fetchPageParam</code></td><td><code>'page'</code></td><td>1-based page number sent with every request (<code>''</code> omits it).</td></tr><tr><td><code>fetchSkipParam</code></td><td><code>null</code></td><td>Send <code>skip = page × pageSize</code> instead of <code>fetchPageParam</code>, for APIs that page by offset (dummyjson, Laravel, many REST APIs).</td></tr><tr><td><code>fetchPageSizeParam</code></td><td><code>'limit'</code></td><td>Parameter that receives <code>fetchPageSize</code>.</td></tr><tr><td><code>fetchParams</code></td><td><code>null</code></td><td>Extra query parameters merged into every request. Attribute: <code>data-zidan-fetch-params='{&quot;tenant&quot;:&quot;north&quot;}'</code>. Values are stringified; <code>null</code>/<code>undefined</code> keys are skipped.</td></tr><tr><td><code>fetchBody</code></td><td><code>null</code></td><td>Body for <code>POST</code>/<code>PUT</code>/<code>PATCH</code> requests. Objects and arrays serialise to JSON and add <code>Content-Type: application/json</code> unless you supplied one; strings are sent unchanged. Ignored for <code>GET</code>/<code>HEAD</code>. Attribute: <code>data-zidan-fetch-body='{&quot;query&quot;:&quot;phone&quot;}'</code>.</td></tr><tr><td><code>fetchItemsPath</code></td><td><code>null</code></td><td>Dot path to the array of rows in the JSON body (<code>products</code>, <code>data.items</code>). Without it the plugin looks for <code>items</code>, <code>data</code>, <code>results</code>, <code>options</code>, <code>rows</code>, <code>products</code> or <code>records</code>.</td></tr><tr><td><code>fetchTotalPath</code></td><td><code>null</code></td><td>Dot path to the total row count; with <code>fetchPageSize</code> it decides <code>hasMore</code>. Falls back to a top-level <code>total</code>.</td></tr><tr><td><code>fetchHasMorePath</code></td><td><code>null</code></td><td>Dot path to a boolean instead of a count.</td></tr><tr><td><code>fetchMethod</code></td><td><code>'GET'</code></td><td>HTTP method for <code>fetchUrl</code>; attribute: <code>data-zidan-fetch-method</code>. Pair with <code>fetchBody</code> for a JSON search endpoint.</td></tr><tr><td><code>fetchHeaders</code></td><td><code>null</code></td><td>JSON object of request headers; attribute: <code>data-zidan-fetch-headers='{&quot;X-Tenant&quot;:&quot;north&quot;}'</code>.</td></tr><tr><td><code>fetchCredentials</code></td><td><code>'same-origin'</code></td><td><code>omit</code>, <code>same-origin</code> or <code>include</code>; attribute: <code>data-zidan-fetch-credentials</code>.</td></tr><tr><td><code>autoLoadMore</code></td><td><code>true</code></td><td>Scrolling near the dropdown bottom fetches the next page automatically.</td></tr><tr><td><code>loadMoreText</code></td><td><code>Load more</code></td><td>Label of the footer button rendered while <code>hasMore</code> is true.</td></tr><tr><td><code>cacheResults</code></td><td><code>true</code></td><td>Cache pages per query + page. Clear with <code>select.clearCache()</code>.</td></tr><tr><td><code>onLoadMore</code></td><td>—</td><td>Called when a follow-up page starts loading: <code>{ page, query, instance }</code>. <code>page</code> is zero-based (<code>1</code> is the second request); only the declarative <code>fetchPageParam</code> is converted to a one-based request value.</td></tr><tr><td><code>debounce</code></td><td><code>250</code></td><td>Async debounce in ms.</td></tr><tr><td><code>minChars</code></td><td><code>0</code></td><td>Characters before fetching.</td></tr><tr><td><code>allowFreeText</code></td><td>tags: <code>true</code>; other modes: <code>false</code></td><td>Allow values not in the list.</td></tr><tr><td><code>searchValues</code></td><td><code>true</code></td><td>Match against values as well as labels.</td></tr></tbody></table></div>
+<p>Remote results are <strong>not</strong> filtered again on the client, so a server that already applied the query is never double-filtered. Use <code>renderOption</code> for custom rows; keep values stable across pages so the merge can de-duplicate them.</p>
+<pre><code class="language-js">const users = zidanSelect('#owner', {
+  mode: 'combobox',
+  fetchPageSize: 20,
+  fetchOptions: async (query, signal, { page, pageSize }) =&gt; {
+    const res = await fetch('/api/users?q=' + encodeURIComponent(query)
+      + '&amp;page=' + page + '&amp;size=' + pageSize, { signal });
+    const data = await res.json();
+    return {
+      items: data.rows.map(u =&gt; ({ value: u.id, label: u.name })),
+      hasMore: data.page + 1 &lt; data.pages
+    };
+  },
+  onLoadMore: ({ page }) =&gt; console.log('loaded page', page)
+});
+
+users.loadMore();                 // manual next page
+users.hasMoreResults();           // boolean
+users.getAsyncState();            // { query, page, hasMore, loading, fetchingMore, error }
+users.refreshOptions();           // clears the cache and refetches page 0
+users.clearCache();               // drop cached pages only</code></pre>
+<p><code>fetchOptions</code> may also reject: an initial failure shows an error state and <code>getAsyncState().error</code> keeps the message; call <code>refreshOptions()</code> to retry. If an appended page fails, the rows already loaded stay visible and the footer shows the error; clicking it retries. Appended fetches emit <code>zidan:load-more</code> with <code>{ page, query }</code>; failures emit the usual <code>zidan:error</code>.</p>
+<p>The cache size is global: <code>ZidanSelect.cacheLimit = 50</code> pages (least-recently-used eviction).</p>
+<h3 id="ajax-from-markup-only">AJAX from markup only</h3>
+<p>One URL is enough to turn a combobox into a remote search. The plugin sends the query, page and page size, reads the rows out of the JSON, and keeps every other behaviour (debounce, abort, cache, load-more, errors) identical to a hand-written <code>fetchOptions</code>.</p>
+<pre><code class="language-html">&lt;select id=&quot;product&quot; name=&quot;product&quot;
+        data-zidan-select=&quot;combobox&quot;
+        data-zidan-fetch-url=&quot;/api/products/search&quot;
+        data-zidan-fetch-items-path=&quot;data.items&quot;
+        data-zidan-fetch-total-path=&quot;data.total&quot;
+        data-zidan-fetch-skip-param=&quot;skip&quot;
+        data-zidan-fetch-params='{&quot;tenant&quot;:&quot;north&quot;}'
+        data-zidan-fetch-page-size=&quot;20&quot;&gt;
+&lt;/select&gt;</code></pre>
+<p>That markup calls <code>GET /api/products/search?q=…&amp;limit=20&amp;skip=0&amp;tenant=north</code>, then <code>skip=20</code> for the next page, and stops when <code>skip + limit &gt;= data.total</code>. Rows map automatically: <code>value</code> / <code>label</code>, or <code>id</code> / <code>slug</code> / <code>code</code> for the value and <code>name</code> / <code>title</code> / <code>full_name</code> for the label. A live page with both modes, against a real API and a static JSON file, ships as <a href="https://akhtar1985.github.io/zidan-select/ajax.html" rel="noopener"><code>ajax.html</code></a>.</p>
+<p>For an endpoint that expects a JSON search body, keep the same declarative setup and add a method, params and body — no <code>fetchOptions</code> function required:</p>
+<pre><code class="language-html">&lt;select id=&quot;order&quot; name=&quot;order&quot;
+        data-zidan-select=&quot;combobox&quot;
+        data-zidan-fetch-url=&quot;/api/orders/search&quot;
+        data-zidan-fetch-method=&quot;POST&quot;
+        data-zidan-fetch-params='{&quot;scope&quot;:&quot;open&quot;}'
+        data-zidan-fetch-body='{&quot;status&quot;:[&quot;open&quot;,&quot;paid&quot;]}'
+        data-zidan-fetch-items-path=&quot;rows&quot;
+        data-zidan-fetch-total-path=&quot;total&quot;&gt;
+&lt;/select&gt;</code></pre>
+<p><code>POST /api/orders/search?q=…&amp;scope=open</code> is sent with <code>Content-Type: application/json</code> and the JSON body. Use the <a href="https://akhtar1985.github.io/zidan-select/api.html" rel="noopener"><code>api.html</code></a> request lab to inspect the exact URL, headers and body the plugin builds before pointing it at your own endpoint.</p>
+<h3 id="tags">Tags</h3>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Data attribute</th><th>Default</th></tr></thead><tbody><tr><td><code>maxTags</code></td><td><code>data-zidan-max-tags</code></td><td><code>Infinity</code></td></tr><tr><td><code>minTagLength</code></td><td><code>data-zidan-min-tag-length</code></td><td><code>1</code></td></tr><tr><td><code>maxTagLength</code></td><td><code>data-zidan-max-tag-length</code></td><td><code>Infinity</code></td></tr><tr><td><code>reorderable</code></td><td><code>data-zidan-reorderable</code></td><td><code>false</code></td></tr><tr><td><code>editable</code></td><td><code>data-zidan-editable</code></td><td><code>false</code></td></tr><tr><td><code>caseSensitive</code></td><td><code>data-zidan-case-sensitive</code></td><td><code>false</code></td></tr><tr><td><code>allowFreeText</code></td><td><code>data-zidan-allow-free-text</code></td><td><code>true</code></td></tr><tr><td><code>delimiters</code></td><td>—</td><td><code>[',']</code></td></tr><tr><td><code>commitOnTab</code> / <code>commitOnBlur</code></td><td>—</td><td><code>false</code></td></tr><tr><td><code>valueDelimiter</code></td><td>—</td><td><code>,</code></td></tr></tbody></table></div>
+<p>With <code>reorderable: true</code> a chip can be dragged with the mouse or moved with &lt;kbd&gt;Alt&lt;/kbd&gt; + &lt;kbd&gt;←&lt;/kbd&gt;/&lt;kbd&gt;→&lt;/kbd&gt; while it has focus. With <code>editable: true</code>, double-click a chip (or press &lt;kbd&gt;F2&lt;/kbd&gt;) to rename its label in place; &lt;kbd&gt;Enter&lt;/kbd&gt; saves and &lt;kbd&gt;Esc&lt;/kbd&gt; cancels. Both changes keep the native <code>&lt;option&gt;</code> label in sync and emit <code>zidan:tag-move</code> / <code>zidan:tag-edit</code>.</p>
+<p>With <code>allowFreeText: false</code> a tag you type must match an option or a <code>suggestions</code> entry by value or label (<code>caseSensitive</code> respected). Anything else is rejected: no tag is added and the control shows <code>&quot;…&quot; is not in the list.</code> through the tag error slot. Leave the option at its <code>true</code> default for free-form tags.</p>
+<h3 id="rendering-hooks">Rendering hooks</h3>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Signature</th></tr></thead><tbody><tr><td><code>filterOption(item, query)</code></td><td>return boolean</td></tr><tr><td><code>renderOption(item, context)</code></td><td>HTML string or element; <code>context</code> is <code>{ index, selected, active, query, instance }</code>.</td></tr><tr><td><code>renderSelected(item, context)</code></td><td>HTML string or element; <code>context</code> is <code>{ index, instance }</code>.</td></tr><tr><td><code>renderTag(item, context)</code></td><td>HTML string or element; <code>context</code> is <code>{ index, instance, disabled }</code>.</td></tr><tr><td><code>validateTag(tag, tags, context)</code></td><td>boolean or message string; <code>tag</code> is the formatted string, <code>tags</code> is the current tag list.</td></tr><tr><td><code>formatTag(tag, context)</code></td><td>display string; <code>context</code> is <code>{ instance, tags }</code>.</td></tr></tbody></table></div>
+<h3 id="select-callbacks">Select callbacks</h3>
+<div class="table-wrap"><table><thead><tr><th>Callback</th><th>Payload</th></tr></thead><tbody><tr><td><code>onInit</code></td><td><code>{ instance, mode, value }</code></td></tr><tr><td><code>onChange</code></td><td><code>{ instance, value, previousValue? }</code></td></tr><tr><td><code>onSelect</code></td><td><code>{ instance, value, item }</code></td></tr><tr><td><code>onOpen</code> / <code>onClose</code></td><td><code>{ instance }</code></td></tr><tr><td><code>onTagAdd</code></td><td><code>{ instance, tag, value }</code></td></tr><tr><td><code>onTagRemove</code></td><td><code>{ instance, tag, value }</code></td></tr><tr><td><code>onLoadMore</code></td><td><code>{ instance, page, query }</code>; <code>page</code> is zero-based.</td></tr><tr><td><code>onError</code></td><td><code>{ instance, message, error?, callback? }</code>; fetch failures include <code>error</code>, and callback exceptions include <code>error</code> plus the callback name.</td></tr></tbody></table></div>
+<p>Every callback receives a single payload object.</p>
+<h3 id="large-lists-search-quality-and-locales">Large lists, search quality and locales</h3>
+<h4 id="virtual-window">Virtual window</h4>
+<p>Local lists with hundreds of rows can render only the visible slice. Windowing is opt-in and skipped for grouped lists, custom <code>renderOption</code> renderers and paged results, where row heights or extras change per row.</p>
+<pre><code class="language-js">zidanSelect('#city', { virtual: 'auto', virtualThreshold: 150, itemHeight: 38 });</code></pre>
+<ul><li><code>virtual: true</code> always windows; <code>'auto'</code> windows once the filtered list reaches <code>virtualThreshold</code>; a number sets the threshold directly.</li><li><code>itemHeight</code> fixes the row height used for spacer math. Leave <code>0</code> to measure the first row.</li><li>Rows keep <code>aria-setsize</code> / <code>aria-posinset</code>; keyboard <code>Home</code>, <code>End</code>, <code>↑</code>, <code>↓</code> and type-ahead scroll the window and keep <code>aria-activedescendant</code> on the active row.</li><li>The dropdown must have a measured height (it opens with <code>maxDropdownHeight</code>); a hidden or zero-height list falls back to full rendering.</li></ul>
+<h4 id="accents-and-highlights">Accents and highlights</h4>
+<pre><code class="language-js">zidanSelect('#city', { accentInsensitive: true, highlightMatches: true });</code></pre>
+<p><code>accentInsensitive</code> (default <code>true</code>) folds diacritics in both the query and the option label/value, so <code>cafe</code> finds <code>Café</code> and <code>zurich</code> finds <code>Zürich</code>. Set it to <code>false</code> for exact matching. <code>highlightMatches</code> wraps the matched slice in <code>&lt;mark class=&quot;zs-match&quot;&gt;</code>; <code>--zs-match-bg</code> themes it.</p>
+<h4 id="type-ahead">Type-ahead</h4>
+<p>Selects that are not searchable are read-only, but printable keys still jump like a native <code>&lt;select&gt;</code>: the buffer expires after <code>typeAheadTimeout</code> (default <code>600</code> ms), repeating the same letter cycles through options starting with it, and <code>typeAhead: false</code> disables the behaviour.</p>
+<h4 id="locales">Locales</h4>
+<pre><code class="language-js">zidanSelect('#city', { locale: 'fr' });
+ZidanSelect.locales.nl = { emptyText: 'Geen opties', noResultsText: 'Geen resultaten' };</code></pre>
+<p>Bundled packs: <code>en</code>, <code>es</code>, <code>fr</code>, <code>de</code>, <code>ar</code>. Pass a locale name or a partial pack; a pack only fills values you have not overridden (including <code>requiredText</code> and the default placeholder). <code>&lt;html lang=&quot;…&quot;&gt;</code> selects the pack automatically when <code>locale</code> is unset, and the root gets a matching <code>lang</code> attribute. <code>ZidanForm.locales</code> is the same object, so registrations are global and take effect for instances created afterwards.</p>
+<h4 id="theme-auto">Theme auto</h4>
+<pre><code class="language-js">zidanSelect('#city', { theme: 'auto' });   // or data-zidan-theme=&quot;auto&quot;</code></pre>
+<p><code>auto</code> resolves to <code>dark</code> when <code>prefers-color-scheme: dark</code> matches and <code>default</code> otherwise. A single shared <code>matchMedia</code> listener updates every auto root when the OS setting changes; <code>setTheme('auto')</code> re-arms it and destroying the instance unregisters it. <code>ZidanForm.themes</code> includes <code>auto</code>.</p>
+<h4 id="option-groups-and-gettags">Option groups and getTags</h4>
+<p>Options with <code>group</code> render <code>&lt;div role=&quot;group&quot; aria-labelledby=&quot;…&quot;&gt;</code> wrappers with a <code>.zs-group-label</code> header, so the listbox exposes the grouping instead of flattening it. In <code>tags</code> mode <code>getTags()</code> returns the tag <strong>values</strong> (<code>string[]</code>), matching its declaration.</p>
+<h3 id="every-select-option-in-one-object">Every select option in one object</h3>
+<p>Copy the block, delete what you do not need. Values reflect the combobox shown, except the tag-only section, which reflects tags mode; clauses that change the shape of the result (options, value, callbacks) are commented out.</p>
+<pre><code class="language-js">const picker = zidanSelect('#mymov', {
+  /* Core */
+  mode: 'combobox',                 // 'select' | 'combobox' | 'tags' (default 'select')
+  layout: 'classic-clean',          // 5 select layouts, see theming.md
+  themeFramework: 'none',           // 'auto' | 'none' | 'vanilla' | 'bootstrap' | 'tailwind' | 'bulma' | 'foundation'
+  theme: 'default',                 // 'default' | 'modern' | 'minimal' | 'dark' | 'glass'
+  // id: 'mymov',                   // root id prefix; leave unset for class targets
+  // name: 'movie',                 // defaults to the native name
+  disabled: false,
+  required: false,
+  validation: null,                 // 'valid' | 'invalid' | null
+  scrollbar: 'default',             // 'default' | 'thin' | 'fancy' | 'hover' | 'hidden'
+  customClasses: { root: '', control: '', input: '' },
+
+  /* Data — omit to use the native &lt;option&gt;s */
+  // options: [
+  //   { value: 'inception', label: 'Inception' },
+  //   { value: 'dune', label: 'Dune', group: 'Villeneuve' },
+  //   { value: 'arrival', label: 'Arrival', disabled: true }
+  // ],
+  // suggestions: ['Interstellar', 'Oppenheimer'],
+  // value: 'inception',            // string, or array for multiple/tags
+  label: 'Movie',
+  ariaLabel: 'Choose a movie',
+  placeholder: 'Search a movie…',
+
+  /* Behaviour */
+  multiple: false,                  // mirrors native multiple by default
+  searchable: true,                 // false in plain 'select' mode
+  clearable: true,
+  closeOnSelect: true,              // single mode
+  maxDropdownHeight: 280,           // px
+  noResultsText: 'No results found',
+  emptyText: 'No options',
+  loadingText: 'Searching…',
+  clearText: 'Clear selection',
+  requiredText: 'Please select an option.',
+
+  /* Search quality, scale &amp; language */
+  accentInsensitive: true,          // &quot;cafe&quot; matches &quot;Café&quot;
+  highlightMatches: false,          // wrap the matched slice in &lt;mark class=&quot;zs-match&quot;&gt;
+  typeAhead: true,                  // printable keys jump in a non-searchable select
+  typeAheadTimeout: 600,            // ms before the type-ahead buffer resets
+  virtual: false,                   // true | false | 'auto' | number (threshold)
+  virtualThreshold: 150,            // 'auto' threshold, in options
+  itemHeight: 0,                    // fixed virtual row height; 0 measures the first row
+  locale: null,                     // 'en' | 'es' | 'fr' | 'de' | 'ar' or a custom pack
+
+  /* Combobox / async */
+  // fetchOptions: function (query, signal, context) {
+  //   return fetch('/api/movies?q=' + encodeURIComponent(query) + '&amp;page=' + context.page, { signal: signal })
+  //     .then(function (response) { return response.json(); }); // items[] or { items, hasMore }
+  // },
+  fetchPageSize: 0,                 // &gt;0 enables paged responses, load-more and scroll auto-load
+  fetchUrl: null,                   // declarative AJAX endpoint; no fetchOptions needed
+  fetchQueryParam: 'q',             // '' omits the search parameter
+  fetchPageParam: 'page',           // 1-based; '' omits it
+  fetchSkipParam: null,             // e.g. 'skip' sends page × fetchPageSize
+  fetchPageSizeParam: 'limit',      // '' omits the page-size parameter
+  fetchParams: null,                // extra query params, e.g. { tenant: 'north' }
+  fetchBody: null,                  // POST/PUT/PATCH body; objects serialise to JSON
+  fetchItemsPath: null,             // e.g. 'data.items'; common array names are auto-detected
+  fetchTotalPath: null,             // row count used to calculate hasMore
+  fetchHasMorePath: null,           // boolean path used instead of a total
+  fetchMethod: 'GET',
+  fetchHeaders: null,               // e.g. { Authorization: 'Bearer …' }
+  fetchCredentials: 'same-origin',  // 'omit' | 'same-origin' | 'include'
+  autoLoadMore: true,
+  cacheResults: true,               // ZidanSelect.cacheLimit = 50 pages, LRU
+  loadMoreText: 'Load more',
+  debounce: 250,                    // ms
+  minChars: 0,
+  searchValues: true,               // match labels and values
+
+  /* Tags (mode: 'tags') */
+  maxTags: Infinity,
+  minTagLength: 1,
+  maxTagLength: Infinity,
+  reorderable: false,               // drag chips or Alt+Arrow to reorder
+  editable: false,                  // double-click / F2 renames a tag
+  caseSensitive: false,
+  allowFreeText: true,              // tags default; combobox/select default false
+  delimiters: [','],
+  commitOnTab: false,
+  commitOnBlur: false,
+  valueDelimiter: ',',
+
+  /* Rendering hooks */
+  // filterOption: function (item, query) { return item.label.toLowerCase().includes(query.toLowerCase()); },
+  // renderOption: function (item, context) {
+  //   return (context.selected ? '✓ ' : '') + item.label;
+  // },
+  // renderSelected: function (item, context) { return '◉ ' + item.label; },
+  // renderTag: function (item, context) { return String(item.label).toUpperCase(); },
+  // validateTag: function (tag, tags, context) { return tag.length &lt;= 24 || 'Use 24 characters or fewer'; },
+  // formatTag: function (tag, context) { return tag.toUpperCase(); },
+
+  /* Callbacks */
+  onInit: function (event) { console.log('init', event.instance); },
+  onChange: function (event) { console.log('value', event.value); },
+  // onSelect: function (event) { console.log('selected', event.item); },
+  // onOpen: function (event) { console.log('opened', event.instance); },
+  // onClose: function (event) { console.log('closed', event.instance); },
+  // onTagAdd: function (event) { console.log('tag added', event.tag); },
+  // onTagRemove: function (event) { console.log('tag removed', event.tag); },
+  // onLoadMore: function (event) { console.log('loading page', event.page); },
+  // onError: function (event) { console.log('error', event.message); }
+});</code></pre>
+<p>Methods for paged data: <code>loadMore()</code>, <code>hasMoreResults()</code>, <code>getAsyncState()</code>, <code>refreshOptions()</code>, <code>clearCache()</code>.</p>
+<p>Data attributes remain available as a 1:1 fallback; the tables above list the matching <code>data-zidan-*</code> name for each option, and <code>data-zidan-options</code> accepts any literal-value subset as JSON.</p>
+<h3 id="dom-data-attributes">DOM data attributes</h3>
+<p><code>data-zidan-select</code>, <code>data-zidan-mode</code>, <code>data-zidan-layout</code>, <code>data-zidan-framework</code>, <code>data-zidan-theme</code>, <code>data-zidan-placeholder</code>, <code>data-zidan-label</code>, <code>data-zidan-aria-label</code>, <code>data-zidan-name</code>, <code>data-zidan-required</code>, <code>data-zidan-multiple</code>, <code>data-zidan-searchable</code>, <code>data-zidan-clearable</code>, <code>data-zidan-close-on-select</code>, <code>data-zidan-disabled</code>, <code>data-zidan-allow-free-text</code>, <code>data-zidan-max-tags</code>, <code>data-zidan-min-tag-length</code>, <code>data-zidan-max-tag-length</code>, <code>data-zidan-case-sensitive</code>, <code>data-zidan-validation</code>, <code>data-zidan-scrollbar</code>, <code>data-zidan-accent-insensitive</code>, <code>data-zidan-highlight-matches</code>, <code>data-zidan-type-ahead</code>, <code>data-zidan-type-ahead-timeout</code>, <code>data-zidan-virtual</code>, <code>data-zidan-virtual-threshold</code>, <code>data-zidan-item-height</code>, <code>data-zidan-locale</code>, <code>data-zidan-fetch-url</code>, <code>data-zidan-fetch-method</code>, <code>data-zidan-fetch-headers</code>, <code>data-zidan-fetch-credentials</code>, <code>data-zidan-fetch-query-param</code>, <code>data-zidan-fetch-page-param</code>, <code>data-zidan-fetch-skip-param</code>, <code>data-zidan-fetch-page-size</code>, <code>data-zidan-fetch-page-size-param</code>, <code>data-zidan-fetch-items-path</code>, <code>data-zidan-fetch-total-path</code>, <code>data-zidan-fetch-has-more-path</code>, and the JSON escape hatch <code>data-zidan-options</code> (any JS option that takes a literal value). Marker classes: <code>zidan-select</code>, <code>zidan-field</code>, <code>zidan-form</code>.</p>
+<h2 id="defaults">Defaults</h2>
+<pre><code class="language-js">ZidanForm.themes          // ['default','modern','minimal','dark','glass']
+ZidanForm.frameworks      // ['auto','none','vanilla','bootstrap','tailwind','bulma','foundation']
+ZidanForm.fieldLayouts    // ['stacked','inline','card','compact','floating','outlined']
+ZidanForm.variants        // { checkbox, switch, radio, file, range } accepted names
+ZidanForm.stepperModes    // ['stacked','split','inline']
+ZidanForm.phoneFormats    // ['national','international','e164']
+ZidanForm.phoneCountries  // { US: { dial, mask, groups, min, max }, … }
+ZidanForm.icons           // live icon registry (name → SVG markup)
+ZidanForm.messages        // default validation messages
+ZidanSelect.layouts       // five select layouts
+ZidanSelect.scrollbars    // ['default','thin','fancy','hover','hidden']
+ZidanSelect.icons         // live icon registry (also available in the select-only build)
+ZidanSelect.registerIcon(name, markup)</code></pre>
+<p><code>themes</code> and <code>fieldLayouts</code> are live arrays, so <code>ZidanForm.themes.push('brand')</code> registers a custom preset that <code>theme</code> / <code>setTheme()</code> will accept (register before initialising fields).</p>
+<p><code>grid</code> is not a field layout value: add <code>class=&quot;zs-form-grid&quot;</code> to the wrapper (and <code>zs-full</code> to any field that should span the row) rather than putting it on a single field.</p>
+<h2 id="instance-methods">Instance methods</h2>
+<h3 id="fields">Fields</h3>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Description</th></tr></thead><tbody><tr><td><code>getValue()</code></td><td>Text/textarea value, checked value, radio value or selected files.</td></tr><tr><td><code>setValue(v)</code></td><td>Writes to the native control and re-renders.</td></tr><tr><td><code>update()</code> / <code>refresh()</code></td><td>Re-read native state (checked, disabled, validity, value).</td></tr><tr><td><code>validationTargets()</code></td><td>Native element(s) whose constraints are mirrored.</td></tr><tr><td>`setValidation('valid'\</td><td>'invalid'\</td><td>null)`</td><td>Mirrors state to classes and <code>aria-invalid</code>. A public <code>'invalid'</code> call survives <code>update()</code> / <code>refresh()</code> and internal mirrors; user input/change/blur, value helpers that dispatch <code>change</code>, a non-empty select value, or another public state call clears/replaces it.</td></tr><tr><td><code>getValidation()</code></td><td>Current validation state.</td></tr><tr><td><code>setError(message)</code> / <code>clearError()</code></td><td>Set or clear the rendered error and invalid state.</td></tr><tr><td><code>checkAsync()</code></td><td>Promise resolving to the custom-rule result; runs pending state and stale guards.</td></tr><tr><td><code>validate()</code></td><td>Promise resolving to overall validity after native and custom rules.</td></tr><tr><td><code>isPending()</code></td><td>Whether an async rule is currently running.</td></tr><tr><td><code>setTheme(name)</code>, <code>setFramework(name)</code>, <code>setLayout(name)</code></td><td>Scoped restyling.</td></tr><tr><td><code>destroy()</code></td><td>Restores the original DOM and removes every listener.</td></tr></tbody></table></div>
+<p>Checkbox adds <code>setIndeterminate(bool)</code>, <code>setChecked(bool)</code> and <code>isChecked()</code>.</p>
+<p>Text inputs add <code>stepUp(times?)</code>, <code>stepDown(times?)</code>, <code>setStepper(bool)</code>, <code>getPhoneCountry()</code>, <code>setPhoneCountry(iso)</code>, <code>setPhoneFormat(format)</code>, <code>formatPhone(value?)</code>, <code>getUnmaskedValue()</code>, <code>refreshAutogrow()</code> and <code>openPicker()</code> / <code>showPicker()</code>.</p>
+<p>Fields are enhanced in place: the generated wrapper is inserted next to the original element, so the element needs a parent node before <code>zidanField()</code>, <code>initZidanForms()</code> or auto-init reaches it. A node built with <code>document.createElement()</code> throws until it is appended.</p>
+<p>File adds <code>getFiles()</code>, <code>getUploadState()</code>, <code>getFileState()</code>, <code>addFiles()</code>, <code>replaceFiles()</code>, <code>removeFile()</code>, <code>removeFiles()</code>, <code>clear()</code>, <code>setVariant()</code>, <code>setUploader()</code>, <code>setUploadUrl()</code>, <code>setUploadOptions()</code>, <code>uploadAll()</code>, <code>uploadFile()</code>, <code>isUploading()</code>, <code>whenUploaded()</code>, <code>cancelUpload()</code>, <code>cancelAll()</code>, <code>retryUpload()</code> and <code>retryAll()</code>.</p>
+<h3 id="select">Select</h3>
+<p><code>open()</code>, <code>close()</code>, <code>toggle()</code>, <code>isOpen()</code>, <code>getValue()</code>, <code>setValue(value, config?)</code>, <code>clear(config?)</code>, <code>setOptions(items)</code>, <code>addTag()</code>, <code>removeTag()</code>, <code>getTags()</code>, <code>enable()</code>, <code>disable()</code>, <code>setTheme()</code>, <code>setLayout()</code>, <code>setFramework()</code>, <code>setScrollbar()</code>, <code>setValidation()</code>, <code>refresh()</code>, <code>loadMore()</code>, <code>hasMoreResults()</code>, <code>getAsyncState()</code>, <code>refreshOptions()</code>, <code>clearCache()</code>, <code>on(event, handler)</code>, <code>off(event, handler)</code>, <code>announce(message)</code>, <code>destroy()</code>.</p>
+<p>Static select helpers: <code>ZidanSelect.get(target)</code> returns the instance for a native select, <code>ZidanSelect.destroy(scope?)</code> restores only the selects inside a document/element/selector and returns the count, and <code>ZidanSelect.destroyAll()</code> covers the whole document. Field teardown for a subtree is <code>ZidanForm.destroy(scope?)</code>; see <a href="#form-level-helpers">Form-level helpers</a>.</p>
+<p>Multiple helpers: <code>getSelectedItems()</code>, <code>selectAll(config?)</code>, <code>deselectAll(config?)</code>, <code>toggleAll(config?)</code> and <code>areAllSelected()</code>. They cover every non-disabled option (not only the rows matching the current search) and accept <code>{ silent: true }</code> like <code>setValue</code>. Tag helpers: <code>moveTag(from, to)</code> and <code>editTag(tagOrIndex, label)</code> return a boolean and keep the native options in sync.</p>
+<p><code>setValue(value, config?)</code> and <code>clear(config?)</code> take <code>{ silent: true }</code>, which updates the value, the native <code>&lt;select&gt;</code> and the rendered control without emitting <code>zidan:change</code> or calling <code>onChange</code>.</p>
+<h2 id="form-level-helpers">Form-level helpers</h2>
+<p><code>ZidanForm.serialize(form, options?)</code> returns an object built from <code>FormData</code>: repeated names become arrays and file inputs are skipped unless <code>{ files: true }</code>.</p>
+<p><code>ZidanForm.validate(form, options?)</code> resolves <code>true</code>/<code>false</code> after every enhanced field's <code>validate()</code> and the native form constraints run. It focuses the first invalid control (set <code>{ focus: false }</code> to skip) and dispatches <code>zidan:validate</code> with <code>{ valid, form, fields }</code>.</p>
+<pre><code class="language-js">const form = document.querySelector('#signup');
+const data = ZidanForm.serialize(form);
+if (await ZidanForm.validate(form)) {
+  await fetch('/signup', { method: 'POST', body: JSON.stringify(data) });
+}</code></pre>
+<p><code>ZidanForm.destroy(scope?)</code> restores only the fields and selects inside a document, element or selector and returns the number of instances removed. It is the recommended cleanup for component frameworks because a route or modal only owns its own subtree. With no argument it covers the document, like <code>destroyAll()</code>.</p>
+<p><code>ZidanForm.mask(value, pattern)</code>, <code>ZidanForm.unmask(value)</code> and <code>ZidanForm.downscaleImage(file, options)</code> are also available as standalone helpers.</p>
+<h2 id="events">Events</h2>
+<p>Removing an already-selected option from a multi-select (or a tag from a tag field) reports only via <code>change</code>, not <code>select</code>: the removal is not a new selection, so there is no matching <code>zidan:select</code> for it.</p>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Detail</th></tr></thead><tbody><tr><td><code>zidan:init</code></td><td>`{ instance, kind \</td><td>mode, ... }`</td></tr><tr><td><code>zidan:change</code></td><td><code>{ instance, value, previousValue? }</code>, <code>{ checked }</code>, <code>{ files }</code></td></tr><tr><td><code>zidan:input</code></td><td><code>{ instance, value }</code> (text/range)</td></tr><tr><td><code>zidan:validation</code></td><td><code>{ instance, state, message? }</code></td></tr><tr><td><code>zidan:async-validation</code></td><td><code>{ instance, valid, message, error? }</code></td></tr><tr><td><code>zidan:open</code> / <code>zidan:close</code></td><td><code>{ instance }</code> (select)</td></tr><tr><td><code>zidan:select</code></td><td><code>{ instance, value, item }</code> (select)</td></tr><tr><td><code>zidan:no-results</code></td><td><code>{ instance, query }</code> (select)</td></tr><tr><td><code>zidan:tag-add</code> / <code>zidan:tag-remove</code></td><td><code>{ instance, tag, value }</code> (select tags)</td></tr><tr><td><code>zidan:tag-move</code></td><td><code>{ instance, tag, from, to, value }</code> (select tags)</td></tr><tr><td><code>zidan:tag-edit</code></td><td><code>{ instance, tag, label, previousLabel, index }</code> (select tags)</td></tr><tr><td><code>zidan:load-more</code></td><td><code>{ instance, page, query }</code> (select pagination)</td></tr><tr><td><code>zidan:reveal</code></td><td><code>{ instance, visible }</code> (password)</td></tr><tr><td><code>zidan:remove</code></td><td><code>{ instance, file, index? }</code> (file upload)</td></tr><tr><td><code>zidan:step</code></td><td><code>{ instance, value, direction, step }</code> (number stepper)</td></tr><tr><td><code>zidan:phone-country</code></td><td><code>{ instance, country }</code></td></tr><tr><td><code>zidan:phone-format</code></td><td><code>{ instance, format }</code></td></tr><tr><td><code>zidan:icon-click</code></td><td><code>{ instance, icon, position }</code></td></tr><tr><td><code>zidan:picker</code></td><td><code>{ instance, type }</code></td></tr><tr><td><code>zidan:upload-start</code></td><td><code>{ instance, file, name, size }</code></td></tr><tr><td><code>zidan:upload-progress</code></td><td><code>{ instance, file, name, progress }</code></td></tr><tr><td><code>zidan:upload-success</code></td><td><code>{ instance, file, name, result }</code></td></tr><tr><td><code>zidan:upload-error</code></td><td><code>{ instance, file, name, error, message }</code></td></tr><tr><td><code>zidan:upload-cancel</code></td><td><code>{ instance, file, name }</code></td></tr><tr><td><code>zidan:clear</code></td><td><code>{ instance }</code></td></tr><tr><td><code>zidan:destroy</code></td><td><code>{ instance }</code></td></tr><tr><td><code>zidan:validate</code></td><td><code>{ valid, form, fields }</code> on the <code>&lt;form&gt;</code> after <code>ZidanForm.validate()</code></td></tr><tr><td><code>zidan:error</code></td><td><code>{ error, message?, callback?, instance }</code></td></tr></tbody></table></div>
+    </div>
+    <p class="doc-source-note">
+      Markdown source: <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md" rel="noopener">docs/options.md</a>.
+      Generated by <code>scripts/docs.mjs</code> — edit the Markdown, not this page.
+    </p>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="../index.html">Demo</a> ·
+        <a href="../playground.html">Playground</a> ·
+        <a href="index.html">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="../nav.js"></script>
+</body>
+</html>

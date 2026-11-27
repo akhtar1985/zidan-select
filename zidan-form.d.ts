@@ -71,6 +71,8 @@ export interface SelectCallbacks {
   onClose?(detail: { instance: ZidanSelect }): void;
   onTagAdd?(detail: { tag: string; value: SelectItem[]; instance: ZidanSelect }): void;
   onTagRemove?(detail: { tag: string; value: SelectItem[]; instance: ZidanSelect }): void;
+  onTagMove?(detail: { tag: string; from: number; to: number; value: SelectItem[]; instance: ZidanSelect }): void;
+  onTagEdit?(detail: { tag: string; label: string; previousLabel: string; index: number; instance: ZidanSelect }): void;
   /** `page` is the zero-based index used by fetchOptions; the first follow-up page is 1. */
   onLoadMore?(detail: { page: number; query: string; instance: ZidanSelect }): void;
   onError?(detail: { error?: unknown; message: string; callback?: string; instance: ZidanSelect }): void;
@@ -497,6 +499,8 @@ export class ZidanSelect {
   static scrollbars: Scrollbar[];
   static instances: ZidanSelect[];
   static get(target: string | Element | null): ZidanSelect | null;
+  /** Destroy only the select instances inside a document, element or selector */
+  static destroy(scope?: Document | Element | string): number;
   static destroyAll(): void;
 }
 
@@ -585,6 +589,8 @@ export interface ZidanFormStatic {
   init(scope?: Document | Element, options?: FieldOptions & { force?: boolean }): ZidanFieldBase[];
   field: typeof zidanField;
   refresh(scope?: Document | Element): ZidanFieldBase[];
+  /** Destroy only the fields and selects inside a document, element or selector */
+  destroy(scope?: Document | Element | string): number;
   destroyAll(): ZidanFormStatic;
   observe(scope?: Element, options?: FieldOptions): MutationObserver | null;
   formatPhone?(value: string, country?: string, format?: PhoneFormat): string;
@@ -609,6 +615,9 @@ export function zidanField(target: string | Element, options?: FieldOptions): Zi
 export function zidanField(target: ArrayLike<Element>, options?: FieldOptions): ZidanFieldBase[];
 export function initZidanForms(container?: Document | Element, options?: FieldOptions & { force?: boolean }): ZidanFieldBase[];
 export function registerIcon(name: string, markup: string): typeof ZidanSelect | ZidanFormStatic | undefined;
+
+/** Browser-side image resize helper; resolves to the original when no work is needed */
+export function downscaleImage(file: File, options?: DownscaleOptions): Promise<File>;
 export function formatPhone(value: string, country?: string, format?: PhoneFormat): string;
 export function detectPhoneCountry(value: string): string;
 

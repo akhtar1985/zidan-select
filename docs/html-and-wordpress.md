@@ -888,6 +888,6 @@ zidanField('#cv', {
 - Every option and data attribute: [options.md](options.md)
 - Native, jQuery Validation, JustValidate and Parsley: [validation.md](validation.md)
 - Tokens, presets, layouts and adapters: [theming.md](theming.md)
-- React, Vue, Angular and Next.js: [frameworks.md](frameworks.md)
+- React, Next.js, Vue/Nuxt, Svelte/SvelteKit and Angular, including SSR and reactive forms: [frameworks.md](frameworks.md)
 - Click through one control at a time: [field playground](https://akhtar1985.github.io/zidan-select/playground.html)
 - More trimmed-build details: [build.md](build.md#select-only-and-file-only-builds)

@@ -100,7 +100,7 @@ Without esbuild the build still succeeds and prints that minification was skippe
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | `/dist/zidan-form.min.js` — ≈171 kB | `/dist/plugin-core.min.css` — ≈33 kB | `/dist/plugin-theme.min.css` — ≈44 kB |
+| Full | `/dist/zidan-form.min.js` — ≈172 kB | `/dist/plugin-core.min.css` — ≈33 kB | `/dist/plugin-theme.min.css` — ≈44 kB |
 | Select-only | `/dist/select/zidan-select.min.js` — ≈86 kB | `/dist/select/plugin-select-core.min.css` — ≈10 kB | `/dist/select/plugin-select-theme.min.css` — ≈29 kB |
 | File-only | `/dist/file/zidan-file.min.js` — ≈70 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈34 kB |
 
@@ -131,9 +131,9 @@ Regenerate them with `npm run build` followed by `npm run sizes`; `npm test` fai
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | 304,831 B (≈298 kB) → 175,225 B (≈171 kB) | 44,040 B (≈43 kB) → 33,886 B (≈33 kB) | 52,905 B (≈52 kB) → 44,672 B (≈44 kB) |
-| Select-only | 151,440 B (≈148 kB) → 87,828 B (≈86 kB) | 13,180 B (≈13 kB) → 10,116 B (≈10 kB) | 34,461 B (≈34 kB) → 29,290 B (≈29 kB) |
-| File-only | 122,632 B (≈120 kB) → 71,533 B (≈70 kB) | 9,939 B (≈10 kB) → 7,210 B (≈7 kB) | 40,160 B (≈39 kB) → 34,612 B (≈34 kB) |
+| Full | 306,243 B (≈299 kB) → 175,708 B (≈172 kB) | 44,188 B (≈43 kB) → 33,886 B (≈33 kB) | 52,905 B (≈52 kB) → 44,672 B (≈44 kB) |
+| Select-only | 152,852 B (≈149 kB) → 88,311 B (≈86 kB) | 13,180 B (≈13 kB) → 10,116 B (≈10 kB) | 34,461 B (≈34 kB) → 29,290 B (≈29 kB) |
+| File-only | 124,044 B (≈121 kB) → 72,066 B (≈70 kB) | 10,251 B (≈10 kB) → 7,351 B (≈7 kB) | 40,160 B (≈39 kB) → 34,612 B (≈34 kB) |
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their

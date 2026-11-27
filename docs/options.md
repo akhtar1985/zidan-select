@@ -45,8 +45,9 @@ is the targeted form for IDs, classes and elements you already have a reference 
 Both bulk helpers skip elements that are already enhanced. Pass `{ force: true }`
 (`initZidanForms(scope, { force: true })`, `ZidanForm.init(scope, { force: true })`) to
 re-initialise them, for example after swapping markup. The same entry points are on the global
-object as `ZidanForm.init()`, `ZidanForm.get()`, `ZidanForm.observe()`, `ZidanForm.destroyAll()`
-and `ZidanForm.version`.
+object as `ZidanForm.init()`, `ZidanForm.get()`, `ZidanForm.refresh()`,
+`ZidanForm.observe()`, `ZidanForm.destroy(scope?)`, `ZidanForm.destroyAll()` and
+`ZidanForm.version`.
 
 ### Read values and option details
 
@@ -870,6 +871,8 @@ control shows `"…" is not in the list.` through the tag error slot. Leave the 
 | `onOpen` / `onClose` | `{ instance }` |
 | `onTagAdd` | `{ instance, tag, value }` |
 | `onTagRemove` | `{ instance, tag, value }` |
+| `onTagMove` | `{ instance, tag, from, to, value }` |
+| `onTagEdit` | `{ instance, tag, label, previousLabel, index }` |
 | `onLoadMore` | `{ instance, page, query }`; `page` is zero-based. |
 | `onError` | `{ instance, message, error?, callback? }`; fetch failures include `error`, and callback exceptions include `error` plus the callback name. |
 
@@ -1137,9 +1140,11 @@ Fields are enhanced in place: the generated wrapper is inserted next to the orig
 so the element needs a parent node before `zidanField()`, `initZidanForms()` or auto-init
 reaches it. A node built with `document.createElement()` throws until it is appended.
 
-File adds `getFiles()`, `getUploadState()`, `addFiles()`, `replaceFiles()`, `removeFile()`,
-`clear()`, `setVariant()`, `setUploader()`, `uploadAll()`, `uploadFile()`, `cancelUpload()`,
-`cancelAll()` and `retryUpload()`.
+File adds `getFiles()`, `getUploadState()`, `getFileState()`, `addFiles()`,
+`replaceFiles()`, `removeFile()`, `removeFiles()`, `clear()`, `setVariant()`,
+`setUploader()`, `setUploadUrl()`, `setUploadOptions()`, `uploadAll()`, `uploadFile()`,
+`isUploading()`, `whenUploaded()`, `cancelUpload()`, `cancelAll()`, `retryUpload()` and
+`retryAll()`.
 
 ### Select
 
@@ -1148,6 +1153,11 @@ File adds `getFiles()`, `getUploadState()`, `addFiles()`, `replaceFiles()`, `rem
 `disable()`, `setTheme()`, `setLayout()`, `setFramework()`, `setScrollbar()`, `setValidation()`,
 `refresh()`, `loadMore()`, `hasMoreResults()`, `getAsyncState()`, `refreshOptions()`,
 `clearCache()`, `on(event, handler)`, `off(event, handler)`, `announce(message)`, `destroy()`.
+
+Static select helpers: `ZidanSelect.get(target)` returns the instance for a native select,
+`ZidanSelect.destroy(scope?)` restores only the selects inside a document/element/selector and
+returns the count, and `ZidanSelect.destroyAll()` covers the whole document. Field teardown for
+a subtree is `ZidanForm.destroy(scope?)`; see [Form-level helpers](#form-level-helpers).
 
 Multiple helpers: `getSelectedItems()`, `selectAll(config?)`, `deselectAll(config?)`,
 `toggleAll(config?)` and `areAllSelected()`. They cover every non-disabled option (not only
@@ -1175,6 +1185,11 @@ if (await ZidanForm.validate(form)) {
   await fetch('/signup', { method: 'POST', body: JSON.stringify(data) });
 }
 ```
+
+`ZidanForm.destroy(scope?)` restores only the fields and selects inside a document,
+element or selector and returns the number of instances removed. It is the recommended cleanup
+for component frameworks because a route or modal only owns its own subtree. With no argument it
+covers the document, like `destroyAll()`.
 
 `ZidanForm.mask(value, pattern)`, `ZidanForm.unmask(value)` and
 `ZidanForm.downscaleImage(file, options)` are also available as standalone helpers.

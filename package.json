@@ -105,7 +105,8 @@
     "prepublishOnly": "npm run build && npm run types && npm test",
     "lint": "node --check zidan-form.js && node --check demo.js && node --check lab.js && node --check advanced.js && node --check ajax.js && node --check playground.js && node --check nav.js && node --check scripts/docs.mjs && node --check zidan-form.mjs",
     "release": "node scripts/release.mjs",
-    "search": "node scripts/exa-search.mjs"
+    "search": "node scripts/exa-search.mjs",
+    "lab:inventory": "node scripts/lab-inventory.mjs"
   },
   "engines": {
     "node": ">=18"

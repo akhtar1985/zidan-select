@@ -30,9 +30,9 @@ Sizes measure the current source build; CDN links pin the 2.5.0 release.
 
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈298 kB raw · ≈171 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css) |
-| Select-only | ≈148 kB raw · ≈86 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.css) |
-| File-only | ≈120 kB raw · ≈70 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.css) |
+| Full — every control | ≈299 kB raw · ≈172 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css) |
+| Select-only | ≈149 kB raw · ≈86 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.css) |
+| File-only | ≈121 kB raw · ≈70 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
 [Select-only and file-only builds](#select-only-and-file-only-builds); the
@@ -50,7 +50,7 @@ same pinned bytes:
 
 | Build | JS (min) | CSS (min) |
 | --- | --- | --- |
-| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/zidan-form.min.js) — ≈171 kB | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/plugin-core.min.css) — ≈33 kB + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/plugin-theme.min.css) — ≈44 kB |
+| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/zidan-form.min.js) — ≈172 kB | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/plugin-core.min.css) — ≈33 kB + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/plugin-theme.min.css) — ≈44 kB |
 | Select-only | [zidan-select.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.min.js) — ≈86 kB | [plugin-select-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.min.css) — ≈10 kB + [plugin-select-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.min.css) — ≈29 kB |
 | File-only | [zidan-file.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.min.js) — ≈70 kB | [plugin-file-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.min.css) — ≈7 kB + [plugin-file-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.min.css) — ≈34 kB |
 
@@ -76,8 +76,10 @@ same pinned bytes:
   plus textareas that grow to their content and stop at `autogrowMax`.
 - **Tags & multi helpers (2.5)** — drag or Alt+Arrow tag reordering, F2/double-click inline
   renaming, and `selectAll` / `deselectAll` / `toggleAll` / `areAllSelected` / `getSelectedItems`.
-- **Form helpers (2.5)** — `ZidanForm.serialize(form)` (arrays for repeated names) and
-  `ZidanForm.validate(form)` (field rules + native validity, first-invalid focus).
+- **Form helpers (2.5)** — `ZidanForm.serialize(form)` (arrays for repeated names),
+  `ZidanForm.validate(form)` (field rules + native validity, first-invalid focus), and
+  `ZidanForm.destroy(root)` / `ZidanSelect.destroy(root)` scoped teardown for component
+  frameworks.
 - **More skins** — checkbox `default · switch · card · button · minimal`; five switch styles
   (`ios · material · square · labeled · icon`); radio `stacked · inline · card · button · tile`
   with click-to-deselect; file `dropzone · button · avatar · gallery · compact`.
@@ -154,10 +156,10 @@ Select still have deeper ecosystems. Full matrix, honest limitations and migrati
 10. [Themes, layouts & frameworks](#themes-layouts--frameworks)
 11. [Validation libraries](#validation-libraries)
 12. [Form lifecycle & state sync](#form-lifecycle--state-sync)
-13. [React, Next.js, Vue, Angular](#react-nextjs-vue-angular)
+13. [React, Next.js, Vue, Svelte, Angular](#react-nextjs-vue-svelte-angular)
 14. [Build & publish](#build--publish)
 15. [Browser support](#browser-support)
-16. [What's new in 2.1–2.3](#whats-new-in-213)
+16. [What's new in 2.1–2.5](#whats-new-in-215)
 17. [Migrating from 1.x](#migrating-from-1x)
 
 ---
@@ -304,7 +306,7 @@ Copyable CDN URLs (pin the version):
 - `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.css>
 - `plugin-file-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.min.css>
 
-Select / combobox / tags only (≈148 kB raw / ≈86 kB minified JS, ≈13 → 10 kB core CSS,
+Select / combobox / tags only (≈149 kB raw / ≈86 kB minified JS, ≈13 → 10 kB core CSS,
 ≈34 → 29 kB theme CSS):
 
 ```html
@@ -318,7 +320,7 @@ Select / combobox / tags only (≈148 kB raw / ≈86 kB minified JS, ≈13 → 1
 </script>
 ```
 
-File upload only (≈120 kB raw / ≈70 kB minified JS, ≈10 → 7 kB core CSS,
+File upload only (≈121 kB raw / ≈70 kB minified JS, ≈10 → 7 kB core CSS,
 ≈39 → 34 kB theme CSS):
 
 ```html
@@ -903,7 +905,9 @@ ZidanForm.field(target, options)    → Field | Field[]
 ZidanForm.get(input)                → Field | null
 ZidanForm.refresh(scope?)           → Field[]     // re-scan + sync
 ZidanForm.observe(scope, options?)  → MutationObserver
-ZidanForm.destroyAll()
+ZidanForm.destroy(scope?)           → number      // scoped fields + selects
+ZidanForm.destroyAll()             → ZidanForm
+ZidanSelect.destroy(scope?)        → number      // selects only
 ```
 
 `zidanField()` also accepts a plain `<input>`/`<textarea>` of a supported type, so JS-only
@@ -915,7 +919,10 @@ Bulk helpers skip nodes that are already enhanced; pass `{ force: true }` to
 `ZidanForm.themes`, `.fieldLayouts` are live registries: `ZidanForm.themes.push('brand')`
 adds a valid name (do it before fields initialise). `.frameworks` lists the built-in adapters.
 `ZidanSelect.layouts`, `.frameworks`, `.scrollbars`, `.instances`, `.get()`,
-`.destroyAll()` remain available.
+`.destroy(scope?)` and `.destroyAll()` remain available. `ZidanForm.destroy(root)` restores only
+the fields and selects inside `root`, which is the safe cleanup for a route, modal or component
+subtree; with no argument it covers the document. Both scoped helpers return the number of
+instances removed.
 
 Per-select instance: `open()`, `close()`, `toggle()`, `isOpen()`, `getValue()`,
 `setValue(v, config?)`, `clear(config?)`, `setOptions(items)`, `enable()`, `disable()`,
@@ -1099,13 +1106,14 @@ libraries next to a native form ships as [`docs/validation.html`](https://akhtar
 | `form.reset()` | Fields listen to `reset`, wait one tick and re-render from the native state. |
 | Required/disabled/readonly/multiple | Mirrored at build time and on `update()`. |
 | Dynamic DOM | `ZidanForm.observe(container)` initialises added nodes; `refresh()` re-syncs. |
-| Teardown | `destroy()` restores the original input and removes every listener and node. `destroyAll()` for the whole page. |
+| Teardown | `field.destroy()` restores one control. `ZidanForm.destroy(root)` restores a component subtree and returns the count; `destroyAll()` covers the whole page. |
 
 ```js
-const observer = ZidanForm.observe(document.body);
-// later
+const root = document.querySelector('#profile');
+const observer = ZidanForm.observe(root);
+// later — remove only this component's controls
 observer.disconnect();
-ZidanForm.destroyAll();
+ZidanForm.destroy(root); // returns the number of instances removed
 ```
 
 The observer reacts to nodes added **or removed inside** the observed container. If you remove
@@ -1114,14 +1122,20 @@ cannot see a mutation above its own root.
 
 ---
 
-## React, Next.js, Vue, Angular
+## React, Next.js, Vue, Svelte, Angular
 
-Short version: initialise after mount, call `destroy()` before unmount, push state down with
-`setValue()` and read it back from `onChange`/`zidan:change`. Native `<select>` values should
-be controlled through the instance, because the plugin owns the visible trigger.
+Short version: initialise after mount, call `ZidanForm.destroy(root)` before unmount, push state
+down with `setValue(value, { silent: true })` and read it back from `onChange`/`zidan:change`.
+Native `<select>` values should be controlled through the instance, because the plugin owns the
+visible trigger. The native input stays the form value, so `FormData`, `reset()` and constraint
+validation are unchanged.
 
-Complete, copy-pasteable examples (React 18, Next.js App Router with SSR-safe imports, Vue 3
-`onMounted`, Angular `ngAfterViewInit` + `ControlValueAccessor` notes): [`docs/frameworks.md`](https://akhtar1985.github.io/zidan-select/docs/frameworks.html).
+Complete, copy-pasteable examples cover **React 18/19** effects and StrictMode, **Next.js** App
+Router (client boundary, `next/dynamic`, route handlers) and Pages Router, **Vue 3** `onMounted`
+and `watch` plus **Nuxt**, **Svelte 5** actions/runes plus **SvelteKit**, and **Angular**
+`ngAfterViewInit`, reactive forms with a `ControlValueAccessor`, and SSR platform guards. All
+guides share the same event, upload, validation and troubleshooting sections:
+[`docs/frameworks.md`](https://akhtar1985.github.io/zidan-select/docs/frameworks.html).
 
 Next.js CSS imports:
 
@@ -1168,7 +1182,7 @@ npm run sizes   # sync the byte sizes quoted in the docs with dist/
 | --- | --- |
 | `scripts/serve.mjs` | No-dependency demo server on port 4173 (`PORT=8080 npm run dev`). |
 | `scripts/build.mjs` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, emits the select-only and file-only bundles with declarations, and minifies every JS/CSS output with esbuild. |
-| `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, the build artifacts ship, and the playground, README, demo and cookbook stay wired to each other — then runs 48 jsdom behaviour suites. |
+| `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, the build artifacts ship, and the playground, README, demo and cookbook stay wired to each other — then runs 71 jsdom behaviour suites. |
 | `scripts/dom/run.mjs` | jsdom suites for select, fields, uploads, async validation, pagination, RTL, teardown, and the select-only/file-only/minified bundles. |
 | `scripts/exa-search.mjs` | Exa web search for docs and release research: `npm run search -- "your question"` (`--num 10` for more results). Reads `EXA_API_KEY`; copy `.env.example` to `.env` (git-ignored) and add a key from https://dashboard.exa.ai/api-keys. |
 | `scripts/sizes.mjs` | Rewrites the byte sizes quoted in `docs/build.md`, `README.md`, `index.html` and `advanced.html` from `dist/`, so the docs cannot drift (`npm run sizes`). |
@@ -1222,29 +1236,56 @@ Full checklist, folder tree and release automation notes: [`docs/build.md`](http
 
 ---
 
-## What's new in 2.1–2.3
+## What's new in 2.1–2.5
 
-**2.5.0** adds the capabilities that were previously the library's biggest gaps:
+**2.5.0** — the current package release — adds:
+
+- **Input masks and autogrow** — `mask` with `#` digit, `A` letter and `*` alphanumeric
+  tokens, auto-inserted literals, caret preservation and `ZidanForm.mask()` / `unmask()`;
+  textareas grow with `autogrow` up to `autogrowMax`.
+- **Tags and multi-select helpers** — drag or Alt+Arrow tag reordering, F2/double-click
+  renaming, `moveTag()` / `editTag()`, and `selectAll()`, `deselectAll()`, `toggleAll()`,
+  `areAllSelected()`, `getSelectedItems()`.
+- **Form helpers** — `ZidanForm.serialize(form)` (repeated names become arrays) and
+  `ZidanForm.validate(form)` (field rules + native constraints, first-invalid focus).
+- **Large-list search** — virtual window, accent-insensitive matching, `<mark>` highlighting
+  and native type-ahead for non-searchable selects.
+- **Phone picker and image downscale** — a searchable country menu plus browser-side
+  `downscale` / `ZidanForm.downscaleImage()` before upload.
+- **Locales and auto theme** — `en`, `es`, `fr`, `de` and `ar` packs with `<html lang>`
+  detection, and `theme: 'auto'` following `prefers-color-scheme`.
+
+**Post-2.5.0 work in this tree** (see `Unreleased` in the changelog) adds:
+
+- **File upload transport and queue** — `uploadMethod`, `uploadParams`, headers, timeout,
+  response/error paths, credentials, automatic retries and concurrency; `whenUploaded()`,
+  `getFileState()`, `removeFiles()`, `retryAll()`, `setUploadUrl()`, `setUploadOptions()`,
+  plus `upload-queued` / `upload-retry` events. The file-only build carries the same pipeline
+  and framework CSS adapters.
+- **Remote request controls** — declarative `fetchParams` / `fetchBody` and the API request lab.
+- **Scoped teardown and framework guides** — `ZidanForm.destroy(root)` and
+  `ZidanSelect.destroy(root)` restore one component subtree, with full React 18/19, Next.js,
+  Vue/Nuxt, Svelte/SvelteKit and Angular guides in `docs/frameworks.md`.
+- **Automated behaviour tests** — `npm test` builds the subsets and runs 71 jsdom suites
+  covering select, fields, uploads, async validation, pagination, RTL, scoped teardown and both
+  subset bundles (including their minified copies).
+
+**2.3** added:
 
 - **Async validation** — `validate` and `validateDate` may return a Promise. Fields get a
   `.zs-field--pending` spinner and `aria-busy`, block form submission through native validity,
   abort the in-flight check when the value changes, ignore stale responses, pass an
   `AbortSignal` as the third argument, and emit `zidan:async-validation`.
-  `validate()` now returns `boolean | Promise<boolean>`.
 - **Remote select pagination** — `fetchOptions(query, signal, { page, pageSize, append })`
-  returns a page (`{ items, hasMore }`); results are cached in a small LRU, a
-  **Load more** footer and scroll-to-end both fetch the next page, and
-  `loadMore()`, `hasMoreResults()`, `getAsyncState()`, `refreshOptions()` and
-  `clearCache()` are available for custom UI.
+  returns a page (`{ items, hasMore }`); results are cached in a small LRU, a **Load more**
+  footer and scroll-to-end both fetch the next page, and `loadMore()`, `hasMoreResults()`,
+  `getAsyncState()`, `refreshOptions()` and `clearCache()` are available for custom UI.
 - **RTL support** — logical CSS properties, mirrored knob/tick/icon transforms and
   `--zs-range-angle`; component roots follow the nearest `dir` attribute automatically.
 - **TypeScript declarations** — `zidan-form.d.ts` for the full bundle plus per-build
   declarations for `zidan-select` and `zidan-file`, wired into the exports map.
-- **Self-hosted minified bundles** — `npm run build` now emits `.min.js` and `.min.css`
-  for all three builds, so you can ship from your own CDN with the same files npm exports.
-- **Automated behaviour tests** — `npm test` builds the subsets and runs 48 jsdom suites
-  covering select, fields, uploads, async validation, pagination, RTL, teardown and both
-  subset bundles (including their minified copies).
+- **Self-hosted minified bundles** — `npm run build` emits `.min.js` and `.min.css` for all
+  three builds, so you can ship from your own CDN with the same files npm exports.
 
 **2.1–2.2** added:
 

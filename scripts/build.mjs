@@ -234,6 +234,7 @@ export const ZidanForm = host.ZidanForm;
 export const ZidanFileUpload = core.ZidanFileUpload;
 export const zidanField = core.zidanField;
 export const initZidanForms = core.initZidanForms;
+export const downscaleImage = core.downscaleImage;
 export const registerIcon = core.registerIcon;
 export default ZidanForm;
 `,
@@ -247,6 +248,7 @@ export {
   ZidanFieldBase,
   zidanField,
   initZidanForms,
+  downscaleImage,
   registerIcon
 } from '../../zidan-form';
 export type {
@@ -264,6 +266,7 @@ export type {
   UploadContext,
   UploadHandler,
   UploadState,
+  DownscaleOptions,
   ZidanFormStatic,
   AutoInitTarget,
   AutoInitConfig

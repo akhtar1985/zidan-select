@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Framework integration — ZidanForm docs</title>
+  <meta name="description" content="React, Next.js, Vue, Svelte, Angular and SSR-safe state-sync patterns.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/docs/frameworks.html">
+  <meta name="theme-color" content="#4f6bed">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:title" content="Framework integration — ZidanForm docs">
+  <meta property="og:description" content="React, Next.js, Vue, Svelte, Angular and SSR-safe state-sync patterns.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/docs/frameworks.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../plugin-core.css">
+  <link rel="stylesheet" href="../plugin-theme.css">
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+  <a class="skip-link" href="#docs-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="../index.html">Demo</a>
+      <a href="../advanced.html">Advanced</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../api.html">API</a>
+      <a href="../ajax.html">AJAX</a>
+      <a href="../shopify.html">Shopify</a>
+      <a href="../index.html#compare">Compare</a>
+      <a href="../index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="index.html">Documentation index</a>
+          <a href="options.html">Options &amp; data attributes</a>
+          <a href="comparison.html">Why &amp; comparison</a>
+          <a href="frameworks.html" aria-current="page">Frameworks</a>
+          <a href="html-and-wordpress.html">HTML &amp; WordPress</a>
+          <a href="validation-guide.html">Validation</a>
+          <a href="theming.html">Theming</a>
+          <a href="build.html">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
+      </select>
+    </nav>
+  </header>
+  <main id="docs-main" class="wrap docs-main">
+    <section class="hero docs-hero" aria-labelledby="docs-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Documentation · reference</p>
+      <h1 id="docs-title">Framework integration</h1>
+      <p class="doc-blurb">React, Next.js, Vue, Svelte, Angular and SSR-safe state-sync patterns.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="../playground.html">Try the playground</a>
+        <a class="btn" href="index.html">All documentation</a>
+        <a class="btn" href="../advanced.html">Advanced API</a>
+      </div>
+    </section>
+    <div class="docs-content">
+<h2 id="framework-integration">Framework integration</h2>
+<p>ZidanForm is framework-agnostic: it enhances native form controls and never replaces the framework's state. There is no React/Vue/Svelte component package to keep in sync. Every integration follows the same four-step contract:</p>
+<ol><li>initialise after the DOM exists (mounted, hydrated or <code>ngAfterViewInit</code>),</li><li>push external state down with <code>setValue()</code>, <code>setIndeterminate()</code> or <code>setPhoneCountry()</code>,</li><li>read user changes from <code>onChange</code>, <code>zidan:change</code> or the native <code>change</code> event,</li><li>tear down with <code>destroy()</code> before the framework removes the nodes.</li></ol>
+<p>The sections below cover React 18/19, Next.js App and Pages Router, Vue 3/Nuxt, Svelte 5 and SvelteKit, Angular standalone/reactive forms/SSR, plus shared lifecycle, events, upload and validation patterns. CSS-framework adapters (Bootstrap, Tailwind, Bulma, Foundation) are a separate feature; see <a href="#css-frameworks-are-separate">CSS frameworks are separate</a>.</p>
+<h2 id="contents">Contents</h2>
+<ul><li><a href="#install-once">Install once</a></li><li><a href="#the-shared-mount-contract">The shared mount contract</a></li><li><a href="#state-events-and-cleanup">State, events and cleanup</a></li><li><a href="#forms-validation-and-uploads">Forms, validation and uploads</a></li><li><a href="#react">React</a></li><li><a href="#nextjs">Next.js</a></li><li><a href="#vue-3">Vue 3</a></li><li><a href="#svelte">Svelte</a></li><li><a href="#angular">Angular</a></li><li><a href="#ssr-and-hydration-matrix">SSR and hydration matrix</a></li><li><a href="#typescript">TypeScript</a></li><li><a href="#css-frameworks-are-separate">CSS frameworks are separate</a></li><li><a href="#troubleshooting">Troubleshooting</a></li></ul>
+<h2 id="install-once">Install once</h2>
+<pre><code class="language-bash">npm install zidan-select</code></pre>
+<pre><code class="language-js">import { ZidanForm, ZidanSelect, zidanField, zidanSelect, initZidanForms, initZidanSelects } from 'zidan-select';
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';</code></pre>
+<p>For a page that only needs a select or only needs file uploads, import the smaller entry point and its matching CSS:</p>
+<pre><code class="language-js">// select-only
+import { zidanSelect, initZidanSelects } from 'zidan-select/select';
+import 'zidan-select/select/css/core';
+import 'zidan-select/select/css/theme';
+
+// file-only
+import { zidanField, initZidanForms } from 'zidan-select/file';
+import 'zidan-select/file/css/core';
+import 'zidan-select/file/css/theme';</code></pre>
+<p>The package also ships minified entries and browser globals. <a href="build.html">build.md</a> lists every CDN and npm path. The examples below use the full bundle unless a snippet says otherwise.</p>
+<h2 id="the-shared-mount-contract">The shared mount contract</h2>
+<p>Initialise selects first (a field may contain a native select), then fields. Return one cleanup that only touches this subtree.</p>
+<pre><code class="language-js">import { ZidanForm, initZidanForms, initZidanSelects } from 'zidan-select';
+
+export function mountZidan(root, options = {}) {
+  const selects = initZidanSelects(root);
+  const fields = initZidanForms(root, options);
+  return {
+    selects,
+    fields,
+    destroy: () =&gt; ZidanForm.destroy(root)
+  };
+}</code></pre>
+<p><code>ZidanForm.destroy(root)</code> restores every field and select whose native control is inside <code>root</code> and returns how many instances were removed. The other teardown helpers remain:</p>
+<div class="table-wrap"><table><thead><tr><th>Helper</th><th>Scope</th><th>Use it for</th></tr></thead><tbody><tr><td><code>field.destroy()</code> / <code>select.destroy()</code></td><td>one instance</td><td>A component that owns exactly one control.</td></tr><tr><td><code>ZidanForm.destroy(root)</code></td><td>a subtree</td><td>React effect cleanup, Vue unmount, Svelte action, Angular <code>ngOnDestroy</code>, a modal or route panel.</td></tr><tr><td><code>ZidanSelect.destroy(root)</code></td><td>selects only</td><td>Select-only pages and custom select wrappers.</td></tr><tr><td><code>ZidanForm.destroyAll()</code></td><td>whole document</td><td>Leaving a page or a legacy integration.</td></tr><tr><td><code>ZidanForm.observe(root)</code></td><td>future nodes</td><td>A long-lived page whose framework appends/removes controls.</td></tr></tbody></table></div>
+<p><code>ZidanForm.destroy()</code> with no argument means the whole document, like <code>destroyAll()</code>, but it returns a count instead of the <code>ZidanForm</code> object. Calling it twice is safe; already restored controls are simply not counted again.</p>
+<h2 id="state-events-and-cleanup">State, events and cleanup</h2>
+<p>The native control is the source of truth. The plugin only owns the visible chrome, so <code>FormData</code>, <code>form.reset()</code>, <code>required</code>, <code>:invalid</code>, browser autofill and framework form libraries keep working without a hidden mirror.</p>
+<div class="table-wrap"><table><thead><tr><th>Need</th><th>API</th></tr></thead><tbody><tr><td>Read a field/select value</td><td><code>getValue()</code>, <code>getFiles()</code>, <code>getUploadState()</code></td></tr><tr><td>Write an external value</td><td><code>setValue(value, { silent: true })</code> for select/field/radio/range</td></tr><tr><td>Step or phone-specific state</td><td><code>stepUp()</code>, <code>stepDown()</code>, <code>setPhoneCountry()</code>, <code>setPhoneFormat()</code></td></tr><tr><td>File selection</td><td><code>addFiles()</code>, <code>replaceFiles()</code>, <code>removeFile()</code>, <code>removeFiles()</code></td></tr><tr><td>Start/cancel uploads</td><td><code>uploadAll()</code>, <code>uploadFile()</code>, <code>cancelUpload()</code>, <code>cancelAll()</code>, <code>retryUpload()</code>, <code>retryAll()</code></td></tr><tr><td>Wait for the queue</td><td><code>await field.whenUploaded()</code></td></tr><tr><td>Validation state</td><td>`setValidation('valid' \</td><td>'invalid' \</td><td>null)`</td></tr><tr><td>Re-sync native attributes</td><td><code>update()</code>; full re-render with <code>refresh()</code></td></tr><tr><td>New nodes appended by the UI</td><td><code>ZidanForm.observe(root)</code> or call the init functions again</td></tr></tbody></table></div>
+<p>Use <code>{ silent: true }</code> when state is pushed <em>from</em> the framework. It updates the native control and the rendered chrome without firing <code>zidan:change</code>/calling <code>onChange</code>, so a two-way binding does not echo the same value back.</p>
+<div class="table-wrap"><table><thead><tr><th>Event</th><th>Detail</th></tr></thead><tbody><tr><td><code>zidan:change</code></td><td><code>{ instance, kind, value }</code>, <code>{ checked }</code> or <code>{ files }</code></td></tr><tr><td><code>zidan:validation</code></td><td><code>{ instance, state, message? }</code></td></tr><tr><td><code>zidan:async-validation</code></td><td><code>{ valid, message }</code> when a Promise rule settles</td></tr><tr><td><code>zidan:upload-start</code> / <code>-progress</code> / <code>-success</code> / <code>-error</code> / <code>-cancel</code></td><td>File, progress, result or error payload</td></tr><tr><td><code>zidan:upload-queued</code> / <code>zidan:upload-retry</code></td><td>Queue position or retry attempt/delay</td></tr><tr><td><code>zidan:select</code> / <code>zidan:remove</code> / <code>zidan:clear</code></td><td>Selection and file/field clearing</td></tr><tr><td><code>zidan:load-more</code></td><td><code>{ page, query }</code> for remote select pagination</td></tr><tr><td><code>zidan:step</code>, <code>zidan:phone-country</code>, <code>zidan:phone-format</code>, <code>zidan:picker</code></td><td>Specialised control events</td></tr><tr><td><code>zidan:init</code> / <code>zidan:destroy</code> / <code>zidan:error</code></td><td>Lifecycle and caught callback/upload errors</td></tr></tbody></table></div>
+<p>All events bubble from the enhanced root, so one listener on the form can handle a whole subtree:</p>
+<pre><code class="language-js">const onChange = event =&gt; {
+  if (event.target.name === 'plan') plan.value = event.detail.value;
+};
+root.addEventListener('zidan:change', onChange);
+// cleanup
+root.removeEventListener('zidan:change', onChange);</code></pre>
+<h2 id="forms-validation-and-uploads">Forms, validation and uploads</h2>
+<p>Use <code>ZidanForm.serialize()</code> for a plain object and <code>ZidanForm.validate()</code> when every enhanced rule plus native constraints should run before submit.</p>
+<pre><code class="language-js">const data = ZidanForm.serialize(form);
+if (await ZidanForm.validate(form)) {
+  await fetch('/api/profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+}</code></pre>
+<p>File uploads use the same instance in every framework:</p>
+<pre><code class="language-js">const field = zidanField('#docs', {
+  variant: 'dropzone',
+  maxFiles: 4,
+  uploadUrl: '/api/files',
+  uploadField: 'file',
+  uploadMethod: 'POST',
+  uploadHeaders: { 'X-Requested-With': 'ZidanForm' },
+  onUploadProgress: ({ file, progress }) =&gt; {
+    console.log(file.name, progress + '%');
+  }
+});
+
+await field.uploadAll();
+const states = await field.whenUploaded();
+console.log(states.filter(state =&gt; state.status === 'done').length, 'uploaded');</code></pre>
+<p>Use a custom <code>upload(file, context)</code> handler when the server needs a completely custom request. <code>context.signal</code> aborts with <code>cancelUpload()</code>; call <code>context.complete(result)</code> or <code>context.fail(error)</code> when the request settles. The complete option list is in <a href="options.html#file-upload-variants-uploading--rendering">options.md</a>.</p>
+<h2 id="react">React</h2>
+<p>React must not re-render the enhanced native subtree while the plugin owns it. Keep the markup stable, initialise in <code>useEffect</code>, and capture the root before returning cleanup.</p>
+<pre><code class="language-jsx">import { useEffect, useRef, useState } from 'react';
+import { ZidanForm, ZidanSelect, initZidanForms, initZidanSelects } from 'zidan-select';
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';
+
+export default function ProfileForm() {
+  const host = useRef(null);
+  const [plan, setPlan] = useState('pro');
+  const [country, setCountry] = useState('France');
+
+  useEffect(() =&gt; {
+    const root = host.current;
+    if (!root) return undefined;
+
+    initZidanSelects(root);
+    initZidanForms(root, {
+      onChange: ({ instance, value }) =&gt; {
+        if (instance.kind === 'radio-group') setPlan(value);
+      }
+    });
+
+    const onChange = event =&gt; {
+      if (event.target.name === 'country') setCountry(event.detail.value);
+    };
+    root.addEventListener('zidan:change', onChange);
+
+    return () =&gt; {
+      root.removeEventListener('zidan:change', onChange);
+      ZidanForm.destroy(root);
+    };
+  }, []);
+
+  useEffect(() =&gt; {
+    const select = host.current &amp;&amp; ZidanSelect.instances.find(
+      item =&gt; item.el.getAttribute('name') === 'country'
+    );
+    if (select &amp;&amp; select.getValue() !== country) select.setValue(country, { silent: true });
+  }, [country]);
+
+  return (
+    &lt;form ref={host}&gt;
+      &lt;input name=&quot;email&quot; data-zidan=&quot;input&quot; data-zidan-label=&quot;Email&quot; required /&gt;
+      &lt;select name=&quot;country&quot; data-zidan-select=&quot;combobox&quot; data-zidan-label=&quot;Country&quot;&gt;
+        &lt;option&gt;France&lt;/option&gt;
+        &lt;option&gt;Germany&lt;/option&gt;
+        &lt;option&gt;Japan&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;fieldset data-zidan=&quot;radio-group&quot; data-zidan-variant=&quot;inline&quot;&gt;
+        &lt;legend&gt;Plan&lt;/legend&gt;
+        &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;plan&quot; value=&quot;pro&quot; defaultChecked /&gt; Pro&lt;/label&gt;
+        &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;plan&quot; value=&quot;basic&quot; /&gt; Basic&lt;/label&gt;
+      &lt;/fieldset&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+<p>Key rules:</p>
+<ul><li>Use <code>defaultValue</code>/<code>defaultChecked</code> on controls the plugin enhances. A React <code>value</code> prop that changes on every keystroke fights the plugin; push changes with <code>setValue()</code> instead.</li><li>A changing <code>key</code> destroys and recreates the DOM. That is fine, but the effect must run again for the new subtree; do not reuse the old instance.</li><li>React StrictMode runs effect setup/cleanup twice in development. Scoped <code>destroy()</code> plus fresh init on the second setup makes this safe.</li><li>React Hook Form's <code>register()</code> works for ordinary fields because the native control still emits <code>change</code>. For a select whose value is changed by code, call the instance <code>setValue()</code> and the form library's <code>setValue()</code> together.</li><li>Memoise an options object passed to a custom hook; an inline object in the dependency array re-initialises every render.</li></ul>
+<p>A reusable hook with stable callbacks:</p>
+<pre><code class="language-jsx">import { useEffect, useRef } from 'react';
+import { ZidanForm, initZidanForms, initZidanSelects } from 'zidan-select';
+
+export function useZidanForm(options = {}) {
+  const ref = useRef(null);
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
+  useEffect(() =&gt; {
+    const root = ref.current;
+    if (!root) return undefined;
+    initZidanSelects(root);
+    initZidanForms(root, optionsRef.current);
+    return () =&gt; ZidanForm.destroy(root);
+  }, []);
+
+  return ref;
+}</code></pre>
+<p>The ref keeps callbacks current without re-initialising. If the <em>markup</em> changes, key the component and let the effect run for the new root.</p>
+<h2 id="nextjs">Next.js</h2>
+<p>Next.js is React plus a server/client boundary. Only the component that touches the DOM needs <code>'use client'</code>; the page can stay a server component.</p>
+<h3 id="app-router">App Router</h3>
+<p>Put the stylesheets in the root layout, before the component renders:</p>
+<pre><code class="language-js">// app/layout.js
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';
+
+export default function RootLayout({ children }) {
+  return &lt;html lang=&quot;en&quot;&gt;&lt;body&gt;{children}&lt;/body&gt;&lt;/html&gt;;
+}</code></pre>
+<pre><code class="language-jsx">// app/contact/contact-form.js
+'use client';
+
+import { useEffect, useRef } from 'react';
+import { ZidanForm, initZidanForms, initZidanSelects } from 'zidan-select';
+
+export default function ContactForm() {
+  const host = useRef(null);
+
+  useEffect(() =&gt; {
+    const root = host.current;
+    if (!root) return undefined;
+    initZidanSelects(root);
+    initZidanForms(root);
+    return () =&gt; ZidanForm.destroy(root);
+  }, []);
+
+  return (
+    &lt;form ref={host}&gt;
+      &lt;input name=&quot;email&quot; type=&quot;email&quot; data-zidan=&quot;input&quot; required /&gt;
+      &lt;select name=&quot;topic&quot; data-zidan-select=&quot;combobox&quot; data-zidan-label=&quot;Topic&quot;&gt;
+        &lt;option&gt;Sales&lt;/option&gt;
+        &lt;option&gt;Support&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+<pre><code class="language-jsx">// app/contact/page.js (server component)
+import ContactForm from './contact-form';
+
+export default function ContactPage() {
+  return &lt;main&gt;&lt;h1&gt;Contact&lt;/h1&gt;&lt;ContactForm /&gt;&lt;/main&gt;;
+}</code></pre>
+<p>The package is safe to import during SSR: it does not touch <code>document</code> at module load time. Initialisation belongs in <code>useEffect</code> or a dynamic import. Never call <code>zidanField()</code> or <code>zidanSelect()</code> in a server component.</p>
+<p>For a component that should never render on the server:</p>
+<pre><code class="language-jsx">// app/contact/contact-form-loader.js
+'use client';
+import dynamic from 'next/dynamic';
+
+const ContactForm = dynamic(() =&gt; import('./contact-form'), { ssr: false });
+
+export default function ContactFormLoader() {
+  return &lt;ContactForm /&gt;;
+}</code></pre>
+<p><code>ssr: false</code> is allowed only inside a client component in the App Router. ZidanForm itself only needs the browser in an effect, so this is usually not required.</p>
+<h3 id="pages-router">Pages Router</h3>
+<p><code>pages/_app.js</code> is the right place for the CSS imports:</p>
+<pre><code class="language-js">// pages/_app.js
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';
+
+export default function App({ Component, pageProps }) {
+  return &lt;Component {...pageProps} /&gt;;
+}</code></pre>
+<p>The component example above works unchanged under <code>pages/</code>; keep it mounted on the client and initialise in <code>useEffect</code>.</p>
+<h3 id="upload-route-handler">Upload route handler</h3>
+<pre><code class="language-js">// app/api/files/route.js
+export async function POST(request) {
+  const data = await request.formData();
+  const file = data.get('file');
+  if (!(file instanceof File)) {
+    return Response.json({ error: 'Missing file' }, { status: 400 });
+  }
+  // save the file, then return what uploadResponsePath expects
+  return Response.json({ url: '/uploads/' + encodeURIComponent(file.name) });
+}</code></pre>
+<p>Pair it with <code>uploadUrl: '/api/files', uploadResponsePath: 'url'</code>. The browser sends the multipart body; do not add a JSON <code>Content-Type</code> header by hand.</p>
+<h3 id="hydration-checklist">Hydration checklist</h3>
+<ul><li>Keep server-rendered markup identical to the first client render. The plugin adds chrome in an effect, after hydration.</li><li>Do not branch markup on <code>typeof window</code> during render; use an effect or <code>next/dynamic</code>.</li><li>Import CSS once in the root layout/<code>_app</code>, not in every form component.</li><li>If client navigation unmounts the form, the effect cleanup must call <code>ZidanForm.destroy(root)</code>.</li></ul>
+<h2 id="vue-3">Vue 3</h2>
+<p>Use <code>onMounted</code> for initialisation, <code>onBeforeUnmount</code> for cleanup and <code>watch</code> for external model changes. The native select remains the form value; the instance is the presentation layer.</p>
+<pre><code class="language-vue">&lt;script setup&gt;
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { ZidanForm, ZidanSelect, initZidanForms, initZidanSelects } from 'zidan-select';
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';
+
+const host = ref(null);
+const country = ref('France');
+const plan = ref('pro');
+let select;
+let root;
+
+const onChange = event =&gt; {
+  if (event.target.name === 'country') country.value = event.detail.value;
+  if (event.target.name === 'plan') plan.value = event.detail.value;
+};
+
+onMounted(() =&gt; {
+  root = host.value;
+  initZidanSelects(root);
+  initZidanForms(root, {
+    onChange: ({ instance, value }) =&gt; {
+      if (instance.kind === 'radio-group') plan.value = value;
+    }
+  });
+  select = ZidanSelect.get(root.querySelector('select[name=&quot;country&quot;]'));
+  root.addEventListener('zidan:change', onChange);
+});
+
+watch(country, value =&gt; {
+  if (select &amp;&amp; select.getValue() !== value) select.setValue(value, { silent: true });
+});
+
+onBeforeUnmount(() =&gt; {
+  if (root) {
+    root.removeEventListener('zidan:change', onChange);
+    ZidanForm.destroy(root);
+  }
+});
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;form ref=&quot;host&quot;&gt;
+    &lt;input name=&quot;email&quot; type=&quot;email&quot; data-zidan=&quot;input&quot; data-zidan-label=&quot;Email&quot; required /&gt;
+    &lt;select name=&quot;country&quot; data-zidan-select=&quot;combobox&quot; data-zidan-label=&quot;Country&quot;&gt;
+      &lt;option&gt;France&lt;/option&gt;
+      &lt;option&gt;Germany&lt;/option&gt;
+      &lt;option&gt;Japan&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;fieldset name=&quot;plan&quot; data-zidan=&quot;radio-group&quot; data-zidan-variant=&quot;inline&quot;&gt;
+      &lt;legend&gt;Plan&lt;/legend&gt;
+      &lt;label&gt;&lt;input v-model=&quot;plan&quot; type=&quot;radio&quot; name=&quot;plan&quot; value=&quot;pro&quot; /&gt; Pro&lt;/label&gt;
+      &lt;label&gt;&lt;input v-model=&quot;plan&quot; type=&quot;radio&quot; name=&quot;plan&quot; value=&quot;basic&quot; /&gt; Basic&lt;/label&gt;
+    &lt;/fieldset&gt;
+  &lt;/form&gt;
+&lt;/template&gt;</code></pre>
+<p><code>v-model</code> on the radios is safe because the plugin does not replace the radio inputs. For the select, do <strong>not</strong> bind <code>:value</code> directly after initialisation; use the <code>watch()</code> plus <code>setValue()</code> pattern above. If you use <code>v-model</code> on a native select in a wrapper, listen for the native <code>change</code> event as usual and mirror it into the instance only when another source changes it.</p>
+<h3 id="nuxt">Nuxt</h3>
+<p>Nuxt renders the component on the server first. Keep the same markup and initialise in <code>onMounted</code>, which only runs in the browser:</p>
+<pre><code class="language-js">// nuxt.config.ts
+export default defineNuxtConfig({
+  css: ['zidan-select/css/core', 'zidan-select/css/theme']
+});</code></pre>
+<pre><code class="language-vue">&lt;template&gt;
+  &lt;ClientOnly&gt;
+    &lt;ProfileForm /&gt;
+  &lt;/ClientOnly&gt;
+&lt;/template&gt;</code></pre>
+<p><code>&lt;ClientOnly&gt;</code> is optional for ZidanForm itself because <code>onMounted</code> is already browser-only. Use it when a parent renders a different structure on server and client, or when a third-party plugin reads <code>window</code> during render. In code, use <code>import.meta.client</code> rather than <code>typeof window</code> in a template.</p>
+<h3 id="options-api">Options API</h3>
+<p>The lifecycle is the same: <code>mounted()</code> runs after the template exists, <code>beforeUnmount()</code> runs before Vue removes it. Capture <code>this.$refs.host</code> in a local variable for cleanup and call <code>ZidanForm.destroy(root)</code>.</p>
+<h2 id="svelte">Svelte</h2>
+<p>Actions are the cleanest fit: the action runs when the node mounts and its <code>destroy()</code> runs when Svelte removes it.</p>
+<pre><code class="language-js">// lib/zidan.js
+import { ZidanForm, initZidanForms, initZidanSelects } from 'zidan-select';
+
+export function zidan(node, options = {}) {
+  initZidanSelects(node);
+  initZidanForms(node, options);
+
+  return {
+    destroy() {
+      ZidanForm.destroy(node);
+    }
+  };
+}</code></pre>
+<pre><code class="language-svelte">&lt;script&gt;
+  import { zidan } from '$lib/zidan.js';
+  import 'zidan-select/css/core';
+  import 'zidan-select/css/theme';
+&lt;/script&gt;
+
+&lt;form use:zidan&gt;
+  &lt;input name=&quot;email&quot; type=&quot;email&quot; data-zidan=&quot;input&quot; data-zidan-label=&quot;Email&quot; required /&gt;
+  &lt;select name=&quot;country&quot; data-zidan-select=&quot;combobox&quot; data-zidan-label=&quot;Country&quot;&gt;
+    &lt;option&gt;France&lt;/option&gt;
+    &lt;option&gt;Germany&lt;/option&gt;
+    &lt;option&gt;Japan&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/form&gt;</code></pre>
+<p>The action is intentionally init-only: it accepts options once and never re-initialises on a re-render. For two-way state, use the runes example below or key the form when its structure changes.</p>
+<p>Svelte 5 runes with an explicit effect for external state:</p>
+<pre><code class="language-svelte">&lt;script&gt;
+  import { onMount } from 'svelte';
+  import { ZidanForm, ZidanSelect, initZidanForms, initZidanSelects } from 'zidan-select';
+
+  let host;
+  let country = $state('France');
+  let select = $state(null);
+
+  onMount(() =&gt; {
+    initZidanSelects(host);
+    initZidanForms(host);
+    select = ZidanSelect.get(host.querySelector('select[name=&quot;country&quot;]'));
+
+    const onChange = event =&gt; {
+      if (event.target.name === 'country') country = event.detail.value;
+    };
+    host.addEventListener('zidan:change', onChange);
+
+    return () =&gt; {
+      host.removeEventListener('zidan:change', onChange);
+      ZidanForm.destroy(host);
+    };
+  });
+
+  $effect(() =&gt; {
+    if (select &amp;&amp; select.getValue() !== country) {
+      select.setValue(country, { silent: true });
+    }
+  });
+&lt;/script&gt;
+
+&lt;form bind:this={host}&gt;
+  &lt;select name=&quot;country&quot; data-zidan-select=&quot;combobox&quot; data-zidan-label=&quot;Country&quot;&gt;
+    &lt;option&gt;France&lt;/option&gt;
+    &lt;option&gt;Germany&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/form&gt;</code></pre>
+<p>Svelte 4 uses <code>onMount</code> and a store or reactive statement instead of <code>$state</code>/<code>$effect</code>. The same cleanup contract applies.</p>
+<h3 id="sveltekit">SvelteKit</h3>
+<ul><li>Import the CSS in <code>src/routes/+layout.svelte</code> (or a global stylesheet imported there).</li><li>Initialise in <code>onMount</code>/<code>$effect</code>, never at module top level.</li><li>Server-rendered form markup must match the first client render. The plugin adds chrome after mount, so hydration is unaffected.</li><li>Use <code>import { browser } from '$app/environment'</code> when you need an explicit guard:</li></ul>
+<pre><code class="language-js">import { browser } from '$app/environment';
+
+$effect(() =&gt; {
+  if (!browser) return;
+  // safe to touch document here
+});</code></pre>
+<ul><li>Do not wrap the enhanced form in <code>{#key}</code> on every keystroke; that destroys the instance. Key on a route/id, not on the form value.</li></ul>
+<h2 id="angular">Angular</h2>
+<p>Angular's lifecycle maps directly to the contract: <code>ngAfterViewInit</code> after the template exists, <code>ngOnDestroy</code> before Angular removes it.</p>
+<pre><code class="language-ts">import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { ZidanForm, initZidanForms, initZidanSelects } from 'zidan-select';
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';
+
+@Component({
+  selector: 'app-profile',
+  standalone: true,
+  templateUrl: './profile.component.html'
+})
+export class ProfileComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('host', { static: true }) host!: ElementRef&lt;HTMLFormElement&gt;;
+
+  ngAfterViewInit(): void {
+    const root = this.host.nativeElement;
+    initZidanSelects(root);
+    initZidanForms(root);
+  }
+
+  ngOnDestroy(): void {
+    ZidanForm.destroy(this.host.nativeElement);
+  }
+}</code></pre>
+<pre><code class="language-html">&lt;form #host&gt;
+  &lt;input name=&quot;email&quot; type=&quot;email&quot; data-zidan=&quot;input&quot; data-zidan-label=&quot;Email&quot; required /&gt;
+  &lt;select name=&quot;country&quot; data-zidan-select=&quot;combobox&quot; data-zidan-label=&quot;Country&quot;&gt;
+    &lt;option&gt;France&lt;/option&gt;
+    &lt;option&gt;Germany&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/form&gt;</code></pre>
+<p>Angular templates keep plain <code>data-zidan*</code> attributes. Angular only strips attributes when you bind them as properties with an unknown name; static attributes render normally.</p>
+<h3 id="reactive-forms-and-controlvalueaccessor">Reactive forms and ControlValueAccessor</h3>
+<p>The native <code>&lt;select&gt;</code> still emits <code>change</code>, so a <code>FormControl</code> receives ordinary user selection without a custom accessor. When code calls <code>patchValue()</code>/<code>setValue()</code>, Angular updates the native control but the plugin's visible trigger does not know. Call the instance <code>setValue()</code> as well, or wrap the control in a <code>ControlValueAccessor</code>.</p>
+<p>A minimal accessor for a select:</p>
+<pre><code class="language-ts">import { AfterViewInit, Directive, ElementRef, forwardRef, inject, OnDestroy } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ZidanSelect, zidanSelect } from 'zidan-select';
+
+@Directive({
+  selector: 'select[data-zidan-select][formControlName], select[data-zidan-select][formControl]',
+  standalone: true,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() =&gt; ZidanSelectAccessor),
+    multi: true
+  }]
+})
+export class ZidanSelectAccessor implements AfterViewInit, OnDestroy, ControlValueAccessor {
+  private host = inject&lt;ElementRef&lt;HTMLSelectElement&gt;&gt;(ElementRef);
+  private instance?: ZidanSelect;
+  private pending: string | null = null;
+  private onChange: (value: string | null) =&gt; void = () =&gt; {};
+  private onTouched: () =&gt; void = () =&gt; {};
+
+  ngAfterViewInit(): void {
+    this.instance = zidanSelect(this.host.nativeElement, {
+      onChange: ({ value }) =&gt; {
+        this.onChange((value as string) ?? null);
+        this.onTouched();
+      }
+    }) as ZidanSelect;
+    if (this.pending !== null) this.instance.setValue(this.pending, { silent: true });
+  }
+
+  writeValue(value: string | null): void {
+    this.pending = value;
+    if (this.instance) this.instance.setValue(value, { silent: true });
+  }
+
+  registerOnChange(fn: (value: string | null) =&gt; void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () =&gt; void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(disabled: boolean): void {
+    if (!this.instance) return;
+    if (disabled) this.instance.disable();
+    else this.instance.enable();
+  }
+
+  ngOnDestroy(): void {
+    this.instance?.destroy();
+  }
+}</code></pre>
+<p>Import the directive in the standalone component and do not also run <code>initZidanSelects()</code> over the same select. One owner per instance keeps teardown predictable.</p>
+<p>For a <strong>zoneless</strong> Angular app, updates from plugin callbacks still work if they write signals. If a callback updates a plain field rendered by the default change detector, wrap the UI update in <code>NgZone.run()</code> or move the state into a signal.</p>
+<h3 id="angular-ssr">Angular SSR</h3>
+<p>Guard DOM work with the platform check:</p>
+<pre><code class="language-ts">import { AfterViewInit, Component, ElementRef, PLATFORM_ID, ViewChild, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ZidanForm, initZidanForms, initZidanSelects } from 'zidan-select';
+
+@Component({ /* ... */ })
+export class ProfileComponent implements AfterViewInit {
+  @ViewChild('host', { static: true }) host!: ElementRef&lt;HTMLElement&gt;;
+  private platformId = inject(PLATFORM_ID);
+
+  ngAfterViewInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    initZidanSelects(this.host.nativeElement);
+    initZidanForms(this.host.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    if (isPlatformBrowser(this.platformId)) ZidanForm.destroy(this.host.nativeElement);
+  }
+}</code></pre>
+<p>The server HTML contains the same native controls; the plugin's chrome appears after hydration. Do not initialise in the constructor or a field initialiser.</p>
+<h2 id="ssr-and-hydration-matrix">SSR and hydration matrix</h2>
+<div class="table-wrap"><table><thead><tr><th>Framework</th><th>Initialise in</th><th>Cleanup</th><th>CSS entry point</th><th>SSR note</th></tr></thead><tbody><tr><td>React 18/19</td><td><code>useEffect</code></td><td>effect cleanup, <code>ZidanForm.destroy(root)</code></td><td>root entry/layout</td><td>Effects never run on the server.</td></tr><tr><td>Next.js App Router</td><td>client component <code>useEffect</code></td><td>effect cleanup</td><td><code>app/layout.js</code></td><td>Page can stay a server component; dynamic <code>ssr:false</code> only in a client component.</td></tr><tr><td>Next.js Pages Router</td><td><code>useEffect</code></td><td>effect cleanup</td><td><code>pages/_app.js</code></td><td>Same browser-only lifecycle.</td></tr><tr><td>Vue 3</td><td><code>onMounted</code></td><td><code>onBeforeUnmount</code></td><td>component or main entry</td><td>Use <code>setValue()</code> in a <code>watch</code>, not a template value binding.</td></tr><tr><td>Nuxt</td><td><code>onMounted</code></td><td><code>onBeforeUnmount</code></td><td><code>nuxt.config.ts</code> <code>css</code></td><td>Optional <code>&lt;ClientOnly&gt;</code> for client-only markup.</td></tr><tr><td>Svelte 5</td><td>action or <code>onMount</code></td><td>action <code>destroy</code>/mount cleanup</td><td>root layout/component</td><td><code>$effect</code> must guard a null instance.</td></tr><tr><td>SvelteKit</td><td><code>onMount</code>/<code>$effect</code></td><td>returned cleanup</td><td><code>+layout.svelte</code></td><td>Use <code>browser</code> from <code>$app/environment</code> if needed.</td></tr><tr><td>Angular</td><td><code>ngAfterViewInit</code></td><td><code>ngOnDestroy</code></td><td>component or <code>styles.css</code></td><td>Check <code>isPlatformBrowser</code> before DOM calls.</td></tr></tbody></table></div>
+<h2 id="typescript">TypeScript</h2>
+<p>The package ships declarations for the full bundle and both subsets. Import the instance types when you keep a reference in component state:</p>
+<pre><code class="language-ts">import type { FieldOptions, ZidanFieldBase, ZidanSelect } from 'zidan-select';
+import { zidanField, zidanSelect } from 'zidan-select';
+
+const options: FieldOptions = { label: 'Email', validate: value =&gt; String(value).includes('@') };
+const field: ZidanFieldBase | null = zidanField('#email', options);
+const select: ZidanSelect | ZidanSelect[] | null = zidanSelect('#country', { mode: 'combobox' });</code></pre>
+<p><code>zidanSelect()</code> returns one instance for one match and an array for multiple matches. Use <code>ZidanSelect.get(element)</code> when you need the instance attached to a native select, and <code>ZidanForm.get(input)</code> for a field.</p>
+<p>The declarations cover the file queue: <code>getFileState()</code>, <code>removeFiles()</code>, <code>isUploading()</code>, <code>whenUploaded()</code>, <code>setUploadUrl()</code>, <code>setUploadOptions()</code>, <code>retryAll()</code> and the upload/validation options. See <a href="options.html#instance-methods">options.md</a>.</p>
+<h2 id="css-frameworks-are-separate">CSS frameworks are separate</h2>
+<p>The JavaScript framework guides above are about component lifecycles. <strong>CSS-framework adapters</strong> are a different feature: set <code>data-zs-framework</code> (or <code>data-zidan-framework</code>) to <code>bootstrap</code>, <code>tailwind</code>, <code>bulma</code>, <code>foundation</code>, <code>vanilla</code> or <code>none</code> on a form or a parent. They map tokens and control sizing, not component state.</p>
+<pre><code class="language-html">&lt;form data-zs-framework=&quot;bootstrap&quot; data-zs-theme=&quot;default&quot;&gt;
+  &lt;input class=&quot;form-control&quot; name=&quot;email&quot; data-zidan=&quot;input&quot; /&gt;
+  &lt;select class=&quot;form-select&quot; name=&quot;country&quot; data-zidan-select=&quot;combobox&quot;&gt;…&lt;/select&gt;
+&lt;/form&gt;</code></pre>
+<p>Load the framework stylesheet first, then <code>plugin-core.css</code> and <code>plugin-theme.css</code>. File drops, rows and action buttons also follow the selected adapter. The adapter table and token reference live in <a href="theming.html">theming.md</a>.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul><li><strong>The control renders twice or callbacks run twice.</strong> The subtree was initialised by both auto-init and an explicit call. Use one path; check <code>ZidanForm.get(input)</code> or <code>ZidanSelect.get(select)</code> before creating another instance.</li><li><strong>The visible select does not follow state.</strong> Native <code>select.value = ...</code> bypasses the plugin. Call the instance <code>setValue(value, { silent: true })</code>.</li><li><strong>The page throws <code>document is not defined</code>.</strong> Initialisation ran during SSR. Move it into <code>useEffect</code>/<code>onMounted</code>/action/<code>ngAfterViewInit</code> and guard with the platform check.</li><li><strong>React warns about a controlled input.</strong> Use <code>defaultValue</code>/<code>defaultChecked</code> for enhanced controls, or keep React state and push it through the instance.</li><li><strong>Vue/Svelte updates do not reach the chrome.</strong> The native element changed without an event. Call the instance setter after the framework writes the native value.</li><li><strong>Styles are missing after a route change.</strong> Import both CSS files once in the app shell; a component-scoped import can be applied after the first paint.</li><li><strong>The old page still shows a dropdown after navigation.</strong> Cleanup was not scoped to the removed subtree. Use <code>ZidanForm.destroy(root)</code> in the component's unmount hook.</li><li><strong>Markup re-renders erase the plugin.</strong> Keep the enhanced subtree stable; key it only when the structure really changes, and re-initialise in the next effect/hook.</li><li><strong>A custom file upload never finishes.</strong> Call <code>context.complete(result)</code> or <code>context.fail(error)</code>; returning a Promise is not enough unless the handler explicitly settles.</li></ul>
+<h2 id="what-next">What next</h2>
+<ul><li>Every option and data attribute: <a href="options.html">options.md</a></li><li>Initialisation, precedence and upload pipeline: <a href="../advanced.html">advanced.html</a></li><li>Validation library integration: <a href="validation.html">validation.md</a></li><li>Themes, layouts and CSS adapters: <a href="theming.html">theming.md</a></li><li>Build, subset and CDN paths: <a href="build.html">build.md</a></li></ul>
+    </div>
+    <p class="doc-source-note">
+      Markdown source: <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/frameworks.md" rel="noopener">docs/frameworks.md</a>.
+      Generated by <code>scripts/docs.mjs</code> — edit the Markdown, not this page.
+    </p>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="../index.html">Demo</a> ·
+        <a href="../playground.html">Playground</a> ·
+        <a href="index.html">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="../nav.js"></script>
+</body>
+</html>

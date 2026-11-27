@@ -85,7 +85,7 @@
       <div class="hero-actions">
         <a class="btn btn-primary" href="#init">Start with initialization</a>
         <a class="btn" href="playground.html">Build a field visually</a>
-        <a class="btn" href="https://github.com/akhtar1985/zidan-select/blob/main/docs/options.md">Full option tables</a>
+        <a class="btn" href="docs/options.html">Full option tables</a>
       </div>
       <ul class="adv-facts">
         <li>No runtime dependencies</li>
@@ -128,19 +128,19 @@
           <tbody>
             <tr>
               <th>Full</th>
-              <td><code>zidan-form.js</code><br>298 kB raw · 171 kB min</td>
+              <td><code>zidan-form.js</code><br>299 kB raw · 172 kB min</td>
               <td><code>plugin-core.css</code> 43 → 33 kB<br><code>plugin-theme.css</code> 52 → 44 kB</td>
               <td>Several control families on one page.</td>
             </tr>
             <tr>
               <th>Select-only</th>
-              <td><code>dist/select/zidan-select.js</code><br>148 kB raw · 86 kB min</td>
+              <td><code>dist/select/zidan-select.js</code><br>149 kB raw · 86 kB min</td>
               <td><code>plugin-select-core.css</code> 13 → 10 kB<br><code>plugin-select-theme.css</code> 34 → 29 kB</td>
               <td>Only select, combobox or tags.</td>
             </tr>
             <tr>
               <th>File-only</th>
-              <td><code>dist/file/zidan-file.js</code><br>120 kB raw · 70 kB min</td>
+              <td><code>dist/file/zidan-file.js</code><br>121 kB raw · 70 kB min</td>
               <td><code>plugin-file-core.css</code> 10 → 7 kB<br><code>plugin-file-theme.css</code> 39 → 34 kB</td>
               <td>Only file uploads.</td>
             </tr>
@@ -284,8 +284,8 @@ const { ZidanForm, initZidanForms, initZidanSelects } = require('zidan-select');
         <strong>Same markup in all three builds.</strong> Auto-init reads the same
         <code>data-zidan</code> / <code>data-zidan-select</code> attributes, and
         <code>ZidanForm</code> exists everywhere for <code>refresh()</code>,
-        <code>destroyAll()</code> and <code>observe()</code>. The examples further down this page
-        assume the full bundle unless they say otherwise.
+        <code>destroy(scope)</code>, <code>destroyAll()</code> and <code>observe()</code>. The
+        examples further down this page assume the full bundle unless they say otherwise.
       </p>
     </section>
 
@@ -360,6 +360,8 @@ observer.disconnect();</code></pre>
             <tr><th><code>ZidanForm.init(scope, opts)</code></th><td>Field[]</td><td>Shared options are merged into every field.</td></tr>
             <tr><th><code>ZidanForm.get(input)</code></th><td>Field | null</td><td>Look up the instance attached to a native control.</td></tr>
             <tr><th><code>ZidanForm.refresh(scope?)</code></th><td>Field[]</td><td>Re-scan and re-sync native state without rebuilding the page.</td></tr>
+            <tr><th><code>ZidanForm.destroy(scope?)</code></th><td>number</td><td>Restores only the fields and selects inside a subtree. The cleanup for component unmounts; no argument covers the document.</td></tr>
+            <tr><th><code>ZidanSelect.destroy(scope?)</code></th><td>number</td><td>Select-only cleanup for a subtree, without touching fields.</td></tr>
             <tr><th><code>ZidanForm.destroyAll()</code></th><td>void</td><td>Restores every enhanced control, including those in subsets.</td></tr>
           </tbody>
         </table>
@@ -688,7 +690,7 @@ zidanField('#adv-range-chrome', {
         <label class="field-label" for="adv-file">Reference files</label>
         <input id="adv-file" type="file" name="adv-file" multiple accept="image/*,.pdf">
       </div>
-      <p class="adv-note"><strong>Methods:</strong> <code>getFiles()</code>, <code>addFiles()</code>, <code>replaceFiles()</code>, <code>removeFile()</code>, <code>uploadAll()</code>, <code>uploadFile()</code>, <code>cancelUpload()</code>, <code>cancelAll()</code>, <code>retryUpload()</code>, <code>getUploadState()</code>. Events: <code>zidan:upload-start</code>, <code>-progress</code>, <code>-success</code>, <code>-error</code>, <code>-cancel</code>.</p>
+      <p class="adv-note"><strong>Methods:</strong> <code>getFiles()</code>, <code>addFiles()</code>, <code>replaceFiles()</code>, <code>removeFile()</code>, <code>removeFiles()</code>, <code>getFileState()</code>, <code>uploadAll()</code>, <code>uploadFile()</code>, <code>isUploading()</code>, <code>whenUploaded()</code>, <code>cancelUpload()</code>, <code>cancelAll()</code>, <code>retryUpload()</code>, <code>retryAll()</code>, <code>getUploadState()</code>, <code>setUploadUrl()</code>, <code>setUploadOptions()</code>. Events: <code>zidan:upload-start</code>, <code>-queued</code>, <code>-progress</code>, <code>-retry</code>, <code>-success</code>, <code>-error</code>, <code>-cancel</code>. Options and response-path details: <a href="docs/options.html#ajax-transport-queue-and-retries">file upload reference</a>.</p>
     </section>
 
     <!-- ================= EVENTS & LIFECYCLE ================= -->
@@ -735,9 +737,10 @@ document.addEventListener('zidan:upload-progress', event =&gt; {
 });
 
 const observer = ZidanForm.observe(document.body); // adds/removes nodes
-// teardown
+// teardown a page, a route panel or one component subtree
 observer.disconnect();
-ZidanForm.destroyAll();
+ZidanForm.destroy(host); // scoped: fields + selects inside host
+ZidanForm.destroyAll();  // whole document
 
 // Per instance
 field.update();      // mirror native disabled/required/value
@@ -834,7 +837,7 @@ ZidanForm.themes.push('brand');</code></pre>
           <tbody>
             <tr><th>Browsers</th><td>Chromium 105+, Firefox 121+, Safari 15.4+ / iOS 15.4+. Firefox exposes thin native scrollbars only.</td></tr>
             <tr><th>Validation libraries</th><td>Native HTML5, jQuery Validation, JustValidate and Parsley. Native controls stay measurable; <code>aria-invalid</code> and <code>.zs-field--invalid</code> stay in sync.</td></tr>
-            <tr><th>Frameworks</th><td>Initialise after mount, call <code>destroy()</code> before unmount. Guides for React, Next.js App Router, Vue 3 and Angular ship in <code>docs/frameworks.md</code>.</td></tr>
+            <tr><th>Frameworks</th><td>Initialise after mount, call <code>ZidanForm.destroy(root)</code> before unmount. Copy-paste guides for React, Next.js App and Pages Router, Vue 3/Nuxt, Svelte/SvelteKit and Angular (including a ControlValueAccessor and SSR) ship in <a href="docs/frameworks.html">the framework guide</a>.</td></tr>
             <tr><th>CSS</th><td><code>plugin-core.css</code> is structural only — no colour literals. Put your tokens or theme after <code>plugin-theme.css</code>.</td></tr>
           </tbody>
         </table>

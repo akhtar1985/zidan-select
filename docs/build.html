@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Build &amp; publish — ZidanForm docs</title>
+  <meta name="description" content="Repository layout, scripts, subset builds, releases and Pages.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/docs/build.html">
+  <meta name="theme-color" content="#4f6bed">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:title" content="Build &amp; publish — ZidanForm docs">
+  <meta property="og:description" content="Repository layout, scripts, subset builds, releases and Pages.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/docs/build.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../plugin-core.css">
+  <link rel="stylesheet" href="../plugin-theme.css">
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+  <a class="skip-link" href="#docs-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="../index.html">Demo</a>
+      <a href="../advanced.html">Advanced</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../api.html">API</a>
+      <a href="../ajax.html">AJAX</a>
+      <a href="../shopify.html">Shopify</a>
+      <a href="../index.html#compare">Compare</a>
+      <a href="../index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="index.html">Documentation index</a>
+          <a href="options.html">Options &amp; data attributes</a>
+          <a href="comparison.html">Why &amp; comparison</a>
+          <a href="frameworks.html">Frameworks</a>
+          <a href="html-and-wordpress.html">HTML &amp; WordPress</a>
+          <a href="validation-guide.html">Validation</a>
+          <a href="theming.html">Theming</a>
+          <a href="build.html" aria-current="page">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
+      </select>
+    </nav>
+  </header>
+  <main id="docs-main" class="wrap docs-main">
+    <section class="hero docs-hero" aria-labelledby="docs-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Documentation · reference</p>
+      <h1 id="docs-title">Build &amp; publish</h1>
+      <p class="doc-blurb">Repository layout, scripts, subset builds, releases and Pages.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="../playground.html">Try the playground</a>
+        <a class="btn" href="index.html">All documentation</a>
+        <a class="btn" href="../advanced.html">Advanced API</a>
+      </div>
+    </section>
+    <div class="docs-content">
+<h2 id="build-publish">Build &amp; publish</h2>
+<p>The repository is deliberately tool-free: <code>zidan-form.js</code> is already a UMD-compatible classic script, <code>zidan-form.mjs</code> is its ESM wrapper, and the CSS is shipped as authored. There is no bundler step between source and browser.</p>
+<h2 id="layout">Layout</h2>
+<pre><code>zidan-select/
+├─ zidan-form.js        # all controls, classic script (UMD-ish)
+├─ zidan-form.mjs       # ESM wrapper re-exporting the same API
+├─ plugin-core.css      # structure only
+├─ plugin-theme.css     # tokens, presets, layouts, framework adapters
+├─ index.html           # tabbed demo + theme showcase
+├─ advanced.html        # advanced options + HTML/JS reference
+├─ advanced.css/js      # advanced-page-only assets
+├─ playground.html      # per-field option builder
+├─ playground.css/js    # playground-only assets
+├─ nav.css / nav.js     # shared demo header and mobile menu
+├─ robots.txt           # Pages crawler directives + sitemap pointer
+├─ sitemap.xml          # public Pages URLs
+├─ demo.css / demo.js   # demo-only assets
+├─ package.json         # npm metadata + scripts
+├─ scripts/
+│  ├─ serve.mjs         # dependency-free dev server (port 4173)
+│  ├─ build.mjs         # assembles dist/ and the select/file subset bundles
+│  ├─ test.mjs          # syntax / split-CSS / API checks
+│  └─ release.mjs       # one-command version bump, changelog roll, commit and tag
+├─ docs/                # comparison, options, validation, frameworks, theming, build
+├─ .github/workflows/   # pages.yml (demo) and release.yml (npm publish with provenance)
+├─ CHANGELOG.md
+├─ README.md
+└─ LICENSE</code></pre>
+<h3 id="which-files-should-you-load">Which files should you load?</h3>
+<p><strong>You do not have to load everything.</strong> If the page only needs one control, load only that build; the complete form bundle is only for forms that enhance several inputs at once. A subset is a standalone build, not an add-on, so never load it together with the full bundle.</p>
+<div class="table-wrap"><table><thead><tr><th>If the page only needs…</th><th>Load</th></tr></thead><tbody><tr><td>Custom select dropdowns</td><td><code>dist/select/zidan-select.js</code> plus <code>plugin-select-core.css</code> and <code>plugin-select-theme.css</code>. Every other input stays untouched; the full bundle is not needed.</td></tr><tr><td>File uploads</td><td><code>dist/file/zidan-file.js</code> plus <code>plugin-file-core.css</code> and <code>plugin-file-theme.css</code>. The rest of the form is untouched.</td></tr><tr><td>Every input at once</td><td><code>zidan-form.js</code> plus <code>plugin-core.css</code> and <code>plugin-theme.css</code>; one <code>initZidanForms()</code> call enhances text fields, selects, file uploads, checkboxes and radios together.</td></tr></tbody></table></div>
+<p>Snippets and ESM variants for each row are under <a href="#select-only-and-file-only-builds">Select-only and file-only builds</a>; the demo shows all three side by side at the <a href="https://akhtar1985.github.io/zidan-select/#builds" rel="noopener">builds section</a>.</p>
+<h2 id="scripts">Scripts</h2>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Effect</th></tr></thead><tbody><tr><td><code>npm run dev</code></td><td>Serves the repo at <a href="http://localhost:4173" rel="noopener">http://localhost:4173</a> (<code>PORT=8080 npm run dev</code>). No dependency needed.</td></tr><tr><td><code>npm test</code></td><td><code>node --check</code> on every script, asserts <code>plugin-core.css</code> has no colour literals, checks all presets/adapters, the exported API, and that the documented asset sizes match <code>dist/</code>.</td></tr><tr><td><code>npm run lint</code></td><td>Syntax check only.</td></tr><tr><td><code>npm run build</code></td><td>Cleans <code>dist/</code>, copies the four assets, writes <code>dist/zidan-form.cjs</code>, generates the select-only and file-only bundles, and minifies <strong>if</strong> esbuild is installed.</td></tr><tr><td><code>npm run sizes</code></td><td>Rewrites the byte sizes quoted in <code>docs/build.md</code>, <code>README.md</code>, <code>index.html</code> and <code>advanced.html</code> from the built files. Run it after <code>npm run build</code>; <code>npm test</code> fails when they drift.</td></tr><tr><td><code>npm run release -- patch</code></td><td>Bumps every version site, rolls <code>CHANGELOG.md</code>, runs the checks, commits and tags <code>vX.Y.Z</code>.</td></tr></tbody></table></div>
+<p>There is no watch task: the JS and CSS are the distributables, so edit and reload. <code>npm run dev</code> sends <code>Cache-Control: no-store</code>, which is enough for the demo.</p>
+<h3 id="dist-output">dist/ output</h3>
+<pre><code>dist/
+├─ zidan-form.js
+├─ zidan-form.mjs
+├─ zidan-form.cjs          # module.exports = require('../zidan-form.js')
+├─ plugin-core.css
+├─ plugin-theme.css
+├─ select/
+│  ├─ zidan-select.js      # select / combobox / tags only
+│  ├─ zidan-select.mjs
+│  ├─ plugin-select-core.css
+│  └─ plugin-select-theme.css
+├─ file/
+│  ├─ zidan-file.js        # file upload only
+│  ├─ zidan-file.mjs
+│  ├─ plugin-file-core.css
+│  └─ plugin-file-theme.css
+└─ *.min.*                 # only when esbuild is installed</code></pre>
+<pre><code class="language-bash">npm i -D esbuild
+npm run build</code></pre>
+<p>Without esbuild the build still succeeds and prints that minification was skipped. Add <code>dist/</code> to <code>.gitignore</code>; it is regenerated at publish time.</p>
+<h3 id="minified-files">Minified files</h3>
+<p><code>npm run build</code> emits minified copies next to every bundle with esbuild:</p>
+<div class="table-wrap"><table><thead><tr><th>Build</th><th>JavaScript</th><th>Core CSS</th><th>Theme CSS</th></tr></thead><tbody><tr><td>Full</td><td><code>/dist/zidan-form.min.js</code> — ≈172 kB</td><td><code>/dist/plugin-core.min.css</code> — ≈33 kB</td><td><code>/dist/plugin-theme.min.css</code> — ≈44 kB</td></tr><tr><td>Select-only</td><td><code>/dist/select/zidan-select.min.js</code> — ≈86 kB</td><td><code>/dist/select/plugin-select-core.min.css</code> — ≈10 kB</td><td><code>/dist/select/plugin-select-theme.min.css</code> — ≈29 kB</td></tr><tr><td>File-only</td><td><code>/dist/file/zidan-file.min.js</code> — ≈70 kB</td><td><code>/dist/file/plugin-file-core.min.css</code> — ≈7 kB</td><td><code>/dist/file/plugin-file-theme.min.css</code> — ≈34 kB</td></tr></tbody></table></div>
+<p>Prepend <code>https://cdn.jsdelivr.net/npm/zidan-select@2.5.0</code> to each path (or your own origin). These are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes. Use these package files rather than relying on a CDN's auto-minification. Check the three you use with <code>curl -I</code> before changing a version, then update the URLs in the README, the demo build cards and the playground in the same commit.</p>
+<h2 id="select-only-and-file-only-builds">Select-only and file-only builds</h2>
+<p><code>scripts/build.mjs</code> slices the single source into two smaller distributables. The sections in <code>zidan-form.js</code>, <code>plugin-core.css</code> and <code>plugin-theme.css</code> are marked with <code>/* @zidan-build:name */</code> comments; the builder keeps only the sections each variant needs and writes the matching ESM wrapper. Edit the shared files, never the generated outputs.</p>
+<div class="table-wrap"><table><thead><tr><th>Build</th><th>JS</th><th>ESM</th><th>Core CSS</th><th>Theme CSS</th><th>Contains</th></tr></thead><tbody><tr><td>Select</td><td><code>dist/select/zidan-select.js</code></td><td><code>.mjs</code></td><td><code>plugin-select-core.css</code></td><td><code>plugin-select-theme.css</code></td><td>Select, combobox, tags; icons, layouts, scrollbars</td></tr><tr><td>File</td><td><code>dist/file/zidan-file.js</code></td><td><code>.mjs</code></td><td><code>plugin-file-core.css</code></td><td><code>plugin-file-theme.css</code></td><td>File upload variants, previews, progress, validation</td></tr></tbody></table></div>
+<p>Both theme stylesheets keep the token set, the five preset themes (<code>default</code>, <code>modern</code>, <code>minimal</code>, <code>dark</code>, <code>glass</code>), the field layouts and the Bootstrap, Tailwind, Bulma and Foundation adapters, so <code>data-zidan-theme</code>, <code>data-zidan-layout</code> and <code>data-zidan-framework</code> behave the same as in the full build.</p>
+<p>Measured current source sizes, including Unreleased fixes (1 kB = 1,024 bytes; readable → minified). Regenerate them with <code>npm run build</code> followed by <code>npm run sizes</code>; <code>npm test</code> fails when they drift:</p>
+<div class="table-wrap"><table><thead><tr><th>Build</th><th>JavaScript</th><th>Core CSS</th><th>Theme CSS</th></tr></thead><tbody><tr><td>Full</td><td>306,243 B (≈299 kB) → 175,708 B (≈172 kB)</td><td>44,040 B (≈43 kB) → 33,886 B (≈33 kB)</td><td>52,905 B (≈52 kB) → 44,672 B (≈44 kB)</td></tr><tr><td>Select-only</td><td>152,852 B (≈149 kB) → 88,311 B (≈86 kB)</td><td>13,180 B (≈13 kB) → 10,116 B (≈10 kB)</td><td>34,461 B (≈34 kB) → 29,290 B (≈29 kB)</td></tr><tr><td>File-only</td><td>124,044 B (≈121 kB) → 72,066 B (≈70 kB)</td><td>9,939 B (≈10 kB) → 7,210 B (≈7 kB)</td><td>40,160 B (≈39 kB) → 34,612 B (≈34 kB)</td></tr></tbody></table></div>
+<p>A page should load <strong>one</strong> flavour: a subset <strong>or</strong> the full build. The <code>__zidanFormGuard</code> check keeps the first initialised copy, so loading two flavours together does not merge their APIs — use the full build when a page needs both select and file upload.</p>
+<p>Declarative init comes along in both subsets because the marker scan and the factory live in the shared/factory sections every variant keeps. <code>class=&quot;zidan-select&quot;</code>, <code>data-zidan-options</code> JSON and <code>window.ZIDAN_FORM_CONFIG</code> targets all work without a JS call; a <code>zidan-form</code> scope enhances every select in the select bundle and every file input in the file bundle. The select-only bundle also contains the complete AJAX/pagination implementation — <code>fetchUrl</code>, <code>fetchOptions</code>, <code>fetchPageSize</code>, <code>loadMore()</code>, <code>refreshOptions()</code>, <code>getAsyncState()</code> and cache clearing — because those sections are part of its build. The file-only bundle intentionally excludes select APIs; it keeps the shared validation, theming, declarative-init and upload features.</p>
+<p>Build-time safety: every generated JS file is passed through <code>node --check</code>, and missing sections abort the build instead of producing a partial bundle.</p>
+<h2 id="local-verification">Local verification</h2>
+<ol><li><code>npm test</code> — structural checks.</li><li><code>npm run dev</code> — open the demo and walk the six tabs.</li><li>Manual browser matrix: Chrome/Edge, Firefox, Safari (or Playwright WebKit). The demo</li></ol>
+<p>includes the theme showcase and an iframe/width preview for responsive checks.</p>
+<ol><li>Validation pass: submit the empty &quot;All inputs&quot; form, confirm <code>aria-invalid</code>, fix fields,</li></ol>
+<p>confirm the FormData summary, then reset.</p>
+<h2 id="versioning">Versioning</h2>
+<p>Semantic versioning, with the history in <a href="https://github.com/akhtar1985/zidan-select/blob/main/CHANGELOG.md" rel="noopener"><code>CHANGELOG.md</code></a>:</p>
+<ul><li><strong>patch</strong> — bug fixes, no token/API changes.</li><li><strong>minor</strong> — new themes, layouts, adapters, options (backwards compatible).</li><li><strong>major</strong> — renamed tokens, removed attributes, changed defaults.</li></ul>
+<p>The runtime guard (<code>__zidanFormGuard</code>) compares <code>VERSION</code> in <code>zidan-form.js</code>, so the version constant, the <code>package.json</code> field, the lockfile and the CSS banners must always agree — <code>npm test</code> fails when they drift.</p>
+<h2 id="releasing">Releasing</h2>
+<pre><code class="language-bash">npm run release -- patch --note &quot;Fix the thing that broke&quot;   # or: minor | major | 2.3.2
+git push origin main --follow-tags</code></pre>
+<p><code>scripts/release.mjs</code> is the whole release:</p>
+<ol><li>writes the new version into <code>package.json</code>, <code>package-lock.json</code>, the banner and <code>VERSION</code> in</li></ol>
+<p><code>zidan-form.js</code>, both CSS banners, the README CDN URLs, <code>index.html</code>, <code>advanced.html</code>, <code>docs/build.md</code> and <code>docs/html-and-wordpress.md</code>;</p>
+<ol><li>moves <code>## [Unreleased]</code> in <code>CHANGELOG.md</code> under <code>## [X.Y.Z] - YYYY-MM-DD</code> — write your notes</li></ol>
+<p>there, or pass <code>--note &quot;…&quot;</code>; it refuses to cut a release with no notes;</p>
+<ol><li>runs <code>npm run types &amp;&amp; npm test</code>;</li><li>commits <code>Release X.Y.Z</code> and creates the annotated tag <code>vX.Y.Z</code>.</li></ol>
+<p>Flags: <code>--dry-run</code> (print the plan, write nothing), <code>--no-commit</code> (edit files and the changelog only), <code>--skip-checks</code>. It requires a clean tracked working tree, so the release commit holds only the bump, and it refuses a version that is already tagged.</p>
+<p>Pushing the tag starts <code>.github/workflows/release.yml</code>. Nothing else to run: it publishes to npm and creates the matching GitHub Release, so the Releases panel and the changelog stay in step.</p>
+<h2 id="publishing-to-npm">Publishing to npm</h2>
+<p>Publishing happens in CI:</p>
+<div class="table-wrap"><table><thead><tr><th>Trigger</th><th>What happens</th></tr></thead><tbody><tr><td>Tag <code>vX.Y.Z</code> pushed</td><td>Verifies the tag against <code>package.json</code>, refuses an existing version, runs <code>prepublishOnly</code> (types → build → test), publishes with <code>--provenance</code>, then creates the GitHub Release for the tag with that version's <code>CHANGELOG.md</code> section as the body (<code>scripts/changelog-section.mjs</code>), falling back to <code>--generate-notes</code> when the section is missing.</td></tr><tr><td><strong>Actions → Publish to npm → Run workflow</strong></td><td>The same job without a tag, for publishing the version already committed.</td></tr></tbody></table></div>
+<p>Authentication is <strong>npm trusted publishing</strong> over OIDC: the job requests <code>id-token: write</code> and needs no token secret. One-time setup on npmjs.com — <strong>zidan-select → Settings → Trusted publishing → GitHub Actions</strong>, owner <code>akhtar1985</code>, repository <code>zidan-select</code>, workflow <code>release.yml</code>, environment left empty. Requires npm 11.5.1+; the workflow runs <code>node-version: 24</code>.</p>
+<p>Without trusted publishing, create a granular access token with read+write on <code>zidan-select</code>, store it as the <code>NPM_TOKEN</code> repository secret, and uncomment the <code>NODE_AUTH_TOKEN</code> env block at the bottom of the workflow. Remove it once OIDC works.</p>
+<h3 id="publish-fails-with-e404-trusted-publishing-not-configured">Publish fails with <code>E404</code> (trusted publishing not configured)</h3>
+<pre><code class="language-text">npm error code E404
+npm error 404 Not Found - PUT https://registry.npmjs.org/zidan-select - Not found
+npm error 404  The requested resource 'zidan-select@X.Y.Z' could not be found or you do not have permission to access it.</code></pre>
+<p>npm answers <code>404</code> instead of <code>403</code> when a publish cannot be authorised, so this is an auth problem, not a missing package. The tag and commit are fine — the npm side has no trusted publisher for this repository yet. Register it once (<strong>zidan-select → Settings → Trusted publishing → GitHub Actions</strong>, owner <code>akhtar1985</code>, repository <code>zidan-select</code>, workflow <code>release.yml</code>, environment empty), then publish the tag that already exists. Do not re-tag or move the tag: the run reads the version from <code>package.json</code> at that ref, which is what keeps the artefact in step with <code>vX.Y.Z</code>.</p>
+<pre><code class="language-bash">gh workflow run release.yml --ref v2.5.0   # any existing tag
+gh run watch
+npm view zidan-select dist-tags            # latest should be 2.5.0
+npm view zidan-select@2.5.0 version</code></pre>
+<p>A <code>workflow_dispatch</code> run skips the push-only guards and the &quot;Create the GitHub release&quot; step, so create the Release yourself when the panel is empty — the body comes from the same changelog section the workflow uses:</p>
+<pre><code class="language-bash">node scripts/changelog-section.mjs 2.5.0 &gt; .build/notes-2.5.0.md
+gh release create v2.5.0 --title v2.5.0 --notes-file .build/notes-2.5.0.md --verify-tag</code></pre>
+<p>jsDelivr only serves published tarballs, so a version that is not on npm has no CDN files: its <code>zidan-select@X.Y.Z</code> URLs return 404. If that happens, pin the README, demo build cards and docs to the <strong>last published</strong> version until the publish succeeds; <code>scripts/release.mjs</code> re-pins every <code>zidan-select@X.Y.Z</code> URL and <code>…@X.Y.Z</code> shorthand to the new version on the next release, so a delayed pin never sticks. <code>npm test</code> allows a pin behind <code>package.json</code> but rejects one ahead of it or a mix of versions.</p>
+<p>Manual publishing remains a last resort:</p>
+<pre><code class="language-bash">npm login
+npm test
+npm publish        # tarball limited by package.json &quot;files&quot;</code></pre>
+<p>First publish: <code>npm publish --access public</code>. Scoped forks need <code>--access public</code> on every publish.</p>
+<p><code>package.json</code> exposes both entries plus the subset builds, so all of these work:</p>
+<pre><code class="language-js">import ZidanForm from 'zidan-select';
+const { ZidanForm } = require('zidan-select');
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';
+
+import { ZidanSelect } from 'zidan-select/select';
+import 'zidan-select/select/css/core';
+import 'zidan-select/select/css/theme';
+
+import { zidanField, ZidanFileUpload } from 'zidan-select/file';
+import 'zidan-select/file/css/core';
+import 'zidan-select/file/css/theme';</code></pre>
+<h3 id="pre-publish-checklist">Pre-publish checklist</h3>
+<ul><li>[ ] <code>npm test</code> passes.</li><li>[ ] Demo loads with zero console errors in Chromium, Firefox and WebKit.</li><li>[ ] Both stylesheets present; core contains no colours.</li><li>[ ] <code>README.md</code> links point to files that exist in the tarball.</li><li>[ ] <code>npm pack --dry-run</code> lists JS, CSS, dist, docs, README and LICENSE only.</li><li>[ ] Subset bundles regenerate and load without console errors.</li><li>[ ] Version bumped in <code>package.json</code> and the JS/CSS headers.</li></ul>
+<h2 id="github-pages">GitHub Pages</h2>
+<p>The demo is static and needs no build. <code>.github/workflows/pages.yml</code> assembles <code>_site/</code> on every push to <code>main</code> — <code>index.html</code>, <code>advanced.html</code>, <code>playground.html</code>, <code>shopify.html</code>, <code>advanced.css</code>, <code>advanced.js</code>, <code>playground.css</code>, <code>playground.js</code>, <code>demo.css</code>, <code>demo.js</code>, <code>nav.css</code>, <code>nav.js</code>, <code>robots.txt</code>, <code>sitemap.xml</code>, the four library files and <code>docs/</code> — then uploads it with <code>actions/upload-pages-artifact</code> and publishes it with <code>actions/deploy-pages</code>.</p>
+<p>One-time setup: <strong>Settings → Pages → Build and deployment → Source: GitHub Actions</strong>.</p>
+<div class="table-wrap"><table><thead><tr><th>URL</th><th>Serves</th></tr></thead><tbody><tr><td><code>https://akhtar1985.github.io/zidan-select/</code></td><td>The tabbed demo</td></tr><tr><td><code>https://akhtar1985.github.io/zidan-select/advanced.html</code></td><td>Advanced options and API reference</td></tr><tr><td><code>https://akhtar1985.github.io/zidan-select/playground.html</code></td><td>Per-field option playground</td></tr><tr><td><code>https://akhtar1985.github.io/zidan-select/shopify.html</code></td><td>Shopify product-page demo</td></tr><tr><td><code>https://akhtar1985.github.io/zidan-select/docs/</code></td><td>Documentation index</td></tr><tr><td><code>/#select</code>, <code>/#check</code>, <code>/#file</code>, <code>/#inputs</code>, <code>/#themes</code></td><td>Deep links to a demo tab</td></tr><tr><td><code>/playground.html#select</code>, <code>#file</code>, <code>#checkbox</code>, <code>#radio</code>, <code>#text</code></td><td>Deep links to a playground control</td></tr><tr><td><code>/robots.txt</code>, <code>/sitemap.xml</code></td><td>Crawler directives and the public page URLs</td></tr></tbody></table></div>
+<p>The workflow only copies demo assets, so <code>scripts/</code>, <code>dist/</code>, <code>package.json</code> and local scratch files are never published.</p>
+<h2 id="release-automation">Release automation</h2>
+<p><a href="https://github.com/akhtar1985/zidan-select/blob/main/.github/workflows/release.yml" rel="noopener"><code>.github/workflows/release.yml</code></a> is the complete workflow: tag-triggered, provenance-enabled, dist-tag aware (<code>latest</code>, or <code>next</code> for prereleases), with guards against a mismatched tag and a duplicate version. It installs the dev tooling with <code>npm ci</code> only to build and test — the published package still has no runtime dependencies.</p>
+    </div>
+    <p class="doc-source-note">
+      Markdown source: <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/build.md" rel="noopener">docs/build.md</a>.
+      Generated by <code>scripts/docs.mjs</code> — edit the Markdown, not this page.
+    </p>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="../index.html">Demo</a> ·
+        <a href="../playground.html">Playground</a> ·
+        <a href="index.html">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="../nav.js"></script>
+</body>
+</html>

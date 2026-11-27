@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Static HTML &amp; WordPress cookbook — ZidanForm docs</title>
+  <meta name="description" content="Copy-paste pages, select-only and file-only builds, WordPress, Shopify and troubleshooting.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/docs/html-and-wordpress.html">
+  <meta name="theme-color" content="#4f6bed">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:title" content="Static HTML &amp; WordPress cookbook — ZidanForm docs">
+  <meta property="og:description" content="Copy-paste pages, select-only and file-only builds, WordPress, Shopify and troubleshooting.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/docs/html-and-wordpress.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../plugin-core.css">
+  <link rel="stylesheet" href="../plugin-theme.css">
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+  <a class="skip-link" href="#docs-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="../index.html">Demo</a>
+      <a href="../advanced.html">Advanced</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../api.html">API</a>
+      <a href="../ajax.html">AJAX</a>
+      <a href="../shopify.html">Shopify</a>
+      <a href="../index.html#compare">Compare</a>
+      <a href="../index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="index.html">Documentation index</a>
+          <a href="options.html">Options &amp; data attributes</a>
+          <a href="comparison.html">Why &amp; comparison</a>
+          <a href="frameworks.html">Frameworks</a>
+          <a href="html-and-wordpress.html" aria-current="page">HTML &amp; WordPress</a>
+          <a href="validation-guide.html">Validation</a>
+          <a href="theming.html">Theming</a>
+          <a href="build.html">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
+      </select>
+    </nav>
+  </header>
+  <main id="docs-main" class="wrap docs-main">
+    <section class="hero docs-hero" aria-labelledby="docs-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Documentation · reference</p>
+      <h1 id="docs-title">Static HTML &amp; WordPress cookbook</h1>
+      <p class="doc-blurb">Copy-paste pages, select-only and file-only builds, WordPress, Shopify and troubleshooting.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="../playground.html">Try the playground</a>
+        <a class="btn" href="index.html">All documentation</a>
+        <a class="btn" href="../advanced.html">Advanced API</a>
+      </div>
+    </section>
+    <div class="docs-content">
+<h2 id="static-html-wordpress-cookbook">Static HTML &amp; WordPress cookbook</h2>
+<p>Copy-paste recipes for hand-written HTML pages, WordPress sites and page builders. Every example below is a <strong>complete working page or block</strong> — no build tools, no npm, no framework required. If you only need the reference, see <a href="options.html">Options &amp; data attributes</a> and the <a href="https://github.com/akhtar1985/zidan-select#javascript-api" rel="noopener">JavaScript API</a>.</p>
+<p>Contents:</p>
+<ol><li><a href="#1-pick-the-files-first">Pick the files first</a></li><li><a href="#2-five-ways-to-switch-a-control-on">Five ways to switch a control on</a></li><li><a href="#3-complete-static-page-full-build">Complete static page — full build</a></li><li><a href="#4-complete-select-only-page">Complete select-only page</a></li><li><a href="#5-complete-file-only-page">Complete file-only page</a></li><li><a href="#6-enhance-by-id-or-class-from-javascript">Enhance by ID or class from JavaScript</a></li><li><a href="#7-wordpress">WordPress</a></li><li><a href="#8-other-hosts-and-website-builders">Other hosts and website builders</a></li><li><a href="#9-shopify">Shopify</a></li><li><a href="#10-copy-paste-recipes">Copy-paste recipes</a></li><li><a href="#11-troubleshooting">Troubleshooting</a></li></ol>
+<hr>
+<h2 id="1-pick-the-files-first">1. Pick the files first</h2>
+<p>Load <strong>one</strong> build per page. Each build is standalone; a subset is not an add-on to the full bundle. Both CSS files are always needed: <code>plugin-core.css</code> carries layout and mechanics (no colours), <code>plugin-theme.css</code> carries colours, presets and skins.</p>
+<div class="table-wrap"><table><thead><tr><th>Your page needs…</th><th>Load these files</th></tr></thead><tbody><tr><td>Selects / combobox / tags only</td><td><code>dist/select/zidan-select.js</code> + <code>plugin-select-core.css</code> + <code>plugin-select-theme.css</code></td></tr><tr><td>File uploads only</td><td><code>dist/file/zidan-file.js</code> + <code>plugin-file-core.css</code> + <code>plugin-file-theme.css</code></td></tr><tr><td>Several control types together</td><td><code>zidan-form.js</code> + <code>plugin-core.css</code> + <code>plugin-theme.css</code></td></tr></tbody></table></div>
+<p>Pinned CDN URLs (replace <code>2.5.0</code> when you upgrade):</p>
+<div class="table-wrap"><table><thead><tr><th>Build</th><th>JavaScript</th><th>CSS</th></tr></thead><tbody><tr><td>Full</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js</code></td><td><code>…@2.5.0/plugin-core.css</code> + <code>…@2.5.0/plugin-theme.css</code></td></tr><tr><td>Select-only</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js</code></td><td><code>…@2.5.0/dist/select/plugin-select-core.css</code> + <code>…plugin-select-theme.css</code></td></tr><tr><td>File-only</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js</code></td><td><code>…@2.5.0/dist/file/plugin-file-core.css</code> + <code>…plugin-file-theme.css</code></td></tr></tbody></table></div>
+<p>Prefer self-hosting? Download the same files (<code>npm pack zidan-select@2.5.0</code>, or the raw files from GitHub) and keep them next to your page:</p>
+<pre><code>my-site/
+├─ index.html
+└─ assets/zidan/
+   ├─ zidan-form.js
+   ├─ plugin-core.css
+   └─ plugin-theme.css</code></pre>
+<p>Then use relative paths: <code>assets/zidan/plugin-core.css</code>. <code>.min</code> copies exist inside <code>dist/</code> (<code>dist/zidan-form.min.js</code>, <code>dist/plugin-core.min.css</code>, <code>dist/plugin-theme.min.css</code>) if you prefer minified files.</p>
+<blockquote><p><strong>Never load the full build and a subset on the same page.</strong> The second copy is ignored (the library keeps the first initialised instance), and you would not get the API you expect.</p></blockquote>
+<hr>
+<h2 id="2-five-ways-to-switch-a-control-on">2. Five ways to switch a control on</h2>
+<p>Nothing is touched unless it opts in. Pick the one that matches your situation.</p>
+<div class="table-wrap"><table><thead><tr><th>Situation</th><th>What to use</th><th>Where it runs</th></tr></thead><tbody><tr><td>You control the markup and want <strong>zero JavaScript</strong></td><td><code>data-zidan*</code> attributes and marker classes</td><td>Automatic, on <code>DOMContentLoaded</code></td></tr><tr><td>Enhance <strong>every select and file input</strong> inside one form</td><td><code>&lt;form class=&quot;zidan-form&quot;&gt;</code> (or <code>data-zidan-form</code>)</td><td>Automatic</td></tr><tr><td>You only have <strong>IDs or classes</strong> (CMS, page builder)</td><td><code>window.ZIDAN_FORM_CONFIG</code> targets</td><td>Automatic, before the script</td></tr><tr><td>Enhance <strong>one specific field</strong></td><td><code>zidanSelect('#id', {…})</code> / <code>zidanField('#id', {…})</code></td><td>Your own <code>&lt;script&gt;</code></td></tr><tr><td>Page content is <strong>rendered later</strong> (AJAX, SPA, builder)</td><td><code>ZidanForm.refresh(scope)</code> or <code>ZidanForm.observe(scope)</code></td><td>Your own <code>&lt;script&gt;</code></td></tr></tbody></table></div>
+<h3 id="2a-attributes-and-marker-classes-no-javascript">2a. Attributes and marker classes (no JavaScript)</h3>
+<pre><code class="language-html">&lt;select name=&quot;country&quot; class=&quot;zidan-select&quot;
+        data-zidan-options='{&quot;mode&quot;:&quot;combobox&quot;,&quot;placeholder&quot;:&quot;Search a country…&quot;}'&gt;…&lt;/select&gt;
+
+&lt;select name=&quot;tags&quot; class=&quot;zidan-select&quot; multiple
+        data-zidan-options='{&quot;mode&quot;:&quot;tags&quot;,&quot;maxTags&quot;:3}'&gt;…&lt;/select&gt;
+
+&lt;input type=&quot;text&quot; class=&quot;zidan-field&quot; data-zidan-icon=&quot;mail&quot; data-zidan-clear&gt;
+&lt;input type=&quot;file&quot; class=&quot;zidan-field&quot; data-zidan-options='{&quot;variant&quot;:&quot;dropzone&quot;}'&gt;
+&lt;input type=&quot;checkbox&quot; class=&quot;zidan-field&quot; data-zidan-variant=&quot;switch&quot;&gt;</code></pre>
+<p><code>data-zidan=&quot;select&quot;</code> works the same as the <code>zidan-select</code> class, and <code>data-zidan=&quot;checkbox|file|input|textarea|radio-group&quot;</code> works the same as <code>zidan-field</code>. The JSON attribute carries any literal option; callbacks and upload functions need a small JS block instead.</p>
+<h3 id="2b-form-scope">2b. Form scope</h3>
+<pre><code class="language-html">&lt;form class=&quot;zidan-form&quot; method=&quot;post&quot;&gt;
+  &lt;!-- every &lt;select&gt; and every &lt;input type=&quot;file&quot;&gt; here is enhanced, marked or not --&gt;
+  &lt;select name=&quot;plan&quot;&gt;…&lt;/select&gt;
+  &lt;input type=&quot;file&quot; name=&quot;cv&quot; accept=&quot;.pdf&quot;&gt;
+  &lt;!-- other inputs still need an attribute or the zidan-field class --&gt;
+  &lt;input type=&quot;email&quot; name=&quot;email&quot; data-zidan=&quot;input&quot;&gt;
+&lt;/form&gt;</code></pre>
+<h3 id="2c-config-targets-by-id-or-class-no-inline-zidanselect-call">2c. Config targets by ID or class (no inline <code>zidanSelect</code> call)</h3>
+<p>Define the config <strong>before</strong> the library script. IDs, classes and full selectors are accepted:</p>
+<pre><code class="language-html">&lt;script&gt;
+  window.ZIDAN_FORM_CONFIG = {
+    targets: ['#country', 'select.product-variants',
+              { selector: '#brands', options: { mode: 'tags', maxTags: 3 } }],
+    fieldTargets: [
+      { selector: '#email', options: { icon: 'mail', clearable: true } },
+      { selector: '#avatar', options: { variant: 'avatar' } }
+    ],
+    formTargets: ['#checkout']
+  };
+&lt;/script&gt;
+&lt;script src=&quot;assets/zidan/zidan-form.js&quot;&gt;&lt;/script&gt;</code></pre>
+<h3 id="2d-direct-call-by-id-or-class">2d. Direct call by ID or class</h3>
+<pre><code class="language-html">&lt;select id=&quot;country&quot;&gt;…&lt;/select&gt;
+&lt;select class=&quot;product-select&quot;&gt;…&lt;/select&gt;
+
+&lt;script src=&quot;assets/zidan/zidan-form.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  // one select by ID
+  var country = zidanSelect('#country', { mode: 'combobox', placeholder: 'Search…' });
+
+  // every select with that class (returns an array when several match)
+  var products = zidanSelect('.product-select', { mode: 'select', clearable: true });
+
+  // a plain input with JS-only options
+  zidanField('#email', { icon: 'mail', clearable: true, counter: 80 });
+&lt;/script&gt;</code></pre>
+<h3 id="2e-content-rendered-after-page-load">2e. Content rendered after page load</h3>
+<pre><code class="language-html">&lt;script src=&quot;assets/zidan/zidan-form.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  // after injecting new markup: pass the element, not a selector
+  var scope = document.querySelector('#checkout');
+  ZidanForm.refresh(scope);            // enhance new nodes + update existing ones
+
+  // or keep a container in sync automatically:
+  ZidanForm.observe(scope);            // MutationObserver; destroys removed instances
+&lt;/script&gt;</code></pre>
+<hr>
+<h2 id="3-complete-static-page-full-build">3. Complete static page — full build</h2>
+<p>Save this as <code>index.html</code> and open it in a browser (double-clicking the file works). Every control is enhanced automatically; the script at the bottom only pretends to submit so you can see the native <code>FormData</code>.</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;ZidanForm static example&lt;/title&gt;
+
+  &lt;!-- structure first, theme second --&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;main style=&quot;max-width:560px;margin:40px auto;padding:0 20px&quot;&gt;
+    &lt;h1&gt;Booking request&lt;/h1&gt;
+
+    &lt;form class=&quot;zidan-form&quot; method=&quot;post&quot; action=&quot;/thanks.html&quot;&gt;
+      &lt;p&gt;
+        &lt;label for=&quot;country&quot;&gt;Country&lt;/label&gt;
+        &lt;select id=&quot;country&quot; name=&quot;country&quot; required data-zidan-select=&quot;combobox&quot;&gt;
+          &lt;option value=&quot;&quot;&gt;Choose a country…&lt;/option&gt;
+          &lt;option&gt;United Kingdom&lt;/option&gt;
+          &lt;option&gt;United States&lt;/option&gt;
+          &lt;option&gt;Japan&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/p&gt;
+
+      &lt;p&gt;
+        &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;
+        &lt;input id=&quot;email&quot; type=&quot;email&quot; name=&quot;email&quot; required
+               data-zidan=&quot;input&quot; data-zidan-auto-icon=&quot;true&quot; data-zidan-clear&gt;
+      &lt;/p&gt;
+
+      &lt;p&gt;
+        &lt;label for=&quot;phone&quot;&gt;Phone&lt;/label&gt;
+        &lt;input id=&quot;phone&quot; type=&quot;tel&quot; name=&quot;phone&quot;
+               data-zidan=&quot;input&quot; data-zidan-phone=&quot;true&quot;
+               data-zidan-phone-country=&quot;GB&quot; data-zidan-phone-format=&quot;international&quot;&gt;
+      &lt;/p&gt;
+
+      &lt;p&gt;
+        &lt;label for=&quot;guests&quot;&gt;Guests&lt;/label&gt;
+        &lt;input id=&quot;guests&quot; type=&quot;number&quot; name=&quot;guests&quot; min=&quot;1&quot; max=&quot;8&quot; value=&quot;2&quot;
+               data-zidan=&quot;input&quot; data-zidan-stepper=&quot;stacked&quot;&gt;
+      &lt;/p&gt;
+
+      &lt;p&gt;
+        &lt;label for=&quot;budget&quot;&gt;Budget&lt;/label&gt;
+        &lt;input id=&quot;budget&quot; type=&quot;range&quot; name=&quot;budget&quot; min=&quot;0&quot; max=&quot;1000&quot; step=&quot;50&quot; value=&quot;500&quot;
+               data-zidan=&quot;input&quot; data-zidan-output=&quot;#budget-out&quot;&gt;
+        &lt;output id=&quot;budget-out&quot;&gt;500&lt;/output&gt;
+      &lt;/p&gt;
+
+      &lt;p&gt;
+        &lt;label&gt;
+          &lt;input type=&quot;checkbox&quot; name=&quot;news&quot; value=&quot;yes&quot;
+                 data-zidan=&quot;checkbox&quot; data-zidan-variant=&quot;switch&quot;
+                 data-zidan-label=&quot;Email me offers&quot;&gt;
+        &lt;/label&gt;
+      &lt;/p&gt;
+
+      &lt;fieldset data-zidan=&quot;radio-group&quot; data-zidan-variant=&quot;inline&quot;&gt;
+        &lt;legend&gt;Contact preference&lt;/legend&gt;
+        &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;contact&quot; value=&quot;email&quot; checked&gt; Email&lt;/label&gt;
+        &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;contact&quot; value=&quot;phone&quot;&gt; Phone&lt;/label&gt;
+      &lt;/fieldset&gt;
+
+      &lt;p&gt;
+        &lt;label for=&quot;message&quot;&gt;Message&lt;/label&gt;
+        &lt;textarea id=&quot;message&quot; name=&quot;message&quot; rows=&quot;4&quot; maxlength=&quot;300&quot;
+                  data-zidan=&quot;textarea&quot; data-zidan-counter=&quot;300&quot;&gt;&lt;/textarea&gt;
+      &lt;/p&gt;
+
+      &lt;p&gt;
+        &lt;label for=&quot;docs&quot;&gt;Documents&lt;/label&gt;
+        &lt;input id=&quot;docs&quot; type=&quot;file&quot; name=&quot;docs&quot; multiple accept=&quot;image/*,.pdf&quot;
+               data-zidan=&quot;file&quot; data-zidan-max-files=&quot;3&quot; data-zidan-max-size-mb=&quot;5&quot;
+               data-zidan-title=&quot;Drop files here&quot;
+               data-zidan-simulate-upload=&quot;true&quot;&gt;
+      &lt;/p&gt;
+
+      &lt;button type=&quot;submit&quot;&gt;Send request&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/main&gt;
+
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt;
+    // Demo only: show the native FormData instead of navigating away.
+    document.querySelector('.zidan-form').addEventListener('submit', function (event) {
+      event.preventDefault();                     // remove this line to post for real
+      var data = new FormData(event.currentTarget);
+      console.log(Array.from(data.entries()));
+      alert('Captured ' + Array.from(data.keys()).length + ' fields — see the console.');
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>What is happening:</p>
+<ul><li><code>class=&quot;zidan-form&quot;</code> enhances the two selects and any file input inside; the other controls carry <code>data-zidan</code> attributes or the <code>zidan-field</code> class.</li><li><code>data-zidan-simulate-upload=&quot;true&quot;</code> fakes progress so the upload UI works with no server. Point <code>data-zidan-upload-url=&quot;/upload&quot;</code> at a real endpoint when you have one.</li><li>No JS call is needed for enhancement; the script's auto-init runs once when the page is parsed.</li><li><code>required</code> still blocks an empty submit, and the posted <code>FormData</code> contains the real values.</li></ul>
+<hr>
+<h2 id="4-complete-select-only-page">4. Complete select-only page</h2>
+<p>Only selects on this page? Load the trimmed build. It exposes <code>zidanSelect</code>, <code>initZidanSelects</code> and <code>ZidanSelect</code>; <code>zidanField</code> does not exist here.</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;Select-only example&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot;
+        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-core.css&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot;
+        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/plugin-select-theme.css&quot;&gt;
+&lt;/head&gt;
+&lt;body style=&quot;max-width:520px;margin:40px auto;padding:0 20px&quot;&gt;
+
+  &lt;label for=&quot;country&quot;&gt;Country&lt;/label&gt;
+  &lt;select id=&quot;country&quot; name=&quot;country&quot;&gt;
+    &lt;option value=&quot;&quot;&gt;Choose…&lt;/option&gt;
+    &lt;option&gt;France&lt;/option&gt;
+    &lt;option&gt;Germany&lt;/option&gt;
+    &lt;option&gt;Japan&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;p&gt;
+    &lt;label for=&quot;sku&quot;&gt;Product&lt;/label&gt;
+    &lt;select id=&quot;sku&quot; name=&quot;sku&quot;&gt;
+      &lt;option value=&quot;basic&quot;&gt;Basic&lt;/option&gt;
+      &lt;option value=&quot;pro&quot;&gt;Pro&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/p&gt;
+
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt;
+    zidanSelect('#country', {
+      mode: 'combobox',
+      placeholder: 'Search a country…',
+      clearable: true
+    });
+    zidanSelect('#sku', { mode: 'select', layout: 'soft-pill' });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Class-based auto-init also works without any call: <code>&lt;select class=&quot;zidan-select&quot;&gt;</code> is enhanced on load by the same build.</p>
+<hr>
+<h2 id="5-complete-file-only-page">5. Complete file-only page</h2>
+<p>Only uploads on this page? Load the file-only build. It exposes <code>zidanField</code>, <code>initZidanForms</code> and the field classes; <code>zidanSelect</code> / <code>initZidanSelects</code> do not exist here.</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;title&gt;File upload example&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot;
+        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-core.css&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot;
+        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/plugin-file-theme.css&quot;&gt;
+&lt;/head&gt;
+&lt;body style=&quot;max-width:520px;margin:40px auto;padding:0 20px&quot;&gt;
+
+  &lt;form id=&quot;app&quot; method=&quot;post&quot;&gt;
+    &lt;label for=&quot;cv&quot;&gt;CV (PDF, max 5 MB)&lt;/label&gt;
+    &lt;input id=&quot;cv&quot; type=&quot;file&quot; name=&quot;cv&quot; accept=&quot;.pdf&quot;&gt;
+
+    &lt;label for=&quot;shots&quot;&gt;Screenshots&lt;/label&gt;
+    &lt;input id=&quot;shots&quot; type=&quot;file&quot; name=&quot;shots&quot; multiple accept=&quot;image/*&quot;&gt;
+  &lt;/form&gt;
+
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/file/zidan-file.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt;
+    zidanField('#cv', {
+      variant: 'dropzone',
+      title: 'Drop your CV here',
+      maxFiles: 1,
+      maxSizeMB: 5,
+      simulateUpload: true        // demo progress; use uploadUrl or upload() for real uploads
+    });
+
+    zidanField('#shots', { variant: 'gallery', maxFiles: 6 });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Real upload endpoint instead of the fake progress:</p>
+<pre><code class="language-js">zidanField('#cv', {
+  uploadUrl: '/upload.php',     // XHR multipart, one request per file
+  maxFiles: 1,
+  maxSizeMB: 5
+});</code></pre>
+<hr>
+<h2 id="6-enhance-by-id-or-class-from-javascript">6. Enhance by ID or class from JavaScript</h2>
+<p><code>zidanSelect()</code> and <code>zidanField()</code> both accept a CSS selector, an element, or a NodeList. A selector that matches once returns an instance; several matches return an array.</p>
+<pre><code class="language-html">&lt;!-- selects --&gt;
+&lt;select id=&quot;country&quot;&gt;…&lt;/select&gt;
+&lt;select class=&quot;variant-select&quot; data-sku=&quot;a1&quot;&gt;…&lt;/select&gt;
+&lt;select class=&quot;variant-select&quot; data-sku=&quot;b2&quot;&gt;…&lt;/select&gt;
+
+&lt;!-- fields --&gt;
+&lt;input id=&quot;email&quot; type=&quot;email&quot;&gt;
+&lt;fieldset id=&quot;delivery&quot;&gt;
+  &lt;legend&gt;Delivery&lt;/legend&gt;
+  &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;delivery&quot; value=&quot;home&quot; checked&gt; Home&lt;/label&gt;
+  &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;delivery&quot; value=&quot;locker&quot;&gt; Locker&lt;/label&gt;
+&lt;/fieldset&gt;</code></pre>
+<pre><code class="language-js">// by ID
+zidanSelect('#country', { mode: 'combobox' });
+
+// by class — returns an array when there is more than one match
+var variants = zidanSelect('.variant-select', { layout: 'floating-label' });
+
+// a radio group must be attached to its &lt;fieldset&gt;
+zidanField('#delivery', { variant: 'tile' });
+
+// read values later; the native controls always hold the truth
+ZidanSelect.get('#country').getValue();
+ZidanForm.get('#email').getValue();
+document.querySelector('#email').value;</code></pre>
+<p>If the script sits in <code>&lt;head&gt;</code>, wait for the DOM (or use <code>defer</code>):</p>
+<pre><code class="language-html">&lt;script src=&quot;assets/zidan/zidan-form.js&quot; defer&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener('DOMContentLoaded', function () {
+    zidanSelect('#country', { mode: 'tags' });
+  });
+&lt;/script&gt;</code></pre>
+<p>If the markup is injected later (AJAX, modal, template engine), call one of:</p>
+<pre><code class="language-js">ZidanForm.init(scope);        // enhance anything new inside scope
+ZidanForm.refresh(scope);     // enhance + update sizes of existing instances
+ZidanForm.observe(scope);     // keep watching a container automatically</code></pre>
+<p>Each of these takes an <strong>element</strong> (<code>document.querySelector('#checkout')</code>), not a selector string. For a page-wide pass use <code>document.body</code>.</p>
+<hr>
+<h2 id="7-wordpress">7. WordPress</h2>
+<p>WordPress needs two things: the four files reachable from the browser, and a block/template with the markup. Use a <strong>child theme</strong> (or a tiny must-use plugin) so theme updates do not wipe the files.</p>
+<h3 id="7a-put-the-files-in-place">7a. Put the files in place</h3>
+<p>Upload with FTP/SFTP or the hosting file manager:</p>
+<pre><code>wp-content/themes/your-child-theme/
+└─ assets/zidan/
+   ├─ zidan-form.js
+   ├─ plugin-core.css
+   └─ plugin-theme.css</code></pre>
+<h3 id="7b-enqueue-them-from-functionsphp">7b. Enqueue them from <code>functions.php</code></h3>
+<pre><code class="language-php">&lt;?php
+// wp-content/themes/your-child-theme/functions.php
+add_action('wp_enqueue_scripts', function () {
+    // Load only on the pages that contain the form.
+    if (!is_page(array('contact', 'get-a-quote'))) {
+        return;
+    }
+
+    $base = get_stylesheet_directory_uri() . '/assets/zidan';
+
+    wp_enqueue_style('zidan-core', $base . '/plugin-core.css', array(), '2.5.0');
+    wp_enqueue_style('zidan-theme', $base . '/plugin-theme.css', array('zidan-core'), '2.5.0');
+    wp_enqueue_script('zidan-form', $base . '/zidan-form.js', array(), '2.5.0', true);
+
+    // Optional: configure fields by ID/class without inline HTML scripts.
+    wp_add_inline_script('zidan-form', &quot;window.ZIDAN_FORM_CONFIG = {
+        targets: ['#country'],
+        fieldTargets: [
+            { selector: '#email', options: { icon: 'mail', clearable: true } }
+        ]
+    };&quot;, 'before');
+});</code></pre>
+<p>Prefer a CDN? Replace the three <code>$base . '…'</code> URLs with the pinned jsDelivr URLs from <a href="#1-pick-the-files-first">section 1</a>; the enqueue calls stay the same.</p>
+<h3 id="7c-add-the-form-markup">7c. Add the form markup</h3>
+<p>Paste this into a <strong>Custom HTML block</strong> (Gutenberg) or an Elementor <strong>HTML widget</strong>:</p>
+<pre><code class="language-html">&lt;form class=&quot;zidan-form&quot; method=&quot;post&quot; action=&quot;/contact-thanks/&quot;&gt;
+  &lt;label for=&quot;country&quot;&gt;Country&lt;/label&gt;
+  &lt;select id=&quot;country&quot; name=&quot;country&quot; required&gt;
+    &lt;option value=&quot;&quot;&gt;Choose…&lt;/option&gt;
+    &lt;option&gt;United Kingdom&lt;/option&gt;
+    &lt;option&gt;Germany&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;
+  &lt;input id=&quot;email&quot; type=&quot;email&quot; name=&quot;email&quot; required data-zidan=&quot;input&quot;&gt;
+
+  &lt;label for=&quot;cv&quot;&gt;CV&lt;/label&gt;
+  &lt;input id=&quot;cv&quot; type=&quot;file&quot; name=&quot;cv&quot; accept=&quot;.pdf&quot;
+         data-zidan=&quot;file&quot; data-zidan-max-size-mb=&quot;5&quot;&gt;
+
+  &lt;button type=&quot;submit&quot;&gt;Send&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+<p><code>class=&quot;zidan-form&quot;</code> is enough to enhance the select and the file input; the email input needs its <code>data-zidan=&quot;input&quot;</code> attribute. No script goes into the page itself — the enqueued file auto-initialises.</p>
+<h3 id="7d-wordpress-caveats">7d. WordPress caveats</h3>
+<ul><li><strong>Plugin/theme already loads ZidanForm?</strong> Do not enqueue a second copy. The guard keeps the first one, but duplicate files double the download.</li><li><strong>Caching/optimisation plugins</strong> (Autoptimize, WP Rocket, LiteSpeed) may combine or defer the script. If nothing is enhanced, check the page source for <code>zidan-form</code>; exclude the three files from combination/minification while debugging.</li><li><strong>Contact Form 7 / Gravity Forms / WPForms</strong> generate their own markup and CSS. ZidanForm can lift selects inside those forms with <code>formTargets: ['#their-form-id']</code>, but visual conflicts are likely; test one form before applying it site-wide.</li><li><strong>Page builders</strong> usually preserve <code>data-*</code> attributes. If a builder strips them, keep the element IDs and initialise through <code>ZIDAN_FORM_CONFIG.targets</code> instead.</li><li><strong>CSS order</strong>: framework CSS → <code>plugin-core.css</code> → <code>plugin-theme.css</code> → child-theme overrides. On Bootstrap/Tailwind sites also set <code>data-zidan-framework=&quot;bootstrap&quot;</code> (or <code>&quot;tailwind&quot;</code>) on <code>&lt;html&gt;</code> or the form.</li></ul>
+<hr>
+<h2 id="8-other-hosts-and-website-builders">8. Other hosts and website builders</h2>
+<p><strong>Netlify, Vercel, GitHub Pages, plain shared hosting</strong> — nothing special: keep the HTML and <code>assets/zidan/</code> in the same folder tree and use relative paths, exactly as in section 3.</p>
+<p><strong>Blogger, Squarespace, Wix, Webflow</strong> — add the <code>&lt;script src&gt;</code> and CSS links inside their &quot;code injection&quot; area (site-wide) or a single embed block, then place the markup in the page. If the platform only allows one embed block, put the <code>&lt;script src&gt;</code> call <strong>after</strong> the markup in that same block; a <code>&lt;script&gt;</code> tag in an embed runs normally. Shopify has its own section: <a href="#9-shopify">9. Shopify</a>.</p>
+<pre><code class="language-html">&lt;!-- inside one embed block: markup first, script last --&gt;
+&lt;select class=&quot;zidan-select&quot; data-zidan-options='{&quot;mode&quot;:&quot;combobox&quot;}'&gt;…&lt;/select&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-core.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/plugin-theme.css&quot;&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js&quot;&gt;&lt;/script&gt;</code></pre>
+<p>For the single-select case, the select-only build is smaller: swap in the <code>dist/select/</code> files from section 4.</p>
+<hr>
+<h2 id="9-shopify">9. Shopify</h2>
+<p>ZidanForm works in <strong>storefront theme templates</strong> — product pages, contact forms, newsletter signups, cart notes. It does <strong>not</strong> work on the Shopify checkout (custom scripts are blocked there; use Checkout UI Extensions) or in the Shopify admin (that uses Polaris).</p>
+<p>A runnable mock product page lives at <a href="https://akhtar1985.github.io/zidan-select/shopify.html" rel="noopener">https://akhtar1985.github.io/zidan-select/shopify.html</a> — variant combobox, quantity stepper, gift-wrap switch, tile radios and an upload dropzone, with the Liquid snippets below on the page.</p>
+<h3 id="9a-add-the-files-to-the-theme">9a. Add the files to the theme</h3>
+<ol><li>Online Store → Themes → <strong>Edit code</strong> → <strong>Assets</strong> → <strong>Add a new asset</strong>, upload</li></ol>
+<p><code>zidan-form.js</code>, <code>plugin-core.css</code> and <code>plugin-theme.css</code> (or the select-only build if only selects are needed).</p>
+<ol><li>Reference them in <code>layout/theme.liquid</code>, after the theme's base stylesheet:</li></ol>
+<pre><code class="language-liquid">{{ 'plugin-core.css' | asset_url | stylesheet_tag }}
+{{ 'plugin-theme.css' | asset_url | stylesheet_tag }}
+&lt;script src=&quot;{{ 'zidan-form.js' | asset_url }}&quot; defer&gt;&lt;/script&gt;</code></pre>
+<p><code>asset_url</code> serves the files from Shopify's CDN, so no external host is required. CSS order: theme base styles → <code>plugin-core.css</code> → <code>plugin-theme.css</code> → your overrides.</p>
+<h3 id="9b-product-form">9b. Product form</h3>
+<p>Liquid renders the variants; ZidanForm only upgrades the control. The real <code>&lt;select&gt;</code> stays in the DOM, so <code>change</code> listeners (Dawn's price/availability updates) keep working.</p>
+<pre><code class="language-liquid">&lt;form action=&quot;{{ routes.cart_add_url }}&quot; method=&quot;post&quot; class=&quot;zidan-form&quot;&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;form_type&quot; value=&quot;product&quot;&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;utf8&quot; value=&quot;✓&quot;&gt;
+
+  &lt;label for=&quot;variant-select&quot;&gt;Size&lt;/label&gt;
+  &lt;select id=&quot;variant-select&quot; name=&quot;id&quot; class=&quot;zidan-select&quot;
+          data-zidan-options='{&quot;mode&quot;:&quot;combobox&quot;,&quot;placeholder&quot;:&quot;Choose a size…&quot;}'&gt;
+    {% for variant in product.variants %}
+      &lt;option value=&quot;{{ variant.id }}&quot;
+        {% if variant == product.selected_or_first_available_variant %}selected{% endif %}
+        {% unless variant.available %}disabled{% endunless %}&gt;
+        {{ variant.title }} — {{ variant.price | money }}
+      &lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+
+  &lt;label for=&quot;quantity&quot;&gt;Quantity&lt;/label&gt;
+  &lt;input id=&quot;quantity&quot; type=&quot;number&quot; name=&quot;quantity&quot; value=&quot;1&quot; min=&quot;1&quot; max=&quot;20&quot;
+         data-zidan=&quot;input&quot; data-zidan-stepper=&quot;stacked&quot;&gt;
+
+  &lt;label&gt;
+    &lt;input type=&quot;checkbox&quot; name=&quot;properties[Gift wrap]&quot; value=&quot;Yes&quot;
+           data-zidan=&quot;checkbox&quot; data-zidan-variant=&quot;switch&quot;
+           data-zidan-label=&quot;Gift wrap&quot;&gt;
+  &lt;/label&gt;
+
+  &lt;button type=&quot;submit&quot; name=&quot;add&quot;&gt;Add to cart&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+<blockquote><p><strong>Dawn users:</strong> Dawn's <code>variant-selects</code> component owns its markup and JS. Use this markup in a custom section, or remove Dawn's variant picker before adding yours — do not run both on the same select. Line-item properties (<code>properties[...]</code>) are ordinary form fields and post with the form.</p></blockquote>
+<h3 id="9c-contact-and-newsletter-forms">9c. Contact and newsletter forms</h3>
+<pre><code class="language-liquid">{% form 'contact', class: 'zidan-form' %}
+  &lt;input type=&quot;email&quot; name=&quot;contact[email]&quot; required
+         data-zidan=&quot;input&quot; data-zidan-auto-icon=&quot;true&quot; data-zidan-clear&gt;
+  &lt;textarea name=&quot;contact[body]&quot; rows=&quot;4&quot; maxlength=&quot;400&quot;
+            data-zidan=&quot;textarea&quot; data-zidan-counter=&quot;400&quot;&gt;&lt;/textarea&gt;
+  &lt;button type=&quot;submit&quot;&gt;Send&lt;/button&gt;
+{% endform %}
+
+{% form 'customer', class: 'zidan-form' %}
+  &lt;input type=&quot;hidden&quot; name=&quot;contact[tags]&quot; value=&quot;newsletter&quot;&gt;
+  &lt;input type=&quot;email&quot; name=&quot;contact[email]&quot; required
+         data-zidan=&quot;input&quot; data-zidan-clear&gt;
+  &lt;button type=&quot;submit&quot;&gt;Subscribe&lt;/button&gt;
+{% endform %}</code></pre>
+<h3 id="9d-field-theme-from-the-theme-editor">9d. Field theme from the theme editor</h3>
+<p>Expose the preset in a section setting so merchants can switch it without editing code:</p>
+<pre><code class="language-liquid">{% schema %}
+{
+  &quot;name&quot;: &quot;ZidanForm style&quot;,
+  &quot;settings&quot;: [
+    {
+      &quot;type&quot;: &quot;select&quot;,
+      &quot;id&quot;: &quot;zidan_theme&quot;,
+      &quot;label&quot;: &quot;Field theme&quot;,
+      &quot;options&quot;: [
+        {&quot;value&quot;: &quot;default&quot;, &quot;label&quot;: &quot;Default&quot;},
+        {&quot;value&quot;: &quot;modern&quot;, &quot;label&quot;: &quot;Modern&quot;},
+        {&quot;value&quot;: &quot;minimal&quot;, &quot;label&quot;: &quot;Minimal&quot;},
+        {&quot;value&quot;: &quot;dark&quot;, &quot;label&quot;: &quot;Dark&quot;},
+        {&quot;value&quot;: &quot;glass&quot;, &quot;label&quot;: &quot;Glass&quot;}
+      ],
+      &quot;default&quot;: &quot;modern&quot;
+    }
+  ]
+}
+{% endschema %}
+
+&lt;div data-zidan-theme=&quot;{{ section.settings.zidan_theme }}&quot;&gt;
+  {% comment %} your form markup {% endcomment %}
+&lt;/div&gt;</code></pre>
+<h3 id="9e-file-uploads-app-proxy-plus-a-hidden-property">9e. File uploads: app proxy plus a hidden property</h3>
+<p>Shopify's cart and order forms cannot carry a file. Upload through an <strong>app proxy</strong> (<code>/apps/your-app/upload</code> forwards to your server), then put the resulting URL into a line-item property so it reaches the order:</p>
+<pre><code class="language-liquid">&lt;input type=&quot;file&quot; id=&quot;artwork&quot; data-zidan=&quot;file&quot;
+       data-zidan-max-size-mb=&quot;8&quot; data-zidan-title=&quot;Drop your artwork&quot;&gt;
+&lt;input type=&quot;hidden&quot; name=&quot;properties[Artwork URL]&quot; id=&quot;artwork-url&quot;&gt;</code></pre>
+<pre><code class="language-js">zidanField('#artwork', {
+  upload: function (file, context) {
+    var body = new FormData();
+    body.append('file', file);
+    fetch('/apps/your-app/upload', { method: 'POST', body: body, signal: context.signal })
+      .then(function (response) {
+        return response.ok ? response.json() : Promise.reject(response.status);
+      })
+      .then(function (json) {
+        context.complete(json);
+        document.getElementById('artwork-url').value = json.url;
+      })
+      .catch(context.fail);
+  }
+});</code></pre>
+<p>Never mark the upload as <code>autoUpload</code> on a price-bearing form unless the upload endpoint is ready — the property field stays empty until the upload completes.</p>
+<h3 id="9f-headless-storefronts-hydrogen-remix-nextjs">9f. Headless storefronts (Hydrogen, Remix, Next.js)</h3>
+<p>Use the npm package and the framework lifecycle patterns from <a href="frameworks.html">frameworks.md</a>:</p>
+<pre><code class="language-jsx">import { useEffect, useRef } from 'react';
+import { zidanSelect } from 'zidan-select';
+import 'zidan-select/css/core';
+import 'zidan-select/css/theme';
+
+export function VariantPicker() {
+  const ref = useRef(null);
+  useEffect(() =&gt; {
+    const instance = zidanSelect(ref.current, { mode: 'combobox' });
+    return () =&gt; instance.destroy();
+  }, []);
+  return &lt;select ref={ref} name=&quot;id&quot;&gt;{/* variant options */}&lt;/select&gt;;
+}</code></pre>
+<h3 id="9g-shopify-caveats">9g. Shopify caveats</h3>
+<ul><li><strong>Checkout is off-limits.</strong> Theme code cannot run there. For Plus stores, <code>checkout.liquid</code> is deprecated — use Checkout UI Extensions.</li><li><strong>Shipping to many merchants?</strong> Package the assets in a theme app extension's app-embed block instead of editing each theme; the embed block can inject the CSS/JS on the storefront.</li><li><strong>Two copies of the library</strong>: some apps ship ZidanForm themselves. Check <code>window.ZidanForm</code> in the console before enqueuing your own copy.</li><li><strong>CSP and asset URLs</strong> are not an issue for theme assets served by <code>asset_url</code>.</li></ul>
+<hr>
+<h2 id="10-copy-paste-recipes">10. Copy-paste recipes</h2>
+<p>Change the theme for one area (or set it on <code>&lt;html&gt;</code> for the whole site):</p>
+<pre><code class="language-html">&lt;html data-zidan-theme=&quot;modern&quot;&gt;
+&lt;!-- or --&gt;
+&lt;form class=&quot;zidan-form&quot; data-zidan-theme=&quot;dark&quot; data-zidan-layout=&quot;floating&quot;&gt;</code></pre>
+<p>Match an existing CSS framework:</p>
+<pre><code class="language-html">&lt;html data-zidan-framework=&quot;bootstrap&quot;&gt;    &lt;!-- or tailwind / bulma / foundation --&gt;</code></pre>
+<p>Searchable combobox:</p>
+<pre><code class="language-html">&lt;select name=&quot;city&quot; class=&quot;zidan-select&quot;
+        data-zidan-options='{&quot;mode&quot;:&quot;combobox&quot;,&quot;searchable&quot;:true,&quot;clearable&quot;:true}'&gt;…&lt;/select&gt;</code></pre>
+<p>Tags input (Enter commits, Backspace removes the last tag):</p>
+<pre><code class="language-html">&lt;select name=&quot;skills&quot; class=&quot;zidan-select&quot; multiple
+        data-zidan-options='{&quot;mode&quot;:&quot;tags&quot;,&quot;maxTags&quot;:5,&quot;placeholder&quot;:&quot;Type a skill…&quot;}'&gt;…&lt;/select&gt;</code></pre>
+<p>Phone input with country selector:</p>
+<pre><code class="language-html">&lt;input type=&quot;tel&quot; name=&quot;phone&quot; data-zidan=&quot;input&quot; data-zidan-phone=&quot;true&quot;
+       data-zidan-phone-country=&quot;US&quot; data-zidan-phone-format=&quot;national&quot;&gt;</code></pre>
+<p>Number stepper with a hold-to-repeat button:</p>
+<pre><code class="language-html">&lt;input type=&quot;number&quot; name=&quot;qty&quot; min=&quot;1&quot; max=&quot;20&quot; value=&quot;1&quot; data-zidan=&quot;input&quot;
+       data-zidan-stepper=&quot;split&quot; data-zidan-stepper-long-press=&quot;true&quot;&gt;</code></pre>
+<p>Range with a live output:</p>
+<pre><code class="language-html">&lt;input type=&quot;range&quot; name=&quot;budget&quot; min=&quot;0&quot; max=&quot;500&quot; step=&quot;10&quot; value=&quot;200&quot;
+       data-zidan=&quot;input&quot; data-zidan-output=&quot;#budget-out&quot;&gt;
+&lt;output id=&quot;budget-out&quot;&gt;200&lt;/output&gt;</code></pre>
+<p>Text field with prefix, suffix, counter and clear button:</p>
+<pre><code class="language-html">&lt;input type=&quot;text&quot; name=&quot;amount&quot; maxlength=&quot;12&quot;
+       data-zidan=&quot;input&quot; data-zidan-prefix=&quot;$&quot; data-zidan-suffix=&quot;USD&quot;
+       data-zidan-counter=&quot;12&quot; data-zidan-clear&gt;</code></pre>
+<p>Switch and card-style checkbox:</p>
+<pre><code class="language-html">&lt;input type=&quot;checkbox&quot; name=&quot;news&quot; data-zidan=&quot;checkbox&quot; data-zidan-variant=&quot;switch&quot;&gt;
+
+&lt;label&gt;
+  &lt;input type=&quot;checkbox&quot; name=&quot;plan&quot; value=&quot;pro&quot; data-zidan=&quot;checkbox&quot;
+         data-zidan-variant=&quot;card&quot; data-zidan-label=&quot;Pro plan&quot;
+         data-zidan-description=&quot;Unlimited projects&quot;&gt;
+&lt;/label&gt;</code></pre>
+<p>Card-style radio group (put the attributes on the <code>&lt;fieldset&gt;</code>):</p>
+<pre><code class="language-html">&lt;fieldset data-zidan=&quot;radio-group&quot; data-zidan-variant=&quot;tile&quot;&gt;
+  &lt;legend&gt;Plan&lt;/legend&gt;
+  &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;plan&quot; value=&quot;starter&quot; checked&gt; Starter&lt;/label&gt;
+  &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;plan&quot; value=&quot;pro&quot;&gt; Pro&lt;/label&gt;
+&lt;/fieldset&gt;</code></pre>
+<p>File uploads: dropzone with limits, avatar, gallery:</p>
+<pre><code class="language-html">&lt;input type=&quot;file&quot; name=&quot;docs&quot; multiple accept=&quot;.pdf,image/*&quot; data-zidan=&quot;file&quot;
+       data-zidan-max-files=&quot;3&quot; data-zidan-max-size-mb=&quot;5&quot;
+       data-zidan-title=&quot;Drop documents here&quot;&gt;
+
+&lt;input type=&quot;file&quot; name=&quot;avatar&quot; accept=&quot;image/*&quot; data-zidan=&quot;file&quot;
+       data-zidan-file-variant=&quot;avatar&quot;&gt;
+
+&lt;input type=&quot;file&quot; name=&quot;shots&quot; multiple accept=&quot;image/*&quot; data-zidan=&quot;file&quot;
+       data-zidan-file-variant=&quot;gallery&quot;&gt;</code></pre>
+<p>Upload to your own endpoint (no JS needed):</p>
+<pre><code class="language-html">&lt;input type=&quot;file&quot; name=&quot;cv&quot; data-zidan=&quot;file&quot; data-zidan-upload-url=&quot;/upload.php&quot;
+       data-zidan-max-size-mb=&quot;5&quot;&gt;</code></pre>
+<p>Custom uploader in JS (fetch, with abort and progress):</p>
+<pre><code class="language-js">zidanField('#cv', {
+  upload: function (file, context) {
+    fetch('/api/upload', {
+      method: 'POST',
+      body: context.formData,
+      signal: context.signal
+    }).then(function (response) {
+      return response.ok ? response.json() : Promise.reject(response.status);
+    }).then(context.complete).catch(context.fail);
+  }
+});</code></pre>
+<hr>
+<h2 id="11-troubleshooting">11. Troubleshooting</h2>
+<div class="table-wrap"><table><thead><tr><th>Symptom</th><th>Likely cause and fix</th></tr></thead><tbody><tr><td>Controls still look native</td><td>CSS 404 — open DevTools → Network and check both stylesheets load. <code>plugin-core.css</code> alone is not enough.</td></tr><tr><td>Nothing is enhanced, console is clean</td><td>Script 404, or the file was loaded twice and ignored. Check the <code>src</code> path and search the page source for a second copy.</td></tr><tr><td><code>ZidanSelect: target element not found</code></td><td>The call ran before the markup, or the selector is wrong (IDs are case-sensitive). Move the script to the end of <code>&lt;body&gt;</code>, add <code>defer</code>, or wrap in <code>DOMContentLoaded</code>.</td></tr><tr><td>Some fields work, others do not</td><td>The untouched ones lack <code>data-zidan*</code>/<code>zidan-field</code>. Unmarked file inputs are only picked up inside <code>.zidan-form</code>. Compare with section 2.</td></tr><tr><td><code>data-zidan-options</code> is ignored</td><td>Use single quotes for the attribute and double quotes inside the JSON. Only literal values are allowed; check the console for the warning.</td></tr><tr><td>Posted value is empty</td><td>Give the native control a <code>name</code>. The visible widget mirrors the real <code>&lt;select&gt;</code>/<code>&lt;input&gt;</code>.</td></tr><tr><td>File upload stays at 0%</td><td>No endpoint configured. Add <code>data-zidan-upload-url</code> / <code>uploadUrl</code>, or <code>simulateUpload: true</code> for demos.</td></tr><tr><td>Styles clash with Bootstrap/Tailwind</td><td>Set <code>data-zidan-framework=&quot;bootstrap&quot;</code> (or <code>tailwind</code>) on <code>&lt;html&gt;</code> or the form; load theme CSS after the framework CSS.</td></tr><tr><td>WordPress: nothing loads</td><td>A caching/optimisation plugin moved or combined the files. View the page source for <code>zidan-form</code>; exclude the files and purge the cache.</td></tr><tr><td>WordPress: form plugin styles fight back</td><td>Start with <code>formTargets: ['#form-id']</code> on one form instead of site-wide marker classes.</td></tr><tr><td>Shopify: controls stay native</td><td>The theme asset is not referenced in <code>layout/theme.liquid</code>, or a theme-cache/CDN is serving an old layout. Check the page source for <code>asset_url</code> output and the three files.</td></tr></tbody></table></div>
+<hr>
+<h2 id="what-next">What next</h2>
+<ul><li>Every option and data attribute: <a href="options.html">options.md</a></li><li>Native, jQuery Validation, JustValidate and Parsley: <a href="validation.html">validation.md</a></li><li>Tokens, presets, layouts and adapters: <a href="theming.html">theming.md</a></li><li>React, Next.js, Vue/Nuxt, Svelte/SvelteKit and Angular, including SSR and reactive forms: <a href="frameworks.html">frameworks.md</a></li><li>Click through one control at a time: <a href="https://akhtar1985.github.io/zidan-select/playground.html" rel="noopener">field playground</a></li><li>More trimmed-build details: <a href="build.html#select-only-and-file-only-builds">build.md</a></li></ul>
+    </div>
+    <p class="doc-source-note">
+      Markdown source: <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/html-and-wordpress.md" rel="noopener">docs/html-and-wordpress.md</a>.
+      Generated by <code>scripts/docs.mjs</code> — edit the Markdown, not this page.
+    </p>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="../index.html">Demo</a> ·
+        <a href="../playground.html">Playground</a> ·
+        <a href="index.html">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="../nav.js"></script>
+</body>
+</html>

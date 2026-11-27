@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Theming — ZidanForm docs</title>
+  <meta name="description" content="Tokens, presets, layouts, framework adapters and custom themes.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/docs/theming.html">
+  <meta name="theme-color" content="#4f6bed">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:title" content="Theming — ZidanForm docs">
+  <meta property="og:description" content="Tokens, presets, layouts, framework adapters and custom themes.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/docs/theming.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../plugin-core.css">
+  <link rel="stylesheet" href="../plugin-theme.css">
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+  <a class="skip-link" href="#docs-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="../index.html">Demo</a>
+      <a href="../advanced.html">Advanced</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../api.html">API</a>
+      <a href="../ajax.html">AJAX</a>
+      <a href="../shopify.html">Shopify</a>
+      <a href="../index.html#compare">Compare</a>
+      <a href="../index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="index.html">Documentation index</a>
+          <a href="options.html">Options &amp; data attributes</a>
+          <a href="comparison.html">Why &amp; comparison</a>
+          <a href="frameworks.html">Frameworks</a>
+          <a href="html-and-wordpress.html">HTML &amp; WordPress</a>
+          <a href="validation-guide.html">Validation</a>
+          <a href="theming.html" aria-current="page">Theming</a>
+          <a href="build.html">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
+      </select>
+    </nav>
+  </header>
+  <main id="docs-main" class="wrap docs-main">
+    <section class="hero docs-hero" aria-labelledby="docs-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Documentation · reference</p>
+      <h1 id="docs-title">Theming</h1>
+      <p class="doc-blurb">Tokens, presets, layouts, framework adapters and custom themes.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="../playground.html">Try the playground</a>
+        <a class="btn" href="index.html">All documentation</a>
+        <a class="btn" href="../advanced.html">Advanced API</a>
+      </div>
+    </section>
+    <div class="docs-content">
+<h2 id="theming">Theming</h2>
+<p><code>plugin-core.css</code> contains structure only: layout, positioning, the 1×1 px native-input mechanism and visibility rules. Every colour, border, shadow and skin is in <code>plugin-theme.css</code>, driven by <code>--zs-*</code> custom properties.</p>
+<p>Load order:</p>
+<pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;plugin-core.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;plugin-theme.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;my-theme.css&quot;&gt;   &lt;!-- optional overrides --&gt;</code></pre>
+<h2 id="resolution-order">Resolution order</h2>
+<div class="table-wrap"><table><thead><tr><th>Level</th><th>Wins over</th></tr></thead><tbody><tr><td><code>style=&quot;--zs-primary: …&quot;</code></td><td>everything</td></tr><tr><td><code>data-zs-theme</code> / <code>data-zs-framework</code> on the control wrapper</td><td>ancestors</td></tr><tr><td>Wrapper (<code>form</code>, section) attributes</td><td><code>&lt;html&gt;</code></td></tr><tr><td><code>&lt;html data-zs-theme=&quot;dark&quot; data-zs-framework=&quot;bootstrap&quot;&gt;</code></td><td>theme defaults</td></tr></tbody></table></div>
+<p>Themes and frameworks resolve independently: you can combine <code>dark</code> + <code>bootstrap</code>.</p>
+<h2 id="presets">Presets</h2>
+<pre><code class="language-html">&lt;form data-zs-theme=&quot;dark&quot;&gt;</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Preset</th><th>Character</th></tr></thead><tbody><tr><td><code>default</code></td><td>Neutral greys, indigo <code>#4f6bed</code>, 10px radius.</td></tr><tr><td><code>modern</code></td><td>Softer indigo, 12px radius, layered shadows.</td></tr><tr><td><code>minimal</code></td><td>Near-black borders, 4px radius, no shadows.</td></tr><tr><td><code>dark</code></td><td><code>#161a23</code> surfaces, <code>#7c8cff</code> accent, light text, dark-native pickers.</td></tr><tr><td><code>glass</code></td><td>Translucent white, blurred surfaces, works over imagery.</td></tr></tbody></table></div>
+<h2 id="tokens">Tokens</h2>
+<h3 id="typography-geometry">Typography &amp; geometry</h3>
+<div class="table-wrap"><table><thead><tr><th>Token</th><th>Default</th></tr></thead><tbody><tr><td><code>--zs-font-family</code></td><td><code>inherit</code></td></tr><tr><td><code>--zs-font-size</code></td><td><code>0.9375rem</code></td></tr><tr><td><code>--zs-line-height</code></td><td><code>1.4</code></td></tr><tr><td><code>--zs-label-size</code></td><td><code>0.8125rem</code></td></tr><tr><td><code>--zs-height</code></td><td><code>44px</code></td></tr><tr><td><code>--zs-radius</code></td><td><code>10px</code></td></tr><tr><td><code>--zs-chip-radius</code></td><td><code>8px</code></td></tr><tr><td><code>--zs-border-width</code></td><td><code>1px</code></td></tr><tr><td><code>--zs-padding-x</code> / <code>--zs-padding-y</code></td><td><code>12px</code> / <code>5px</code></td></tr><tr><td><code>--zs-gap</code></td><td><code>6px</code></td></tr><tr><td><code>--zs-dropdown-radius</code> / <code>--zs-dropdown-border-width</code></td><td><code>12px</code> / <code>1px</code></td></tr><tr><td><code>--zs-option-radius</code></td><td><code>8px</code></td></tr><tr><td><code>--zs-option-padding-y</code> / <code>--zs-option-padding-x</code></td><td><code>9px</code> / <code>12px</code></td></tr></tbody></table></div>
+<h3 id="colour">Colour</h3>
+<div class="table-wrap"><table><thead><tr><th>Token</th><th>Default</th><th>Used by</th></tr></thead><tbody><tr><td><code>--zs-bg</code></td><td><code>#ffffff</code></td><td>control, input shell, cards</td></tr><tr><td><code>--zs-text</code></td><td><code>#16181d</code></td><td>labels, values, options</td></tr><tr><td><code>--zs-text-muted</code></td><td><code>#6b7280</code></td><td>hints, counters, clear buttons</td></tr><tr><td><code>--zs-placeholder</code></td><td><code>#9aa1ac</code></td><td>placeholders</td></tr><tr><td><code>--zs-border-color</code></td><td><code>#dfe3e8</code></td><td>idle borders</td></tr><tr><td><code>--zs-border-color-hover</code></td><td><code>#c3c9d2</code></td><td>hover</td></tr><tr><td><code>--zs-border-color-focus</code></td><td><code>#4f6bed</code></td><td>focus</td></tr><tr><td><code>--zs-border-color-invalid</code> / <code>--zs-border-color-valid</code></td><td><code>#dc3545</code> / <code>#198754</code></td><td>validation</td></tr><tr><td><code>--zs-primary</code> / <code>--zs-primary-contrast</code></td><td><code>#4f6bed</code> / <code>#fff</code></td><td>checked, focus, accents</td></tr><tr><td><code>--zs-primary-soft</code></td><td><code>#eef1fd</code></td><td>card checked, hover wash</td></tr><tr><td><code>--zs-focus-ring</code> / <code>--zs-focus-ring-width</code></td><td><code>rgba(79,107,237,.22)</code> / <code>3px</code></td><td>focus ring</td></tr><tr><td><code>--zs-chip-bg</code> / <code>-text</code> / <code>-border</code></td><td><code>#eef1fd</code> / <code>#33407a</code> / <code>#dfe5fb</code></td><td>tags</td></tr><tr><td><code>--zs-dropdown-bg</code> / <code>-border</code> / <code>-shadow</code></td><td>white / <code>#e6e9ee</code> / layered shadow</td><td>listbox</td></tr><tr><td><code>--zs-option-hover-bg</code> / <code>-active-bg</code> / <code>-active-text</code></td><td>greys/indigo</td><td>listbox options</td></tr><tr><td><code>--zs-option-selected-bg</code> / <code>-selected-text</code></td><td>indigo tints</td><td>selected options</td></tr><tr><td><code>--zs-group-text</code></td><td><code>#8b93a1</code></td><td>listbox groups</td></tr></tbody></table></div>
+<h3 id="field-tokens">Field tokens</h3>
+<div class="table-wrap"><table><thead><tr><th>Token</th><th>Default</th></tr></thead><tbody><tr><td><code>--zs-check-size</code></td><td><code>20px</code></td></tr><tr><td><code>--zs-check-radius</code></td><td><code>6px</code></td></tr><tr><td><code>--zs-check-gap</code></td><td><code>10px</code></td></tr><tr><td><code>--zs-check-bg</code> / <code>--zs-check-border</code></td><td><code>#fff</code> / <code>#c3c9d2</code></td></tr><tr><td><code>--zs-check-mark</code></td><td><code>#fff</code></td></tr><tr><td><code>--zs-check-checked-bg</code> / <code>-checked-border</code></td><td><code>#4f6bed</code> / <code>#4f6bed</code></td></tr><tr><td><code>--zs-switch-width</code> / <code>-height</code></td><td><code>40px</code> / <code>22px</code></td></tr><tr><td><code>--zs-switch-off</code> / <code>--zs-switch-knob</code></td><td><code>#d6dae1</code> / <code>#fff</code></td></tr><tr><td><code>--zs-radio-size</code></td><td><code>18px</code></td></tr><tr><td><code>--zs-radio-border</code> / <code>--zs-radio-gap</code></td><td><code>#c3c9d2</code> / <code>10px</code></td></tr><tr><td><code>--zs-file-drop-bg</code> / <code>--zs-file-drop-border</code></td><td><code>#f8f9fc</code> / <code>#cfd5de</code></td></tr><tr><td><code>--zs-file-thumb-bg</code> / <code>-text</code></td><td><code>#eef1fd</code> / <code>#4a5590</code></td></tr><tr><td><code>--zs-field-gap</code></td><td><code>6px</code></td></tr></tbody></table></div>
+<h3 id="input-icons-stepper-phone-range-upload">Input icons, stepper, phone, range &amp; upload</h3>
+<div class="table-wrap"><table><thead><tr><th>Token</th><th>Default</th><th>Used by</th></tr></thead><tbody><tr><td><code>--zs-icon-color</code> / <code>--zs-icon-hover-bg</code></td><td>muted text / primary-soft</td><td>input icons, upload glyph</td></tr><tr><td><code>--zs-stepper-color</code> / <code>--zs-stepper-hover-bg</code></td><td>text / primary-soft</td><td>− / + buttons</td></tr><tr><td><code>--zs-phone-border</code></td><td>border colour</td><td>country <code>&lt;select&gt;</code> separator</td></tr><tr><td><code>--zs-switch-width-lg</code> / <code>-height-lg</code></td><td>larger track</td><td>material/square/labeled styles</td></tr><tr><td><code>--zs-switch-on-text</code> / <code>--zs-switch-off-text</code></td><td>white / muted</td><td>labeled &amp; icon switches</td></tr><tr><td><code>--zs-radius-pill</code></td><td><code>999px</code></td><td>button checkbox/radio variants</td></tr><tr><td><code>--zs-avatar-size</code></td><td><code>96px</code></td><td>avatar file variant</td></tr><tr><td><code>--zs-avatar-bg</code> / <code>--zs-avatar-border</code></td><td>primary-soft / border</td><td>avatar target &amp; preview fallback</td></tr><tr><td><code>--zs-range-track</code> / <code>--zs-range-fill</code></td><td>border / primary</td><td>default &amp; minimal range</td></tr><tr><td><code>--zs-range-gradient</code></td><td>linear-gradient</td><td>gradient variant</td></tr><tr><td><code>--zs-range-thumb-bg</code> / <code>-thumb-border</code></td><td>white / primary</td><td>range thumbs</td></tr><tr><td><code>--zs-range-tick</code> / <code>--zs-range-tick-text</code></td><td>border / muted</td><td>tick marks and labels</td></tr><tr><td><code>--zs-range-bubble-bg</code> / <code>-bubble-text</code></td><td>text / white</td><td>value bubble</td></tr><tr><td><code>--zs-upload-track</code> / <code>--zs-upload-bar</code> / <code>--zs-upload-success</code></td><td>border / primary / green</td><td>progress bar and states</td></tr></tbody></table></div>
+<h3 id="variant-hooks">Variant hooks</h3>
+<p>Variants are selected per control and can be restyled with attribute selectors — no JS:</p>
+<pre><code class="language-css">/* checkbox pill */
+.zs-field[data-zs-variant=&quot;button&quot;] .zs-check { --zs-pill-bg: #ecfdf3; }
+/* radio tiles */
+.zs-radio-group[data-zs-variant=&quot;tile&quot;] .zs-radio { border-radius: 14px; }
+/* switch skins */
+.zs-field[data-zs-switch-style=&quot;ios&quot;] .zs-switch-track::after { box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+/* file variants */
+.zs-field[data-zs-file-variant=&quot;avatar&quot;] { --zs-avatar-size: 128px; }
+.zs-field[data-zs-file-variant=&quot;gallery&quot;] .zs-file-list { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+/* range skins */
+.zs-range[data-zs-range=&quot;gradient&quot;] { --zs-range-gradient: linear-gradient(90deg, #22c55e, #eab308); }</code></pre>
+<p><code>data-zs-file-variant</code> is set on the field root; the drop target also carries <code>zs-file-drop--&lt;variant&gt;</code>. <code>data-zs-range</code> is set on <code>.zs-range</code>, and validation-driven icons/progress are keyed off <code>[data-zs-validation]</code> and <code>data-zs-upload-state</code>.</p>
+<h3 id="scrollbar">Scrollbar</h3>
+<p><code>--zs-scrollbar-size</code>, <code>--zs-scrollbar-thumb</code>, <code>--zs-scrollbar-thumb-hover</code>, <code>--zs-scrollbar-thumb-reveal</code> (hover variant), <code>--zs-scrollbar-track</code>.</p>
+<h2 id="custom-theme">Custom theme</h2>
+<pre><code class="language-css">.my-brand {
+  --zs-primary: #e11d48;
+  --zs-primary-soft: #fff1f4;
+  --zs-border-color-focus: #e11d48;
+  --zs-focus-ring: rgba(225, 29, 72, 0.22);
+  --zs-check-checked-bg: #e11d48;
+  --zs-check-checked-border: #e11d48;
+  --zs-radius: 14px;
+  --zs-dropdown-radius: 16px;
+}</code></pre>
+<pre><code class="language-html">&lt;form class=&quot;my-brand&quot;&gt;…&lt;/form&gt;</code></pre>
+<p>No JS change is needed when the tokens apply to a wrapper class. For a named preset that also works with <code>data-zs-theme=&quot;brand&quot;</code> and <code>setTheme('brand')</code>, register the name first:</p>
+<pre><code class="language-js">ZidanForm.themes.push('brand');   // register before fields initialise</code></pre>
+<pre><code class="language-html">&lt;form data-zs-theme=&quot;brand&quot;&gt;…&lt;/form&gt;</code></pre>
+<pre><code class="language-css">[data-zs-theme=&quot;brand&quot;] { /* tokens */ }</code></pre>
+<p><code>ZidanForm.themes</code> is the live list the plugin validates against, so a pushed name survives initialisation and is written to the field root as <code>data-zs-theme</code>. Names that were never registered fall back to <code>default</code>; pushing after fields exist only affects <code>setTheme()</code> calls made afterwards.</p>
+<h2 id="automatic-dark-mode">Automatic dark mode</h2>
+<p><code>theme: 'auto'</code> (or <code>data-zs-theme=&quot;auto&quot;</code>) resolves to <code>dark</code> when the OS prefers dark and to <code>default</code> otherwise:</p>
+<pre><code class="language-js">zidanSelect('#city', { theme: 'auto' });</code></pre>
+<p>One shared <code>matchMedia('(prefers-color-scheme: dark)')</code> listener updates every auto root live; <code>setTheme('auto')</code> re-arms it and <code>destroy()</code> removes the tracking. <code>auto</code> is resolved in JS, so there is no <code>[data-zs-theme=&quot;auto&quot;]</code> CSS block — the root carries the resolved <code>dark</code>/<code>default</code> name. To drive it yourself instead, set the attribute before init:</p>
+<pre><code class="language-html">&lt;script&gt;
+  if (matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.setAttribute('data-zs-theme', 'dark');
+  }
+&lt;/script&gt;</code></pre>
+<p><code>setTheme()</code> on an instance does the same for one field.</p>
+<h2 id="select-layouts">Select layouts</h2>
+<div class="table-wrap"><table><thead><tr><th>Layout</th><th>Notes</th></tr></thead><tbody><tr><td><code>classic-clean</code></td><td>10px radius, standard height, soft dropdown shadow.</td></tr><tr><td><code>floating-label</code></td><td>Label starts as placeholder, lifts on focus/value.</td></tr><tr><td><code>soft-pill</code></td><td>Pill trigger and chips, tinted surface.</td></tr><tr><td><code>bordered-brutalist</code></td><td>2px black border, zero radius, offset shadow, yellow accent.</td></tr><tr><td><code>glass-elevated</code></td><td>Blur, translucency, elevated shadows, solid fallback without <code>backdrop-filter</code>.</td></tr></tbody></table></div>
+<h2 id="field-layouts">Field layouts</h2>
+<div class="table-wrap"><table><thead><tr><th>Layout</th><th>Notes</th></tr></thead><tbody><tr><td><code>stacked</code></td><td>Label, control, hint vertically.</td></tr><tr><td><code>inline</code></td><td>Label and control on one row.</td></tr><tr><td><code>compact</code></td><td>34px control height, smaller label.</td></tr><tr><td><code>floating</code></td><td>Label lives inside the shell and lifts when filled/focused.</td></tr><tr><td><code>outlined</code></td><td>Like floating, with the label notching the border.</td></tr><tr><td><code>card</code></td><td>Adds a padded card surface around the field.</td></tr></tbody></table></div>
+<p><code>grid</code> is not a field layout value — the grid lives on the wrapper:</p>
+<pre><code class="language-html">&lt;div class=&quot;zs-form-grid&quot;&gt;
+  &lt;input data-zidan=&quot;input&quot; data-zidan-label=&quot;First name&quot;&gt;
+  &lt;input data-zidan=&quot;input&quot; data-zidan-label=&quot;Last name&quot;&gt;
+  &lt;textarea data-zidan=&quot;textarea&quot; data-zidan-label=&quot;Notes&quot; class=&quot;zs-full&quot;&gt;&lt;/textarea&gt;
+&lt;/div&gt;</code></pre>
+<p><code>--zs-grid-min</code> / <code>--zs-grid-gap</code> control the auto-fit columns.</p>
+<h2 id="framework-adapters">Framework adapters</h2>
+<p><code>data-zs-framework</code> (or the <code>framework</code> option) accepts <code>none</code>, <code>vanilla</code>, <code>bootstrap</code>, <code>tailwind</code>, <code>bulma</code>, <code>foundation</code>. Adapters only remap tokens plus a few structural compat rules (Bootstrap <code>input-group</code>, for example). Nothing depends on the framework's JavaScript.</p>
+<pre><code class="language-html">&lt;html data-zs-framework=&quot;bootstrap&quot;&gt;   &lt;!-- whole page --&gt;
+&lt;form data-zs-framework=&quot;tailwind&quot;&gt;    &lt;!-- one form --&gt;</code></pre>
+<h2 id="scrollbar-variants">Scrollbar variants</h2>
+<pre><code class="language-html">&lt;select data-zidan-select=&quot;combobox&quot; data-zidan-scrollbar=&quot;fancy&quot;&gt;</code></pre>
+<div class="table-wrap"><table><thead><tr><th>Value</th><th>Chromium / Safari</th><th>Firefox</th></tr></thead><tbody><tr><td><code>default</code></td><td>8px rounded thumb</td><td>thin native gutter, <code>scrollbar-color</code></td></tr><tr><td><code>thin</code></td><td>6px</td><td>thin native</td></tr><tr><td><code>fancy</code></td><td>gradient thumb on tinted track</td><td>flat accent thumb (no gradients possible)</td></tr><tr><td><code>hover</code></td><td>invisible until hover/focus, soft 0.3 then 0.45 on the thumb</td><td>soft 0.3 on listbox hover only</td></tr><tr><td><code>hidden</code></td><td>no visible bar, still scrollable</td><td><code>scrollbar-width: none</code></td></tr></tbody></table></div>
+<h2 id="reduced-motion-forced-colours">Reduced motion &amp; forced colours</h2>
+<p>Both are handled in the stylesheets. Keep animations in custom themes behind <code>@media (prefers-reduced-motion: no-preference)</code>.</p>
+    </div>
+    <p class="doc-source-note">
+      Markdown source: <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/theming.md" rel="noopener">docs/theming.md</a>.
+      Generated by <code>scripts/docs.mjs</code> — edit the Markdown, not this page.
+    </p>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="../index.html">Demo</a> ·
+        <a href="../playground.html">Playground</a> ·
+        <a href="index.html">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="../nav.js"></script>
+</body>
+</html>

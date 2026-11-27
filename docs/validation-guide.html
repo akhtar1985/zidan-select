@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Validation compatibility — ZidanForm docs</title>
+  <meta name="description" content="Native constraints, jQuery Validation, JustValidate, Parsley and submit guards.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/docs/validation-guide.html">
+  <meta name="theme-color" content="#4f6bed">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ZidanForm">
+  <meta property="og:title" content="Validation compatibility — ZidanForm docs">
+  <meta property="og:description" content="Native constraints, jQuery Validation, JustValidate, Parsley and submit guards.">
+  <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/docs/validation-guide.html">
+  <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../plugin-core.css">
+  <link rel="stylesheet" href="../plugin-theme.css">
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="../nav.css">
+  <link rel="stylesheet" href="../docs.css">
+</head>
+<body>
+  <a class="skip-link" href="#docs-main">Skip to content</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+  <header class="site-header">
+    <a class="brand" href="../index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="../index.html">Demo</a>
+      <a href="../advanced.html">Advanced</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../api.html">API</a>
+      <a href="../ajax.html">AJAX</a>
+      <a href="../shopify.html">Shopify</a>
+      <a href="../index.html#compare">Compare</a>
+      <a href="../index.html#faq">FAQ</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="index.html">Documentation index</a>
+          <a href="options.html">Options &amp; data attributes</a>
+          <a href="comparison.html">Why &amp; comparison</a>
+          <a href="frameworks.html">Frameworks</a>
+          <a href="html-and-wordpress.html">HTML &amp; WordPress</a>
+          <a href="validation-guide.html" aria-current="page">Validation</a>
+          <a href="theming.html">Theming</a>
+          <a href="build.html">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+      <label class="sr-only" for="quick-theme">Page theme</label>
+      <select id="quick-theme" aria-label="Page theme">
+        <option value="default">Default theme</option>
+        <option value="modern">Modern</option>
+        <option value="minimal">Minimal</option>
+        <option value="dark">Dark</option>
+        <option value="glass">Glass</option>
+        <option value="auto">Auto (OS)</option>
+      </select>
+    </nav>
+  </header>
+  <main id="docs-main" class="wrap docs-main">
+    <section class="hero docs-hero" aria-labelledby="docs-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Documentation · reference</p>
+      <h1 id="docs-title">Validation compatibility</h1>
+      <p class="doc-blurb">Native constraints, jQuery Validation, JustValidate, Parsley and submit guards.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="../playground.html">Try the playground</a>
+        <a class="btn" href="index.html">All documentation</a>
+        <a class="btn" href="../advanced.html">Advanced API</a>
+      </div>
+    </section>
+    <div class="docs-content">
+<h2 id="validation-compatibility">Validation compatibility</h2>
+<p>ZidanForm wraps controls but never removes them. The native input keeps its <code>name</code>, <code>value</code>, <code>checked</code>, <code>files</code>, <code>required</code>, <code>disabled</code> and validity state, which is why native validation, <code>FormData</code> and third-party validators keep working.</p>
+<blockquote><p><strong>Runnable test bench:</strong> <a href="validation.html"><code>validation.html</code></a> loads jQuery Validation, JustValidate and Parsley from a CDN next to a native form and the same plugin markup. Open it via a local server (<code>npm run dev</code> → <code>/docs/validation.html</code>) and submit each empty form.</p></blockquote>
+<h2 id="how-state-is-mirrored">How state is mirrored</h2>
+<div class="table-wrap"><table><thead><tr><th>Signal</th><th>Written by</th><th>Used for</th></tr></thead><tbody><tr><td><code>input.validity</code></td><td>the browser</td><td>source of truth</td></tr><tr><td><code>input.setCustomValidity()</code></td><td>plugin</td><td>phone length, weekends, blocked dates, custom <code>validate</code>, file limits</td></tr><tr><td><code>aria-invalid</code></td><td>plugin (<code>setValidation</code>) or your validator</td><td>screen readers and CSS</td></tr><tr><td><code>.zs-field--invalid</code> / <code>.zs-field--valid</code></td><td>plugin</td><td>theme states</td></tr><tr><td><code>.zs-field--pending</code> / <code>aria-busy</code></td><td>plugin</td><td>in-flight async rule</td></tr><tr><td>`data-zs-validation=&quot;valid\</td><td>invalid\</td><td>pending&quot;`</td><td>plugin</td><td>attribute-based styling</td></tr></tbody></table></div>
+<p>The plugin marks a field invalid when:</p>
+<ol><li><code>invalid</code> fires on the native control, or</li><li>the control is blurred with <code>validity.valid === false</code>, or</li><li>you call <code>field.setValidation('invalid')</code>.</li></ol>
+<p>It clears the state on <code>input</code>/<code>change</code> once validity passes, on <code>form.reset()</code>, and whenever <code>setValidation(null)</code> is called. <code>data-zidan-validation=&quot;invalid&quot;</code> forces the state without native validity.</p>
+<p>A state set through the public <code>setValidation('invalid')</code> (and a preset <code>data-zidan-validation=&quot;invalid&quot;</code>) is <strong>pinned against re-renders</strong>: <code>update()</code>, <code>refresh()</code> and internal validity mirrors or async re-checks do not clear it. The pin is released by the next <code>input</code>, <code>change</code> or <code>blur</code>, or by <code>setValidation(null)</code> / <code>setValidation('valid')</code>. Programmatic value helpers can release it too: field <code>setValue()</code> / <code>setChecked()</code> dispatch <code>change</code>, and applying a non-empty select value clears the select's invalid option. Internal mirrors pass a second argument (<code>setValidation(state, true)</code>) so they never pin a state.</p>
+<h2 id="built-in-rules-written-into-native-validity">Built-in rules (written into native validity)</h2>
+<p>These rules call <code>input.setCustomValidity(message)</code>, so <code>form.checkValidity()</code>, <code>:invalid</code>, <code>validationMessage</code> and third-party validators that read native validity all see them. Clearing the value (or fixing it) clears the message.</p>
+<div class="table-wrap"><table><thead><tr><th>Control</th><th>Rule</th><th>Enable with</th><th>Message key</th></tr></thead><tbody><tr><td><code>tel</code></td><td>Length per country (10–11 digits for GB, 10 for US, …)</td><td><code>data-zidan-phone</code>, <code>phone.validate !== false</code></td><td><code>messages.phone</code> (<code>{country}</code>, <code>{min}</code>, <code>{max}</code>)</td></tr><tr><td><code>date</code></td><td>Sat/Sun blocked</td><td><code>data-zidan-disable-weekends</code></td><td><code>messages.weekend</code></td></tr><tr><td><code>date</code></td><td>Specific ISO dates blocked</td><td><code>data-zidan-disabled-dates=&quot;2026-12-25,…&quot;</code> or <code>disabledDates</code> function</td><td><code>messages.dateDisabled</code></td></tr><tr><td><code>date</code></td><td>Custom date rule</td><td>JS <code>validateDate(value, date, field)</code></td><td><code>messages.date</code> or the returned string</td></tr><tr><td>text / textarea</td><td>Custom rule</td><td>JS <code>validate(value, field)</code></td><td><code>messages.generic</code> or the returned string</td></tr><tr><td>file</td><td>Count / size / type</td><td><code>maxFiles</code>, <code>maxSize</code> (or <code>maxSizeMB</code>), <code>accept</code></td><td><code>messages.fileCount</code>, <code>fileSize</code>, <code>fileType</code></td></tr></tbody></table></div>
+<pre><code class="language-js">zidanField('#start', {
+  disableWeekends: true,
+  disabledDates: ['2026-12-25', '2027-01-01'],
+  validateDate(value, date) {
+    return date &lt; new Date('2026-11-01') ? 'Pick a date after 1 November.' : true;
+  }
+});</code></pre>
+<p>Override any message globally before initialising:</p>
+<pre><code class="language-js">Object.assign(ZidanForm.messages, {
+  phone: 'Enter a valid {country} number ({min}–{max} digits).',
+  weekend: 'We are closed at weekends — pick a weekday.',
+  fileSize: '“{name}” is {size}; the limit is {limit}.'
+});</code></pre>
+<h2 id="async-rules">Async rules</h2>
+<p><code>validate</code> and <code>validateDate</code> may return a Promise. The field then:</p>
+<ol><li>shows a <code>.zs-field--pending</code> spinner and <code>aria-busy=&quot;true&quot;</code>,</li><li>writes <code>messages.pending</code> (<code>Checking…</code>) into native validity, so <code>form.checkValidity()</code></li></ol>
+<p>and any submit handler wait for the answer,</p>
+<ol><li>aborts the previous request when the value changes and ignores stale resolutions,</li><li>resolves <code>validate()</code> to <code>true</code>/<code>false</code> instead of a boolean,</li><li>emits <code>zidan:async-validation</code> with <code>{ valid, message }</code>.</li></ol>
+<p>Validators receive an <code>AbortSignal</code> as their third argument (after <code>value</code>/<code>checked</code> and the field) and may reject — the rejection message is shown as the error.</p>
+<pre><code class="language-js">const email = zidanField('#email', {
+  alwaysValidate: true,
+  showValidState: true,
+  validate: async (value, field, { signal }) =&gt; {
+    if (!value) return true;
+    const res = await fetch('/api/check-email?e=' + encodeURIComponent(value), { signal });
+    const { taken } = await res.json();
+    return taken ? 'This address is already registered.' : true;
+  }
+});
+
+await email.validate();      // Promise&lt;boolean&gt;
+email.isPending();           // true while the request is in flight</code></pre>
+<p>Submission is blocked while pending because the native control carries the pending message; listen for <code>zidan:async-validation</code> if you need your own spinner or toast. <code>destroy()</code> aborts any in-flight check, and <code>form.reset()</code> clears the pending state.</p>
+<h2 id="the-hidden-input-trap">The hidden-input trap</h2>
+<p>jQuery Validation's default <code>ignore: &quot;:hidden&quot;</code> checks <code>offsetWidth</code>/<code>offsetHeight</code>. The plugin's native controls are positioned at 1×1 px with <code>opacity: 0</code> and <code>clip-path</code>, never <code>display: none</code>, so they stay measurable and are validated. If your configuration or a wrapper still hides them, use an explicit ignore list:</p>
+<pre><code class="language-js">$('#form').validate({
+  ignore: ':hidden:not(.zs-native-input)',   // or simply: ignore: []
+});</code></pre>
+<h2 id="native-html5">Native HTML5</h2>
+<pre><code class="language-html">&lt;form id=&quot;native-form&quot; novalidate&gt;
+  &lt;input required minlength=&quot;3&quot; data-zidan=&quot;input&quot; data-zidan-label=&quot;Name&quot;&gt;
+  &lt;input type=&quot;email&quot; required data-zidan=&quot;input&quot; data-zidan-label=&quot;Email&quot;&gt;
+  &lt;fieldset data-zidan=&quot;radio-group&quot; data-zidan-variant=&quot;inline&quot;&gt;
+    &lt;legend&gt;Plan&lt;/legend&gt;
+    &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;plan&quot; value=&quot;pro&quot; required&gt; Pro&lt;/label&gt;
+    &lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;plan&quot; value=&quot;basic&quot;&gt; Basic&lt;/label&gt;
+  &lt;/fieldset&gt;
+  &lt;input type=&quot;file&quot; required data-zidan=&quot;file&quot;&gt;
+  &lt;button&gt;Send&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+<pre><code class="language-js">const form = document.getElementById('native-form');
+
+form.addEventListener('submit', event =&gt; {
+  event.preventDefault();
+  form.querySelectorAll('[data-zidan], [data-zidan-select]').forEach(node =&gt; {
+    const field = node.__zidanField || node.__zidanSelect;
+    if (field) field.update();
+  });
+
+  if (!form.checkValidity()) {
+    form.querySelector(':invalid')?.focus();
+    return;
+  }
+  submit(new FormData(form));
+});</code></pre>
+<p>Radio groups: validity belongs to the radios. <code>field.setValidation('invalid')</code> marks every radio, which paints the group border through the theme.</p>
+<h2 id="jquery-validation">jQuery Validation</h2>
+<pre><code class="language-html">&lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/jquery-validation@1.20.0/dist/jquery.validate.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+<pre><code class="language-js">$('#form').validate({
+  ignore: [],
+  rules: {
+    email: { required: true, email: true }
+  },
+  errorPlacement(error, element) {
+    const field = element.closest('.zs-field');
+    if (field) field.appendChild(error);
+    else element.after(error);
+  },
+  highlight(element) {
+    element.attr('aria-invalid', 'true');
+    element.closest('.zs-field')?.classList.add('zs-field--invalid');
+  },
+  unhighlight(element) {
+    element.removeAttr('aria-invalid');
+    element.closest('.zs-field')?.classList.remove('zs-field--invalid');
+  }
+});</code></pre>
+<ul><li>Put the plugin's native controls where jQuery can see them (default markup does).</li><li>Do not call <code>field.destroy()</code> inside validation callbacks; the field keeps working while jQuery toggles classes.</li><li><code>$('form').valid()</code> works unchanged.</li></ul>
+<h2 id="justvalidate">JustValidate</h2>
+<pre><code class="language-js">import JustValidate from 'just-validate';
+
+const validator = new JustValidate('#form', {
+  errorFieldCssClass: 'zs-field--invalid',
+  errorLabelStyle: { fontSize: '0.75rem', color: 'var(--zs-border-color-invalid)' },
+  errorsContainer: '#form-errors'
+});
+
+validator
+  .addField('#email', [{ rule: 'required' }, { rule: 'email' }])
+  .addField('#notes', [{ rule: 'maxLength', value: 240 }])
+  .onSuccess(event =&gt; {
+    event.preventDefault();
+    console.log(Object.fromEntries(new FormData(event.target)));
+  });</code></pre>
+<p>JustValidate adds its class to the native control; give your theme a matching rule if you want the wrapper painted:</p>
+<pre><code class="language-css">.zs-field:has(&gt; .zs-input-shell &gt; .zs-field--invalid) .zs-input-shell { border-color: red; }</code></pre>
+<p>(The built-in <code>data-zs-validation</code> state from <code>onValidation</code> is usually enough.)</p>
+<h2 id="parsley">Parsley</h2>
+<pre><code class="language-html">&lt;input name=&quot;email&quot; type=&quot;email&quot; required
+       data-zidan=&quot;input&quot; data-zidan-label=&quot;Email&quot;
+       data-parsley-required data-parsley-type=&quot;email&quot;&gt;</code></pre>
+<pre><code class="language-js">$('#form').parsley({
+  errorsContainer(parsleyField) {
+    return parsleyField.$element.closest('.zs-field');
+  },
+  errorClass: 'zs-field--invalid',
+  successClass: 'zs-field--valid'
+});</code></pre>
+<p>Parsley appends error <code>&lt;ul&gt;</code> elements after the input. When the input is wrapped by the plugin, they land inside <code>.zs-input-shell</code>; the <code>errorsContainer</code> override above places them under the field instead.</p>
+<h2 id="preventing-double-submits">Preventing double submits</h2>
+<p>The plugin never submits forms. It mirrors state and writes custom rules into native validity, so your submit handler stays in charge. Use an idempotent guard:</p>
+<pre><code class="language-js">const form = document.getElementById('form');
+form.addEventListener('submit', async event =&gt; {
+  event.preventDefault();
+  if (form.dataset.busy === '1') return;
+  form.dataset.busy = '1';
+  try {
+    await fetch(form.action, { method: form.method, body: new FormData(form) });
+  } finally {
+    delete form.dataset.busy;
+  }
+});</code></pre>
+<p>For buttons, also set <code>disabled</code> while pending — the plugin mirrors <code>disabled</code> onto every control after <code>field.update()</code>.</p>
+<h2 id="reset-and-dynamic-content">Reset and dynamic content</h2>
+<p><code>form.reset()</code> restores native values; every field listens for <code>reset</code> and re-renders one tick later, clearing validation classes. When you replace form markup (framework re-render):</p>
+<pre><code class="language-js">ZidanForm.observe(form);      // initialise added nodes automatically
+ZidanForm.refresh(form);      // re-sync existing fields without recreating them</code></pre>
+<h2 id="manual-validation-api">Manual validation API</h2>
+<pre><code class="language-js">const field = ZidanForm.get(document.getElementById('email'));
+field.setValidation('invalid');   // classes + aria-invalid
+field.setValidation('valid');
+field.setValidation(null);        // clean
+field.getValidation();            // 'valid' | 'invalid' | null</code></pre>
+<p><code>zidan:validation</code> bubbles from the wrapper for analytics or summary lists.</p>
+<h3 id="whole-form-validation-and-serialization">Whole-form validation and serialization</h3>
+<pre><code class="language-js">const form = document.querySelector('#signup');
+const data = ZidanForm.serialize(form);       // repeated names become arrays
+const ok = await ZidanForm.validate(form);    // runs field rules + native constraints
+if (ok) await fetch('/signup', { method: 'POST', body: JSON.stringify(data) });</code></pre>
+<p><code>ZidanForm.validate(form, { focus: false })</code> skips focusing the first invalid control. <code>zidan:validate</code> bubbles with <code>{ valid, form, fields }</code> once all checks settle.</p>
+<h2 id="checklist">Checklist</h2>
+<ul><li>[ ] Core control still has <code>name</code> and appears in <code>new FormData(form)</code>.</li><li>[ ] <code>form.checkValidity()</code> returns <code>false</code> with an empty required field.</li><li>[ ] Submitting invalid does not double-fire (busy guard).</li><li>[ ] <code>aria-invalid</code> is present on the native input, not only on the wrapper.</li><li>[ ] After <code>form.reset()</code>, values and error classes are cleared.</li><li>[ ] <code>destroy()</code> leaves a working plain form.</li></ul>
+    </div>
+    <p class="doc-source-note">
+      Markdown source: <a href="https://github.com/akhtar1985/zidan-select/blob/main/docs/validation.md" rel="noopener">docs/validation.md</a>.
+      Generated by <code>scripts/docs.mjs</code> — edit the Markdown, not this page.
+    </p>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        <strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="../index.html">Demo</a> ·
+        <a href="../playground.html">Playground</a> ·
+        <a href="index.html">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="../nav.js"></script>
+</body>
+</html>

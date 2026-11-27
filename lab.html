@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-zs-theme="default" data-zs-framework="none" data-zidan-auto-init="false">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testing lab — ZidanForm</title>
+  <meta name="description" content="Live testing lab for ZidanForm: every option, JavaScript method, zidan:* event, CSS class and token, the demo pages and the version/docs sync — checked against the real build.">
+  <link rel="canonical" href="https://akhtar1985.github.io/zidan-select/lab.html">
+  <meta name="theme-color" content="#4f6bed">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="demo.css">
+  <link rel="stylesheet" href="nav.css">
+  <link rel="stylesheet" href="lab.css">
+  <script>
+    /* Pick the build under test before the plugin styles load. */
+    (function () {
+      var map = {
+        full: { label: 'Full build', core: 'plugin-core.css', theme: 'plugin-theme.css', js: 'zidan-form.js' },
+        select: { label: 'Select-only build', core: 'dist/select/plugin-select-core.css', theme: 'dist/select/plugin-select-theme.css', js: 'dist/select/zidan-select.js' },
+        file: { label: 'File-only build', core: 'dist/file/plugin-file-core.css', theme: 'dist/file/plugin-file-theme.css', js: 'dist/file/zidan-file.js' }
+      };
+      var key = new URLSearchParams(location.search).get('bundle') || 'full';
+      if (!map[key]) key = 'full';
+      window.ZIDAN_LAB_BUNDLE = key;
+      window.ZIDAN_LAB_BUNDLES = map;
+      window.ZIDAN_LAB_ASSETS = map[key];
+      document.write('<link rel="stylesheet" href="' + map[key].core + '">');
+      document.write('<link rel="stylesheet" href="' + map[key].theme + '">');
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#lab-main">Skip to the lab</a>
+  <div class="bg-orbs" aria-hidden="true"><span class="orb"></span></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <span class="logo-mark" aria-hidden="true">Z</span>
+      <span>
+        <span class="brand-name">ZidanForm</span>
+        <span class="brand-sub">v2.5.0 · testing lab</span>
+      </span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>Menu</span>
+    </button>
+    <nav class="header-nav" id="site-nav" aria-label="Project links">
+      <a href="index.html">Demo</a>
+      <a href="lab.html" aria-current="page">Lab</a>
+      <a href="advanced.html">Advanced</a>
+      <a href="playground.html">Playground</a>
+      <a href="api.html">API</a>
+      <a href="ajax.html">AJAX</a>
+      <a href="shopify.html">Shopify</a>
+      <details class="nav-docs">
+        <summary>Docs</summary>
+        <div class="nav-docs-panel">
+          <a href="docs/">Documentation index</a>
+          <a href="docs/options.html">Options &amp; data attributes</a>
+          <a href="docs/comparison.html">Why &amp; comparison</a>
+          <a href="docs/frameworks.html">Frameworks</a>
+          <a href="docs/html-and-wordpress.html">HTML &amp; WordPress</a>
+          <a href="docs/validation-guide.html">Validation</a>
+          <a href="docs/theming.html">Theming</a>
+          <a href="docs/build.html">Build &amp; publish</a>
+        </div>
+      </details>
+      <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      <a href="https://www.npmjs.com/package/zidan-select">npm</a>
+    </nav>
+  </header>
+
+  <main id="lab-main" class="wrap lab-main">
+    <section class="hero lab-hero" aria-labelledby="lab-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Quality gate · live harness</p>
+      <h1 id="lab-title">Testing lab</h1>
+      <p class="doc-blurb">
+        Everything here runs against the real build, not a screenshot. The coverage board counts
+        every option, callback, public method, <code>zidan:*</code> event, CSS class and CSS token
+        read from the plugin source, then marks what this page actually exercised.
+        <strong>Run all self-tests</strong> calls each public method, fires each event with a real
+        interaction and reports pass/fail + bugs.
+      </p>
+      <div class="lab-toolbar">
+        <span class="lab-bundle-group" role="group" aria-label="Build under test">
+          <a class="btn lab-bundle" data-bundle="full" href="lab.html?bundle=full">Full</a>
+          <a class="btn lab-bundle" data-bundle="select" href="lab.html?bundle=select">Select-only</a>
+          <a class="btn lab-bundle" data-bundle="file" href="lab.html?bundle=file">File-only</a>
+        </span>
+        <button type="button" class="btn btn-primary" id="lab-run">Run all self-tests</button>
+        <button type="button" class="btn" id="lab-reset">Reset coverage</button>
+        <span class="lab-status" id="lab-bundle-label" role="status" aria-live="polite"></span>
+      </div>
+      <p class="lab-status" id="lab-runtime" role="status" aria-live="polite"></p>
+    </section>
+<div class="lab-grid">
+      <section class="card lab-card lab-card--wide" aria-labelledby="lab-coverage-title">
+        <div class="lab-card-head">
+          <h2 id="lab-coverage-title">Coverage board</h2>
+          <span class="lab-pill" id="lab-score">0%</span>
+        </div>
+        <div id="lab-coverage-groups" class="lab-coverage-groups"></div>
+        <div class="lab-legend">
+          <span><i class="lab-dot lab-dot--ok"></i> exercised</span>
+          <span><i class="lab-dot lab-dot--miss"></i> not exercised</span>
+          <span><i class="lab-dot lab-dot--warn"></i> drift / missing</span>
+        </div>
+      </section>
+
+      <section class="card lab-card" aria-labelledby="lab-audit-title">
+        <div class="lab-card-head">
+          <h2 id="lab-audit-title">Version &amp; docs audit</h2>
+          <span class="lab-pill" id="lab-audit-pill">—</span>
+        </div>
+        <ul class="lab-checklist" id="lab-audit"></ul>
+      </section>
+
+      <section class="card lab-card" aria-labelledby="lab-select-title">
+        <div class="lab-card-head">
+          <h2 id="lab-select-title">Select / combobox / tags</h2>
+          <span class="lab-pill" id="lab-select-pill">—</span>
+        </div>
+        <div id="lab-select-host" class="lab-stack"></div>
+      </section>
+
+      <section class="card lab-card" aria-labelledby="lab-field-title">
+        <div class="lab-card-head">
+          <h2 id="lab-field-title">Fields: text, number, phone, range, date, check, radio, file</h2>
+          <span class="lab-pill" id="lab-field-pill">—</span>
+        </div>
+        <div id="lab-field-host" class="lab-stack"></div>
+      </section>
+
+      <section class="card lab-card lab-card--wide" aria-labelledby="lab-method-title">
+        <div class="lab-card-head">
+          <h2 id="lab-method-title">Public methods</h2>
+          <span class="lab-pill" id="lab-method-pill">—</span>
+        </div>
+        <p class="lab-note">One button per method generated from the declarations. Each calls the
+          real method and logs its return value or thrown error.</p>
+        <div id="lab-method-groups" class="lab-method-groups"></div>
+      </section>
+
+      <section class="card lab-card" aria-labelledby="lab-event-title">
+        <div class="lab-card-head">
+          <h2 id="lab-event-title">Events</h2>
+          <span class="lab-pill" id="lab-event-pill">—</span>
+        </div>
+        <ul class="lab-event-list" id="lab-events-list"></ul>
+      </section>
+
+      <section class="card lab-card" aria-labelledby="lab-css-title">
+        <div class="lab-card-head">
+          <h2 id="lab-css-title">CSS classes &amp; tokens</h2>
+          <span class="lab-pill" id="lab-css-pill">—</span>
+        </div>
+        <div id="lab-css-summary" class="lab-css-summary"></div>
+        <details class="lab-details">
+          <summary>Tokens (<span id="lab-token-count">0</span>)</summary>
+          <div id="lab-token-list" class="lab-token-list"></div>
+        </details>
+        <details class="lab-details">
+          <summary>Classes (<span id="lab-class-count">0</span>)</summary>
+          <div id="lab-class-list" class="lab-class-list"></div>
+        </details>
+      </section>
+
+      <section class="card lab-card" aria-labelledby="lab-form-title">
+        <div class="lab-card-head">
+          <h2 id="lab-form-title">Form helpers</h2>
+          <span class="lab-pill" id="lab-form-pill">—</span>
+        </div>
+        <form id="lab-form" class="lab-form">
+          <input id="lab-form-name" name="name" type="text" value="Ada Lovelace" required data-zidan="input" data-zidan-label="Name">
+          <input id="lab-form-email" name="email" type="email" value="ada@example.com" required data-zidan="input" data-zidan-label="Email">
+          <textarea id="lab-form-note" name="note" rows="2" data-zidan="textarea" data-zidan-label="Note">Hello from the testing lab.</textarea>
+        </form>
+        <div class="lab-toolbar">
+          <button type="button" class="btn" id="lab-form-serialize">serialize()</button>
+          <button type="button" class="btn btn-primary" id="lab-form-validate">validate()</button>
+          <button type="button" class="btn" id="lab-form-destroy">destroy()</button>
+        </div>
+        <pre class="lab-output" id="lab-form-output" aria-live="polite">Run a helper to see its result.</pre>
+      </section>
+    </div>
+
+    <section class="card lab-card lab-card--wide" aria-labelledby="lab-result-title">
+      <div class="lab-card-head">
+        <h2 id="lab-result-title">Results &amp; callback log</h2>
+        <button type="button" class="btn" id="lab-clear">Clear</button>
+      </div>
+      <ol class="lab-log" id="lab-results" aria-live="polite"></ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>ZidanForm</strong> — MIT licensed, no dependencies.
+        <a href="index.html">Demo</a> ·
+        <a href="docs/">Documentation</a> ·
+        <a href="https://github.com/akhtar1985/zidan-select">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script src="lab-inventory.js"></script>
+  <script>
+    /* Load the selected build, then the harness — never assume document.write ordering. */
+    (function () {
+      function boot() {
+        var app = document.createElement('script');
+        app.src = 'lab-app.js';
+        app.defer = false;
+        document.body.appendChild(app);
+      }
+      var build = document.createElement('script');
+      build.src = window.ZIDAN_LAB_ASSETS.js;
+      build.onload = boot;
+      build.onerror = boot;   /* lab-app reports the missing build instead of hanging */
+      document.body.appendChild(build);
+    })();
+  </script>
+</body>
+</html>

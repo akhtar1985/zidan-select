@@ -1470,6 +1470,25 @@ test('getTags returns the tag values in order', () => {
   assert.equal(typeof select.getTags()[0], 'string');
 });
 
+test('scoped destroy tears down only the controls inside a subtree', () => {
+  const window = boot('<div id="a"><select id="sa"><option>One</option></select><input id="fa" data-zidan-input></div><div id="b"><select id="sb"><option>Two</option></select><input id="fb" data-zidan-input></div>');
+  const selectA = window.zidanSelect('#sa');
+  const fieldA = window.zidanField('#fa');
+  const selectB = window.zidanSelect('#sb');
+  const fieldB = window.zidanField('#fb');
+
+  assert.equal(window.ZidanForm.destroy('#a'), 2);
+  assert.equal(selectA.el.__zidanSelect, undefined);
+  assert.equal(fieldA.el.__zidanField, undefined);
+  assert.ok(selectB.el.__zidanSelect, 'select outside the scope must survive');
+  assert.ok(fieldB.el.__zidanField, 'field outside the scope must survive');
+  assert.equal(window.ZidanForm.destroy(window.document.getElementById('missing')), 0);
+
+  assert.equal(window.ZidanForm.destroy(), 2);
+  assert.equal(window.ZidanSelect.instances.length, 0);
+  assert.equal(window.ZidanForm.fields.length, 0);
+});
+
 /* ---------------- v2.5.0 extension features ---------------- */
 
 test('input mask formats literals and exposes mask/unmask helpers', () => {
