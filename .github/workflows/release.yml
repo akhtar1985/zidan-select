@@ -48,6 +48,7 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       - name: Check the tag matches package.json
+        id: versioncheck
         if: github.event_name == 'push'
         run: |
           set -eu
@@ -59,19 +60,23 @@ jobs:
             exit 1
           fi
 
-      - name: Refuse to republish an existing version
+      - name: Check whether npm already has this version
+        id: npmcheck
         run: |
           set -eu
           pkg="$(node -p "require('./package.json').version")"
           if npm view "zidan-select@$pkg" version >/dev/null 2>&1; then
-            echo "::error::zidan-select@$pkg is already on npm. Bump it with npm run release."
-            exit 1
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "zidan-select@$pkg is already on npm; skipping publish, will still refresh the GitHub release."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "publishing zidan-select@$pkg"
           fi
-          echo "publishing zidan-select@$pkg"
 
       # `npm publish` runs prepublishOnly first: types → build → test.
       # Prereleases go to the `next` dist-tag so `latest` stays stable.
       - name: Publish with provenance
+        if: steps.npmcheck.outputs.exists == 'false'
         run: |
           set -eu
           pkg="$(node -p "require('./package.json').version")"
@@ -86,7 +91,9 @@ jobs:
       # matching CHANGELOG.md section, so release notes need no second write-up;
       # a version with no section falls back to GitHub's generated notes.
       - name: Create the GitHub release
-        if: success() && github.event_name == 'push'
+        # Run even when publishing was skipped (already on npm) or failed, so
+        # the tag always gets a release entry from CHANGELOG.md.
+        if: always() && github.event_name == 'push' && steps.versioncheck.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
