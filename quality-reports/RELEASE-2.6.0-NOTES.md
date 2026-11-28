@@ -46,7 +46,7 @@ console covers every public event.
 ## Verification
 
 93 DOM tests, TypeScript checks for bundler and node16 consumers, lint, package checks and all
-four quality labs pass. The packed tarball is 40 files / 407,128 bytes and resolves all 33
+four quality labs pass. The packed tarball is 40 files / 406,410 bytes and resolves all 33
 export targets.
 
 ## Known limits

@@ -58,10 +58,10 @@ try {
   step('a dependency-free copy rebuilds dist through prepare', () => {
     copyTree(root, rebuild);
     execFileSync(process.execPath, [path.join(rebuild, 'scripts', 'build.mjs')], { cwd: rebuild, stdio: 'pipe' });
-    for (const file of ['dist/select/zidan-select.js', 'dist/file/zidan-file.js', 'dist/select/zidan-select.d.ts', 'dist/plugin-core.min.css']) {
+    for (const file of ['dist/select/zidan-select.js', 'dist/file/zidan-file.js', 'dist/select/zidan-select.d.ts', 'dist/plugin-core.css']) {
       assert(fs.existsSync(path.join(rebuild, file)), 'missing after prepare: ' + file);
     }
-    return 'dist/select, dist/file and minified CSS present without node_modules';
+    return 'dist/select, dist/file and CSS present without node_modules';
   });
 
   const info = pack();
@@ -79,6 +79,9 @@ try {
   step('every export subpath resolves for CJS and ESM', () => {
     fs.mkdirSync(consumer, { recursive: true });
     fs.writeFileSync(path.join(consumer, 'package.json'), JSON.stringify({ name: 'zidan-consumer', private: true, version: '1.0.0' }, null, 2));
+    const tarball = path.join(packDir, info.filename);
+    const localTarball = path.join(consumer, info.filename);
+    fs.copyFileSync(tarball, localTarball);
     let installedBy = 'npm install';
     try {
       execSync('npm install ./' + info.filename + ' --no-audit --no-fund', { cwd: consumer, stdio: 'pipe' });
@@ -89,7 +92,8 @@ try {
       if (!/allow-scripts/i.test(output)) throw new Error('npm install failed: ' + output.slice(0, 600));
       const target = path.join(consumer, 'node_modules', 'zidan-select');
       fs.mkdirSync(target, { recursive: true });
-      execFileSync('tar', ['-xzf', 'pack/' + info.filename, '-C', 'consumer/node_modules/zidan-select', '--strip-components=1'], { cwd: work, stdio: 'pipe' });
+      const tarPath = path.relative(target, localTarball).split(path.sep).join('/');
+      execFileSync('tar', ['-xzf', tarPath, '--strip-components=1'], { cwd: target, stdio: 'pipe' });
       installedBy = 'tarball extraction';
     }
     const probe = [

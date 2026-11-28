@@ -22,6 +22,7 @@
 | `node scripts/lab-inventory.mjs --check` | Up to date — select 86 options/18 callbacks/41 methods; field 133/19/53; 33 events; 158 classes/100 tokens |
 | `git diff --check` | Clean |
 | Secret-like pattern scan | No matches |
+| CI pack-check follow-up | Clean rebuild asserts core CSS (esbuild is optional); consumer tarball is copied before install and extracted from its own directory |
 | CI size-line-ending follow-up | Full-build docs normalized to LF (310,366 B, 303 kB); `scripts/sizes.mjs` and `scripts/test.mjs` normalize CRLF, and `.gitattributes` pins LF |
 | AJAX browser style check | `pre` padding 16px, radius 14px, background rgb(17,22,42); 3 copy controls; no console errors |
 
@@ -33,8 +34,8 @@ missing named regressions for older fixed bugs; neither is a failing probe.
 | Measure | 2.6.0 candidate | Published 2.5.1 |
 | --- | ---: | ---: |
 | Files | **40** | 53 |
-| Tarball bytes | **407,128** | 973,607 |
-| Unpacked bytes | **1,752,550** | 2,729,081 |
+| Tarball bytes | **406,410** | 973,607 |
+| Unpacked bytes | **1,738,158** | 2,729,081 |
 | Root declaration bytes | **36,996** | 24,346 |
 
 Every difference is accounted for:
