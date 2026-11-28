@@ -27,6 +27,16 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* iOS zooms the page when a focused control is below 16px. Keep the control
+   text at 16px on narrow screens; desktop keeps the compact 15px default. */
+@media (max-width: 640px) {
+  .zs-root,
+  .zs-field,
+  .zs-radio-group {
+    --zs-font-size: 1rem;
+  }
+}
+
 .zs-root *,
 .zs-root *::before,
 .zs-root *::after,

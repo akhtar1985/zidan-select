@@ -9,7 +9,7 @@ Contents:
 
 1. [Pick the files first](#1-pick-the-files-first)
 2. [Five ways to switch a control on](#2-five-ways-to-switch-a-control-on)
-3. [Complete static page — full build](#3-complete-static-page-full-build)
+3. [Complete static page: full build](#3-complete-static-page-full-build)
 4. [Complete select-only page](#4-complete-select-only-page)
 5. [Complete file-only page](#5-complete-file-only-page)
 6. [Enhance by ID or class from JavaScript](#6-enhance-by-id-or-class-from-javascript)
@@ -159,7 +159,7 @@ Define the config **before** the library script. IDs, classes and full selectors
 
 ---
 
-## 3. Complete static page — full build
+## 3. Complete static page: full build
 
 Save this as `index.html` and open it in a browser (double-clicking the file works). Every
 control is enhanced automatically; the script at the bottom only pretends to submit so you can

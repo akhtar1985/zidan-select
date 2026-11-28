@@ -1324,6 +1324,18 @@
        typing cannot filter or hide the options */
     if (this.mode === 'select' && !opts.searchable) input.readOnly = true;
     if (opts.ariaLabel || opts.label) input.setAttribute('aria-label', opts.ariaLabel || opts.label);
+    /* the native control is hidden, so carry its own accessible name over */
+    if (!opts.ariaLabel && !opts.label && this.el.getAttribute) {
+      var nativeAriaLabel = this.el.getAttribute('aria-label');
+      if (nativeAriaLabel) input.setAttribute('aria-label', nativeAriaLabel);
+    }
+    /* the combobox is a new <input>, so an author <label for="select-id"> no
+       longer names it; point aria-labelledby at that label instead */
+    if (!input.getAttribute('aria-label') && !input.getAttribute('aria-labelledby') && this.el.labels && this.el.labels[0]) {
+      var sourceLabel = this.el.labels[0];
+      if (!sourceLabel.id) sourceLabel.id = this.id + '-label';
+      input.setAttribute('aria-labelledby', sourceLabel.id);
+    }
     if (opts.disabled) input.disabled = true;
     this._applyCustomClass(input, 'input');
 
@@ -1931,9 +1943,12 @@
         var lastGroup = null;
         var groupWrap = null;
         var groupSeq = 0;
+        /* build the whole list off-document and insert it once: appending each
+           option to the live dropdown forced a layout per row on large lists */
+        var fragment = doc.createDocumentFragment();
 
         if (virtualWindow && virtualWindow.top > 0) {
-          self.dropdown.appendChild(self._virtualSpacer(virtualWindow.top));
+          fragment.appendChild(self._virtualSpacer(virtualWindow.top));
         }
 
         items.slice(firstIndex, lastIndex).forEach(function (item, offset) {
@@ -1945,7 +1960,7 @@
               var groupId = self.id + '-grp-' + groupSeq;
               groupWrap = el('div', 'zs-group', { role: 'group', 'aria-labelledby': groupId });
               groupWrap.appendChild(el('div', 'zs-group-label', { id: groupId }, item.group));
-              self.dropdown.appendChild(groupWrap);
+              fragment.appendChild(groupWrap);
               lastGroup = item.group;
             } else if (!item.group) {
               groupWrap = null;
@@ -1998,12 +2013,13 @@
           }
 
           self.rendered[index] = { element: option, item: item, index: index };
-          (groupWrap || self.dropdown).appendChild(option);
+          (groupWrap || fragment).appendChild(option);
         });
 
         if (virtualWindow && virtualWindow.bottom > 0) {
-          self.dropdown.appendChild(self._virtualSpacer(virtualWindow.bottom));
+          fragment.appendChild(self._virtualSpacer(virtualWindow.bottom));
         }
+        self.dropdown.appendChild(fragment);
         self._virtualState = virtualWindow;
       }
 
@@ -2094,9 +2110,17 @@
     if (typeof this.opts.fetchOptions === 'function' && (!this.asyncItems || this.asyncQuery !== '')) {
       this._fetch('');
     } else if (this.mode !== 'tags') {
-      var first = this._firstEnabledIndex();
-      if (first !== -1) {
-        this.activeIndex = first;
+      /* Opening with the keyboard or a click should start on the current
+         selection, not on the placeholder. Otherwise ArrowDown + Enter can
+         clear a value the user already chose. */
+      var active = -1;
+      var items = this._visibleItems();
+      for (var i = 0; i < items.length; i += 1) {
+        if (!items[i].disabled && this._hasValue(items[i].value)) { active = i; break; }
+      }
+      if (active === -1) active = this._firstEnabledIndex();
+      if (active !== -1) {
+        this.activeIndex = active;
         this._renderDropdown();
       }
     }
@@ -6972,7 +6996,10 @@
     }
     var created = [];
     nodes.forEach(function (node) {
-      if (node.__zidanField) return;
+      if (node.__zidanField && !(options && options.force)) {
+        created.push(node.__zidanField);
+        return;
+      }
       // zidanField() accepts a plain input/textarea too, so JS-only options
       // (output, counter, clearable, …) work without a data attribute
       var kind = fieldKindFor(node) || inferredTextKind(node);

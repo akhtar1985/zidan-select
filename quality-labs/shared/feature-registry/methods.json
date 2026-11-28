@@ -1,0 +1,5785 @@
+{
+  "schemaVersion": 1,
+  "package": {
+    "name": "zidan-select",
+    "version": "2.5.0"
+  },
+  "sourceHash": "225b7da0f1f336c8d4f7415b0cb26d5f831159d24282396ab14da278cc865329",
+  "methods": [
+    {
+      "id": "ZS-SELECT-METHOD-addTag",
+      "component": "select",
+      "kind": "method",
+      "name": "addTag",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2512
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.addTag"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1152
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-announce",
+      "component": "select",
+      "kind": "method",
+      "name": "announce",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3389
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.announce"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1155
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-areAllSelected",
+      "component": "select",
+      "kind": "method",
+      "name": "areAllSelected",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2571
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.areAllSelected"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 78
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-clear",
+      "component": "select",
+      "kind": "method",
+      "name": "clear",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3214
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.clear"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 378
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-clearCache",
+      "component": "select",
+      "kind": "method",
+      "name": "clearCache",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2254
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.clearCache"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 888
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-close",
+      "component": "select",
+      "kind": "method",
+      "name": "close",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2139
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.close"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 927
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-deselectAll",
+      "component": "select",
+      "kind": "method",
+      "name": "deselectAll",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2562
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.deselectAll"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 78
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-destroy",
+      "component": "select",
+      "kind": "method",
+      "name": "destroy",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3403
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.destroy"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 81
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-disable",
+      "component": "select",
+      "kind": "method",
+      "name": "disable",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3280
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.disable"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 750
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-editTag",
+      "component": "select",
+      "kind": "method",
+      "name": "editTag",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2605
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.editTag"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1263
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-enable",
+      "component": "select",
+      "kind": "method",
+      "name": "enable",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3274
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.enable"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 928
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-getAsyncState",
+      "component": "select",
+      "kind": "method",
+      "name": "getAsyncState",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2403
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.getAsyncState"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 888
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-getSelectedItems",
+      "component": "select",
+      "kind": "method",
+      "name": "getSelectedItems",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2544
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.getSelectedItems"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 78
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-getTags",
+      "component": "select",
+      "kind": "method",
+      "name": "getTags",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2540
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.getTags"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 57
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-getValue",
+      "component": "select",
+      "kind": "method",
+      "name": "getValue",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3184
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.getValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 487
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-hasMoreResults",
+      "component": "select",
+      "kind": "method",
+      "name": "hasMoreResults",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2399
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.hasMoreResults"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 887
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-isOpen",
+      "component": "select",
+      "kind": "method",
+      "name": "isOpen",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3450
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.isOpen"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 927
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-loadMore",
+      "component": "select",
+      "kind": "method",
+      "name": "loadMore",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2393
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.loadMore"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "ajax.html",
+          "lab.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 887
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-moveTag",
+      "component": "select",
+      "kind": "method",
+      "name": "moveTag",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2579
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.moveTag"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1263
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-off",
+      "component": "select",
+      "kind": "method",
+      "name": "off",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3340
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.off"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 555
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-on",
+      "component": "select",
+      "kind": "method",
+      "name": "on",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3332
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.on"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 26
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-open",
+      "component": "select",
+      "kind": "method",
+      "name": "open",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2093
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.open"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs"
+        ],
+        "demos": [
+          "lab.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 174
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-refresh",
+      "component": "select",
+      "kind": "method",
+      "name": "refresh",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3454
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.refresh"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 676
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-refreshOptions",
+      "component": "select",
+      "kind": "method",
+      "name": "refreshOptions",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2414
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.refreshOptions"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "ajax.html",
+          "lab.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 888
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-removeTag",
+      "component": "select",
+      "kind": "method",
+      "name": "removeTag",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2518
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.removeTag"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1152
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-selectAll",
+      "component": "select",
+      "kind": "method",
+      "name": "selectAll",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2552
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.selectAll"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 78
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-setFramework",
+      "component": "select",
+      "kind": "method",
+      "name": "setFramework",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3300
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.setFramework"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-setLayout",
+      "component": "select",
+      "kind": "method",
+      "name": "setLayout",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3287
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.setLayout"
+      },
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-setOptions",
+      "component": "select",
+      "kind": "method",
+      "name": "setOptions",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3234
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.setOptions"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 497
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-setScrollbar",
+      "component": "select",
+      "kind": "method",
+      "name": "setScrollbar",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3316
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.setScrollbar"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-setTheme",
+      "component": "select",
+      "kind": "method",
+      "name": "setTheme",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1420
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.setTheme"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "demo.js",
+          "lab.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-setValidation",
+      "component": "select",
+      "kind": "method",
+      "name": "setValidation",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3326
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.setValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 824
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-setValue",
+      "component": "select",
+      "kind": "method",
+      "name": "setValue",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3191
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.setValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-toggle",
+      "component": "select",
+      "kind": "method",
+      "name": "toggle",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2161
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.toggle"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 927
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-toggleAll",
+      "component": "select",
+      "kind": "method",
+      "name": "toggleAll",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2566
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.toggleAll"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 78
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-checkAsync",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "checkAsync",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3720
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.checkAsync"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1127
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-checkAsync",
+      "component": "switch",
+      "kind": "method",
+      "name": "checkAsync",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3720
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.checkAsync"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1127
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-checkAsync",
+      "component": "radio",
+      "kind": "method",
+      "name": "checkAsync",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3720
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.checkAsync"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1127
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-checkAsync",
+      "component": "file",
+      "kind": "method",
+      "name": "checkAsync",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3720
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.checkAsync"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1127
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-checkAsync",
+      "component": "text",
+      "kind": "method",
+      "name": "checkAsync",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3720
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.checkAsync"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1127
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-clearError",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "clearError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3798
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.clearError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-clearError",
+      "component": "switch",
+      "kind": "method",
+      "name": "clearError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3798
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.clearError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-clearError",
+      "component": "radio",
+      "kind": "method",
+      "name": "clearError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3798
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.clearError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-clearError",
+      "component": "file",
+      "kind": "method",
+      "name": "clearError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3798
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.clearError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-clearError",
+      "component": "text",
+      "kind": "method",
+      "name": "clearError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3798
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.clearError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-destroy",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "destroy",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3959
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.destroy"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 81
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-destroy",
+      "component": "switch",
+      "kind": "method",
+      "name": "destroy",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3959
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.destroy"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 81
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-destroy",
+      "component": "radio",
+      "kind": "method",
+      "name": "destroy",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3959
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.destroy"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 81
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-destroy",
+      "component": "file",
+      "kind": "method",
+      "name": "destroy",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3959
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.destroy"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 81
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-destroy",
+      "component": "text",
+      "kind": "method",
+      "name": "destroy",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3959
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.destroy"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 81
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-emit",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "emit",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3530
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.emit"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 656
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-emit",
+      "component": "switch",
+      "kind": "method",
+      "name": "emit",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3530
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.emit"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 656
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-emit",
+      "component": "radio",
+      "kind": "method",
+      "name": "emit",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3530
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.emit"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 656
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-emit",
+      "component": "file",
+      "kind": "method",
+      "name": "emit",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3530
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.emit"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 656
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-emit",
+      "component": "text",
+      "kind": "method",
+      "name": "emit",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3530
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.emit"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 656
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-getValidation",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "getValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3900
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-getValidation",
+      "component": "switch",
+      "kind": "method",
+      "name": "getValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3900
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-getValidation",
+      "component": "radio",
+      "kind": "method",
+      "name": "getValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3900
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-getValidation",
+      "component": "file",
+      "kind": "method",
+      "name": "getValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3900
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-getValidation",
+      "component": "text",
+      "kind": "method",
+      "name": "getValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3900
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-getValue",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "getValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3908
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 487
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-getValue",
+      "component": "switch",
+      "kind": "method",
+      "name": "getValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3908
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 487
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-getValue",
+      "component": "radio",
+      "kind": "method",
+      "name": "getValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3908
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 487
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-getValue",
+      "component": "file",
+      "kind": "method",
+      "name": "getValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3908
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 487
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-getValue",
+      "component": "text",
+      "kind": "method",
+      "name": "getValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3908
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.getValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 487
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-isPending",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "isPending",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3904
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.isPending"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1129
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-isPending",
+      "component": "switch",
+      "kind": "method",
+      "name": "isPending",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3904
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.isPending"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1129
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-isPending",
+      "component": "radio",
+      "kind": "method",
+      "name": "isPending",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3904
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.isPending"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1129
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-isPending",
+      "component": "file",
+      "kind": "method",
+      "name": "isPending",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3904
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.isPending"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1129
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-isPending",
+      "component": "text",
+      "kind": "method",
+      "name": "isPending",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3904
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.isPending"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1129
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-on",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "on",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3523
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.on"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 26
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-on",
+      "component": "switch",
+      "kind": "method",
+      "name": "on",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3523
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.on"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 26
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-on",
+      "component": "radio",
+      "kind": "method",
+      "name": "on",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3523
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.on"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 26
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-on",
+      "component": "file",
+      "kind": "method",
+      "name": "on",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3523
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.on"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 26
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-on",
+      "component": "text",
+      "kind": "method",
+      "name": "on",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3523
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.on"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 26
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-refresh",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "refresh",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3955
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.refresh"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 676
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-refresh",
+      "component": "switch",
+      "kind": "method",
+      "name": "refresh",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3955
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.refresh"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 676
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-refresh",
+      "component": "radio",
+      "kind": "method",
+      "name": "refresh",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3955
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.refresh"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 676
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-refresh",
+      "component": "file",
+      "kind": "method",
+      "name": "refresh",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3955
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.refresh"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 676
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-refresh",
+      "component": "text",
+      "kind": "method",
+      "name": "refresh",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3955
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.refresh"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 676
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-setError",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "setError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3775
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-setError",
+      "component": "switch",
+      "kind": "method",
+      "name": "setError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3775
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-setError",
+      "component": "radio",
+      "kind": "method",
+      "name": "setError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3775
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setError",
+      "component": "file",
+      "kind": "method",
+      "name": "setError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3775
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setError",
+      "component": "text",
+      "kind": "method",
+      "name": "setError",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3775
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setError"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-setFramework",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "setFramework",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3581
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setFramework"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-setFramework",
+      "component": "switch",
+      "kind": "method",
+      "name": "setFramework",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3581
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setFramework"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-setFramework",
+      "component": "radio",
+      "kind": "method",
+      "name": "setFramework",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3581
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setFramework"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setFramework",
+      "component": "file",
+      "kind": "method",
+      "name": "setFramework",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3581
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setFramework"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setFramework",
+      "component": "text",
+      "kind": "method",
+      "name": "setFramework",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3581
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setFramework"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-setLayout",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "setLayout",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3587
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setLayout"
+      },
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-setLayout",
+      "component": "switch",
+      "kind": "method",
+      "name": "setLayout",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3587
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setLayout"
+      },
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-setLayout",
+      "component": "radio",
+      "kind": "method",
+      "name": "setLayout",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3587
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setLayout"
+      },
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setLayout",
+      "component": "file",
+      "kind": "method",
+      "name": "setLayout",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3587
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setLayout"
+      },
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setLayout",
+      "component": "text",
+      "kind": "method",
+      "name": "setLayout",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3587
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setLayout"
+      },
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 929
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-setTheme",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "setTheme",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3569
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setTheme"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "demo.js",
+          "lab.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-setTheme",
+      "component": "switch",
+      "kind": "method",
+      "name": "setTheme",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3569
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setTheme"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "demo.js",
+          "lab.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-setTheme",
+      "component": "radio",
+      "kind": "method",
+      "name": "setTheme",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3569
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setTheme"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "demo.js",
+          "lab.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setTheme",
+      "component": "file",
+      "kind": "method",
+      "name": "setTheme",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3569
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setTheme"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "demo.js",
+          "lab.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setTheme",
+      "component": "text",
+      "kind": "method",
+      "name": "setTheme",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3569
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setTheme"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "demo.js",
+          "lab.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 936
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-setValidation",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "setValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3877
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 824
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-setValidation",
+      "component": "switch",
+      "kind": "method",
+      "name": "setValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3877
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 824
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-setValidation",
+      "component": "radio",
+      "kind": "method",
+      "name": "setValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3877
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 824
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setValidation",
+      "component": "file",
+      "kind": "method",
+      "name": "setValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3877
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 824
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setValidation",
+      "component": "text",
+      "kind": "method",
+      "name": "setValidation",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3877
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValidation"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 824
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-setValue",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "setValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3922
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-setValue",
+      "component": "switch",
+      "kind": "method",
+      "name": "setValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3922
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-setValue",
+      "component": "radio",
+      "kind": "method",
+      "name": "setValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3922
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setValue",
+      "component": "file",
+      "kind": "method",
+      "name": "setValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3922
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setValue",
+      "component": "text",
+      "kind": "method",
+      "name": "setValue",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3922
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.setValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-update",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "update",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3949
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.update"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 539
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-update",
+      "component": "switch",
+      "kind": "method",
+      "name": "update",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3949
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.update"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 539
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-update",
+      "component": "radio",
+      "kind": "method",
+      "name": "update",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3949
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.update"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 539
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-update",
+      "component": "file",
+      "kind": "method",
+      "name": "update",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3949
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.update"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 539
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-update",
+      "component": "text",
+      "kind": "method",
+      "name": "update",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3949
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.update"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 539
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-validate",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "validate",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3863
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validate"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-validate",
+      "component": "switch",
+      "kind": "method",
+      "name": "validate",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3863
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validate"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-validate",
+      "component": "radio",
+      "kind": "method",
+      "name": "validate",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3863
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validate"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-validate",
+      "component": "file",
+      "kind": "method",
+      "name": "validate",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3863
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validate"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-validate",
+      "component": "text",
+      "kind": "method",
+      "name": "validate",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3863
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validate"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-isChecked",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "isChecked",
+      "owner": "ZidanCheckbox",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4151
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanCheckbox.prototype.isChecked"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 937
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-setChecked",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "setChecked",
+      "owner": "ZidanCheckbox",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4144
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanCheckbox.prototype.setChecked"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1133
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-METHOD-setIndeterminate",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "setIndeterminate",
+      "owner": "ZidanCheckbox",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4139
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanCheckbox.prototype.setIndeterminate"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 539
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-getValue",
+      "component": "radio",
+      "kind": "method",
+      "name": "getValue",
+      "owner": "ZidanRadioGroup",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4330
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanRadioGroup.prototype.getValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 487
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-setValue",
+      "component": "radio",
+      "kind": "method",
+      "name": "setValue",
+      "owner": "ZidanRadioGroup",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4337
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanRadioGroup.prototype.setValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-addFiles",
+      "component": "file",
+      "kind": "method",
+      "name": "addFiles",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4838
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.addFiles"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 940
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-cancelAll",
+      "component": "file",
+      "kind": "method",
+      "name": "cancelAll",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5702
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.cancelAll"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 943
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-cancelUpload",
+      "component": "file",
+      "kind": "method",
+      "name": "cancelUpload",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5655
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.cancelUpload"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 943
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-clear",
+      "component": "file",
+      "kind": "method",
+      "name": "clear",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4895
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.clear"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 378
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-getFileState",
+      "component": "file",
+      "kind": "method",
+      "name": "getFileState",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4793
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.getFileState"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 616
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-getFiles",
+      "component": "file",
+      "kind": "method",
+      "name": "getFiles",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4760
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.getFiles"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 940
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-getUploadState",
+      "component": "file",
+      "kind": "method",
+      "name": "getUploadState",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4764
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.getUploadState"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 88
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-isUploading",
+      "component": "file",
+      "kind": "method",
+      "name": "isUploading",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5331
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.isUploading"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 941
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-removeFile",
+      "component": "file",
+      "kind": "method",
+      "name": "removeFile",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4862
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.removeFile"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 941
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-removeFiles",
+      "component": "file",
+      "kind": "method",
+      "name": "removeFiles",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4882
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.removeFiles"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 88
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-replaceFiles",
+      "component": "file",
+      "kind": "method",
+      "name": "replaceFiles",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4858
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.replaceFiles"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 940
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-retryAll",
+      "component": "file",
+      "kind": "method",
+      "name": "retryAll",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5742
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.retryAll"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 943
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-retryUpload",
+      "component": "file",
+      "kind": "method",
+      "name": "retryUpload",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5750
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.retryUpload"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 943
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setUploadOptions",
+      "component": "file",
+      "kind": "method",
+      "name": "setUploadOptions",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5258
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.setUploadOptions"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 942
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setUploadUrl",
+      "component": "file",
+      "kind": "method",
+      "name": "setUploadUrl",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5249
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.setUploadUrl"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 942
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setUploader",
+      "component": "file",
+      "kind": "method",
+      "name": "setUploader",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5223
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.setUploader"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 942
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-setVariant",
+      "component": "file",
+      "kind": "method",
+      "name": "setVariant",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5212
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.setVariant"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 941
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-uploadAll",
+      "component": "file",
+      "kind": "method",
+      "name": "uploadAll",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5287
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.uploadAll"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 942
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-uploadFile",
+      "component": "file",
+      "kind": "method",
+      "name": "uploadFile",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5378
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.uploadFile"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 942
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-whenUploaded",
+      "component": "file",
+      "kind": "method",
+      "name": "whenUploaded",
+      "owner": "ZidanFileUpload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5333
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFileUpload.prototype.whenUploaded"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 88
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-formatPhone",
+      "component": "text",
+      "kind": "method",
+      "name": "formatPhone",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6832
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.formatPhone"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 709
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-getPhoneCountry",
+      "component": "text",
+      "kind": "method",
+      "name": "getPhoneCountry",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6802
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.getPhoneCountry"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 938
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-getUnmaskedValue",
+      "component": "text",
+      "kind": "method",
+      "name": "getUnmaskedValue",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6730
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.getUnmaskedValue"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 280
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-openPicker",
+      "component": "text",
+      "kind": "method",
+      "name": "openPicker",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6785
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.openPicker"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 939
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-refreshAutogrow",
+      "component": "text",
+      "kind": "method",
+      "name": "refreshAutogrow",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6726
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.refreshAutogrow"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 287
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setPhoneCountry",
+      "component": "text",
+      "kind": "method",
+      "name": "setPhoneCountry",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6806
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.setPhoneCountry"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 938
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setPhoneFormat",
+      "component": "text",
+      "kind": "method",
+      "name": "setPhoneFormat",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6820
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.setPhoneFormat"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 939
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-setStepper",
+      "component": "text",
+      "kind": "method",
+      "name": "setStepper",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6778
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.setStepper"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 693
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-showPicker",
+      "component": "text",
+      "kind": "method",
+      "name": "showPicker",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6798
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.showPicker"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 758
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-stepDown",
+      "component": "text",
+      "kind": "method",
+      "name": "stepDown",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6774
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.stepDown"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 693
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-stepUp",
+      "component": "text",
+      "kind": "method",
+      "name": "stepUp",
+      "owner": "ZidanTextField",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6770
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanTextField.prototype.stepUp"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 693
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-destroy",
+      "component": "form",
+      "kind": "method",
+      "name": "destroy",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3403
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.destroy"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 81
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-destroyAll",
+      "component": "form",
+      "kind": "method",
+      "name": "destroyAll",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7264
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.destroyAll"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 909
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-get",
+      "component": "form",
+      "kind": "method",
+      "name": "get",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7245
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.get"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 905
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-init",
+      "component": "form",
+      "kind": "method",
+      "name": "init",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 589
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.init"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 257
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-observe",
+      "component": "form",
+      "kind": "method",
+      "name": "observe",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 595
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.observe"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 907
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-refresh",
+      "component": "form",
+      "kind": "method",
+      "name": "refresh",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3454
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.refresh"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 676
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-registerIcon",
+      "component": "form",
+      "kind": "method",
+      "name": "registerIcon",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 496
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.registerIcon"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 663
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-serialize",
+      "component": "form",
+      "kind": "method",
+      "name": "serialize",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 605
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.serialize"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 79
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-METHOD-validate",
+      "component": "form",
+      "kind": "method",
+      "name": "validate",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3863
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.prototype.validate"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-api",
+      "component": "form",
+      "kind": "static-member",
+      "name": "api",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7200
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.api"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 155
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-destroy",
+      "component": "form",
+      "kind": "static-member",
+      "name": "destroy",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 435
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.destroy"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 81
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-destroyAll",
+      "component": "form",
+      "kind": "static-member",
+      "name": "destroyAll",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 504
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.destroyAll"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 909
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-detectPhoneCountry",
+      "component": "form",
+      "kind": "static-member",
+      "name": "detectPhoneCountry",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7209
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.detectPhoneCountry"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 709
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-downscaleImage",
+      "component": "form",
+      "kind": "static-member",
+      "name": "downscaleImage",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7222
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.downscaleImage"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 90
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-field",
+      "component": "form",
+      "kind": "static-member",
+      "name": "field",
+      "owner": "ZidanForm",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.field"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 41
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-fieldLayouts",
+      "component": "form",
+      "kind": "static-member",
+      "name": "fieldLayouts",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7231
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.fieldLayouts"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 919
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-fields",
+      "component": "form",
+      "kind": "static-member",
+      "name": "fields",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7169
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.fields"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 23
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-formatPhone",
+      "component": "form",
+      "kind": "static-member",
+      "name": "formatPhone",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7208
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.formatPhone"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 709
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-frameworks",
+      "component": "form",
+      "kind": "static-member",
+      "name": "frameworks",
+      "owner": "ZidanForm",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.frameworks"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 82
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-get",
+      "component": "form",
+      "kind": "static-member",
+      "name": "get",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 501
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.get"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 905
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-icons",
+      "component": "form",
+      "kind": "static-member",
+      "name": "icons",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7204
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.icons"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 72
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-init",
+      "component": "form",
+      "kind": "static-member",
+      "name": "init",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 589
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.init"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 257
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-locales",
+      "component": "form",
+      "kind": "static-member",
+      "name": "locales",
+      "owner": "ZidanForm",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.locales"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 68
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-mask",
+      "component": "form",
+      "kind": "static-member",
+      "name": "mask",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7214
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.mask"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 708
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-messages",
+      "component": "form",
+      "kind": "static-member",
+      "name": "messages",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7211
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.messages"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 154
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-observe",
+      "component": "form",
+      "kind": "static-member",
+      "name": "observe",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 595
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.observe"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 907
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-phoneCountries",
+      "component": "form",
+      "kind": "static-member",
+      "name": "phoneCountries",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7206
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.phoneCountries"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 788
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-phoneFormats",
+      "component": "form",
+      "kind": "static-member",
+      "name": "phoneFormats",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7207
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.phoneFormats"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1098
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-refresh",
+      "component": "form",
+      "kind": "static-member",
+      "name": "refresh",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 432
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.refresh"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 676
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-registerIcon",
+      "component": "form",
+      "kind": "static-member",
+      "name": "registerIcon",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7203
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.registerIcon"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 663
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-serialize",
+      "component": "form",
+      "kind": "static-member",
+      "name": "serialize",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 605
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.serialize"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 79
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-stepperModes",
+      "component": "form",
+      "kind": "static-member",
+      "name": "stepperModes",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7230
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.stepperModes"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1097
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-themes",
+      "component": "form",
+      "kind": "static-member",
+      "name": "themes",
+      "owner": "ZidanForm",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.themes"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 63
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-unmask",
+      "component": "form",
+      "kind": "static-member",
+      "name": "unmask",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7217
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.unmask"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1260
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-validate",
+      "component": "form",
+      "kind": "static-member",
+      "name": "validate",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 427
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.validate"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-variants",
+      "component": "form",
+      "kind": "static-member",
+      "name": "variants",
+      "owner": "ZidanForm",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7224
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.variants"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 114
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FORM-STATIC-version",
+      "component": "form",
+      "kind": "static-member",
+      "name": "version",
+      "owner": "ZidanForm",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanForm.version"
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 265
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    }
+  ]
+}

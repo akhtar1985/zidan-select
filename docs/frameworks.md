@@ -179,7 +179,7 @@ console.log(states.filter(state => state.status === 'done').length, 'uploaded');
 Use a custom `upload(file, context)` handler when the server needs a completely custom
 request. `context.signal` aborts with `cancelUpload()`; call `context.complete(result)` or
 `context.fail(error)` when the request settles. The complete option list is in
-[options.md](options.md#file-upload-variants-uploading--rendering).
+[options.md](options.md#file-upload-variants-uploading-and-rendering).
 
 ## React
 

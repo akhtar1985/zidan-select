@@ -158,7 +158,7 @@ if (await ZidanForm.validate(form)) {
 await field.uploadAll();
 const states = await field.whenUploaded();
 console.log(states.filter(state =&gt; state.status === 'done').length, 'uploaded');</code></pre>
-<p>Use a custom <code>upload(file, context)</code> handler when the server needs a completely custom request. <code>context.signal</code> aborts with <code>cancelUpload()</code>; call <code>context.complete(result)</code> or <code>context.fail(error)</code> when the request settles. The complete option list is in <a href="options.html#file-upload-variants-uploading--rendering">options.md</a>.</p>
+<p>Use a custom <code>upload(file, context)</code> handler when the server needs a completely custom request. <code>context.signal</code> aborts with <code>cancelUpload()</code>; call <code>context.complete(result)</code> or <code>context.fail(error)</code> when the request settles. The complete option list is in <a href="options.html#file-upload-variants-uploading-and-rendering">options.md</a>.</p>
 <h2 id="react">React</h2>
 <p>React must not re-render the enhanced native subtree while the plugin owns it. Keep the markup stable, initialise in <code>useEffect</code>, and capture the root before returning cleanup.</p>
 <pre><code class="language-jsx">import { useEffect, useRef, useState } from 'react';

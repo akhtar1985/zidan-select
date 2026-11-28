@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { JSDOM } from 'jsdom';
+import { registerReliabilityTests } from './reliability.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fullSource = fs.readFileSync(path.join(root, 'zidan-form.js'), 'utf8');
@@ -1644,6 +1645,116 @@ test('image downscale helper degrades safely without canvas', async () => {
   assert.equal(uploaded[0].name, 'photo.png');
   assert.equal(field.getUploadState()[0].status, 'done');
 });
+
+/* ---------------- historical bug regressions ---------------- */
+
+test('regression BUG-003: deselectable radio reports one change per native change', () => {
+  const window = boot('<form><fieldset id="rg" data-zidan="radio-group"><label><input type="radio" name="p" value="a" checked> A</label><label><input type="radio" name="p" value="b"> B</label></fieldset></form>');
+  const group = window.zidanField('#rg', { deselectable: true });
+  let callbackCount = 0;
+  group.opts.onChange = () => { callbackCount += 1; };
+  let emitted = 0;
+  const originalEmit = group.emit.bind(group);
+  group.emit = (name, detail) => {
+    if (name === 'change') emitted += 1;
+    return originalEmit(name, detail);
+  };
+  const input = window.document.querySelector('input[value="a"]');
+  input.dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true }));
+  input.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  assert.equal(input.checked, false, 'clicking the checked radio clears it');
+  assert.equal(callbackCount, 0, 'the click handler must not call onChange itself');
+  assert.equal(emitted, 0, 'the click handler must not emit zidan:change itself');
+  input.dispatchEvent(new window.Event('change', { bubbles: true }));
+  assert.equal(callbackCount, 1, 'the native change still reaches onChange exactly once');
+  assert.equal(emitted, 1, 'the native change still emits zidan:change exactly once');
+  group.destroy();
+});
+
+test('regression BUG-004/028: setOptions clears fetch errors and restores the active option', () => {
+  const window = boot('<select id="s"><option value="a">A</option><option value="b">B</option><option value="c">C</option></select>');
+  const select = window.zidanSelect('#s');
+  select.open();
+  select.error = 'Network failed';
+  select.loadMoreError = 'More failed';
+  select.activeIndex = 2;
+  select.setOptions([{ value: 'a', label: 'A' }, { value: 'b', label: 'B' }]);
+  assert.equal(select.error, null, 'a successful setOptions clears the fetch error');
+  assert.equal(select.loadMoreError, null, 'a successful setOptions clears the load-more error');
+  assert.equal(select.activeIndex, 0, 'the active option returns to the first enabled entry');
+  assert.equal(select.items.length, 2);
+  select.destroy();
+});
+
+test('regression BUG-013: clear({silent:true}) suppresses change on a plain select', () => {
+  const window = boot('<select id="s"><option value="a">A</option></select>');
+  let changes = 0;
+  const select = window.zidanSelect('#s', { onChange: () => { changes += 1; } });
+  select.setValue('a');
+  changes = 0;
+  select.clear({ silent: true });
+  assert.equal(select.getValue(), null);
+  assert.equal(changes, 0, 'a silent clear must not call onChange');
+  select.setValue('a');
+  changes = 0;
+  select.clear();
+  assert.equal(changes, 1, 'a normal clear still reports the change');
+  select.destroy();
+});
+
+test('regression BUG-019: file dedupe keeps same-name files from different folders', () => {
+  const window = boot('<input id="f" type="file" multiple>');
+  const field = window.zidanField('#f');
+  const make = (relativePath) => {
+    const file = new window.File(['same'], 'photo.png', { type: 'image/png', lastModified: 12345 });
+    Object.defineProperty(file, 'webkitRelativePath', { value: relativePath });
+    return file;
+  };
+  field.addFiles([make('a/photo.png'), make('b/photo.png')]);
+  assert.equal(field.getFiles().length, 2, 'files from different folders are not duplicates');
+  field.addFiles([make('a/photo.png')]);
+  assert.equal(field.getFiles().length, 2, 'a true duplicate is still skipped');
+  field.destroy();
+});
+
+test('regression BUG-021: phone formatting leaves digit-less input untouched', () => {
+  const window = boot('<input id="p" type="tel" data-zidan-phone="true">');
+  const field = window.zidanField('#p');
+  field.el.value = '+';
+  field.el.dispatchEvent(new window.Event('input', { bubbles: true }));
+  assert.equal(field.el.value, '+', 'input must not be rewritten to a bare plus');
+  field.el.dispatchEvent(new window.Event('blur', { bubbles: true }));
+  assert.equal(field.el.value, '+', 'blur must not wipe the text either');
+  field.el.value = '+1 415 555 2671';
+  field.el.dispatchEvent(new window.Event('blur', { bubbles: true }));
+  assert.equal(field.el.value.replace(/\D/g, ''), '1415555267', 'the digits survive formatting');
+  assert.notEqual(field.el.value, '+1 415 555 2671', 'formatting rewrites the raw number');
+  field.destroy();
+});
+
+test('large option lists are inserted as one DOM batch', async () => {
+  const options = Array.from({ length: 300 }, (_, i) => '<option value="o' + i + '">Option ' + i + '</option>').join('');
+  const window = boot('<select id="s">' + options + '</select>');
+  const select = window.zidanSelect('#s');
+  select.open();
+  const added = [];
+  const observer = new window.MutationObserver((records) => {
+    records.forEach((record) => added.push(record.addedNodes.length));
+  });
+  observer.observe(select.dropdown, { childList: true });
+  select.setOptions(Array.from({ length: 300 }, (_, i) => ({ value: 'o' + i, label: 'Option ' + i })));
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  observer.disconnect();
+  const rows = added.reduce((sum, count) => sum + count, 0);
+  assert.ok(rows >= 300, 'the list still renders every option');
+  assert.ok(added.length <= 3, 'the list is inserted in a batch, saw ' + added.length + ' mutations');
+  assert.equal(select.dropdown.querySelectorAll('.zs-option').length, 300);
+  select.destroy();
+});
+
+/* ---------------- reliability suite ---------------- */
+
+registerReliabilityTests({ test, boot, wait, assert });
 
 /* ---------------- runner ---------------- */
 

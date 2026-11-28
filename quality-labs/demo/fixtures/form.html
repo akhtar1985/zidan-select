@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Lab · form fixture</title>
+  <link rel="stylesheet" href="../../../plugin-core.css">
+  <link rel="stylesheet" href="../../../plugin-theme.css">
+</head>
+<body>
+  <main>
+    <h1>Form integration fixture</h1>
+    <form id="lab-form" novalidate>
+      <label for="lab-plan">Plan</label>
+      <select id="lab-plan" name="plan" required data-zidan-select="select" data-zidan-label="Plan">
+        <option value="">Choose a plan…</option>
+        <option value="starter">Starter</option>
+        <option value="pro">Pro</option>
+      </select>
+      <label for="lab-email">Email</label>
+      <input id="lab-email" name="email" type="email" required data-zidan-input>
+      <button id="lab-submit" type="submit">Submit</button>
+      <p id="lab-status" role="status">idle</p>
+    </form>
+  </main>
+  <script src="../../../zidan-form.js"></script>
+  <script>
+    (function () {
+      var form = document.getElementById('lab-form');
+      var plan = window.zidanSelect('#lab-plan');
+      var email = window.zidanField('#lab-email', {
+        validate: function (value) { return value.indexOf('@') > 0; }
+      });
+      window.__labForm = { plan: plan, email: email, submits: 0 };
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        window.__labForm.submits += 1;
+        window.ZidanForm.validate(form).then(function (ok) {
+          document.getElementById('lab-status').textContent = ok ? 'valid' : 'invalid';
+          window.__labForm.lastValid = ok;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -363,6 +363,13 @@ for (const [file, needles] of Object.entries(DOCS)) {
 
 /* ---------- 5. package.json exports must match the bundles ---------- */
 
+/** Nested `import`/`require` conditions are objects; audit every string leaf. */
+function exportTargets(value) {
+  if (typeof value === 'string') return [value];
+  if (value && typeof value === 'object') return Object.values(value).flatMap(exportTargets);
+  return [];
+}
+
 for (const variant of VARIANTS) {
   const entry = './' + variant.key;
   const exported = pkg.exports[entry];
@@ -370,7 +377,7 @@ for (const variant of VARIANTS) {
     problem('package', 'package.json has no ' + entry + ' export');
     continue;
   }
-  for (const target of Object.values(exported)) {
+  for (const target of exportTargets(exported)) {
     if (!exists(target)) {
       problem('package', 'package.json export ' + entry + ' points at the missing ' + target);
     }

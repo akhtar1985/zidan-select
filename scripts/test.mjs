@@ -161,6 +161,8 @@ check('version metadata and release tooling agree', () => {
   assert(workflow.includes('gh release create'), 'release workflow must create the GitHub Release for the tag');
   assert(workflow.includes('changelog-section.mjs') && workflow.includes('--notes-file'), 'release workflow must use the CHANGELOG section as the release body');
   assert(workflow.includes('--generate-notes'), 'release workflow needs a generated-notes fallback');
+  assert(workflow.includes('--output "$notes"'), 'release workflow must write notes with --output (UTF-8), not a shell redirect');
+  assert(!workflow.includes('changelog-section.mjs "$version" >'), 'release workflow must not use a shell redirect: Windows PowerShell writes it as UTF-16LE');
 });
 
 check('release notes come from the CHANGELOG section', () => {
@@ -175,6 +177,24 @@ check('release notes come from the CHANGELOG section', () => {
   assert(/^### /m.test(body), 'the ' + pkg.version + ' section has no subsections to publish');
   assert(!/^## \[/m.test(body), 'the release body must stop before the next version heading');
   assert(section('0.0.0-nonexistent') === '', 'a version with no section must print nothing so the workflow can fall back');
+});
+
+check('release notes file is UTF-8 without a BOM', () => {
+  const pkg = JSON.parse(read('package.json'));
+  const out = path.join(root, '.build', 'notes-encoding-test.md');
+  try {
+    execFileSync(process.execPath, [
+      path.join(root, 'scripts/changelog-section.mjs'), pkg.version, '--output', out
+    ], { stdio: 'pipe' });
+    const bytes = fs.readFileSync(out);
+    assert(bytes.length > 0, '--output wrote an empty notes file');
+    assert(!(bytes[0] === 0xFF && bytes[1] === 0xFE), 'notes file starts with a UTF-16LE BOM');
+    assert(!(bytes[0] === 0xFE && bytes[1] === 0xFF), 'notes file starts with a UTF-16BE BOM');
+    assert(!bytes.includes(0), 'notes file contains NUL bytes (UTF-16), which gh renders as garbage');
+    assert(bytes.toString('utf8').startsWith('### '), 'notes file is not readable UTF-8 markdown');
+  } finally {
+    fs.rmSync(out, { force: true });
+  }
 });
 
 check('README links resolve on npm', () => {
@@ -377,11 +397,37 @@ check('TypeScript declarations ship', () => {
   }
   const pkg = JSON.parse(read('package.json'));
   assert(pkg.types === 'zidan-form.d.ts', 'package.json types field is stale');
-  assert(pkg.exports['.'].types === './zidan-form.d.ts', 'exports map missing root types');
-  assert(pkg.exports['./select'].types === './dist/select/zidan-select.d.ts', 'exports map missing select types');
-  assert(pkg.exports['./file'].types === './dist/file/zidan-file.d.ts', 'exports map missing file types');
+  assert(pkg.exports['.'].import.types === './zidan-form.d.mts', 'exports map missing root ESM types');
+  assert(pkg.exports['.'].require.types === './zidan-form.d.ts', 'exports map missing root CJS types');
+  assert(pkg.exports['./select'].import.types === './dist/select/zidan-select.d.mts', 'exports map missing select ESM types');
+  assert(pkg.exports['./select'].require.types === './dist/select/zidan-select.d.ts', 'exports map missing select CJS types');
+  assert(pkg.exports['./file'].import.types === './dist/file/zidan-file.d.mts', 'exports map missing file ESM types');
+  assert(pkg.exports['./file'].require.types === './dist/file/zidan-file.d.ts', 'exports map missing file CJS types');
+  assert(fs.existsSync(path.join(root, 'zidan-form.d.mts')), 'root ESM declaration missing');
   assert(pkg.scripts.types && pkg.scripts.types.includes('tsc'), 'missing types script');
   assert(fs.existsSync(path.join(root, 'tsconfig.types.json')), 'tsconfig.types.json missing');
+  assert(fs.existsSync(path.join(root, 'tsconfig.types.node16.json')), 'NodeNext type-check config missing');
+  for (const file of ['dist/select/zidan-select.d.ts', 'dist/file/zidan-file.d.ts']) {
+    assert(fs.existsSync(path.join(root, file)), file + ' missing');
+    assert(read(file).includes("'../../zidan-form.js'"), file + ' needs an explicit .js re-export for NodeNext consumers');
+  }
+});
+
+check('ES module entries import without a browser', () => {
+  const script = [
+    "const [root, select, file] = await Promise.all([",
+    "  import('./zidan-form.mjs'),",
+    "  import('./dist/select/zidan-select.mjs'),",
+    "  import('./dist/file/zidan-file.mjs')",
+    "]);",
+    "for (const [name, mod] of Object.entries({ root, select, file })) {",
+    "  if (!mod.ZidanForm || mod.ZidanForm.version !== '2.5.0') throw new Error(name + ' ESM entry did not expose ZidanForm');",
+    "}",
+    "if (typeof root.zidanSelect !== 'function' || typeof select.ZidanSelect !== 'function' || typeof file.ZidanFileUpload !== 'function') {",
+    "  throw new Error('an ESM entry lost its named exports');",
+    "}"
+  ].join('\n');
+  execFileSync(process.execPath, ['--input-type=module', '-e', script], { cwd: root, encoding: 'utf8' });
 });
 
 check('Pages metadata is complete', () => {
@@ -422,11 +468,11 @@ check('subset builds and minified copies exist', () => {
     'dist/select/zidan-select.js', 'dist/select/zidan-select.mjs', 'dist/select/zidan-select.min.js',
     'dist/select/plugin-select-core.css', 'dist/select/plugin-select-theme.css',
     'dist/select/plugin-select-core.min.css', 'dist/select/plugin-select-theme.min.css',
-    'dist/select/zidan-select.d.ts',
+    'dist/select/zidan-select.d.ts', 'dist/select/zidan-select.d.mts',
     'dist/file/zidan-file.js', 'dist/file/zidan-file.mjs', 'dist/file/zidan-file.min.js',
     'dist/file/plugin-file-core.css', 'dist/file/plugin-file-theme.css',
     'dist/file/plugin-file-core.min.css', 'dist/file/plugin-file-theme.min.css',
-    'dist/file/zidan-file.d.ts',
+    'dist/file/zidan-file.d.ts', 'dist/file/zidan-file.d.mts',
     'dist/zidan-form.min.js', 'dist/plugin-core.min.css', 'dist/plugin-theme.min.css'
   ]) {
     assert(fs.existsSync(path.join(root, file)), 'missing build output ' + file);

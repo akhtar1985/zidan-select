@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Lab · lifecycle fixture</title>
+  <link rel="stylesheet" href="../../../plugin-core.css">
+  <link rel="stylesheet" href="../../../plugin-theme.css">
+</head>
+<body>
+  <main>
+    <h1>Lifecycle fixture</h1>
+    <select id="lab-select" data-zidan-select="select">
+      <option value="a">Alpha</option>
+      <option value="b">Beta</option>
+    </select>
+    <textarea id="lab-text"></textarea>
+  </main>
+  <script src="../../../zidan-form.js"></script>
+  <script>
+    window.__labLifecycle = {
+      cycle: function (count) {
+        var before = {
+          roots: document.querySelectorAll('.zs-root').length,
+          fields: window.ZidanForm.fields.length
+        };
+        var host = document.createElement('div');
+        document.body.appendChild(host);
+        var leftovers = 0;
+        for (var i = 0; i < count; i += 1) {
+          var selectEl = document.createElement('select');
+          selectEl.innerHTML = '<option value="a">Alpha</option><option value="b">Beta</option>';
+          var textEl = document.createElement('input');
+          textEl.type = 'text';
+          host.appendChild(selectEl);
+          host.appendChild(textEl);
+          var select = window.zidanSelect(selectEl);
+          var field = window.zidanField(textEl);
+          if (!select || !field || typeof select.destroy !== 'function' || typeof field.destroy !== 'function') {
+            leftovers += 1;
+            continue;
+          }
+          select.destroy();
+          field.destroy();
+          if (selectEl.__zidanSelect || textEl.__zidanField) leftovers += 1;
+          selectEl.remove();
+          textEl.remove();
+        }
+        host.remove();
+        return {
+          before: before,
+          after: {
+            roots: document.querySelectorAll('.zs-root').length,
+            fields: window.ZidanForm.fields.length
+          },
+          leftovers: leftovers,
+          persistentRoot: !!document.querySelector('#lab-select').__zidanSelect,
+          rootsConnected: Array.prototype.every.call(document.querySelectorAll('.zs-root'), function (node) { return node.isConnected; })
+        };
+      },
+      dynamic: function (count) {
+        var before = window.ZidanForm.fields.length;
+        var host = document.createElement('div');
+        document.body.appendChild(host);
+        for (var i = 0; i < count; i += 1) {
+          var input = document.createElement('input');
+          input.type = 'text';
+          input.setAttribute('data-zidan-input', '');
+          host.appendChild(input);
+          var field = window.zidanField(input);
+          field.destroy();
+        }
+        host.remove();
+        return { before: before, after: window.ZidanForm.fields.length, roots: document.querySelectorAll('.zs-root').length };
+      }
+    };
+  </script>
+</body>
+</html>

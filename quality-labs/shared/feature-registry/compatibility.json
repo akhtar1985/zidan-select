@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "package": {
+    "name": "zidan-select",
+    "version": "2.5.0"
+  },
+  "sourceHash": "225b7da0f1f336c8d4f7415b0cb26d5f831159d24282396ab14da278cc865329",
+  "compatibility": {
+    "browsers": {
+      "claim": "| Engine | Version | Notes | | --- | --- | --- | | Chrome / Edge | 105+ | Full theme + scrollbar control. | | Firefox | 121+ | All controls; scrollbars keep the native thin gutter and scrollbar-color (no gradients, no thumb hover). | | Safari / iOS Safari | 15.4+ | All controls; overlay scrollbars follow OS settings. | | Node / SSR | 18+ | Import is side-effect free without a DOM; initialise after hydration. | prefers-reduced-motion and forced-colors are respected. :has() is not required. ---",
+      "source": {
+        "file": "README.md",
+        "line": 1242
+      },
+      "status": "unverified"
+    },
+    "frameworks": {
+      "claim": "Integration guides exist; no native React/Vue/Svelte/Angular package is claimed.",
+      "source": {
+        "file": "README.md",
+        "line": 138
+      },
+      "status": "unverified"
+    },
+    "cms": {
+      "claim": "WordPress/Shopify cookbook pages exist; they are guides, not plugins.",
+      "source": {
+        "file": "README.md",
+        "line": 352
+      },
+      "status": "unverified"
+    }
+  }
+}

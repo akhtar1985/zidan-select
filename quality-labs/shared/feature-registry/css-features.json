@@ -1,0 +1,4428 @@
+{
+  "schemaVersion": 1,
+  "package": {
+    "name": "zidan-select",
+    "version": "2.5.0"
+  },
+  "sourceHash": "225b7da0f1f336c8d4f7415b0cb26d5f831159d24282396ab14da278cc865329",
+  "css": [
+    {
+      "id": "ZS-CSS-CLASS-zs-arrow",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-arrow",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-check",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-check",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 995
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-check--checked",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-check--checked",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-check--disabled",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-check--disabled",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-check--indeterminate",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-check--indeterminate",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-check-box",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-check-box",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-check-desc",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-check-desc",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-check-label",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-check-label",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-chip",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-chip",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 52
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-chip--reorderable",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-chip--reorderable",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-chip-edit",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-chip-edit",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-chip-label",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-chip-label",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-chip-remove",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-chip-remove",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-chips",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-chips",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-clear",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-clear",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-control",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-control",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-counter",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-counter",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-counter--limit",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-counter--limit",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-dropdown",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-dropdown",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 56
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1015
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--adorned",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--adorned",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--autogrow",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--autogrow",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--custom-picker",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--custom-picker",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--disabled",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--disabled",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--file",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--file",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--filled",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--filled",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--focused",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--focused",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--inline",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--inline",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--invalid",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--invalid",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1015
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--pending",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--pending",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 1292
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--phone",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--phone",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--stepper-split",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--stepper-split",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-field--valid",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-field--valid",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 1015
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-actions",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-actions",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-avatar",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-avatar",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-cancel",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-cancel",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-clear",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-clear",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 95
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop--avatar",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop--avatar",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop--button",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop--button",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop--compact",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop--compact",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop--gallery",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop--gallery",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop--has-preview",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop--has-preview",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop--invalid",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop--invalid",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop--over",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop--over",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop-hint",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop-hint",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-drop-title",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-drop-title",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-icon",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-icon",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-icon-svg",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-icon-svg",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-info",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-info",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-input",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-input",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-item",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-item",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-list",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-list",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 131
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-meta-row",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-meta-row",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-name",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-name",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-progress",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-progress",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-progress-bar",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-progress-bar",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-remove",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-remove",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-retry",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-retry",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-size",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-size",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-status",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-status",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-status--error",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-status--error",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-status--success",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-status--success",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-thumb",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-thumb",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 96
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-file-upload-state",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-file-upload-state",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-form-grid",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-form-grid",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1008
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-full",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-full",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1008
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-group",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-group",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 944
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-group-label",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-group-label",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 944
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/validation.md",
+          "line": 217
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-action",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-action",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-clear",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-clear",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-icon",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-icon",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-icon--action",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-icon--action",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-native",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-native",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-native--stepper",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-native--stepper",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-prefix",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-prefix",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-shell",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-shell",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/validation.md",
+          "line": 217
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-shell--range",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-shell--range",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-suffix",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-suffix",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-validation",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-validation",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-validation--invalid",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-validation--invalid",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-input-validation--valid",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-input-validation--valid",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-label",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-label",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 49
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-live",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-live",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-match",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-match",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 909
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-more",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-more",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-more--error",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-more--error",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-native-input",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-native-input",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 1043
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-option",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-option",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 57
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-option--active",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-option--active",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-option--disabled",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-option--disabled",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-option--selected",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-option--selected",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-option-label",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-option-label",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-country",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-country",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-country--native",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-country--native",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-empty",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-empty",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-list",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-list",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-menu",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-menu",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-option",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-option",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-option--active",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-option--active",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-option-dial",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-option-dial",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-option-iso",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-option-iso",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-option-name",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-option-name",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-picker",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-picker",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-picker-chevron",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-picker-chevron",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-picker-dial",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-picker-dial",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-picker-iso",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-picker-iso",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-phone-search",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-phone-search",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-radio",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-radio",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 93
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-radio--checked",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-radio--checked",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-radio--disabled",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-radio--disabled",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-radio-desc",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-radio-desc",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-radio-dot",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-radio-dot",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-radio-group",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-radio-group",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-radio-label",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-radio-label",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 743
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range--bubble-active",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range--bubble-active",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range--bubble-bottom",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range--bubble-bottom",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range--fill-off",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range--fill-off",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range--labels-no-scale",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range--labels-no-scale",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 403
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range--no-bubble",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range--no-bubble",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-bubble",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-bubble",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 402
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-bubble--end",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-bubble--end",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-bubble--start",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-bubble--start",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 402
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-max",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-max",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-min",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-min",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-scale",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-scale",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 743
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-scale--hidden",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-scale--hidden",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 743
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-tick",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-tick",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 743
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-tick--end",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-tick--end",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-tick--labeled",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-tick--labeled",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-tick--start",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-tick--start",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 743
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-range-ticks",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-range-ticks",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--disabled",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--disabled",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--dropup",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--dropup",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--focus",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--focus",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--has-value",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--has-value",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--invalid",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--invalid",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--mount",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--mount",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--multiple",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--multiple",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--open",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--open",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--shake",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--shake",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--tags",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--tags",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-root--valid",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-root--valid",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-spinner",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-spinner",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-sr-only",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-sr-only",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-state",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-state",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-state--error",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-state--error",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-stepper",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-stepper",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 104
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-stepper--stacked",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-stepper--stacked",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-stepper-btn",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-stepper-btn",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-stepper-glyph",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-stepper-glyph",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-switch-off",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-switch-off",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 92
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-switch-on",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-switch-on",
+      "source": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 107
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-switch-track",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-switch-track",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 128
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-CLASS-zs-virtual-space",
+      "component": "all",
+      "kind": "style-class",
+      "name": "zs-virtual-space",
+      "source": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-avatar-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-avatar-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 124
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 110
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-avatar-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-avatar-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 125
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 110
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 45
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 64
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-border-color",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-border-color",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 49
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 1064
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-border-color-focus",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-border-color-focus",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 51
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 70
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-border-color-hover",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-border-color-hover",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 50
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 69
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-border-color-invalid",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-border-color-invalid",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 52
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 1064
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-border-color-valid",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-border-color-valid",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 53
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 71
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-border-width",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-border-width",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 33
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 53
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-check-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-check-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 84
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 88
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-check-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-check-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 85
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 88
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-check-checked-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-check-checked-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 87
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 995
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-check-checked-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-check-checked-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 88
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 996
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-check-gap",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-check-gap",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 83
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 87
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-check-mark",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-check-mark",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 86
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 89
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-check-radius",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-check-radius",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 82
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 86
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-check-size",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-check-size",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 81
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 85
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-chip-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-chip-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 61
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 75
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-chip-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-chip-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 63
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-chip-radius",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-chip-radius",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 32
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 52
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-chip-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-chip-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 62
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-disabled-opacity",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-disabled-opacity",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 139
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-dropdown-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-dropdown-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 65
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 76
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-dropdown-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-dropdown-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 38
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 56
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-dropdown-border-width",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-dropdown-border-width",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 38
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 56
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-dropdown-radius",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-dropdown-radius",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 37
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 56
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-dropdown-shadow",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-dropdown-shadow",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 66
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-field-gap",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-field-gap",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 42
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 97
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-file-drop-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-file-drop-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 96
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 95
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-file-drop-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-file-drop-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 97
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 95
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-file-thumb-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-file-thumb-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 98
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 96
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-file-thumb-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-file-thumb-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 99
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-focus-ring",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-focus-ring",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 58
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 993
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-focus-ring-width",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-focus-ring-width",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 59
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 74
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-font-family",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-font-family",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 24
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 46
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-font-size",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-font-size",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 25
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 47
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-gap",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-gap",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 36
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 55
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-group-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-group-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 73
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 79
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-height",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-height",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 30
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 50
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-icon-color",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-icon-color",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 102
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 103
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-icon-hover-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-icon-hover-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 103
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 103
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-input-height",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-input-height",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 1487
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-label-size",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-label-size",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 27
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 49
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-line-height",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-line-height",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 26
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 48
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-match-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-match-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 74
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 909
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-menu-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-menu-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 75
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-menu-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-menu-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 77
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-menu-fg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-menu-fg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 76
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-menu-shadow",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-menu-shadow",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 78
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-option-active-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-option-active-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 69
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-option-active-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-option-active-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 70
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-option-hover-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-option-hover-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 68
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 77
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-option-padding-x",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-option-padding-x",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 41
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 58
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-option-padding-y",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-option-padding-y",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 40
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 58
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-option-radius",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-option-radius",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 39
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 57
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-option-selected-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-option-selected-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 71
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 78
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-option-selected-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-option-selected-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 72
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-padding-x",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-padding-x",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 34
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 54
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-padding-y",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-padding-y",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 35
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 54
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-phone-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-phone-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 106
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 105
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-placeholder",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-placeholder",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 48
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 67
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-primary",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-primary",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 9
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 991
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-primary-contrast",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-primary-contrast",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 56
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 72
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-primary-soft",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-primary-soft",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 57
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 992
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-radio-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-radio-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 94
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 94
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-radio-gap",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-radio-gap",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 95
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 94
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-radio-size",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-radio-size",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 93
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 93
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-radius",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-radius",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 9
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 994
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-radius-pill",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-radius-pill",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 128
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 108
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-angle",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-angle",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 111
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1300
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-bubble-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-bubble-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 117
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 115
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-bubble-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-bubble-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 118
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-fill",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-fill",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 110
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 111
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-gradient",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-gradient",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 112
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 112
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-thumb-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-thumb-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 113
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 113
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-thumb-border",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-thumb-border",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 114
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-tick",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-tick",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 115
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 114
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-tick-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-tick-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 116
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 114
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-range-track",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-range-track",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 109
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 111
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-scrollbar-size",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-scrollbar-size",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 131
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 143
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-scrollbar-thumb",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-scrollbar-thumb",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 132
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 143
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-scrollbar-thumb-hover",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-scrollbar-thumb-hover",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 133
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 143
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-scrollbar-thumb-reveal",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-scrollbar-thumb-reveal",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 553
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 144
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-scrollbar-track",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-scrollbar-track",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 134
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 144
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-shadow",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-shadow",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 140
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-stepper-color",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-stepper-color",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 104
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 104
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-stepper-hover-bg",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-stepper-hover-bg",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 105
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 104
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-switch-height",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-switch-height",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 90
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-switch-knob",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-switch-knob",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 92
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 92
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-switch-off",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-switch-off",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 91
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 92
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-switch-off-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-switch-off-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 127
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 107
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-switch-on-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-switch-on-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 126
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 107
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-switch-width",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-switch-width",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 89
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 91
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-text",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-text",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 46
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 65
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-text-muted",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-text-muted",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 47
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 66
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-transition",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-transition",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 137
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-upload-bar",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-upload-bar",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 122
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 116
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-upload-success",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-upload-success",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 123
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 116
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-upload-track",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-upload-track",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 121
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 116
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CSS-TOKEN-zs-z-index",
+      "component": "all",
+      "kind": "style-token",
+      "name": "--zs-z-index",
+      "source": {
+        "file": "plugin-theme.css",
+        "line": 138
+      },
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    }
+  ]
+}

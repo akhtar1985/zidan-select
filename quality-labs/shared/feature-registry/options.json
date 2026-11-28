@@ -1,0 +1,7334 @@
+{
+  "schemaVersion": 1,
+  "package": {
+    "name": "zidan-select",
+    "version": "2.5.0"
+  },
+  "sourceHash": "225b7da0f1f336c8d4f7415b0cb26d5f831159d24282396ab14da278cc865329",
+  "options": [
+    {
+      "id": "ZS-SELECT-OPT-accentInsensitive",
+      "component": "select",
+      "kind": "option",
+      "name": "accentInsensitive",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1806
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 904
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-allowFreeText",
+      "component": "select",
+      "kind": "option",
+      "name": "allowFreeText",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2193
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 822
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-ariaLabel",
+      "component": "select",
+      "kind": "option",
+      "name": "ariaLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1326
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 702
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-autoLoadMore",
+      "component": "select",
+      "kind": "option",
+      "name": "autoLoadMore",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3135
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "api.html",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 884
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-cacheResults",
+      "component": "select",
+      "kind": "option",
+      "name": "cacheResults",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2229
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 884
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-caseSensitive",
+      "component": "select",
+      "kind": "option",
+      "name": "caseSensitive",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1549
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 836
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-clearText",
+      "component": "select",
+      "kind": "option",
+      "name": "clearText",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1362
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 717
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-clearable",
+      "component": "select",
+      "kind": "option",
+      "name": "clearable",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1680
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 470
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-closeOnSelect",
+      "component": "select",
+      "kind": "option",
+      "name": "closeOnSelect",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2216
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 712
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-commitOnBlur",
+      "component": "select",
+      "kind": "option",
+      "name": "commitOnBlur",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2957
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 839
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-commitOnTab",
+      "component": "select",
+      "kind": "option",
+      "name": "commitOnTab",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2815
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 839
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-customClasses",
+      "component": "select",
+      "kind": "option",
+      "name": "customClasses",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1256
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 813
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-debounce",
+      "component": "select",
+      "kind": "option",
+      "name": "debounce",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2921
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "api.html",
+          "ajax.html",
+          "lab.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 813
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-delimiters",
+      "component": "select",
+      "kind": "option",
+      "name": "delimiters",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2898
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 838
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-disabled",
+      "component": "select",
+      "kind": "option",
+      "name": "disabled",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 992
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 389
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-editable",
+      "component": "select",
+      "kind": "option",
+      "name": "editable",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1709
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 509
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-emptyText",
+      "component": "select",
+      "kind": "option",
+      "name": "emptyText",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1936
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 715
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchBody",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchBody",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 909
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 880
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchCredentials",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchCredentials",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 907
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 882
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchHasMorePath",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchHasMorePath",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 936
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "ajax.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 881
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchHeaders",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchHeaders",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 896
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 882
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchItemsPath",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchItemsPath",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 931
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "ajax.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 881
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchMethod",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchMethod",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 902
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 882
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchOptions",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchOptions",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1786
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 94
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchPageParam",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchPageParam",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 891
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 876
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchPageSize",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchPageSize",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 871
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 857
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchPageSizeParam",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchPageSizeParam",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 886
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 878
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchParams",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchParams",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 878
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 879
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchQueryParam",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchQueryParam",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 885
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 875
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchSkipParam",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchSkipParam",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 889
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 877
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchTotalPath",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchTotalPath",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 937
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "ajax.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 881
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-fetchUrl",
+      "component": "select",
+      "kind": "option",
+      "name": "fetchUrl",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 874
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "api.html",
+          "ajax.html",
+          "lab.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 872
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-filterOption",
+      "component": "select",
+      "kind": "callback",
+      "name": "filterOption",
+      "group": "callback",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1811
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 857
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-formatTag",
+      "component": "select",
+      "kind": "callback",
+      "name": "formatTag",
+      "group": "callback",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2477
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 862
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-highlightMatches",
+      "component": "select",
+      "kind": "option",
+      "name": "highlightMatches",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1896
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 904
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-id",
+      "component": "select",
+      "kind": "option",
+      "name": "id",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 964
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 456
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-itemHeight",
+      "component": "select",
+      "kind": "option",
+      "name": "itemHeight",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1852
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 890
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-label",
+      "component": "select",
+      "kind": "option",
+      "name": "label",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1326
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 69
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-layout",
+      "component": "select",
+      "kind": "option",
+      "name": "layout",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 691
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 96
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-loadMoreText",
+      "component": "select",
+      "kind": "option",
+      "name": "loadMoreText",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2034
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 884
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-loadingText",
+      "component": "select",
+      "kind": "option",
+      "name": "loadingText",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1927
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 716
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-locale",
+      "component": "select",
+      "kind": "option",
+      "name": "locale",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1289
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 920
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-maxDropdownHeight",
+      "component": "select",
+      "kind": "option",
+      "name": "maxDropdownHeight",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1851
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 471
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-maxTagLength",
+      "component": "select",
+      "kind": "option",
+      "name": "maxTagLength",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2451
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 833
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-maxTags",
+      "component": "select",
+      "kind": "option",
+      "name": "maxTags",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2443
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 417
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-minChars",
+      "component": "select",
+      "kind": "option",
+      "name": "minChars",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2920
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "api.html",
+          "ajax.html",
+          "demo.js",
+          "lab.js",
+          "ajax.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 813
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-minTagLength",
+      "component": "select",
+      "kind": "option",
+      "name": "minTagLength",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2447
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 832
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-mode",
+      "component": "select",
+      "kind": "option",
+      "name": "mode",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 962
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 319
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-multiple",
+      "component": "select",
+      "kind": "option",
+      "name": "multiple",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1297
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 377
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-name",
+      "component": "select",
+      "kind": "option",
+      "name": "name",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1459
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 360
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-noResultsText",
+      "component": "select",
+      "kind": "option",
+      "name": "noResultsText",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1936
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 472
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onChange",
+      "component": "select",
+      "kind": "callback",
+      "name": "onChange",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 933
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onClose",
+      "component": "select",
+      "kind": "callback",
+      "name": "onClose",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 871
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onError",
+      "component": "select",
+      "kind": "callback",
+      "name": "onError",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 877
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onInit",
+      "component": "select",
+      "kind": "callback",
+      "name": "onInit",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 184
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onLoadMore",
+      "component": "select",
+      "kind": "callback",
+      "name": "onLoadMore",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 742
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onOpen",
+      "component": "select",
+      "kind": "callback",
+      "name": "onOpen",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 871
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onSelect",
+      "component": "select",
+      "kind": "callback",
+      "name": "onSelect",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 870
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onTagAdd",
+      "component": "select",
+      "kind": "callback",
+      "name": "onTagAdd",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 872
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onTagEdit",
+      "component": "select",
+      "kind": "callback",
+      "name": "onTagEdit",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 875
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onTagMove",
+      "component": "select",
+      "kind": "callback",
+      "name": "onTagMove",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 874
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-onTagRemove",
+      "component": "select",
+      "kind": "callback",
+      "name": "onTagRemove",
+      "group": "callback",
+      "source": null,
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 873
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-options",
+      "component": "select",
+      "kind": "option",
+      "name": "options",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1161
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 10
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-placeholder",
+      "component": "select",
+      "kind": "option",
+      "name": "placeholder",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1758
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 417
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-renderOption",
+      "component": "select",
+      "kind": "callback",
+      "name": "renderOption",
+      "group": "callback",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1842
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 749
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-renderSelected",
+      "component": "select",
+      "kind": "callback",
+      "name": "renderSelected",
+      "group": "callback",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1722
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 859
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-renderTag",
+      "component": "select",
+      "kind": "callback",
+      "name": "renderTag",
+      "group": "callback",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1718
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 860
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-reorderable",
+      "component": "select",
+      "kind": "option",
+      "name": "reorderable",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1704
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 834
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-required",
+      "component": "select",
+      "kind": "option",
+      "name": "required",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1456
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 62
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-requiredText",
+      "component": "select",
+      "kind": "option",
+      "name": "requiredText",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1487
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 718
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-scrollbar",
+      "component": "select",
+      "kind": "option",
+      "name": "scrollbar",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1293
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 527
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-searchValues",
+      "component": "select",
+      "kind": "option",
+      "name": "searchValues",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1828
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 746
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-searchable",
+      "component": "select",
+      "kind": "option",
+      "name": "searchable",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1321
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 66
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-suggestions",
+      "component": "select",
+      "kind": "option",
+      "name": "suggestions",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1163
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 812
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-theme",
+      "component": "select",
+      "kind": "option",
+      "name": "theme",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 687
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-themeFramework",
+      "component": "select",
+      "kind": "option",
+      "name": "themeFramework",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1233
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 812
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-typeAhead",
+      "component": "select",
+      "kind": "option",
+      "name": "typeAhead",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2847
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 915
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-typeAheadTimeout",
+      "component": "select",
+      "kind": "option",
+      "name": "typeAheadTimeout",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2853
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 914
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-validateTag",
+      "component": "select",
+      "kind": "callback",
+      "name": "validateTag",
+      "group": "callback",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2482
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 861
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-validation",
+      "component": "select",
+      "kind": "option",
+      "name": "validation",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1395
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-value",
+      "component": "select",
+      "kind": "option",
+      "name": "value",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1498
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 361
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-valueDelimiter",
+      "component": "select",
+      "kind": "option",
+      "name": "valueDelimiter",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1513
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 840
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-virtual",
+      "component": "select",
+      "kind": "option",
+      "name": "virtual",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1834
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 65
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-OPT-virtualThreshold",
+      "component": "select",
+      "kind": "option",
+      "name": "virtualThreshold",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1838
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 890
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-alwaysValidate",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "alwaysValidate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3703
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 807
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-alwaysValidate",
+      "component": "switch",
+      "kind": "option",
+      "name": "alwaysValidate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3703
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 807
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-alwaysValidate",
+      "component": "radio",
+      "kind": "option",
+      "name": "alwaysValidate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3703
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 807
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-alwaysValidate",
+      "component": "file",
+      "kind": "option",
+      "name": "alwaysValidate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3703
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 807
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-alwaysValidate",
+      "component": "text",
+      "kind": "option",
+      "name": "alwaysValidate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3703
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 807
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-framework",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "framework",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 689
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 123
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-framework",
+      "component": "switch",
+      "kind": "option",
+      "name": "framework",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 689
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 123
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-framework",
+      "component": "radio",
+      "kind": "option",
+      "name": "framework",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 689
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 123
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-framework",
+      "component": "file",
+      "kind": "option",
+      "name": "framework",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 689
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 123
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-framework",
+      "component": "text",
+      "kind": "option",
+      "name": "framework",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 689
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 123
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-hint",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "hint",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4081
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 773
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-hint",
+      "component": "switch",
+      "kind": "option",
+      "name": "hint",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4081
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 773
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-hint",
+      "component": "radio",
+      "kind": "option",
+      "name": "hint",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4081
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 773
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-hint",
+      "component": "file",
+      "kind": "option",
+      "name": "hint",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4081
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 773
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-hint",
+      "component": "text",
+      "kind": "option",
+      "name": "hint",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4081
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 773
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-label",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "label",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1326
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 69
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-label",
+      "component": "switch",
+      "kind": "option",
+      "name": "label",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1326
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 69
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-label",
+      "component": "radio",
+      "kind": "option",
+      "name": "label",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1326
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 69
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-label",
+      "component": "file",
+      "kind": "option",
+      "name": "label",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1326
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 69
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-label",
+      "component": "text",
+      "kind": "option",
+      "name": "label",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1326
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-pagination.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 69
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-layout",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "layout",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 691
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 96
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-layout",
+      "component": "switch",
+      "kind": "option",
+      "name": "layout",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 691
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 96
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-layout",
+      "component": "radio",
+      "kind": "option",
+      "name": "layout",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 691
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 96
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-layout",
+      "component": "file",
+      "kind": "option",
+      "name": "layout",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 691
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 96
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-layout",
+      "component": "text",
+      "kind": "option",
+      "name": "layout",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 691
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 96
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-messages",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "messages",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3502
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 154
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-messages",
+      "component": "switch",
+      "kind": "option",
+      "name": "messages",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3502
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 154
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-messages",
+      "component": "radio",
+      "kind": "option",
+      "name": "messages",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3502
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 154
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-messages",
+      "component": "file",
+      "kind": "option",
+      "name": "messages",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3502
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 154
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-messages",
+      "component": "text",
+      "kind": "option",
+      "name": "messages",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3502
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 154
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-showValidState",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "showValidState",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3704
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 156
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-showValidState",
+      "component": "switch",
+      "kind": "option",
+      "name": "showValidState",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3704
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 156
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-showValidState",
+      "component": "radio",
+      "kind": "option",
+      "name": "showValidState",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3704
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 156
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-showValidState",
+      "component": "file",
+      "kind": "option",
+      "name": "showValidState",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3704
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 156
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-showValidState",
+      "component": "text",
+      "kind": "option",
+      "name": "showValidState",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3704
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 156
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-theme",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "theme",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 687
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-theme",
+      "component": "switch",
+      "kind": "option",
+      "name": "theme",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 687
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-theme",
+      "component": "radio",
+      "kind": "option",
+      "name": "theme",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 687
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-theme",
+      "component": "file",
+      "kind": "option",
+      "name": "theme",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 687
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-theme",
+      "component": "text",
+      "kind": "option",
+      "name": "theme",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 687
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-uploadHandler",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "uploadHandler",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4579
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 798
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-uploadHandler",
+      "component": "switch",
+      "kind": "option",
+      "name": "uploadHandler",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4579
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 798
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-uploadHandler",
+      "component": "radio",
+      "kind": "option",
+      "name": "uploadHandler",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4579
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 798
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadHandler",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadHandler",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4579
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 798
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-uploadHandler",
+      "component": "text",
+      "kind": "option",
+      "name": "uploadHandler",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4579
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 798
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-uploadUrl",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "uploadUrl",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5263
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 331
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-uploadUrl",
+      "component": "switch",
+      "kind": "option",
+      "name": "uploadUrl",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5263
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 331
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-uploadUrl",
+      "component": "radio",
+      "kind": "option",
+      "name": "uploadUrl",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5263
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 331
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadUrl",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadUrl",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5263
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 331
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-uploadUrl",
+      "component": "text",
+      "kind": "option",
+      "name": "uploadUrl",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5263
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 331
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-validate",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "validate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4156
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-validate",
+      "component": "switch",
+      "kind": "option",
+      "name": "validate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4156
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-validate",
+      "component": "radio",
+      "kind": "option",
+      "name": "validate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4156
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-validate",
+      "component": "file",
+      "kind": "option",
+      "name": "validate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4156
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-validate",
+      "component": "text",
+      "kind": "option",
+      "name": "validate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4156
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/dom/smoke-async.mjs",
+          "scripts/test.mjs",
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 80
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-CHECKBOX-OPT-validation",
+      "component": "checkbox",
+      "kind": "option",
+      "name": "validation",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1395
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-OPT-validation",
+      "component": "switch",
+      "kind": "option",
+      "name": "validation",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1395
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-OPT-validation",
+      "component": "radio",
+      "kind": "option",
+      "name": "validation",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1395
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-validation",
+      "component": "file",
+      "kind": "option",
+      "name": "validation",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1395
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-validation",
+      "component": "text",
+      "kind": "option",
+      "name": "validation",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1395
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 5
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-accept",
+      "component": "file",
+      "kind": "option",
+      "name": "accept",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4564
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 440
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-allowPaste",
+      "component": "file",
+      "kind": "option",
+      "name": "allowPaste",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 317
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 472
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-autoUpload",
+      "component": "file",
+      "kind": "option",
+      "name": "autoUpload",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 308
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 800
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-cancelLabel",
+      "component": "file",
+      "kind": "option",
+      "name": "cancelLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5173
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 485
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-canceledLabel",
+      "component": "file",
+      "kind": "option",
+      "name": "canceledLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5161
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 484
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-downscale",
+      "component": "file",
+      "kind": "option",
+      "name": "downscale",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4604
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 89
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-downscaleForce",
+      "component": "file",
+      "kind": "option",
+      "name": "downscaleForce",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 342
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 492
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-downscaleMaxBytes",
+      "component": "file",
+      "kind": "option",
+      "name": "downscaleMaxBytes",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 340
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 490
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-downscaleMaxHeight",
+      "component": "file",
+      "kind": "option",
+      "name": "downscaleMaxHeight",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 338
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-downscaleMaxWidth",
+      "component": "file",
+      "kind": "option",
+      "name": "downscaleMaxWidth",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 337
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-downscaleMime",
+      "component": "file",
+      "kind": "option",
+      "name": "downscaleMime",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 341
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 491
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-downscaleQuality",
+      "component": "file",
+      "kind": "option",
+      "name": "downscaleQuality",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 339
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 489
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-failedLabel",
+      "component": "file",
+      "kind": "option",
+      "name": "failedLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5159
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 483
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-maxFiles",
+      "component": "file",
+      "kind": "option",
+      "name": "maxFiles",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4924
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts",
+          "scripts/types/package.ts"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 505
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-maxSize",
+      "component": "file",
+      "kind": "option",
+      "name": "maxSize",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4926
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 610
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-maxSizeMB",
+      "component": "file",
+      "kind": "option",
+      "name": "maxSizeMB",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4929
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 610
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-maxTotalSize",
+      "component": "file",
+      "kind": "option",
+      "name": "maxTotalSize",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4927
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 610
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-maxTotalSizeMB",
+      "component": "file",
+      "kind": "option",
+      "name": "maxTotalSizeMB",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4937
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 611
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-minFiles",
+      "component": "file",
+      "kind": "option",
+      "name": "minFiles",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4925
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 610
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-multiple",
+      "component": "file",
+      "kind": "option",
+      "name": "multiple",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1297
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 377
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-onUploadQueued",
+      "component": "file",
+      "kind": "callback",
+      "name": "onUploadQueued",
+      "group": "callback",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 319
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 564
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-onUploadRetry",
+      "component": "file",
+      "kind": "callback",
+      "name": "onUploadRetry",
+      "group": "callback",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 322
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 565
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-previews",
+      "component": "file",
+      "kind": "option",
+      "name": "previews",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 309
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 42
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-progressTemplate",
+      "component": "file",
+      "kind": "option",
+      "name": "progressTemplate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5145
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 481
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-queuedLabel",
+      "component": "file",
+      "kind": "option",
+      "name": "queuedLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5163
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 474
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-replaceTitle",
+      "component": "file",
+      "kind": "option",
+      "name": "replaceTitle",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5108
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 801
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-retryLabel",
+      "component": "file",
+      "kind": "option",
+      "name": "retryLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5178
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 485
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-retryingLabel",
+      "component": "file",
+      "kind": "option",
+      "name": "retryingLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5165
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 474
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-showCancel",
+      "component": "file",
+      "kind": "option",
+      "name": "showCancel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 314
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 470
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-showClear",
+      "component": "file",
+      "kind": "option",
+      "name": "showClear",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 312
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 470
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-showFileMeta",
+      "component": "file",
+      "kind": "option",
+      "name": "showFileMeta",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 310
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 801
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-showPreview",
+      "component": "file",
+      "kind": "option",
+      "name": "showPreview",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 311
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 801
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-showRemove",
+      "component": "file",
+      "kind": "option",
+      "name": "showRemove",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 313
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 470
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-showRetry",
+      "component": "file",
+      "kind": "option",
+      "name": "showRetry",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 315
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 470
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-showStatus",
+      "component": "file",
+      "kind": "option",
+      "name": "showStatus",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 316
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 471
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-simulateDuration",
+      "component": "file",
+      "kind": "option",
+      "name": "simulateDuration",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 307
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 800
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-simulateUpload",
+      "component": "file",
+      "kind": "option",
+      "name": "simulateUpload",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 306
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 86
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-statusFormat",
+      "component": "file",
+      "kind": "option",
+      "name": "statusFormat",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5062
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 473
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadConcurrency",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadConcurrency",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5280
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 615
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadData",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadData",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5240
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 613
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadErrorPath",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadErrorPath",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5276
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 614
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadField",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadField",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5267
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 799
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadHeaders",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadHeaders",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4592
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 613
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadMethod",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadMethod",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5268
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 613
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadParams",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadParams",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5269
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 613
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadResponsePath",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadResponsePath",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5275
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 614
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadRetries",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadRetries",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5278
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 614
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadRetryDelay",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadRetryDelay",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5279
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 467
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadTimeout",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadTimeout",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5277
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 614
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadWithCredentials",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadWithCredentials",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5274
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 469
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-uploadedLabel",
+      "component": "file",
+      "kind": "option",
+      "name": "uploadedLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5157
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 482
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-variant",
+      "component": "file",
+      "kind": "option",
+      "name": "variant",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3999
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 188
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-OPT-withCredentials",
+      "component": "file",
+      "kind": "option",
+      "name": "withCredentials",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5273
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 469
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-autogrow",
+      "component": "text",
+      "kind": "option",
+      "name": "autogrow",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 367
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 75
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-autogrowMax",
+      "component": "text",
+      "kind": "option",
+      "name": "autogrowMax",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 368
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 76
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-clearable",
+      "component": "text",
+      "kind": "option",
+      "name": "clearable",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1680
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 470
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-counter",
+      "component": "text",
+      "kind": "option",
+      "name": "counter",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6448
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 115
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-disableWeekends",
+      "component": "text",
+      "kind": "option",
+      "name": "disableWeekends",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 381
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 794
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-disabledDates",
+      "component": "text",
+      "kind": "option",
+      "name": "disabledDates",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6852
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 794
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-icon",
+      "component": "text",
+      "kind": "option",
+      "name": "icon",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6167
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 84
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-iconPosition",
+      "component": "text",
+      "kind": "option",
+      "name": "iconPosition",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 347
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 668
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-mask",
+      "component": "text",
+      "kind": "option",
+      "name": "mask",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6128
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 708
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-output",
+      "component": "text",
+      "kind": "option",
+      "name": "output",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6478
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 258
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-phone",
+      "component": "text",
+      "kind": "option",
+      "name": "phone",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5915
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 73
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-phoneCountry",
+      "component": "text",
+      "kind": "option",
+      "name": "phoneCountry",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6104
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 787
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-phoneFormat",
+      "component": "text",
+      "kind": "option",
+      "name": "phoneFormat",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 363
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 787
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-prefix",
+      "component": "text",
+      "kind": "option",
+      "name": "prefix",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6209
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 115
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeBubble",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeBubble",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 370
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 789
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeBubbleMode",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeBubbleMode",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 371
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 729
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeBubblePosition",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeBubblePosition",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 372
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 730
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeFill",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeFill",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 373
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 731
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeFormat",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeFormat",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6255
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 725
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeLabels",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeLabels",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6262
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 724
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeMaxLabel",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeMaxLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 378
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 735
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeMinLabel",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeMinLabel",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 377
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 734
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeMinMax",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeMinMax",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 374
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 789
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeTickLabels",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeTickLabels",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 376
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 723
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeTicks",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeTicks",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 375
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "demo.js",
+          "lab.js",
+          "advanced.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 722
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rangeVariant",
+      "component": "text",
+      "kind": "option",
+      "name": "rangeVariant",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 369
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 789
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-rows",
+      "component": "text",
+      "kind": "option",
+      "name": "rows",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 384
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "ajax.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 801
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-stepper",
+      "component": "text",
+      "kind": "option",
+      "name": "stepper",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6317
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.html",
+          "shopify.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 72
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-stepperStep",
+      "component": "text",
+      "kind": "option",
+      "name": "stepperStep",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6738
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 301
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-suffix",
+      "component": "text",
+      "kind": "option",
+      "name": "suffix",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6268
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 115
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-OPT-validateDate",
+      "component": "text",
+      "kind": "option",
+      "name": "validateDate",
+      "group": "option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6865
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase"
+      },
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1291
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    }
+  ]
+}

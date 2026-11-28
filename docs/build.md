@@ -101,7 +101,7 @@ Without esbuild the build still succeeds and prints that minification was skippe
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
 | Full | `/dist/zidan-form.min.js` — ≈172 kB | `/dist/plugin-core.min.css` — ≈33 kB | `/dist/plugin-theme.min.css` — ≈44 kB |
-| Select-only | `/dist/select/zidan-select.min.js` — ≈86 kB | `/dist/select/plugin-select-core.min.css` — ≈10 kB | `/dist/select/plugin-select-theme.min.css` — ≈29 kB |
+| Select-only | `/dist/select/zidan-select.min.js` — ≈87 kB | `/dist/select/plugin-select-core.min.css` — ≈10 kB | `/dist/select/plugin-select-theme.min.css` — ≈29 kB |
 | File-only | `/dist/file/zidan-file.min.js` — ≈70 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈34 kB |
 
 Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.5.0` to each path (or your own origin). These are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
@@ -131,9 +131,9 @@ Regenerate them with `npm run build` followed by `npm run sizes`; `npm test` fai
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | 306,243 B (≈299 kB) → 175,708 B (≈172 kB) | 44,188 B (≈43 kB) → 33,886 B (≈33 kB) | 52,905 B (≈52 kB) → 44,672 B (≈44 kB) |
-| Select-only | 152,852 B (≈149 kB) → 88,311 B (≈86 kB) | 13,180 B (≈13 kB) → 10,116 B (≈10 kB) | 34,461 B (≈34 kB) → 29,290 B (≈29 kB) |
-| File-only | 124,044 B (≈121 kB) → 72,066 B (≈70 kB) | 10,251 B (≈10 kB) → 7,351 B (≈7 kB) | 40,160 B (≈39 kB) → 34,612 B (≈34 kB) |
+| Full | 307,741 B (≈301 kB) → 176,211 B (≈172 kB) | 44,449 B (≈43 kB) → 33,969 B (≈33 kB) | 53,149 B (≈52 kB) → 44,755 B (≈44 kB) |
+| Select-only | 154,350 B (≈151 kB) → 88,818 B (≈87 kB) | 13,441 B (≈13 kB) → 10,199 B (≈10 kB) | 34,705 B (≈34 kB) → 29,373 B (≈29 kB) |
+| File-only | 124,134 B (≈121 kB) → 72,109 B (≈70 kB) | 10,512 B (≈10 kB) → 7,434 B (≈7 kB) | 40,404 B (≈39 kB) → 34,695 B (≈34 kB) |
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their
@@ -242,9 +242,12 @@ create the Release yourself when the panel is empty — the body comes from the 
 section the workflow uses:
 
 ```bash
-node scripts/changelog-section.mjs 2.5.0 > .build/notes-2.5.0.md
+node scripts/changelog-section.mjs 2.5.0 --output .build/notes-2.5.0.md
 gh release create v2.5.0 --title v2.5.0 --notes-file .build/notes-2.5.0.md --verify-tag
 ```
+
+Use `--output`, not a shell redirect. Windows PowerShell turns `>` into UTF-16LE, which
+`gh --notes-file` then reads as UTF-8, so the release body publishes as garbage like `### Added`.
 
 jsDelivr only serves published tarballs, so a version that is not on npm has no CDN files: its
 `zidan-select@X.Y.Z` URLs return 404. If that happens, pin the README, demo build cards and docs

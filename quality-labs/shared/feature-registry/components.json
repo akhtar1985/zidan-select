@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "package": {
+    "name": "zidan-select",
+    "version": "2.5.0"
+  },
+  "sourceHash": "225b7da0f1f336c8d4f7415b0cb26d5f831159d24282396ab14da278cc865329",
+  "components": [
+    {
+      "id": "ZS-COMP-SELECT",
+      "name": "ZidanSelect",
+      "family": "select",
+      "modes": [
+        "combobox",
+        "select",
+        "tags"
+      ],
+      "source": {
+        "file": "zidan-form.js",
+        "line": 950
+      }
+    },
+    {
+      "id": "ZS-COMP-FIELD",
+      "name": "ZidanFieldBase",
+      "family": "field",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3496
+      }
+    },
+    {
+      "id": "ZS-COMP-CHECKBOX",
+      "name": "ZidanCheckbox",
+      "family": "checkbox",
+      "variants": [
+        "button",
+        "card",
+        "default",
+        "minimal",
+        "switch"
+      ],
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3990
+      }
+    },
+    {
+      "id": "ZS-COMP-SWITCH",
+      "name": "ZidanCheckbox (switch)",
+      "family": "switch",
+      "variants": [
+        "icon",
+        "ios",
+        "labeled",
+        "material",
+        "square"
+      ],
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3990
+      }
+    },
+    {
+      "id": "ZS-COMP-RADIO",
+      "name": "ZidanRadioGroup",
+      "family": "radio",
+      "variants": [
+        "button",
+        "card",
+        "inline",
+        "stacked",
+        "tile"
+      ],
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4172
+      }
+    },
+    {
+      "id": "ZS-COMP-FILE",
+      "name": "ZidanFileUpload",
+      "family": "file",
+      "variants": [
+        "avatar",
+        "button",
+        "compact",
+        "dropzone",
+        "gallery"
+      ],
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4505
+      }
+    },
+    {
+      "id": "ZS-COMP-TEXT",
+      "name": "ZidanTextField",
+      "family": "text",
+      "variants": [
+        "color",
+        "date",
+        "datetime-local",
+        "email",
+        "month",
+        "number",
+        "password",
+        "range",
+        "search",
+        "tel",
+        "text",
+        "time",
+        "url",
+        "week"
+      ],
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5866
+      }
+    },
+    {
+      "id": "ZS-COMP-FORM",
+      "name": "ZidanForm",
+      "family": "form",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 40
+      }
+    }
+  ],
+  "enums": [
+    {
+      "id": "ZS-VALUE-MODE-combobox",
+      "kind": "enum-value",
+      "enum": "SelectMode",
+      "value": "combobox"
+    },
+    {
+      "id": "ZS-VALUE-MODE-select",
+      "kind": "enum-value",
+      "enum": "SelectMode",
+      "value": "select"
+    },
+    {
+      "id": "ZS-VALUE-MODE-tags",
+      "kind": "enum-value",
+      "enum": "SelectMode",
+      "value": "tags"
+    },
+    {
+      "id": "ZS-VALUE-LAYOUT-bordered-brutalist",
+      "kind": "enum-value",
+      "enum": "SelectLayout",
+      "value": "bordered-brutalist"
+    },
+    {
+      "id": "ZS-VALUE-LAYOUT-classic-clean",
+      "kind": "enum-value",
+      "enum": "SelectLayout",
+      "value": "classic-clean"
+    },
+    {
+      "id": "ZS-VALUE-LAYOUT-floating-label",
+      "kind": "enum-value",
+      "enum": "SelectLayout",
+      "value": "floating-label"
+    },
+    {
+      "id": "ZS-VALUE-LAYOUT-glass-elevated",
+      "kind": "enum-value",
+      "enum": "SelectLayout",
+      "value": "glass-elevated"
+    },
+    {
+      "id": "ZS-VALUE-LAYOUT-soft-pill",
+      "kind": "enum-value",
+      "enum": "SelectLayout",
+      "value": "soft-pill"
+    },
+    {
+      "id": "ZS-VALUE-THEME-auto",
+      "kind": "enum-value",
+      "enum": "Theme",
+      "value": "auto"
+    },
+    {
+      "id": "ZS-VALUE-THEME-dark",
+      "kind": "enum-value",
+      "enum": "Theme",
+      "value": "dark"
+    },
+    {
+      "id": "ZS-VALUE-THEME-default",
+      "kind": "enum-value",
+      "enum": "Theme",
+      "value": "default"
+    },
+    {
+      "id": "ZS-VALUE-THEME-glass",
+      "kind": "enum-value",
+      "enum": "Theme",
+      "value": "glass"
+    },
+    {
+      "id": "ZS-VALUE-THEME-minimal",
+      "kind": "enum-value",
+      "enum": "Theme",
+      "value": "minimal"
+    },
+    {
+      "id": "ZS-VALUE-THEME-modern",
+      "kind": "enum-value",
+      "enum": "Theme",
+      "value": "modern"
+    },
+    {
+      "id": "ZS-VALUE-FRAMEWORK-auto",
+      "kind": "enum-value",
+      "enum": "Framework",
+      "value": "auto"
+    },
+    {
+      "id": "ZS-VALUE-FRAMEWORK-bootstrap",
+      "kind": "enum-value",
+      "enum": "Framework",
+      "value": "bootstrap"
+    },
+    {
+      "id": "ZS-VALUE-FRAMEWORK-bulma",
+      "kind": "enum-value",
+      "enum": "Framework",
+      "value": "bulma"
+    },
+    {
+      "id": "ZS-VALUE-FRAMEWORK-foundation",
+      "kind": "enum-value",
+      "enum": "Framework",
+      "value": "foundation"
+    },
+    {
+      "id": "ZS-VALUE-FRAMEWORK-none",
+      "kind": "enum-value",
+      "enum": "Framework",
+      "value": "none"
+    },
+    {
+      "id": "ZS-VALUE-FRAMEWORK-tailwind",
+      "kind": "enum-value",
+      "enum": "Framework",
+      "value": "tailwind"
+    },
+    {
+      "id": "ZS-VALUE-FRAMEWORK-vanilla",
+      "kind": "enum-value",
+      "enum": "Framework",
+      "value": "vanilla"
+    },
+    {
+      "id": "ZS-VALUE-SCROLLBAR-default",
+      "kind": "enum-value",
+      "enum": "Scrollbar",
+      "value": "default"
+    },
+    {
+      "id": "ZS-VALUE-SCROLLBAR-fancy",
+      "kind": "enum-value",
+      "enum": "Scrollbar",
+      "value": "fancy"
+    },
+    {
+      "id": "ZS-VALUE-SCROLLBAR-hidden",
+      "kind": "enum-value",
+      "enum": "Scrollbar",
+      "value": "hidden"
+    },
+    {
+      "id": "ZS-VALUE-SCROLLBAR-hover",
+      "kind": "enum-value",
+      "enum": "Scrollbar",
+      "value": "hover"
+    },
+    {
+      "id": "ZS-VALUE-SCROLLBAR-thin",
+      "kind": "enum-value",
+      "enum": "Scrollbar",
+      "value": "thin"
+    }
+  ]
+}

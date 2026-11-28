@@ -433,7 +433,7 @@ Methods: `openPicker()` / `showPicker()`. Event: `zidan:picker` → `{ type }`.
 The native picker is used via `input.showPicker()` when available; icons keep the native input
 reachable, so form values and validation stay native.
 
-## File upload: variants, uploading & rendering
+## File upload: variants, uploading and rendering
 
 Variants are set with `fileVariant` / `data-zidan-file-variant` (defaults to `dropzone`):
 

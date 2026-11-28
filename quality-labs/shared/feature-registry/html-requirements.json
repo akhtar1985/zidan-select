@@ -1,0 +1,3586 @@
+{
+  "schemaVersion": 1,
+  "package": {
+    "name": "zidan-select",
+    "version": "2.5.0"
+  },
+  "sourceHash": "225b7da0f1f336c8d4f7415b0cb26d5f831159d24282396ab14da278cc865329",
+  "attributes": [
+    {
+      "id": "ZS-ATTR-zidan-accent-insensitive",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-accent-insensitive",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1079
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-allow-free-text",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-allow-free-text",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 522
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-allow-paste",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-allow-paste",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 472
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-aria-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-aria-label",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 702
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-auto-icon",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-auto-icon",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 654
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-auto-init",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-auto-init",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 7384
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 392
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-auto-upload",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-auto-upload",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 477
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-autogrow",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-autogrow",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 162
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-autogrow-max",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-autogrow-max",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 163
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-case-sensitive",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-case-sensitive",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 836
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-checkbox",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-checkbox",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6943
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 408
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-clear",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-clear",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6295
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 378
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-clearable",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-clearable",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 521
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-close-on-select",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-close-on-select",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 712
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-counter",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-counter",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6449
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 642
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-description",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-description",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4050
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 566
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-deselectable",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-deselectable",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 563
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-disable-weekends",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-disable-weekends",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 750
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-disabled",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-disabled",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 756
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-disabled-dates",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-disabled-dates",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6852
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 756
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-downscale",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-downscale",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 487
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-downscale-force",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-downscale-force",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 492
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-downscale-max-bytes",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-downscale-max-bytes",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 490
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-downscale-max-width",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-downscale-max-width",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 488
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-downscale-mime",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-downscale-mime",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 491
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-downscale-quality",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-downscale-quality",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 489
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-drop-hint",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-drop-hint",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4543
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 796
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-editable",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-editable",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 835
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-body",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-body",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "api.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 880
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-credentials",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-credentials",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "api.html"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 738
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-has-more-path",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-has-more-path",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "api.html"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1086
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-headers",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-headers",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 737
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-items-path",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-items-path",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "ajax.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 842
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-method",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-method",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 736
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-page-param",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-page-param",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "api.html"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1084
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-page-size",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-page-size",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "ajax.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 845
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-page-size-param",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-page-size-param",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "ajax.html"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1085
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-params",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-params",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 879
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-query-param",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-query-param",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "api.html"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1083
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-skip-param",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-skip-param",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "api.html",
+          "ajax.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 844
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-total-path",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-total-path",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "api.html",
+          "ajax.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 843
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-fetch-url",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-fetch-url",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "api.html",
+          "ajax.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 193
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-file",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-file",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6944
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 408
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-file-variant",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-file-variant",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 597
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-form",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-form",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 409
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-framework",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-framework",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 689
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 335
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-highlight-matches",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-highlight-matches",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1079
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-hint",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-hint",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4081
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 773
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-icon",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-icon",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6167
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 657
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-icon-clickable",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-icon-clickable",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 658
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-icon-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-icon-label",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6176
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 659
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-icon-position",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-icon-position",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 658
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-indeterminate",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-indeterminate",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4106
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 535
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-input",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-input",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6946
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 408
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-item-height",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-item-height",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1081
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-label",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4016
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "demo.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 360
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-layout",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-layout",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 691
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "demo.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 336
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-locale",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-locale",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1081
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-mask",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-mask",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 161
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-max-files",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-max-files",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4924
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 593
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-max-size",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-max-size",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4926
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 593
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-max-size-mb",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-max-size-mb",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4930
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 805
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-max-tag-length",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-max-tag-length",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 833
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-max-tags",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-max-tags",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 522
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-max-total-size",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-max-total-size",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4927
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 456
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-max-total-size-mb",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-max-total-size-mb",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4938
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-min-files",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-min-files",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4925
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 453
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-min-tag-length",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-min-tag-length",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 832
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-mode",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-mode",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 86
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-multiple",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-multiple",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 709
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-name",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-name",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 687
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-off-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-off-label",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4046
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 555
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-on-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-on-label",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4044
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 555
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-options",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-options",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 160
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 412
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-output",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-output",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6478
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 717
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-phone",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-phone",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5915
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 700
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-phone-countries",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-phone-countries",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 325
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-phone-country",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-phone-country",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6104
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 701
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-phone-country-select",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-phone-country-select",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 704
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-phone-format",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-phone-format",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 701
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-picker-button",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-picker-button",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 752
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-picker-icon",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-picker-icon",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 753
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-placeholder",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-placeholder",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "api.html",
+          "ajax.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 703
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-prefix",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-prefix",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6209
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 637
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-preview",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-preview",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 479
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-radio",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-radio",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6942
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 408
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-radio-group",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-radio-group",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6941
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 408
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-bubble",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-bubble",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 716
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-bubble-mode",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-bubble-mode",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 790
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-bubble-position",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-bubble-position",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 358
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-fill",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-fill",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 359
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-format",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-format",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6255
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 365
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-min-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-min-label",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 792
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-minmax",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-minmax",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 716
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-tick-labels",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-tick-labels",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 363
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-ticks",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-ticks",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 791
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-range-variant",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-range-variant",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 715
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-reorderable",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-reorderable",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 834
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-required",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-required",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 689
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-reveal",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-reveal",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6275
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 639
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-scrollbar",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-scrollbar",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 527
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-searchable",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-searchable",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 521
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-select",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-select",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 966
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "api.html",
+          "ajax.html",
+          "demo.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 317
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-show-clear",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-show-clear",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 470
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-show-file-meta",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-show-file-meta",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 601
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-show-status",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-show-status",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 471
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-simulate-duration",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-simulate-duration",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 605
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-simulate-upload",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-simulate-upload",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 604
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-stepper",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-stepper",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6319
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "lab.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 686
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-stepper-delay",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-stepper-delay",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 786
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-stepper-down-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-stepper-down-label",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 300
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-stepper-interval",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-stepper-interval",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 298
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-stepper-long-press",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-stepper-long-press",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 689
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-stepper-position",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-stepper-position",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 689
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-stepper-up-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-stepper-up-label",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 299
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-stepper-wrap",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-stepper-wrap",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 295
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-suffix",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-suffix",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6268
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 637
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-switch",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-switch",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4000
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 408
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-switch-style",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-switch-style",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4006
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 552
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-textarea",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-textarea",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6945
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 408
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-theme",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-theme",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 687
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 336
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-title",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-title",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4539
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "shopify.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 594
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-type-ahead",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-type-ahead",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1080
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-type-ahead-timeout",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-type-ahead-timeout",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1080
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-concurrency",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-concurrency",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 468
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-error-path",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-error-path",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 464
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-field",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-field",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 799
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-icon",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-icon",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 597
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-method",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-method",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 459
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-params",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-params",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 460
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-response-path",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-response-path",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 463
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-retries",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-retries",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 466
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-retry-delay",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-retry-delay",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 467
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-timeout",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-timeout",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 465
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-url",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-url",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "advanced.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 612
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-upload-with-credentials",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-upload-with-credentials",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 469
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-validation",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-validation",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3845
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 680
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-validation-icon",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-validation-icon",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 680
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-variant",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-variant",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3999
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "shopify.html",
+          "demo.js",
+          "playground.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 367
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-virtual",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-virtual",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1080
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-virtual-threshold",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-virtual-threshold",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1081
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zidan-with-credentials",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zidan-with-credentials",
+      "source": null,
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 469
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-downscale",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-downscale",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4631
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-file-index",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-file-index",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4707
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-file-variant",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-file-variant",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4522
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 130
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-framework",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-framework",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 689
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 974
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-hidden-label",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-hidden-label",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1355
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-icon",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-icon",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 290
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-index",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-index",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1701
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-kind",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-kind",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3553
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-layout",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-layout",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 691
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-mode",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-mode",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1292
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-option",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-option",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1975
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-range",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-range",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6229
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 133
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-remove",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-remove",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1744
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-scrollbar",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-scrollbar",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1293
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-step",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-step",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 6343
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-switch-style",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-switch-style",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4029
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 128
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-theme",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-theme",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 643
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/test.mjs",
+          "scripts/subset-audit.mjs"
+        ],
+        "demos": [
+          "index.html",
+          "advanced.html",
+          "playground.html",
+          "api.html",
+          "ajax.html",
+          "shopify.html",
+          "demo.js",
+          "lab.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 974
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-type",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-type",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5892
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-upload",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-upload",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4635
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 138
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-upload-state",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-upload-state",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5119
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 138
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-validation",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-validation",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 1663
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [],
+        "docs": {
+          "file": "README.md",
+          "line": 1016
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-variant",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-variant",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 4028
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": {
+          "file": "docs/theming.md",
+          "line": 124
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-ATTR-zs-visible",
+      "component": "all",
+      "kind": "attribute",
+      "name": "data-zs-visible",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2103
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [],
+        "docs": null
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    }
+  ]
+}

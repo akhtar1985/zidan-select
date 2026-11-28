@@ -1852,3 +1852,13 @@
   25% { transform: translateX(-3px); }
   75% { transform: translateX(3px); }
 }
+
+/* Keep focused control text at 16px on narrow screens so iOS does not zoom
+   the page; desktop keeps the compact 15px token default. */
+@media (max-width: 640px) {
+  .zs-root,
+  .zs-field,
+  .zs-radio-group {
+    --zs-font-size: 1rem;
+  }
+}

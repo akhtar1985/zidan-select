@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "package": {
+    "name": "zidan-select",
+    "version": "2.5.0"
+  },
+  "sourceHash": "225b7da0f1f336c8d4f7415b0cb26d5f831159d24282396ab14da278cc865329",
+  "demos": [
+    {
+      "id": "ZS-DEMO-index-html",
+      "file": "index.html",
+      "exists": true,
+      "title": "ZidanForm — vanilla form controls: select, checkbox, radio, file &amp; inputs",
+      "controls": 340,
+      "scripts": [
+        "nav.js",
+        "zidan-form.js",
+        "demo.js",
+        "lab.js"
+      ],
+      "styles": [
+        "plugin-core.css",
+        "plugin-theme.css",
+        "demo.css",
+        "nav.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-advanced-html",
+      "file": "advanced.html",
+      "exists": true,
+      "title": "Advanced options — HTML, JavaScript, async validation, pagination &amp; uploads",
+      "controls": 53,
+      "scripts": [
+        "nav.js",
+        "zidan-form.js",
+        "advanced.js"
+      ],
+      "styles": [
+        "plugin-core.css",
+        "plugin-theme.css",
+        "demo.css",
+        "nav.css",
+        "advanced.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-playground-html",
+      "file": "playground.html",
+      "exists": true,
+      "title": "Field playground — build a ZidanForm control and copy its code",
+      "controls": 0,
+      "scripts": [
+        "nav.js",
+        "zidan-form.js",
+        "playground.js"
+      ],
+      "styles": [
+        "plugin-core.css",
+        "plugin-theme.css",
+        "demo.css",
+        "nav.css",
+        "playground.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-api-html",
+      "file": "api.html",
+      "exists": true,
+      "title": "API request options lab — headers, params and JSON bodies | ZidanForm",
+      "controls": 46,
+      "scripts": [
+        "zidan-form.js",
+        "nav.js",
+        "api.js"
+      ],
+      "styles": [
+        "plugin-core.css",
+        "plugin-theme.css",
+        "demo.css",
+        "nav.css",
+        "ajax.css",
+        "api.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-ajax-html",
+      "file": "ajax.html",
+      "exists": true,
+      "title": "ZidanForm AJAX &amp; remote data demo — search, paginate and load more from an API",
+      "controls": 19,
+      "scripts": [
+        "zidan-form.js",
+        "nav.js",
+        "ajax.js"
+      ],
+      "styles": [
+        "plugin-core.css",
+        "plugin-theme.css",
+        "demo.css",
+        "nav.css",
+        "ajax.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-shopify-html",
+      "file": "shopify.html",
+      "exists": true,
+      "title": "ZidanForm on Shopify — product page demo",
+      "controls": 21,
+      "scripts": [
+        "nav.js",
+        "zidan-form.js"
+      ],
+      "styles": [
+        "plugin-core.css",
+        "plugin-theme.css",
+        "demo.css",
+        "nav.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-docs-index-html",
+      "file": "docs/index.html",
+      "exists": true,
+      "title": "ZidanForm documentation",
+      "controls": 2,
+      "scripts": [
+        "../nav.js"
+      ],
+      "styles": [
+        "../plugin-core.css",
+        "../plugin-theme.css",
+        "../demo.css",
+        "../nav.css",
+        "../docs.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-docs-options-html",
+      "file": "docs/options.html",
+      "exists": true,
+      "title": "Options &amp; data attributes — ZidanForm docs",
+      "controls": 247,
+      "scripts": [
+        "../nav.js"
+      ],
+      "styles": [
+        "../plugin-core.css",
+        "../plugin-theme.css",
+        "../demo.css",
+        "../nav.css",
+        "../docs.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-docs-frameworks-html",
+      "file": "docs/frameworks.html",
+      "exists": true,
+      "title": "Framework integration — ZidanForm docs",
+      "controls": 31,
+      "scripts": [
+        "../nav.js"
+      ],
+      "styles": [
+        "../plugin-core.css",
+        "../plugin-theme.css",
+        "../demo.css",
+        "../nav.css",
+        "../docs.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-docs-comparison-html",
+      "file": "docs/comparison.html",
+      "exists": true,
+      "title": "Why ZidanForm &amp; comparison — ZidanForm docs",
+      "controls": 3,
+      "scripts": [
+        "../nav.js"
+      ],
+      "styles": [
+        "../plugin-core.css",
+        "../plugin-theme.css",
+        "../demo.css",
+        "../nav.css",
+        "../docs.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-docs-validation-html",
+      "file": "docs/validation.html",
+      "exists": true,
+      "title": "ZidanForm × validation libraries",
+      "controls": 16,
+      "scripts": [
+        "../nav.js",
+        "../zidan-form.js",
+        "https://code.jquery.com/jquery-3.7.1.min.js",
+        "https://cdn.jsdelivr.net/npm/jquery-validation@1.20.0/dist/jquery.validate.min.js",
+        "https://unpkg.com/just-validate@4.3.0/dist/just-validate.production.min.js",
+        "https://cdn.jsdelivr.net/npm/parsleyjs@2.9.2/dist/parsley.min.js"
+      ],
+      "styles": [
+        "../plugin-core.css",
+        "../plugin-theme.css",
+        "../demo.css",
+        "../nav.css",
+        "../docs.css"
+      ]
+    },
+    {
+      "id": "ZS-DEMO-docs-html-and-wordpress-html",
+      "file": "docs/html-and-wordpress.html",
+      "exists": true,
+      "title": "Static HTML &amp; WordPress cookbook — ZidanForm docs",
+      "controls": 104,
+      "scripts": [
+        "../nav.js"
+      ],
+      "styles": [
+        "../plugin-core.css",
+        "../plugin-theme.css",
+        "../demo.css",
+        "../nav.css",
+        "../docs.css"
+      ]
+    }
+  ]
+}

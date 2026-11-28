@@ -200,7 +200,7 @@
           <a class="build-pick" href="#build-select">
             <strong>Only custom select dropdowns</strong>
             <span>Load the select-only JS plus its core and theme CSS. The rest of the page stays untouched — no full bundle.</span>
-            <em>≈149 kB JS · ≈86 kB minified</em>
+            <em>≈151 kB JS · ≈87 kB minified</em>
           </a>
           <a class="build-pick" href="#build-file">
             <strong>Only file uploads</strong>
@@ -210,13 +210,13 @@
           <a class="build-pick" href="#build-full">
             <strong>Every input in the form</strong>
             <span>Load the full bundle once and initialise it: text fields, selects, file uploads, checkboxes and radios together.</span>
-            <em>≈299 kB JS · ≈172 kB minified</em>
+            <em>≈301 kB JS · ≈172 kB minified</em>
           </a>
         </div>
       </div>
       <div class="grid-3">
         <article class="card build-card" id="build-full">
-          <h3>Full build <span class="build-size">≈299 kB · ≈172 kB min</span></h3>
+          <h3>Full build <span class="build-size">≈301 kB · ≈172 kB min</span></h3>
           <p>Select, checkbox, switch, radio, file upload and text fields in one file.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/zidan-form.js">JS</a>
@@ -231,7 +231,7 @@
           </div>
         </article>
         <article class="card build-card" id="build-select">
-          <h3>Select-only <span class="build-size">≈149 kB · ≈86 kB min</span></h3>
+          <h3>Select-only <span class="build-size">≈151 kB · ≈87 kB min</span></h3>
           <p>Select, combobox, tags and multi-select — everything the select family needs.</p>
           <p class="build-direct">
             <a href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.0/dist/select/zidan-select.js">JS</a>
@@ -738,7 +738,7 @@ const email = zidanField('#email', {
               <div>
                 <p style="margin:0 0 6px;font-size:.8rem;color:#6b7385">Wrapper class only</p>
                 <div class="zidan-form">
-                  <select name="cms-plan">
+                  <select name="cms-plan" aria-label="CMS plan — wrapper class only">
                     <option value="">Plan — wrapper class only</option>
                     <option>Starter</option><option>Pro</option><option>Team</option>
                   </select>
@@ -746,7 +746,7 @@ const email = zidanField('#email', {
               </div>
               <div>
                 <p style="margin:0 0 6px;font-size:.8rem;color:#6b7385">ID target from the config</p>
-                <select id="cms-country" name="cms-country">
+                <select id="cms-country" name="cms-country" aria-label="CMS country — ID target">
                   <option value="">Country — ID target</option>
                   <option>Germany</option><option>Japan</option><option>Brazil</option>
                 </select>
@@ -754,6 +754,7 @@ const email = zidanField('#email', {
               <div>
                 <p style="margin:0 0 6px;font-size:.8rem;color:#6b7385">Marker class + JSON options</p>
                 <select class="zidan-select" multiple
+                        aria-label="CMS tags — marker class and JSON options"
                         data-zidan-options='{"mode":"tags","maxTags":2,"placeholder":"Tags — class + JSON"}'>
                   <option>CSS</option><option>HTML</option><option>JavaScript</option>
                 </select>

@@ -32,6 +32,9 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ### Fixed
 
+- GitHub Release bodies are written with an explicit UTF-8 `--output` path instead of a shell
+  redirect, so a notes file produced in Windows PowerShell (UTF-16LE) can no longer publish
+  mojibake; `scripts/changelog-section.mjs` gained `--output <file>` and strips a UTF-8 BOM.
 - CSS-framework adapters now inherit `data-zs-framework` from a wrapper or `<html>` when
   the select itself has no `themeFramework` option; before this only auto-detection ran.
 - Bootstrap `input-group` selects shrink to fit beside addons instead of overflowing, and
@@ -45,6 +48,12 @@ heading, bumps every version site in the repository, commits and tags. See
   `.form-select` and badge classes are added and removed when switching adapters.
 - File `clear()` now empties the native input through `DataTransfer` and falls back to
   `input.value = ''`, so programmatic clears cannot leave stale files behind.
+- Opening a select now highlights the current value instead of the placeholder, so
+  `ArrowDown` + `Enter` keeps a keyboard user's selection rather than clearing it.
+- `zidanField()` returns the existing instance when a field is initialised twice; `force: true`
+  still replaces it, and repeat init no longer stacks a second wrapper.
+- Mobile control text is 16px on screens up to 640px, preventing Mobile Safari from zooming
+  the page when a control receives focus; desktop keeps the compact 15px token.
 
 ### Documentation
 
@@ -55,6 +64,10 @@ heading, bumps every version site in the repository, commits and tags. See
 - Corrected stale select-only and file-only minified sizes in the README, `docs/build.md`
   and the advanced build table; `npm run sizes` now keeps those CDN rows and CSS figures
   in sync with the built files.
+- README quick-start CDN URLs now pin `2.5.0` like the rest of the page, the “What's new”
+  anchor matches GitHub's generated slug, and the cookbook/options headings use punctuation
+  that produces the same anchor on GitHub and on the generated documentation pages.
+- The CMS tags example has an accessible name, so its combobox is no longer unnamed.
 
 ## [2.5.0] - 2026-11-26
 

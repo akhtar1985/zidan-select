@@ -12,7 +12,7 @@ the documentation sources (`docs/*.md`, `README.md`, `index.html`,
 * **Low** — code smell, dead variable, cosmetic inconsistency.
 
 **Current status (v2.5.0):** `npm run build`, `npm run sizes`, `npm run
-types` and `npm test` pass. The suite runs 63 DOM tests plus the static
+types` and `npm test` pass. The suite runs 88 DOM tests plus the static
 checks, and the API lab exercises every documented option, callback, method
 and event (92 self-test rows). The size failure described in BUG-001/002 was
 fixed before the v2.5.0 pass; the original verdicts are kept below as an
@@ -320,7 +320,7 @@ Total: **30 findings**, 6 high, 18 medium, 6 low.
 
 ## Resolution status
 
-Re-checked against the v2.5.0 working tree. `npm test` passes (63 DOM tests),
+Re-checked against the v2.5.0 working tree. `npm test` passes (88 DOM tests),
 including the size check that was failing when this audit was written. The
 working tree already carried the BUG-001/002/003 fixes before the pass.
 
@@ -377,3 +377,62 @@ For the original 30 findings: 18 code fixes, 1 documentation fix, 3 already
 fixed before the pass, 6 confirmed not defects or intentional behaviour (#005,
 #020, #023, #024, #025, #026) and 1 deferred with rationale (#018). The v2.5.0
 re-check above adds eight more code/documentation fixes.
+
+## Quality-lab follow-up (v2.5.0 working tree)
+
+The four repository labs found four more defects and three documentation
+defects. All are fixed; the original 30-finding tally above is left untouched
+as the audit trail.
+
+### BUG-031 — Opening a selected combobox starts on the placeholder
+* **Severity:** Medium.
+* **Where:** `zidan-form.js` `ZidanSelect.prototype.open()`.
+* **Symptom:** `setValue('b')` followed by `ArrowDown` + `Enter` cleared the
+  selection, because `open()` made the first enabled option (the placeholder)
+  active instead of the selected option. This is silent value loss for
+  keyboard users.
+* **Fix:** `open()` now scans the visible items for the first enabled selected
+  value and falls back to `_firstEnabledIndex()` only when there is no
+  selection. The regression test checks the active descendant and the value
+  after `Enter`.
+* **Regression:** `scripts/dom/reliability.mjs` — regression BUG-031.
+
+### BUG-032 — `zidanField()` returns `[]` for an already-enhanced field
+* **Severity:** Low.
+* **Where:** `zidan-form.js` `zidanField()`.
+* **Symptom:** The second `zidanField('#field')` call skipped the existing
+  instance and returned an empty array. Callers that cache the result or use a
+  shared initialiser saw a different return shape on repeat initialisation.
+* **Fix:** When the node already owns an instance and `force` is not set, the
+  existing instance is pushed into the result. `force: true` still destroys
+  and replaces it through `createField()`.
+* **Regression:** `scripts/dom/reliability.mjs` — regression BUG-032.
+
+### BUG-033 — CMS tags example has no accessible name
+* **Severity:** Medium.
+* **Where:** `index.html`, “Tags — class + JSON” CMS example.
+* **Symptom:** The tags `<select multiple>` was preceded by a visual
+  `<p>`, not a label, so its combobox had no accessible name. The Demo Lab
+  reported `ZS-DEMO-A11Y-NAMES` as a failure.
+* **Fix:** Added `aria-label="CMS tags — marker class and JSON options"`.
+* **Regression:** Demo Lab `ZS-DEMO-A11Y-NAMES` (real Chrome).
+
+### BUG-034 — Mobile control text is 15px and triggers iOS input zoom
+* **Severity:** Low.
+* **Where:** `plugin-core.css` / `plugin-theme.css` `--zs-font-size`.
+* **Symptom:** The compact 15px default is below the 16px threshold at which
+  Mobile Safari zooms a focused control, so tapping a control shifted the
+  layout. The Demo Lab measured 15px at a 390px viewport.
+* **Fix:** A `max-width: 640px` media query sets `--zs-font-size: 1rem` for
+  roots, fields and radio groups in both the structural and theme layers;
+  desktop keeps 15px. The lab check now reports `FAIL` (not
+  `INCONCLUSIVE`) when the measurement is below 16px.
+* **Regression:** Demo Lab `ZS-DEMO-MOBILE-TYPE`.
+
+### Documentation-lab follow-up
+
+| Defect | Fix |
+|--------|-----|
+| README quick-start loaded `zidan-select@2` while the rest of the page pinned 2.5.0 | Three CDN URLs now use `@2.5.0`. |
+| README linked `#whats-new-in-215` but GitHub generates `#whats-new-in-2125` | Link corrected to `#whats-new-in-2125`. |
+| `docs/html-and-wordpress.md` and `docs/frameworks.md` used GitHub double-hyphen anchors that the generated pages render with single hyphens | Headings now use a colon and “and” so both slug rules agree; the Markdown, generated HTML and README site links point at the same single-hyphen ids. |

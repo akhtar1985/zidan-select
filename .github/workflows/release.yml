@@ -101,7 +101,9 @@ jobs:
           tag="$GITHUB_REF_NAME"
           version="${tag#v}"
           notes="$(mktemp)"
-          node scripts/changelog-section.mjs "$version" > "$notes"
+          # Write the notes with --output, not a shell redirect: Windows PowerShell stores
+          # `>` as UTF-16LE, which `gh --notes-file` would publish as mojibake.
+          node scripts/changelog-section.mjs "$version" --output "$notes"
           if gh release view "$tag" >/dev/null 2>&1; then
             echo "release $tag already exists"
           elif [ -s "$notes" ]; then

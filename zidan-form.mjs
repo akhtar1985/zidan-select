@@ -9,15 +9,18 @@
  *
  * https://github.com/akhtar1985/zidan-select
  */
-import './zidan-form.js';
+import * as classic from './zidan-form.js';
 
-const api = typeof window !== 'undefined' ? window : globalThis;
+const host = typeof window !== 'undefined' ? window : globalThis;
+/* Browsers (classic script) expose the API on window; bundlers and Node take
+   the CommonJS export, so the same entry point works during SSR too. */
+const api = host.ZidanForm || classic.default || classic;
 
-if (!api.ZidanForm) {
-  throw new Error('ZidanForm: core script did not initialise (no DOM available?).');
+if (!api.ZidanForm && !api.ZidanSelect && !api.zidanField) {
+  throw new Error('ZidanForm: core script did not expose an API.');
 }
 
-const core = api.ZidanForm.api || api;
+const core = api.ZidanForm && api.ZidanForm.api ? api.ZidanForm.api : api;
 
 export const ZidanForm = api.ZidanForm;
 export const ZidanSelect = core.ZidanSelect;

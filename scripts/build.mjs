@@ -101,6 +101,7 @@ const variants = [
     js: 'zidan-select.js',
     mjs: 'zidan-select.mjs',
     dts: 'zidan-select.d.ts',
+    dtsMjs: 'zidan-select.d.mts',
     core: 'plugin-select-core.css',
     theme: 'plugin-select-theme.css',
     jsSections: ['shared', 'shared2', 'select-defaults', 'select', 'factory'],
@@ -132,17 +133,18 @@ const variants = [
  * Pairs with plugin-select-core.css and plugin-select-theme.css.
  * ${repo}
  */
-import './zidan-select.js';
+import * as classic from './zidan-select.js';
 
 const host = typeof window !== 'undefined' ? window : globalThis;
+const api = host.ZidanForm || classic.default || classic;
 
-if (!host.ZidanForm) {
-  throw new Error('ZidanForm: subset script did not initialise (no DOM available?).');
+if (!api.ZidanForm && !api.ZidanSelect) {
+  throw new Error('ZidanForm: subset script did not expose an API.');
 }
 
-const core = host.ZidanForm.api || host;
+const core = api.ZidanForm && api.ZidanForm.api ? api.ZidanForm.api : api;
 
-export const ZidanForm = host.ZidanForm;
+export const ZidanForm = api.ZidanForm;
 export const ZidanSelect = core.ZidanSelect;
 export const zidanSelect = core.zidanSelect;
 export const initZidanSelects = core.initZidanSelects;
@@ -159,7 +161,7 @@ export {
   zidanSelect,
   initZidanSelects,
   registerIcon
-} from '../../zidan-form';
+} from '../../zidan-form.js';
 export type {
   SelectMode,
   SelectLayout,
@@ -180,8 +182,16 @@ export type {
   ZidanFormStatic,
   AutoInitTarget,
   AutoInitConfig
-} from '../../zidan-form';
-export { default } from '../../zidan-form';
+} from '../../zidan-form.js';
+export { default } from '../../zidan-form.js';
+`,
+    typesSourceMjs: `/**
+ * ZidanForm Select-only v${version} — ESM type entry.
+ * ${repo}
+ */
+import { ZidanForm } from '../../zidan-form.js';
+export * from './zidan-select.js';
+export default ZidanForm;
 `
   },
   {
@@ -189,6 +199,7 @@ export { default } from '../../zidan-form';
     js: 'zidan-file.js',
     mjs: 'zidan-file.mjs',
     dts: 'zidan-file.d.ts',
+    dtsMjs: 'zidan-file.d.mts',
     core: 'plugin-file-core.css',
     theme: 'plugin-file-theme.css',
     jsSections: ['shared', 'shared2', 'fields', 'file', 'factory'],
@@ -220,17 +231,18 @@ export { default } from '../../zidan-form';
  * Pairs with plugin-file-core.css and plugin-file-theme.css.
  * ${repo}
  */
-import './zidan-file.js';
+import * as classic from './zidan-file.js';
 
 const host = typeof window !== 'undefined' ? window : globalThis;
+const api = host.ZidanForm || classic.default || classic;
 
-if (!host.ZidanForm) {
-  throw new Error('ZidanForm: subset script did not initialise (no DOM available?).');
+if (!api.ZidanForm && !api.ZidanFileUpload && !api.zidanField) {
+  throw new Error('ZidanForm: subset script did not expose an API.');
 }
 
-const core = host.ZidanForm.api || host;
+const core = api.ZidanForm && api.ZidanForm.api ? api.ZidanForm.api : api;
 
-export const ZidanForm = host.ZidanForm;
+export const ZidanForm = api.ZidanForm;
 export const ZidanFileUpload = core.ZidanFileUpload;
 export const zidanField = core.zidanField;
 export const initZidanForms = core.initZidanForms;
@@ -250,7 +262,7 @@ export {
   initZidanForms,
   downscaleImage,
   registerIcon
-} from '../../zidan-form';
+} from '../../zidan-form.js';
 export type {
   Framework,
   Theme,
@@ -270,8 +282,16 @@ export type {
   ZidanFormStatic,
   AutoInitTarget,
   AutoInitConfig
-} from '../../zidan-form';
-export { default } from '../../zidan-form';
+} from '../../zidan-form.js';
+export { default } from '../../zidan-form.js';
+`,
+    typesSourceMjs: `/**
+ * ZidanForm File-only v${version} — ESM type entry.
+ * ${repo}
+ */
+import { ZidanForm } from '../../zidan-form.js';
+export * from './zidan-file.js';
+export default ZidanForm;
 `
   }
 ];
@@ -308,6 +328,7 @@ for (const variant of variants) {
   await fs.writeFile(jsPath, script, 'utf8');
   await fs.writeFile(path.join(dir, variant.mjs), variant.mjsSource, 'utf8');
   await fs.writeFile(path.join(dir, variant.dts), variant.typesSource, 'utf8');
+  await fs.writeFile(path.join(dir, variant.dtsMjs), variant.typesSourceMjs, 'utf8');
   await fs.writeFile(path.join(dir, variant.core), core, 'utf8');
   await fs.writeFile(path.join(dir, variant.theme), theme, 'utf8');
 
@@ -360,5 +381,5 @@ try {
 }
 
 console.log('built dist/ (' + assets.length + ' files + CJS entry)');
-console.log('built subset bundles: select/ (5 files), file/ (5 files)');
+console.log('built subset bundles: select/ (6 files), file/ (6 files)');
 console.log(minified ? 'minified copies written with esbuild (full + both subsets)' : 'esbuild not installed — skipped minified copies');
