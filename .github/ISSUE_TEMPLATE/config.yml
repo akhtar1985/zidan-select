@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/akhtar1985/zidan-select/security/advisories/new
+    about: Report security issues privately, not in a public issue.
+  - name: Documentation and demos
+    url: https://akhtar1985.github.io/zidan-select/
+    about: Check the live documentation and demos before opening an issue.

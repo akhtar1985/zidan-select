@@ -224,6 +224,31 @@
     });
   });
 
+  Array.prototype.slice.call(document.querySelectorAll('[data-copy-next]')).forEach(function (button) {
+    button.addEventListener('click', function () {
+      var pre = button.nextElementSibling;
+      var text = pre ? pre.textContent : '';
+      var done = function () {
+        button.textContent = 'Copied';
+        window.setTimeout(function () { button.textContent = 'Copy code'; }, 1400);
+      };
+      var fallback = function () {
+        var area = document.createElement('textarea');
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        try { document.execCommand('copy'); } catch (error) { /* ignore */ }
+        document.body.removeChild(area);
+        done();
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else {
+        fallback();
+      }
+    });
+  });
+
   paint();
   setInterval(paint, 700);
 })();

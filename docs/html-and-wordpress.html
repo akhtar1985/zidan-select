@@ -28,7 +28,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.5.1 · zero dependencies</span>
+        <span class="brand-sub">v2.6.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -91,9 +91,9 @@
 <h2 id="1-pick-the-files-first">1. Pick the files first</h2>
 <p>Load <strong>one</strong> build per page. Each build is standalone; a subset is not an add-on to the full bundle. Both CSS files are always needed: <code>plugin-core.css</code> carries layout and mechanics (no colours), <code>plugin-theme.css</code> carries colours, presets and skins.</p>
 <div class="table-wrap"><table><thead><tr><th>Your page needs…</th><th>Load these files</th></tr></thead><tbody><tr><td>Selects / combobox / tags only</td><td><code>dist/select/zidan-select.js</code> + <code>plugin-select-core.css</code> + <code>plugin-select-theme.css</code></td></tr><tr><td>File uploads only</td><td><code>dist/file/zidan-file.js</code> + <code>plugin-file-core.css</code> + <code>plugin-file-theme.css</code></td></tr><tr><td>Several control types together</td><td><code>zidan-form.js</code> + <code>plugin-core.css</code> + <code>plugin-theme.css</code></td></tr></tbody></table></div>
-<p>Pinned CDN URLs (replace <code>2.5.1</code> when you upgrade):</p>
-<div class="table-wrap"><table><thead><tr><th>Build</th><th>JavaScript</th><th>CSS</th></tr></thead><tbody><tr><td>Full</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/zidan-form.js</code></td><td><code>…@2.5.1/plugin-core.css</code> + <code>…@2.5.1/plugin-theme.css</code></td></tr><tr><td>Select-only</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/zidan-select.js</code></td><td><code>…@2.5.1/dist/select/plugin-select-core.css</code> + <code>…plugin-select-theme.css</code></td></tr><tr><td>File-only</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/zidan-file.js</code></td><td><code>…@2.5.1/dist/file/plugin-file-core.css</code> + <code>…plugin-file-theme.css</code></td></tr></tbody></table></div>
-<p>Prefer self-hosting? Download the same files (<code>npm pack zidan-select@2.5.1</code>, or the raw files from GitHub) and keep them next to your page:</p>
+<p>Pinned CDN URLs (replace <code>2.6.0</code> when you upgrade):</p>
+<div class="table-wrap"><table><thead><tr><th>Build</th><th>JavaScript</th><th>CSS</th></tr></thead><tbody><tr><td>Full</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/zidan-form.js</code></td><td><code>…@2.6.0/plugin-core.css</code> + <code>…@2.6.0/plugin-theme.css</code></td></tr><tr><td>Select-only</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/zidan-select.js</code></td><td><code>…@2.6.0/dist/select/plugin-select-core.css</code> + <code>…plugin-select-theme.css</code></td></tr><tr><td>File-only</td><td><code>https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/zidan-file.js</code></td><td><code>…@2.6.0/dist/file/plugin-file-core.css</code> + <code>…plugin-file-theme.css</code></td></tr></tbody></table></div>
+<p>Prefer self-hosting? Download the same files (<code>npm pack zidan-select@2.6.0</code>, or the raw files from GitHub) and keep them next to your page:</p>
 <pre><code>my-site/
 ├─ index.html
 └─ assets/zidan/
@@ -175,8 +175,8 @@
   &lt;title&gt;ZidanForm static example&lt;/title&gt;
 
   &lt;!-- structure first, theme second --&gt;
-  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-core.css&quot;&gt;
-  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-theme.css&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/plugin-core.css&quot;&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/plugin-theme.css&quot;&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
@@ -252,7 +252,7 @@
     &lt;/form&gt;
   &lt;/main&gt;
 
-  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/zidan-form.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/zidan-form.js&quot;&gt;&lt;/script&gt;
   &lt;script&gt;
     // Demo only: show the native FormData instead of navigating away.
     document.querySelector('.zidan-form').addEventListener('submit', function (event) {
@@ -276,9 +276,9 @@
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
   &lt;title&gt;Select-only example&lt;/title&gt;
   &lt;link rel=&quot;stylesheet&quot;
-        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-core.css&quot;&gt;
+        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/plugin-select-core.css&quot;&gt;
   &lt;link rel=&quot;stylesheet&quot;
-        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-theme.css&quot;&gt;
+        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/plugin-select-theme.css&quot;&gt;
 &lt;/head&gt;
 &lt;body style=&quot;max-width:520px;margin:40px auto;padding:0 20px&quot;&gt;
 
@@ -298,7 +298,7 @@
     &lt;/select&gt;
   &lt;/p&gt;
 
-  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/zidan-select.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/zidan-select.js&quot;&gt;&lt;/script&gt;
   &lt;script&gt;
     zidanSelect('#country', {
       mode: 'combobox',
@@ -320,9 +320,9 @@
   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
   &lt;title&gt;File upload example&lt;/title&gt;
   &lt;link rel=&quot;stylesheet&quot;
-        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-core.css&quot;&gt;
+        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/plugin-file-core.css&quot;&gt;
   &lt;link rel=&quot;stylesheet&quot;
-        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.css&quot;&gt;
+        href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/plugin-file-theme.css&quot;&gt;
 &lt;/head&gt;
 &lt;body style=&quot;max-width:520px;margin:40px auto;padding:0 20px&quot;&gt;
 
@@ -334,7 +334,7 @@
     &lt;input id=&quot;shots&quot; type=&quot;file&quot; name=&quot;shots&quot; multiple accept=&quot;image/*&quot;&gt;
   &lt;/form&gt;
 
-  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/zidan-file.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/zidan-file.js&quot;&gt;&lt;/script&gt;
   &lt;script&gt;
     zidanField('#cv', {
       variant: 'dropzone',
@@ -415,9 +415,9 @@ add_action('wp_enqueue_scripts', function () {
 
     $base = get_stylesheet_directory_uri() . '/assets/zidan';
 
-    wp_enqueue_style('zidan-core', $base . '/plugin-core.css', array(), '2.5.1');
-    wp_enqueue_style('zidan-theme', $base . '/plugin-theme.css', array('zidan-core'), '2.5.1');
-    wp_enqueue_script('zidan-form', $base . '/zidan-form.js', array(), '2.5.1', true);
+    wp_enqueue_style('zidan-core', $base . '/plugin-core.css', array(), '2.6.0');
+    wp_enqueue_style('zidan-theme', $base . '/plugin-theme.css', array('zidan-core'), '2.6.0');
+    wp_enqueue_script('zidan-form', $base . '/zidan-form.js', array(), '2.6.0', true);
 
     // Optional: configure fields by ID/class without inline HTML scripts.
     wp_add_inline_script('zidan-form', &quot;window.ZIDAN_FORM_CONFIG = {
@@ -456,9 +456,9 @@ add_action('wp_enqueue_scripts', function () {
 <p><strong>Blogger, Squarespace, Wix, Webflow</strong> — add the <code>&lt;script src&gt;</code> and CSS links inside their &quot;code injection&quot; area (site-wide) or a single embed block, then place the markup in the page. If the platform only allows one embed block, put the <code>&lt;script src&gt;</code> call <strong>after</strong> the markup in that same block; a <code>&lt;script&gt;</code> tag in an embed runs normally. Shopify has its own section: <a href="#9-shopify">9. Shopify</a>.</p>
 <pre><code class="language-html">&lt;!-- inside one embed block: markup first, script last --&gt;
 &lt;select class=&quot;zidan-select&quot; data-zidan-options='{&quot;mode&quot;:&quot;combobox&quot;}'&gt;…&lt;/select&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-core.css&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-theme.css&quot;&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/zidan-form.js&quot;&gt;&lt;/script&gt;</code></pre>
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/plugin-core.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/plugin-theme.css&quot;&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/zidan-form.js&quot;&gt;&lt;/script&gt;</code></pre>
 <p>For the single-select case, the select-only build is smaller: swap in the <code>dist/select/</code> files from section 4.</p>
 <hr>
 <h2 id="9-shopify">9. Shopify</h2>

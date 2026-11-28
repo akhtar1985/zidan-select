@@ -28,7 +28,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.5.1 · zero dependencies</span>
+        <span class="brand-sub">v2.6.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -92,6 +92,8 @@
 <h2 id="resolution-order">Resolution order</h2>
 <div class="table-wrap"><table><thead><tr><th>Level</th><th>Wins over</th></tr></thead><tbody><tr><td><code>style=&quot;--zs-primary: …&quot;</code></td><td>everything</td></tr><tr><td><code>data-zs-theme</code> / <code>data-zs-framework</code> on the control wrapper</td><td>ancestors</td></tr><tr><td>Wrapper (<code>form</code>, section) attributes</td><td><code>&lt;html&gt;</code></td></tr><tr><td><code>&lt;html data-zs-theme=&quot;dark&quot; data-zs-framework=&quot;bootstrap&quot;&gt;</code></td><td>theme defaults</td></tr></tbody></table></div>
 <p>Themes and frameworks resolve independently: you can combine <code>dark</code> + <code>bootstrap</code>.</p>
+<h2 id="public-styling-contract">Public styling contract</h2>
+<ul><li><strong>Stable:</strong> the <code>--zs-*</code> custom properties in the tables below, and the <code>data-zs-theme</code> / <code>data-zs-framework</code> attributes.</li><li><strong>Stable layout utilities:</strong> <code>zs-form-grid</code>, <code>zs-full</code> and the <code>zs-match</code> mark hook.</li><li><strong>Implementation hooks:</strong> every other <code>zs-*</code> class and internal <code>data-zs-*</code> marker. They can change between minors; do not use them as a compatibility contract. Style through tokens or your own wrapper class instead.</li></ul>
 <h2 id="presets">Presets</h2>
 <pre><code class="language-html">&lt;form data-zs-theme=&quot;dark&quot;&gt;</code></pre>
 <div class="table-wrap"><table><thead><tr><th>Preset</th><th>Character</th></tr></thead><tbody><tr><td><code>default</code></td><td>Neutral greys, indigo <code>#4f6bed</code>, 10px radius.</td></tr><tr><td><code>modern</code></td><td>Softer indigo, 12px radius, layered shadows.</td></tr><tr><td><code>minimal</code></td><td>Near-black borders, 4px radius, no shadows.</td></tr><tr><td><code>dark</code></td><td><code>#161a23</code> surfaces, <code>#7c8cff</code> accent, light text, dark-native pickers.</td></tr><tr><td><code>glass</code></td><td>Translucent white, blurred surfaces, works over imagery.</td></tr></tbody></table></div>

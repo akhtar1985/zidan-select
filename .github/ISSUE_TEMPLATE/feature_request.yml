@@ -1,0 +1,46 @@
+name: Feature request
+description: Propose a new option, method, event, demo or documentation improvement.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what blocks you today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the API shape, behavior and defaults you expect.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Select
+        - Field, text or textarea
+        - Checkbox, switch or radio
+        - File upload
+        - Form
+        - Documentation
+        - Demo or playground
+        - Packaging or release
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and the documentation.
+          required: true
+        - label: I understand this is a proposal, not a promise of a release.
+          required: true

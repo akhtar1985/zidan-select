@@ -114,3 +114,10 @@
   .ajax-card { padding: 18px; }
   .ajax-snippet pre { font-size: 0.72rem; }
 }
+
+.ajax-copy {
+  float: right;
+  margin: 0 0 8px 12px;
+  padding: 6px 11px;
+  font-size: 0.74rem;
+}

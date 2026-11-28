@@ -277,6 +277,23 @@ check('field playground is wired up', () => {
   assert(read('README.md').includes('/#controls'), 'README does not link the controls reference');
 });
 
+check('field playground option metadata is complete', () => {
+  const page = read('playground.html');
+  const script = read('playground.js');
+  const meta = read('playground-meta.js');
+  assert(page.includes('playground-meta.js'), 'playground does not load the option metadata');
+  assert(page.indexOf('playground-meta.js') < page.indexOf('playground.js'), 'option metadata must load before playground.js');
+  assert(script.includes('META[field.key]'), 'playground does not render option descriptions');
+  const keys = new Set([...script.matchAll(/(?:bool|text|number|choice)\('([^']+)'/g)].map(match => match[1]));
+  ['theme', 'framework', 'layout', 'validation', 'required', 'disabled'].forEach(key => keys.add(key));
+  assert(keys.size > 90, 'unexpectedly few playground options: ' + keys.size);
+  for (const key of keys) {
+    assert(meta.includes(key + ': '), 'missing metadata for playground option ' + key);
+  }
+  assert(page.includes('id="pg-option-search"') && page.includes('id="pg-option-count"'), 'playground option filter is missing');
+  assert(script.includes("aria-describedby") && script.includes("pg-current-"), 'option controls lack metadata wiring');
+});
+
 check('advanced page and shared header are wired up', () => {
   const page = read('advanced.html');
   const script = read('advanced.js');

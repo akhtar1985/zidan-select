@@ -10,13 +10,13 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="ZidanForm">
   <meta property="og:title" content="Field playground — build a ZidanForm control and copy its code">
-  <meta property="og:description" content="Pick a control, toggle every option, preview it live and copy the matching HTML data attributes or the equivalent vanilla JavaScript call.">
+  <meta property="og:description" content="Pick a control, toggle the supported options, preview them live and copy the matching HTML data attributes or vanilla JavaScript call.">
   <meta property="og:url" content="https://akhtar1985.github.io/zidan-select/playground.html">
   <meta property="og:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
   <meta property="og:image:alt" content="ZidanForm playground building an input with icons, stepper and range options">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ZidanForm field playground">
-  <meta name="twitter:description" content="Set the options, copy the code — HTML data attributes or vanilla JavaScript for every control.">
+  <meta name="twitter:description" content="Set the options, copy the code — HTML data attributes or vanilla JavaScript for each control.">
   <meta name="twitter:image" content="https://akhtar1985.github.io/zidan-select/docs/demo-inputs.png">
   <link rel="stylesheet" href="plugin-core.css">
   <link rel="stylesheet" href="plugin-theme.css">
@@ -34,7 +34,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.5.1 · zero dependencies</span>
+        <span class="brand-sub">v2.6.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -90,7 +90,7 @@
       </p>
       <ul class="pg-hero-facts">
         <li>11 control families</li>
-        <li>Full documented option set</li>
+        <li>Typed option metadata</li>
         <li>HTML attributes <em>or</em> JavaScript</li>
         <li>Methods &amp; events per control</li>
       </ul>
@@ -116,9 +116,14 @@
           <div class="pg-card-head">
             <div>
               <h2 id="pg-options-title">Select options</h2>
-              <p>Only the options for this control are shown.</p>
+              <p>Only the options for this control are shown, with type, default and current value.</p>
             </div>
-            <button type="button" class="btn" id="pg-reset">Reset</button>
+            <div class="pg-option-tools">
+              <label class="sr-only" for="pg-option-search">Filter options</label>
+              <input type="search" id="pg-option-search" class="pg-option-search" placeholder="Filter options…" autocomplete="off">
+              <span class="pg-option-count" id="pg-option-count" aria-live="polite"></span>
+              <button type="button" class="btn" id="pg-reset">Reset</button>
+            </div>
           </div>
           <div id="pg-options-body"></div>
         </div>
@@ -188,6 +193,33 @@
               </div>
             </div>
           </div>
+
+          <div class="card pg-contract">
+            <div class="pg-card-head">
+              <div>
+                <h2>A–I review map</h2>
+                <p>Each tab maps the evidence a reviewer needs. Validation links to the form demo;
+                  this playground does not fake a passing form run.</p>
+              </div>
+            </div>
+            <ol class="pg-contract-list">
+              <li><strong>A · Preview</strong><span>Live control in the preview card.</span></li>
+              <li><strong>B · Code</strong><span>HTML attributes and vanilla JavaScript, each copyable.</span></li>
+              <li><strong>C · Explanation</strong><span>The type note, option groups and methods list explain the control.</span></li>
+              <li><strong>D · Options</strong><span>Typed controls with defaults; the full index is in the options reference.</span></li>
+              <li><strong>E · Methods</strong><span>The public instance API for this control family.</span></li>
+              <li><strong>F · Events</strong><span>Event names and payloads; the demo console shows live payloads.</span></li>
+              <li><strong>G · Validation</strong><span>Use the form in the <a href="index.html#lab">API lab</a> for native and rule validation.</span></li>
+              <li><strong>H · Accessibility</strong><span>Native labels and ARIA are preserved; see the keyboard and ARIA notes in the <a href="docs/options.html">options reference</a>.</span></li>
+              <li><strong>I · Responsive</strong><span>Resize the preview below, then check keyboard and touch targets.</span></li>
+            </ol>
+            <div class="pg-contract-width" role="group" aria-label="Preview width">
+              <span>Preview width</span>
+              <button type="button" data-width="100%" aria-pressed="true">Full</button>
+              <button type="button" data-width="480px" aria-pressed="false">480 px</button>
+              <button type="button" data-width="360px" aria-pressed="false">360 px</button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -210,6 +242,7 @@
 
   <script src="nav.js"></script>
   <script src="zidan-form.js"></script>
+  <script src="playground-meta.js"></script>
   <script src="playground.js"></script>
 </body>
 </html>

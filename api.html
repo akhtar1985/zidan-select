@@ -28,7 +28,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.5.1 · zero dependencies</span>
+        <span class="brand-sub">v2.6.0 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -134,6 +134,7 @@
 
         <div class="ajax-snippet">
           <span class="ajax-tag">Declarative HTML</span>
+          <button type="button" class="btn ajax-copy" data-copy-next>Copy code</button>
           <pre><code>&lt;select id="api-get"
         data-zidan-select="combobox"
         data-zidan-fetch-url="https://dummyjson.com/products/search"
@@ -145,6 +146,7 @@
         data-zidan-fetch-headers='{"X-Demo-Client":"zidanform-api"}'
         data-zidan-fetch-params='{"tenant":"north"}'&gt;&lt;/select&gt;</code></pre>
           <span class="ajax-tag api-tag-spaced">JavaScript equivalent</span>
+          <button type="button" class="btn ajax-copy" data-copy-next>Copy code</button>
           <pre><code>zidanSelect('#api-get', {
   mode: 'combobox',
   fetchUrl: 'https://dummyjson.com/products/search',
@@ -203,6 +205,7 @@
 
         <div class="ajax-snippet">
           <span class="ajax-tag">JavaScript options</span>
+          <button type="button" class="btn ajax-copy" data-copy-next>Copy code</button>
           <pre><code>zidanSelect('#api-post', {
   mode: 'combobox',
   fetchUrl: 'https://api.example.com/search',

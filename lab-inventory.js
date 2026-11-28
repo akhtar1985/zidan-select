@@ -3,7 +3,7 @@
  * Source of truth: zidan-form.d.ts, zidan-form.js, plugin-core.css, plugin-theme.css
  */
 window.ZIDAN_LAB_INVENTORY = {
-  "version": "2.5.1",
+  "version": "2.6.0",
   "generatedBy": "scripts/lab-inventory.mjs",
   "select": {
     "options": [
@@ -302,6 +302,7 @@ window.ZIDAN_LAB_INVENTORY = {
       "counter",
       "description",
       "descriptions",
+      "deselectable",
       "disableWeekends",
       "disabledDates",
       "downscale",
@@ -352,7 +353,6 @@ window.ZIDAN_LAB_INVENTORY = {
       "pickerIcon",
       "pickerLabel",
       "prefix",
-      "previews",
       "progressTemplate",
       "queuedLabel",
       "rangeBubble",
@@ -428,6 +428,7 @@ window.ZIDAN_LAB_INVENTORY = {
       "clearLabel",
       "description",
       "descriptions",
+      "deselectable",
       "framework",
       "hidePasswordLabel",
       "hint",
@@ -491,7 +492,6 @@ window.ZIDAN_LAB_INVENTORY = {
       "multiple",
       "onUploadQueued",
       "onUploadRetry",
-      "previews",
       "progressTemplate",
       "queuedLabel",
       "renderFile",

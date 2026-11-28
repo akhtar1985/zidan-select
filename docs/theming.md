@@ -23,6 +23,15 @@ Load order:
 
 Themes and frameworks resolve independently: you can combine `dark` + `bootstrap`.
 
+## Public styling contract
+
+- **Stable:** the `--zs-*` custom properties in the tables below, and the
+  `data-zs-theme` / `data-zs-framework` attributes.
+- **Stable layout utilities:** `zs-form-grid`, `zs-full` and the `zs-match` mark hook.
+- **Implementation hooks:** every other `zs-*` class and internal `data-zs-*` marker.
+  They can change between minors; do not use them as a compatibility contract. Style through
+  tokens or your own wrapper class instead.
+
 ## Presets
 
 ```html

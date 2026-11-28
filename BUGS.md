@@ -11,10 +11,10 @@ the documentation sources (`docs/*.md`, `README.md`, `index.html`,
   events a consumer can observe.
 * **Low** — code smell, dead variable, cosmetic inconsistency.
 
-**Current status (v2.5.1):** `npm run build`, `npm run sizes`, `npm run
+**Current status (v2.6.0):** `npm run build`, `npm run sizes`, `npm run
 types`, `npm run lint` and `npm test` pass. The suite runs 93 DOM tests plus
-the static checks, and the API lab exercises every documented option,
-callback, method and event. The size failure described in BUG-001/002 was
+the static checks. The API lab lists every public option, callback, method and
+event; executable method controls and the live event console are in the demo. The size failure described in BUG-001/002 was
 fixed before the v2.5.0 pass; the original verdicts are kept below as an
 audit trail.
 
@@ -320,11 +320,11 @@ Total: **30 findings**, 6 high, 18 medium, 6 low.
 
 ## Resolution status
 
-Re-checked against the v2.5.1 working tree. `npm test` passes (93 DOM tests),
+Re-checked against the v2.6.0 working tree. `npm test` passes (93 DOM tests),
 including the size check that was failing when this audit was written. The
 working tree already carried the BUG-001/002/003 fixes before the pass.
 
-### P3 source verification (v2.5.1)
+### P3 source verification (v2.6.0)
 
 Each row was re-read in the current source; the line numbers are the evidence.
 

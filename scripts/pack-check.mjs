@@ -69,6 +69,9 @@ try {
     const names = info.files.map((entry) => entry.path);
     const heavy = names.filter((name) => /\.(?:png|html)$/.test(name));
     assert(heavy.length === 0, 'generated HTML or screenshots shipped: ' + heavy.join(', '));
+    for (const required of ['CHANGELOG.md', 'README.md', 'LICENSE', 'zidan-form.d.ts', 'zidan-form.mjs', 'docs/options.md']) {
+      assert(names.includes(required), 'required package file missing: ' + required);
+    }
     assert(info.size < 600 * 1024, 'tarball grew to ' + Math.round(info.size / 1024) + ' kB (budget 600 kB)');
     return names.length + ' files, ' + Math.round(info.size / 1024) + ' kB packed, ' + Math.round(info.unpackedSize / 1024) + ' kB unpacked';
   });

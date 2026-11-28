@@ -11,8 +11,20 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-11-28
+
 ### Added
 
+- `deselectable` is now declared in `FieldOptions`; radio groups can opt into click-to-clear
+  without a TypeScript cast. The declaration-parity test now scans field option readers as well
+  as `opts.*`, so this class of drift cannot pass silently.
+- `docs/options.md` now ends with a complete option type index (235 public options and
+  callbacks) and a method/static signature index.
+- The demo event console listens to all 33 public events, including `deselect`,
+  `upload-queued` and `upload-retry`, and renders nested object payloads safely.
+- Repository governance: `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, a pull
+  request template and bug/feature/config issue forms. The release workflow is documented in
+  `ZIDAN-SELECT-RELEASE-DOCUMENTATION-GITHUB-NPM-WORKFLOW.md`.
 - `zidan:deselect` (plus the `onDeselect` callback) fires when a user removes an option from
   a multi-select or clicks a selected chip; `zidan:change` follows as before. Programmatic
   `setValue()`, `clear()` and `deselectAll()` stay silent, so the event keeps reporting intent.
@@ -22,9 +34,13 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ### Changed
 
+- The never-implemented `previews` declaration was removed from `FileFieldOptions`; use
+  `showPreview` for image previews. This is a type-surface cleanup, not a runtime removal.
+- The package check now requires `CHANGELOG.md`, the README, the license, the root
+  declarations, the ESM entry and `docs/options.md` in the packed tarball.
 - Virtual windowing is on by default: `virtual: 'auto'` windows lists from 150 rows, which
   drops a 5 000-option render from ~614 ms to ~13 ms. Pass `virtual: false` to opt out.
-- `npm run lint` now syntax-checks every first-party `.js`/`.mjs` file (39 files across the
+- `npm run lint` now syntax-checks every first-party `.js`/`.mjs` file (40 files across the
   root pages, `scripts/` and `quality-labs/`) through `scripts/lint.mjs`; `npm test` imports
   the same list instead of keeping its own.
 - Disabled controls and drop zones declare a flat token fallback before their `color-mix()`

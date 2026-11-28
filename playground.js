@@ -15,6 +15,9 @@
   var eventsEl = document.getElementById('pg-events');
   var usageNote = document.getElementById('pg-usage-note');
   var modeButtons = Array.prototype.slice.call(document.querySelectorAll('.pg-runmode button'));
+  var optionSearch = document.getElementById('pg-option-search');
+  var optionCount = document.getElementById('pg-option-count');
+  var META = window.ZIDAN_PLAYGROUND_META || {};
 
   var THEME_OPTIONS = [
     ['default', 'Default'], ['modern', 'Modern'], ['minimal', 'Minimal'],
@@ -1184,13 +1187,27 @@
    * ------------------------------------------------------------------ */
 
   function optionRow(field, value) {
+    var descId = 'pg-desc-' + field.key;
+    var metaId = 'pg-meta-' + field.key;
     var wrap = document.createElement('div');
     wrap.className = 'pg-field' + (field.type === 'checkbox' ? ' pg-field--toggle' : '');
 
+    var head = document.createElement('div');
+    head.className = 'pg-field-head';
     var label = document.createElement('label');
     label.className = 'pg-field-label';
     label.setAttribute('for', 'pg-opt-' + field.key);
     label.textContent = field.label;
+    var name = document.createElement('code');
+    name.className = 'pg-opt-name';
+    name.textContent = field.key;
+    head.appendChild(label);
+    head.appendChild(name);
+
+    var desc = document.createElement('p');
+    desc.className = 'pg-field-desc';
+    desc.id = descId;
+    desc.textContent = META[field.key] || 'Option supported by this control.';
 
     var control;
     if (field.type === 'select') {
@@ -1208,7 +1225,6 @@
       control.type = 'checkbox';
       control.checked = !!value;
       control.className = 'pg-check-input';
-      wrap.className = 'pg-field pg-field--toggle';
     } else {
       control = document.createElement('input');
       control.type = field.type === 'number' ? 'number' : 'text';
@@ -1217,41 +1233,135 @@
     }
     control.id = 'pg-opt-' + field.key;
     control.setAttribute('data-opt', field.key);
+    control.setAttribute('aria-describedby', descId + ' ' + metaId);
 
+    var controlRow = document.createElement('div');
+    controlRow.className = 'pg-control-row';
     if (field.type === 'checkbox') {
+      var toggleLabel = document.createElement('label');
+      toggleLabel.className = 'pg-toggle-label';
+      toggleLabel.setAttribute('for', control.id);
       var track = document.createElement('span');
       track.className = 'pg-switch';
       track.setAttribute('aria-hidden', 'true');
-      label.textContent = '';
-      label.appendChild(control);
-      label.appendChild(track);
-      var text = document.createElement('span');
-      text.textContent = field.label;
-      label.appendChild(text);
-      wrap.appendChild(label);
+      toggleLabel.appendChild(control);
+      toggleLabel.appendChild(track);
+      controlRow.appendChild(toggleLabel);
     } else {
-      wrap.appendChild(label);
-      wrap.appendChild(control);
+      controlRow.appendChild(control);
     }
+
+    var meta = document.createElement('div');
+    meta.className = 'pg-field-meta';
+    meta.id = metaId;
+    meta.appendChild(metaItem('Type', fieldType(field)));
+    meta.appendChild(metaItem('Default', formatOptionValue(field.def)));
+    meta.appendChild(metaItem('Values', valuesForField(field)));
+    var current = document.createElement('span');
+    current.className = 'pg-meta-item pg-meta-current';
+    var currentLabel = document.createElement('span');
+    currentLabel.className = 'pg-meta-key';
+    currentLabel.textContent = 'Current';
+    var output = document.createElement('output');
+    output.id = 'pg-current-' + field.key;
+    output.setAttribute('for', control.id);
+    output.textContent = formatOptionValue(value);
+    current.appendChild(currentLabel);
+    current.appendChild(output);
+    meta.appendChild(current);
+
+    function syncCurrent() {
+      var live = document.getElementById('pg-current-' + field.key);
+      if (live) live.textContent = field.type === 'checkbox' ? formatOptionValue(control.checked) : formatOptionValue(control.value);
+    }
+    control.addEventListener('input', syncCurrent);
+    control.addEventListener('change', syncCurrent);
+
+    wrap.appendChild(head);
+    wrap.appendChild(desc);
+    wrap.appendChild(controlRow);
+    wrap.appendChild(meta);
     return wrap;
+  }
+
+  function fieldType(field) {
+    if (field.type === 'select') return 'enum';
+    if (field.type === 'checkbox') return 'boolean';
+    if (field.type === 'number') return 'number';
+    return 'string';
+  }
+
+  function formatOptionValue(value) {
+    if (value === undefined || value === null || value === '') return '(empty)';
+    if (value === Infinity) return 'Infinity';
+    return String(value);
+  }
+
+  function valuesForField(field) {
+    if (field.type === 'checkbox') return 'true | false';
+    if (field.type === 'number') return 'number';
+    if (field.type === 'select') {
+      return field.options.map(function (pair) { return pair[0] === '' ? '(empty)' : pair[0]; }).join(' | ');
+    }
+    return 'any string';
+  }
+
+  function metaItem(label, text) {
+    var item = document.createElement('span');
+    item.className = 'pg-meta-item';
+    var key = document.createElement('span');
+    key.className = 'pg-meta-key';
+    key.textContent = label;
+    var val = document.createElement('code');
+    val.textContent = text;
+    val.title = text;
+    item.appendChild(key);
+    item.appendChild(val);
+    return item;
   }
 
   function renderOptions() {
     var kind = KINDS[active];
     var s = states[active];
+    var query = optionSearch ? optionSearch.value.trim().toLowerCase() : '';
+    var groups = kind.groups.map(function (group) {
+      return {
+        title: group.title,
+        fields: group.fields.filter(function (field) { return !field.when || field.when(s); })
+      };
+    }).filter(function (group) { return group.fields.length; });
+    var total = groups.reduce(function (sum, group) { return sum + group.fields.length; }, 0);
+    var shown = 0;
     body.textContent = '';
-    kind.groups.forEach(function (group) {
+
+    groups.forEach(function (group) {
+      var fields = group.fields.filter(function (field) {
+        if (!query) return true;
+        var text = (field.key + ' ' + field.label + ' ' + (META[field.key] || '')).toLowerCase();
+        return text.indexOf(query) !== -1;
+      });
+      if (!fields.length) return;
+      shown += fields.length;
       var box = document.createElement('div');
       box.className = 'pg-group';
       var heading = document.createElement('h3');
       heading.textContent = group.title;
       box.appendChild(heading);
-      group.fields.forEach(function (field) {
-        if (field.when && !field.when(s)) return;
+      fields.forEach(function (field) {
         box.appendChild(optionRow(field, s[field.key]));
       });
-      if (box.children.length > 1) body.appendChild(box);
+      body.appendChild(box);
     });
+
+    if (!shown) {
+      var empty = document.createElement('p');
+      empty.className = 'pg-options-empty';
+      empty.textContent = 'No options match “' + (optionSearch ? optionSearch.value : '') + '”.';
+      body.appendChild(empty);
+    }
+    if (optionCount) {
+      optionCount.textContent = query ? shown + ' of ' + total + ' shown' : total + ' options';
+    }
     title.textContent = kind.label + ' options';
   }
 
@@ -1370,6 +1480,7 @@
       if (on && button.scrollIntoView) button.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     });
     panel.setAttribute('aria-labelledby', 'pg-tab-' + key);
+    if (optionSearch) optionSearch.value = '';
     renderOptions();
     renderUsage();
     refresh();
@@ -1388,6 +1499,8 @@
     event.preventDefault();
     selectKind(keys[next], true);
   });
+
+  if (optionSearch) optionSearch.addEventListener('input', renderOptions);
 
   body.addEventListener('input', function (event) {
     var target = event.target;
@@ -1416,6 +1529,7 @@
   });
 
   resetBtn.addEventListener('click', function () {
+    if (optionSearch) optionSearch.value = '';
     states[active] = KINDS[active].defaults();
     syncState(active);
     renderOptions();
@@ -1472,6 +1586,17 @@
         fallbackCopy(text);
         done();
       }
+    });
+  });
+
+  var widthButtons = Array.prototype.slice.call(document.querySelectorAll('[data-width]'));
+  widthButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var width = button.getAttribute('data-width');
+      stage.style.maxWidth = width === '100%' ? '' : width;
+      widthButtons.forEach(function (other) {
+        other.setAttribute('aria-pressed', other === button ? 'true' : 'false');
+      });
     });
   });
 

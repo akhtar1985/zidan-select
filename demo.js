@@ -884,8 +884,9 @@
   var EVENT_NAMES = [
     'init', 'change', 'input', 'validation', 'async-validation', 'step', 'picker',
     'phone-country', 'phone-format', 'icon-click',
-    'upload-start', 'upload-progress', 'upload-success', 'upload-error', 'upload-cancel',
-    'remove', 'clear', 'error', 'reveal', 'open', 'close', 'select',
+    'upload-start', 'upload-progress', 'upload-queued', 'upload-retry', 'upload-success',
+    'upload-error', 'upload-cancel',
+    'remove', 'clear', 'error', 'reveal', 'open', 'close', 'select', 'deselect',
     'tag-add', 'tag-remove', 'tag-move', 'tag-edit', 'no-results', 'load-more',
     'validate', 'destroy'
   ];
@@ -923,13 +924,28 @@
         var label = el.getAttribute('data-zidan-label') || el.name || el.id;
         if (label) parts.push(label);
       }
+      function formatDetail(value, depth) {
+        if (value instanceof File) return value.name;
+        if (Array.isArray(value)) {
+          return '[' + value.slice(0, 6).map(function (entry) { return formatDetail(entry, depth + 1); }).join(', ')
+            + (value.length > 6 ? ', …' : '') + ']';
+        }
+        if (value && typeof value === 'object') {
+          if (depth > 1) return '{…}';
+          return '{' + Object.keys(value).slice(0, 8).map(function (key) {
+            return key + ': ' + formatDetail(value[key], depth + 1);
+          }).join(', ') + (Object.keys(value).length > 8 ? ', …' : '') + '}';
+        }
+        var text = String(value);
+        return text.length > 100 ? text.slice(0, 97) + '…' : text;
+      }
+
       Object.keys(detail).forEach(function (key) {
-        if (key === 'instance' || key === 'kind' || key === 'file' || key === 'error' || key === 'result') return;
+        if (key === 'instance' || key === 'kind') return;
         var value = detail[key];
-        if (value === undefined || value === null || value === '' || typeof value === 'object') return;
-        parts.push(key + '=' + value);
+        if (value === undefined || value === null || value === '') return;
+        parts.push(key + '=' + formatDetail(value, 0));
       });
-      if (detail.file && detail.file.name) parts.push('file=' + detail.file.name);
 
       var item = document.createElement('li');
       var time = document.createElement('time');

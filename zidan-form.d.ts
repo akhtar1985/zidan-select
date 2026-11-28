@@ -456,6 +456,8 @@ export interface FieldOptions extends FieldCallbacks {
   hidePasswordLabel?: string;
   /** Checkbox starts mixed */
   indeterminate?: boolean;
+  /** Radio group: clicking the checked radio clears it (default false) */
+  deselectable?: boolean;
   /** Checkbox/switch visual variant, e.g. 'switch' */
   switchStyle?: string;
   /** Switch styles: text shown on the checked / unchecked side */
@@ -554,7 +556,6 @@ export interface FileFieldOptions extends FieldOptions {
   simulateUpload?: boolean;
   simulateDuration?: number;
   autoUpload?: boolean;
-  previews?: boolean;
   showFileMeta?: boolean;
   showPreview?: boolean;
   showClear?: boolean;

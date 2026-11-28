@@ -9,8 +9,9 @@ passed to `initZidanSelects()` / `initZidanForms()` / `zidanSelect()` / `zidanFi
 > **Prefer to click through the options?** The
 > [field playground](https://akhtar1985.github.io/zidan-select/playground.html) exposes the main
 > options for one control at a time and copies both supported HTML attributes and vanilla
-> JavaScript. The [API lab](https://akhtar1985.github.io/zidan-select/#lab) exercises the complete
-> option, callback, method and event inventory.
+> JavaScript. The [API lab](https://akhtar1985.github.io/zidan-select/#lab) is a reference and
+> request playground; executable method controls and the live event console are in the demo at
+> [index.html](https://akhtar1985.github.io/zidan-select/).
 
 ## Direct init by ID or class
 
@@ -88,7 +89,7 @@ file-only bundle.
 | Opt-in attribute | `data-zidan-checkbox`, `data-zidan-switch` | That checkbox input; `switch` renders a switch, `checkbox` a box. |
 | Opt-in attribute | `data-zidan-radio` on an `<input type="radio">`, `data-zidan-radio-group` on its `<fieldset>` | That radio, or the group container. A lone radio without its group is skipped. |
 | Opt-in attribute | `data-zidan-file`, `data-zidan-input`, `data-zidan-textarea` | That file input, supported text-ish input, or textarea. |
-| Explicit kind | `data-zidan="checkbox" \| "radio" \| "radio-group" \| "file" \| "input" \| "textarea"` | The value picks the field type; without a value the type is detected from the element. |
+| Explicit kind | `data-zidan="checkbox"  /  "radio"  /  "radio-group"  /  "file"  /  "input"  /  "textarea"` | The value picks the field type; without a value the type is detected from the element. |
 | Form wrapper | `<form class="zidan-form">` or `data-zidan-form` on any element | Every `<select>` and every `<input type="file">` inside, marked or not. |
 | Config targets | `window.ZIDAN_FORM_CONFIG` (alias `ZIDAN_SELECT_CONFIG`) | Anything matched by an ID, class or full CSS selector. |
 
@@ -154,7 +155,7 @@ Applies to `ZidanCheckbox`, `ZidanRadioGroup`, `ZidanFileUpload`, `ZidanTextFiel
 | `messages` | — | object | — | Override built-in validation messages, including `required`, `phone`, `weekend` and `generic`. |
 | `validate(value, field, context)` | — | function | — | Custom rule for text, checkbox, radio or file fields. Return `true`, `false`, a message string, Error or Promise; `context` is `{ signal, field, instance }`. |
 | `showValidState` | — | boolean | `false` | Show a positive state after a successful async rule. |
-| `validation` | `data-zidan-validation` | `valid` \| `invalid` | — | Initial state; later states come from validity or `setValidation()`. A preset `invalid` survives `update()` / `refresh()` and internal mirrors until user input/change/blur or `setValidation(null)`; programmatic value helpers that dispatch `change`, and a non-empty select value, also clear it. |
+| `validation` | `data-zidan-validation` | `valid`  /  `invalid` | — | Initial state; later states come from validity or `setValidation()`. A preset `invalid` survives `update()` / `refresh()` and internal mirrors until user input/change/blur or `setValidation(null)`; programmatic value helpers that dispatch `change`, and a non-empty select value, also clear it. |
 | `alwaysValidate` | — | boolean | `false` | Mark invalid as soon as native validity fails instead of on blur. |
 | `indeterminate` | `data-zidan-indeterminate` | boolean | `false` | Checkbox starts mixed. |
 | `clearable` | `data-zidan-clear` | boolean | `search` only | Clear button for text inputs and textarea. |
@@ -224,7 +225,7 @@ Supports `text`, `email`, `password`, `number`, `tel`, `url`, `search`, `date`, 
 | --- | --- | --- | --- | --- |
 | `autoIcon` | `data-zidan-auto-icon` | boolean | `false` | Uses the built-in icon for the input type (`mail`, `phone`, `calendar`, `clock`, `search`, `link`, `hash`, `palette`). |
 | `icon` | `data-zidan-icon` | string | — | Any registered name, a raw `<path>`/SVG string, or `"auto"` (same as `autoIcon`). |
-| `iconPosition` | `data-zidan-icon-position` | `left` \| `right` | `left` | Right icons sit after suffix/actions. |
+| `iconPosition` | `data-zidan-icon-position` | `left`  /  `right` | `left` | Right icons sit after suffix/actions. |
 | `iconClickable` | `data-zidan-icon-clickable` | boolean | `false` | Renders a `<button>` and emits `zidan:icon-click`. Date/time pickers are always clickable. |
 | `iconLabel` | `data-zidan-icon-label` | string | — | Accessible name for a decorative/custom icon. |
 | `validationIcon` | `data-zidan-validation-icon` | boolean | `false` | Adds check/alert glyphs driven by `[data-zs-validation]`. |
@@ -290,8 +291,8 @@ Call `field.refreshAutogrow()` after changing a textarea's value outside the fie
 
 | JS option | Data attribute | Type | Default | Notes |
 | --- | --- | --- | --- | --- |
-| `stepper` | `data-zidan-stepper` | boolean \| mode | `false` | `true` = `stacked`; or `stacked`, `split`, `inline`. Any value except `false`/`"false"` enables it. |
-| `stepperPosition` | `data-zidan-stepper-position` | `left` \| `right` | `right` | `inline` mode only. |
+| `stepper` | `data-zidan-stepper` | boolean  /  mode | `false` | `true` = `stacked`; or `stacked`, `split`, `inline`. Any value except `false`/`"false"` enables it. |
+| `stepperPosition` | `data-zidan-stepper-position` | `left`  /  `right` | `right` | `inline` mode only. |
 | `stepperWrap` | `data-zidan-stepper-wrap` | boolean | `false` | Adds a wrapping border around the field (theme hook). |
 | `stepperLongPress` | `data-zidan-stepper-long-press` | boolean | `true` | Press and hold repeats. |
 | `stepperDelay` | `data-zidan-stepper-delay` | number | `420` | Hold delay before repeating, ms. |
@@ -318,9 +319,9 @@ Event: `zidan:step` → `{ value, direction, instance }`.
 
 | JS option | Data attribute | Type | Default | Notes |
 | --- | --- | --- | --- | --- |
-| `phone` | `data-zidan-phone` | boolean \| object | `false` | Enables formatting. Object form: `{ country, format, showCountry, countries, validate }`. |
+| `phone` | `data-zidan-phone` | boolean  /  object | `false` | Enables formatting. Object form: `{ country, format, showCountry, countries, validate }`. |
 | `phoneCountry` | `data-zidan-phone-country` | ISO-2 | `US` | One of `ZidanForm.phoneCountries`. |
-| `phoneFormat` | `data-zidan-phone-format` | `national` \| `international` \| `e164` | `national` | Three styles per country. |
+| `phoneFormat` | `data-zidan-phone-format` | `national`  /  `international`  /  `e164` | `national` | Three styles per country. |
 | `phoneCountrySelect` | `data-zidan-phone-country-select` | boolean | `true` | Show the searchable country picker (the native select stays as the value holder). |
 | `phoneCountries` | `data-zidan-phone-countries` | list | common set | Comma-separated ISO codes for the selector. |
 | `phoneCountryLabel` | — | string | `Country code` | Aria-label for the picker. |
@@ -352,17 +353,17 @@ national `0` is dropped in international/E.164 output.
 
 | JS option | Data attribute | Type | Default | Notes |
 | --- | --- | --- | --- | --- |
-| `rangeVariant` | `data-zidan-range-variant` | `default` \| `gradient` \| `stepped` \| `minimal` | `default` | Visual skin. |
+| `rangeVariant` | `data-zidan-range-variant` | `default`  /  `gradient`  /  `stepped`  /  `minimal` | `default` | Visual skin. |
 | `rangeBubble` | `data-zidan-range-bubble` | boolean | `true` | Master switch for the floating value bubble. |
-| `rangeBubbleMode` | `data-zidan-range-bubble-mode` | `always` \| `active` \| `never` | `always` | `active` shows the bubble only on hover, focus or drag. |
-| `rangeBubblePosition` | `data-zidan-range-bubble-position` | `top` \| `bottom` | `top` | Bubble above the track or below the ticks/scale. |
+| `rangeBubbleMode` | `data-zidan-range-bubble-mode` | `always`  /  `active`  /  `never` | `always` | `active` shows the bubble only on hover, focus or drag. |
+| `rangeBubblePosition` | `data-zidan-range-bubble-position` | `top`  /  `bottom` | `top` | Bubble above the track or below the ticks/scale. |
 | `rangeFill` | `data-zidan-range-fill` | boolean | `true` | Coloured progress fill; `false` keeps the neutral track (gradient skin keeps its gradient). |
 | `rangeMinMax` | `data-zidan-range-minmax` | boolean | `true` | Min/max scale under the track. Hidden automatically when labeled ticks cover both ends, so 0 and the max print once. |
 | `rangeMinLabel` / `rangeMaxLabel` | `data-zidan-range-min-label` / `-range-max-label` | string | — | Custom text for the scale ends (e.g. `Low` / `High`); `rangeFormat` is used when unset. |
-| `rangeTicks` | `data-zidan-range-ticks` | number \| array \| string | `0` | Count, JS array, JSON array or comma list (`0,250,500`). Values are absolute and out-of-range ones sit at the nearest end. |
+| `rangeTicks` | `data-zidan-range-ticks` | number  /  array  /  string | `0` | Count, JS array, JSON array or comma list (`0,250,500`). Values are absolute and out-of-range ones sit at the nearest end. |
 | `rangeTickLabels` | `data-zidan-range-tick-labels` | boolean | `false` | Text labels on ticks. Labels at both ends replace the min/max scale. |
 | `rangeLabels` | — | object | — | Map `{ value: 'Label' }` used with labeled ticks. |
-| `rangeFormat` | `data-zidan-range-format` | string \| function | — | Template with `{value}`, `{min}`, `{max}` (or `%s`), or `function(value, field)` in JS. |
+| `rangeFormat` | `data-zidan-range-format` | string  /  function | — | Template with `{value}`, `{min}`, `{max}` (or `%s`), or `function(value, field)` in JS. |
 | `output` | `data-zidan-output` | selector | — | Mirrors the display value (formatted when `rangeFormat` is set) into a `<output>`/element; `input.value` keeps the raw value. |
 
 ```html
@@ -417,8 +418,8 @@ formatted value.
 | `pickerIcon` | `data-zidan-picker-icon` | string | per type | Any registered icon (default `calendar`/`clock`). |
 | `pickerLabel` | — | string | `Open <type> picker` | Aria-label for the picker button. |
 | `disableWeekends` | `data-zidan-disable-weekends` | boolean | `false` | Sat/Sun fail validation with `messages.weekend`. |
-| `disabledDates` | `data-zidan-disabled-dates` | list \| function | — | Comma-separated ISO dates, array, or `(value, date, field) => true` in JS. |
-| `validateDate` | — | function | — | `(value, date, field) => boolean \| string`; return `false` for `messages.date` or a custom string. |
+| `disabledDates` | `data-zidan-disabled-dates` | list  /  function | — | Comma-separated ISO dates, array, or `(value, date, field) => true` in JS. |
+| `validateDate` | — | function | — | `(value, date, field) => boolean  /  string`; return `false` for `messages.date` or a custom string. |
 
 ```html
 <input type="date" value="2026-11-23" data-zidan="input"
@@ -454,12 +455,12 @@ Variants are set with `fileVariant` / `data-zidan-file-variant` (defaults to `dr
 | `maxFiles` | `data-zidan-max-files` | number | `0` | Extra files are dropped when the list is already full. |
 | `maxSize` / `maxSizeMB` | `data-zidan-max-size` / `-max-size-mb` | number | `0` | Per-file byte (or MB) limit. |
 | `maxTotalSize` / `maxTotalSizeMB` | `data-zidan-max-total-size` / `-max-total-size-mb` | number | `0` | Combined selection limit; the list stays intact with an explanatory error. |
-| `uploadUrl` | `data-zidan-upload-url` | string \| function | — | XHR endpoint; `POST` multipart by default. |
+| `uploadUrl` | `data-zidan-upload-url` | string  /  function | — | XHR endpoint; `POST` multipart by default. |
 | `uploadField` | `data-zidan-upload-field` | string | `file` | FormData field name. |
-| `uploadMethod` | `data-zidan-upload-method` | string \| function | `POST` | HTTP method, or `(file, field) => method`. |
-| `uploadParams` | `data-zidan-upload-params` | object \| string \| function | — | Query-string params, or `(file, field) => object`. |
-| `uploadData` | — | object \| function | — | Extra FormData fields (`(file, field) => object`); array values append repeated keys. |
-| `uploadHeaders` / `headers` | — | object \| function | — | Extra request headers (`(file, field) => object`); array values become comma-joined headers. |
+| `uploadMethod` | `data-zidan-upload-method` | string  /  function | `POST` | HTTP method, or `(file, field) => method`. |
+| `uploadParams` | `data-zidan-upload-params` | object  /  string  /  function | — | Query-string params, or `(file, field) => object`. |
+| `uploadData` | — | object  /  function | — | Extra FormData fields (`(file, field) => object`); array values append repeated keys. |
+| `uploadHeaders` / `headers` | — | object  /  function | — | Extra request headers (`(file, field) => object`); array values become comma-joined headers. |
 | `uploadResponsePath` | `data-zidan-upload-response-path` | string | — | Dot path into the JSON response, e.g. `data.url`. |
 | `uploadErrorPath` | `data-zidan-upload-error-path` | string | — | Dot path used to read a failure message from the JSON body. |
 | `uploadTimeout` | `data-zidan-upload-timeout` | number | `0` | Abort and report a timeout after this many ms; `0` disables it. |
@@ -484,7 +485,7 @@ Variants are set with `fileVariant` / `data-zidan-file-variant` (defaults to `dr
 | `canceledLabel` | — | string | `Upload canceled` | Per-file canceled text. |
 | `cancelLabel` / `retryLabel` | — | string | `Cancel` / `Retry` | Per-file action labels. |
 | `renderFile` | — | function | — | `(itemElement, { file, index, state, field })` after the default row renders. |
-| `downscale` | `data-zidan-downscale` | boolean \| object | `false` | Resize images in the browser before upload; object form `{ maxWidth, maxHeight, quality, maxBytes, mime, force }`. |
+| `downscale` | `data-zidan-downscale` | boolean  /  object | `false` | Resize images in the browser before upload; object form `{ maxWidth, maxHeight, quality, maxBytes, mime, force }`. |
 | `downscaleMaxWidth` / `downscaleMaxHeight` | `data-zidan-downscale-max-width` / `-max-height` | number | `1920` | Longest-edge limits, px. |
 | `downscaleQuality` | `data-zidan-downscale-quality` | number | `0.85` | JPEG/WebP quality, 0.1–1. |
 | `downscaleMaxBytes` | `data-zidan-downscale-max-bytes` | number | `0` | Files at or below this size skip resizing. |
@@ -687,7 +688,7 @@ be larger than the original, the original file is uploaded unchanged.
 | `name` | `data-zidan-name` | native name | Name for hidden mirror input in mount mode. |
 | `disabled` | `data-zidan-disabled` | native | Mirrors the native `disabled`. |
 | `required` | `data-zidan-required` | native | Mirrors native `required`; mount mode gets a submit guard. |
-| `validation` | `data-zidan-validation` | `null` | `valid` \| `invalid`. |
+| `validation` | `data-zidan-validation` | `null` | `valid`  /  `invalid`. |
 | `scrollbar` | `data-zidan-scrollbar` | `default` | `default`, `thin`, `fancy`, `hover`, `hidden`. |
 | `customClasses` | — | `{}` | Map of `root/control/input` → class names. |
 
@@ -1123,7 +1124,7 @@ to any field that should span the row) rather than putting it on a single field.
 | `setValue(v)` | Writes to the native control and re-renders. |
 | `update()` / `refresh()` | Re-read native state (checked, disabled, validity, value). |
 | `validationTargets()` | Native element(s) whose constraints are mirrored. |
-| `setValidation('valid'\|'invalid'\|null)` | Mirrors state to classes and `aria-invalid`. A public `'invalid'` call survives `update()` / `refresh()` and internal mirrors; user input/change/blur, value helpers that dispatch `change`, a non-empty select value, or another public state call clears/replaces it. |
+| `setValidation('valid' / 'invalid' / null)` | Mirrors state to classes and `aria-invalid`. A public `'invalid'` call survives `update()` / `refresh()` and internal mirrors; user input/change/blur, value helpers that dispatch `change`, a non-empty select value, or another public state call clears/replaces it. |
 | `getValidation()` | Current validation state. |
 | `setError(message)` / `clearError()` | Set or clear the rendered error and invalid state. |
 | `checkAsync()` | Promise resolving to the custom-rule result; runs pending state and stale guards. |
@@ -1205,7 +1206,7 @@ emits `zidan:deselect` and then `change`; a tag removed from a tag field emits
 
 | Event | Detail |
 | --- | --- |
-| `zidan:init` | `{ instance, kind \| mode, ... }` |
+| `zidan:init` | `{ instance, kind  /  mode, ... }` |
 | `zidan:change` | `{ instance, value, previousValue? }`, `{ checked }`, `{ files }` |
 | `zidan:input` | `{ instance, value }` (text/range) |
 | `zidan:validation` | `{ instance, state, message? }` |
@@ -1236,3 +1237,361 @@ emits `zidan:deselect` and then `change`; a tag removed from a tag field emits
 | `zidan:destroy` | `{ instance }` |
 | `zidan:validate` | `{ valid, form, fields }` on the `<form>` after `ZidanForm.validate()` |
 | `zidan:error` | `{ error, message?, callback?, instance }` |
+
+
+## Complete option type index
+
+This index is the exhaustive type/default view behind the task-oriented tables above. Types and defaults are taken from the runtime and `zidan-form.d.ts`; a value in the *Supported values / notes* column is descriptive, not a runtime enum. Callback rows use the function signature as their value.
+
+### Select options (86)
+
+| Option | Type | Default | Supported values / notes |
+| --- | --- | --- | --- |
+| `accentInsensitive` | `boolean` | `true` | true  /  false |
+| `allowFreeText` | `boolean` | `true` | true  /  false |
+| `ariaLabel` | `string` | `null` | string (free-form) |
+| `autoLoadMore` | `boolean` | `true` | true  /  false |
+| `cacheResults` | `boolean` | `true` | true  /  false |
+| `caseSensitive` | `boolean` | `false` | true  /  false |
+| `clearable` | `boolean` | `false` | true  /  false |
+| `clearText` | `string` | `'Clear selection'` | string (free-form) |
+| `closeOnSelect` | `boolean  /  null` | `null` | true  /  false |
+| `commitOnBlur` | `boolean` | `false` | true  /  false |
+| `commitOnTab` | `boolean` | `false` | true  /  false |
+| `customClasses` | `{ [key: string]: string }` | `{}` | { [key: string]: string } |
+| `debounce` | `number` | `250` | number |
+| `delimiters` | `string[]` | `['', '']` | string (free-form) |
+| `disabled` | `boolean` | `false` | true  /  false |
+| `editable` | `boolean` | `false` | true  /  false |
+| `emptyText` | `string` | `'No options'` | string (free-form) |
+| `fetchBody` | `Record<string, unknown>  /  unknown[]  /  string  /  null` | `null` | array |
+| `fetchCredentials` | `RequestCredentials` | `'same-origin'` | RequestCredentials |
+| `fetchHasMorePath` | `string  /  null` | `null` | string (free-form) |
+| `fetchHeaders` | `Record<string, string>  /  null` | `null` | object / function as declared |
+| `fetchItemsPath` | `string  /  null` | `null` | string (free-form) |
+| `fetchMethod` | `string` | `'GET'` | string (free-form) |
+| `fetchOptions` | `FetchOptions  /  null` | `null` | object / function as declared |
+| `fetchPageParam` | `string` | `'page'` | string (free-form) |
+| `fetchPageSize` | `number` | `0` | number |
+| `fetchPageSizeParam` | `string` | `'limit'` | string (free-form) |
+| `fetchParams` | `Record<string, string  /  number  /  boolean  /  null  /  undefined>  /  null` | `null` | object / function as declared |
+| `fetchQueryParam` | `string` | `'q'` | string (free-form) |
+| `fetchSkipParam` | `string  /  null` | `null` | string (free-form) |
+| `fetchTotalPath` | `string  /  null` | `null` | string (free-form) |
+| `fetchUrl` | `string  /  null` | `null` | string (free-form) |
+| `filterOption` | `function` | `null` | object / function as declared |
+| `formatTag` | `function` | `null` | object / function as declared |
+| `framework` | `string  /  Framework` | `'auto'` | auto  /  none  /  vanilla  /  bootstrap  /  tailwind  /  bulma  /  foundation |
+| `highlightMatches` | `boolean` | `false` | true  /  false |
+| `id` | `string` | `null` | string (free-form) |
+| `itemHeight` | `number` | `0` | number |
+| `label` | `string  /  null` | `null` | string (free-form) |
+| `layout` | `string  /  SelectLayout  /  FieldLayout` | `'classic-clean'` | stacked  /  inline  /  compact  /  floating  /  outlined  /  card / five select layouts |
+| `loadingText` | `string` | `'Searching…'` | string (free-form) |
+| `loadMoreText` | `string` | `'Load more'` | string (free-form) |
+| `locale` | `SelectLocale  /  string  /  null` | `null` | SelectLocale  /  string  /  null |
+| `maxDropdownHeight` | `number` | `280` | number |
+| `maxTagLength` | `number` | `Infinity` | number |
+| `maxTags` | `number` | `Infinity` | number |
+| `minChars` | `number` | `0` | number |
+| `minTagLength` | `number` | `1` | number |
+| `mode` | `SelectMode` | `null` | select  /  combobox  /  tags |
+| `multiple` | `boolean` | `false` | true  /  false |
+| `name` | `string` | `null` | string (free-form) |
+| `noResultsText` | `string` | `'No results found'` | string (free-form) |
+| `onChange` | `function` | `null` | object / function as declared |
+| `onClose` | `function` | `null` | object / function as declared |
+| `onDeselect` | `function` | `null` | object / function as declared |
+| `onError` | `function` | `null` | object / function as declared |
+| `onInit` | `function` | `null` | object / function as declared |
+| `onLoadMore` | `function` | `null` | object / function as declared |
+| `onOpen` | `function` | `null` | object / function as declared |
+| `onSelect` | `function` | `null` | object / function as declared |
+| `onTagAdd` | `function` | `null` | object / function as declared |
+| `onTagEdit` | `function` | `null` | object / function as declared |
+| `onTagMove` | `function` | `null` | object / function as declared |
+| `onTagRemove` | `function` | `null` | object / function as declared |
+| `options` | `SelectItemInput[]  /  SelectItemInput[]  /  null  /  SelectOptions  /  FieldOptions` | `null` | array |
+| `placeholder` | `string  /  null` | `null` | string (free-form) |
+| `renderOption` | `function` | `null` | object / function as declared |
+| `renderSelected` | `function` | `null` | object / function as declared |
+| `renderTag` | `function` | `null` | object / function as declared |
+| `reorderable` | `boolean` | `false` | true  /  false |
+| `required` | `boolean  /  string` | `false` | true  /  false |
+| `requiredText` | `string` | `'Please select an option.'` | string (free-form) |
+| `scrollbar` | `Scrollbar` | `'default'` | default  /  thin  /  fancy  /  hover  /  hidden |
+| `searchable` | `boolean` | `null` | true  /  false |
+| `searchValues` | `boolean` | `true` | true  /  false |
+| `suggestions` | `SelectItemInput[]  /  null` | `null` | array |
+| `theme` | `Theme  /  string` | `'default'` | default  /  modern  /  minimal  /  dark  /  glass  /  auto |
+| `themeFramework` | `Framework` | `'auto'` | auto  /  none  /  vanilla  /  bootstrap  /  tailwind  /  bulma  /  foundation |
+| `typeAhead` | `boolean` | `true` | true  /  false |
+| `typeAheadTimeout` | `number` | `600` | number |
+| `validateTag` | `function` | `null` | object / function as declared |
+| `validation` | `ValidationState` | `null` | valid  /  invalid  /  null |
+| `value` | `string  /  number  /  unknown  /  SelectItem[]  /  string  /  string[]  /  null` | `null` | string (free-form) |
+| `valueDelimiter` | `string` | `','` | string (free-form) |
+| `virtual` | `boolean  /  'auto'  /  number` | `'auto'` | true  /  false  /  auto |
+| `virtualThreshold` | `number` | `150` | number |
+
+### Field, text, file and form options (149)
+
+| Option | Type | Default | Supported values / notes |
+| --- | --- | --- | --- |
+| `accept` | `string` | `not stated` | string (free-form) |
+| `allowPaste` | `boolean` | `true` | true  /  false |
+| `alwaysValidate` | `boolean` | `not stated` | true  /  false |
+| `autogrow` | `boolean` | `false` | true  /  false |
+| `autogrowMax` | `number` | `0` | number |
+| `autoIcon` | `boolean` | `false` | true  /  false |
+| `autoUpload` | `boolean` | `true` | true  /  false |
+| `canceledLabel` | `string` | `'Upload canceled'` | string (free-form) |
+| `cancelLabel` | `string` | `'Cancel'` | string (free-form) |
+| `clearable` | `boolean` | `false` | true  /  false |
+| `clearLabel` | `string` | `not stated` | string (free-form) |
+| `counter` | `number` | `not stated` | number |
+| `description` | `string` | `not stated` | string (free-form) |
+| `descriptions` | `Record<string, string>` | `not stated` | object / function as declared |
+| `deselectable` | `boolean` | `false` | true  /  false |
+| `disabledDates` | `string[]  /  string  /  ((value: string, date: Date) => boolean)` | `not stated` | string (free-form) |
+| `disableWeekends` | `boolean` | `false` | true  /  false |
+| `downscale` | `boolean  /  DownscaleOptions` | `null` | true  /  false |
+| `downscaleForce` | `boolean` | `!!downscaleConfig.force` | true  /  false |
+| `downscaleMaxBytes` | `number` | `downscaleConfig.maxBytes > 0 ? downscaleConfig.maxBytes : 0` | number |
+| `downscaleMaxHeight` | `number` | `downscaleConfig.maxHeight > 0 ? downscaleConfig.maxHeight : 1920` | number |
+| `downscaleMaxWidth` | `number` | `downscaleConfig.maxWidth > 0 ? downscaleConfig.maxWidth : 1920` | number |
+| `downscaleMime` | `string` | `downscaleConfig.mime  /  /  ''` | string (free-form) |
+| `downscaleQuality` | `number` | `downscaleConfig.quality > 0 ? downscaleConfig.quality : 0.85` | number |
+| `dropHint` | `string` | `'Drag & drop or browse'` | string (free-form) |
+| `failedLabel` | `string` | `'Upload failed'` | string (free-form) |
+| `fileVariant` | `string` | `not stated` | string (free-form) |
+| `framework` | `string  /  Framework` | `'auto'` | auto  /  none  /  vanilla  /  bootstrap  /  tailwind  /  bulma  /  foundation |
+| `headers` | `Record<string, string  /  string[]>  /  ((file: File, field: ZidanFileUpload) => Record<string` | `not stated` | array |
+| `hidePasswordLabel` | `string` | `not stated` | string (free-form) |
+| `hint` | `string` | `'PDF or images up to 5 MB.'` | string (free-form) |
+| `icon` | `string` | `'upload'` | string (free-form) |
+| `iconClickable` | `boolean` | `false` | true  /  false |
+| `iconLabel` | `string` | `not stated` | string (free-form) |
+| `iconPosition` | `'left'  /  'right'` | `'left'` | left  /  right |
+| `indeterminate` | `boolean` | `not stated` | true  /  false |
+| `label` | `string  /  null` | `null` | string (free-form) |
+| `labels` | `Record<string, string>` | `not stated` | object / function as declared |
+| `layout` | `string  /  SelectLayout  /  FieldLayout` | `'classic-clean'` | stacked  /  inline  /  compact  /  floating  /  outlined  /  card / five select layouts |
+| `mask` | `string` | `''` | string (free-form) |
+| `maxFiles` | `number` | `4` | number |
+| `maxSize` | `number` | `not stated` | number |
+| `maxSizeMB` | `number` | `5` | number |
+| `maxTotalSize` | `number` | `not stated` | number |
+| `maxTotalSizeMB` | `number` | `12` | number |
+| `messages` | `Partial<FieldMessages>` | `not stated` | object / function as declared |
+| `minFiles` | `number` | `1` | number |
+| `multiple` | `boolean` | `false` | true  /  false |
+| `offLabel` | `string` | `not stated` | string (free-form) |
+| `onChange` | `function` | `null` | object / function as declared |
+| `onIconClick` | `function` | `null` | object / function as declared |
+| `onInit` | `function` | `null` | object / function as declared |
+| `onInput` | `function` | `null` | object / function as declared |
+| `onLabel` | `function` | `null` | object / function as declared |
+| `onPhoneCountry` | `function` | `null` | object / function as declared |
+| `onPhoneFormat` | `function` | `null` | object / function as declared |
+| `onPicker` | `function` | `null` | object / function as declared |
+| `onRemove` | `function` | `null` | object / function as declared |
+| `onStep` | `function` | `null` | object / function as declared |
+| `onUpload` | `function` | `null` | object / function as declared |
+| `onUploadCancel` | `function` | `null` | object / function as declared |
+| `onUploadError` | `function` | `null` | object / function as declared |
+| `onUploadProgress` | `function` | `null` | object / function as declared |
+| `onUploadQueued` | `function` | `null` | object / function as declared |
+| `onUploadRetry` | `function` | `null` | object / function as declared |
+| `onUploadStart` | `function` | `null` | object / function as declared |
+| `onUploadSuccess` | `function` | `null` | object / function as declared |
+| `onValidation` | `function` | `null` | object / function as declared |
+| `output` | `HTMLOutputElement  /  string` | `not stated` | HTMLOutputElement  /  string |
+| `phone` | `boolean  /  string` | `not stated` | true  /  false |
+| `phoneCountries` | `string[]  /  Record<string, { name: string; code: string; min: number; max: number }>` | `PHONE_DEFAULT_COUNTRIES` | string (free-form) |
+| `phoneCountry` | `string` | `'US'` | string (free-form) |
+| `phoneCountryEmptyText` | `string` | `not stated` | string (free-form) |
+| `phoneCountryLabel` | `string` | `not stated` | string (free-form) |
+| `phoneCountrySearchText` | `string` | `not stated` | string (free-form) |
+| `phoneCountrySelect` | `boolean` | `true` | true  /  false |
+| `phoneFormat` | `PhoneFormat` | `'national'` | national  /  international  /  e164 |
+| `pickerButton` | `boolean` | `false` | true  /  false |
+| `pickerIcon` | `string` | `iconForType(type)  /  /  'calendar'` | string (free-form) |
+| `pickerLabel` | `string; uploadUrl?: UploadUrl` | `not stated` | string (free-form) |
+| `prefix` | `string` | `not stated` | string (free-form) |
+| `progressTemplate` | `string` | `'Uploading {percent}%'` | string (free-form) |
+| `queuedLabel` | `string` | `'Queued'` | string (free-form) |
+| `rangeBubble` | `boolean` | `true` | true  /  false |
+| `rangeBubbleMode` | `'always'  /  'active'  /  'never'` | `'always'` | always  /  active  /  never |
+| `rangeBubblePosition` | `'top'  /  'bottom'` | `'top'` | top  /  bottom |
+| `rangeFill` | `boolean` | `true` | true  /  false |
+| `rangeFormat` | `string  /  ((value: number, field: ZidanTextField) => string)` | `not stated` | string (free-form) |
+| `rangeLabels` | `Record<string, string>` | `not stated` | object / function as declared |
+| `rangeMaxLabel` | `string` | `''` | string (free-form) |
+| `rangeMinLabel` | `string` | `''` | string (free-form) |
+| `rangeMinMax` | `boolean` | `true` | true  /  false |
+| `rangeTickLabels` | `boolean` | `false` | true  /  false |
+| `rangeTicks` | `number[]  /  number  /  string` | `0` | number |
+| `rangeVariant` | `'default'  /  'gradient'  /  'stepped'  /  'minimal'` | `'default'` | default  /  gradient  /  stepped  /  minimal |
+| `renderFile` | `function` | `not stated` | object / function as declared |
+| `replaceTitle` | `string` | `'Change image'` | string (free-form) |
+| `retryingLabel` | `string` | `'Retrying attempt {attempt}…'` | string (free-form) |
+| `retryLabel` | `string` | `'Retry'` | string (free-form) |
+| `reveal` | `boolean` | `not stated` | true  /  false |
+| `rows` | `number` | `not stated` | number |
+| `showCancel` | `boolean` | `true` | true  /  false |
+| `showClear` | `boolean` | `true` | true  /  false |
+| `showFileMeta` | `boolean` | `true` | true  /  false |
+| `showPasswordLabel` | `string` | `not stated` | string (free-form) |
+| `showPreview` | `boolean` | `true` | true  /  false |
+| `showRemove` | `boolean` | `true` | true  /  false |
+| `showRetry` | `boolean` | `true` | true  /  false |
+| `showStatus` | `boolean` | `true` | true  /  false |
+| `showValidState` | `boolean` | `not stated` | true  /  false |
+| `simulateDuration` | `number` | `900` | number |
+| `simulateUpload` | `boolean` | `false` | true  /  false |
+| `statusFormat` | `(context: UploadStatusContext) => string` | `not stated` | (context: UploadStatusContext) => string |
+| `stepper` | `boolean  /  boolean  /  string` | `not stated` | true  /  false |
+| `stepperDelay` | `number` | `420` | number |
+| `stepperDownLabel` | `string` | `'Decrease value'` | string (free-form) |
+| `stepperInterval` | `number` | `90` | number |
+| `stepperLongPress` | `boolean` | `true` | true  /  false |
+| `stepperPosition` | `'left'  /  'right'` | `'right'` | left  /  right |
+| `stepperStep` | `number` | `not stated` | number |
+| `stepperUpLabel` | `string` | `'Increase value'` | string (free-form) |
+| `stepperWrap` | `boolean` | `false` | true  /  false |
+| `suffix` | `string` | `not stated` | string (free-form) |
+| `switchStyle` | `string` | `not stated` | string (free-form) |
+| `theme` | `Theme  /  string` | `'default'` | default  /  modern  /  minimal  /  dark  /  glass  /  auto |
+| `title` | `string` | `'Choose a file'` | string (free-form) |
+| `upload` | `UploadHandler` | `not stated` | UploadHandler |
+| `uploadConcurrency` | `number` | `2` | number |
+| `uploadData` | `Record<string, unknown>  /  ((file: File, field: ZidanFileUpload) => Record<string, unknown>` | `not stated` | object / function as declared |
+| `uploadedLabel` | `string` | `'Uploaded'` | string (free-form) |
+| `uploadErrorPath` | `string` | `'error.message'` | string (free-form) |
+| `uploadField` | `string` | `'file'` | string (free-form) |
+| `uploadHandler` | `UploadHandler` | `not stated` | UploadHandler |
+| `uploadHeaders` | `Record<string, string  /  string[]>  /  ((file: File, field: ZidanFileUpload) => Record<string` | `not stated` | array |
+| `uploadIcon` | `string` | `'upload'` | string (free-form) |
+| `uploadMethod` | `UploadMethod` | `'POST'` | UploadMethod |
+| `uploadParams` | `UploadParams` | `{ folder: 'avatars' }` | UploadParams |
+| `uploadResponsePath` | `string` | `'data.url'` | string (free-form) |
+| `uploadRetries` | `number` | `2` | number |
+| `uploadRetryDelay` | `number` | `700` | number |
+| `uploadTimeout` | `number` | `30000` | number |
+| `uploadUrl` | `UploadUrl` | `''` | UploadUrl |
+| `uploadWithCredentials` | `boolean` | `false` | true  /  false |
+| `validate` | `FieldRule` | `not stated` | FieldRule |
+| `validateDate` | `DateRule` | `not stated` | DateRule |
+| `validation` | `ValidationState` | `null` | valid  /  invalid  /  null |
+| `validationIcon` | `boolean` | `false` | true  /  false |
+| `variant` | `string` | `'dropzone'` | string (free-form) |
+| `withCredentials` | `boolean` | `false` | true  /  false |
+
+`previews` was removed from the declarations in 2.6.0. It had been declared in earlier types but was never implemented; use `showPreview` for image previews.
+
+## Static property and registry index
+
+These are live values on the exported constructors. Function-valued statics are listed in the method table below; this table covers the mutable registries, constants and arrays.
+
+### ZidanSelect
+
+| Property | Type | Current value / meaning |
+| --- | --- | --- |
+| `version` | `string` (readonly) | Running build version. |
+| `cacheLimit` | `number` | 50 — maximum cached result pages, LRU eviction. |
+| `defaults` | `SelectOptions` | Runtime defaults object; read it to inspect a default. |
+| `locales` | `Record<string, SelectLocale>` | Built-in locale packs; add a key to register a pack. |
+| `icons` | `Record<string, string>` | Shared icon registry; `registerIcon()` adds entries. |
+| `layouts` | `SelectLayout[]` | `classic-clean`, `floating-label`, `soft-pill`, `bordered-brutalist`, `glass-elevated`. |
+| `frameworks` | `Framework[]` | `auto`, `none`, `vanilla`, `bootstrap`, `tailwind`, `bulma`, `foundation`. |
+| `scrollbars` | `Scrollbar[]` | `default`, `thin`, `fancy`, `hover`, `hidden`. |
+| `instances` | `ZidanSelect[]` | Live instances; entries are removed on destroy. |
+
+### ZidanForm
+
+| Property | Type | Current value / meaning |
+| --- | --- | --- |
+| `version` | `string` | Running build version. |
+| `themes` | `string[]` | `default`, `modern`, `minimal`, `dark`, `glass`, `auto`. |
+| `frameworks` | `string[]` | `auto`, `none`, `vanilla`, `bootstrap`, `tailwind`, `bulma`, `foundation`. |
+| `fieldLayouts` | `string[]` | `stacked`, `inline`, `card`, `compact`, `floating`, `outlined`. |
+| `fields` | `ZidanFieldBase[]` | Live enhanced fields; entries are removed on destroy. |
+| `messages` | `FieldMessages` | Built-in validation message strings. |
+| `locales` | `Record<string, SelectLocale>` | Shared locale packs. |
+| `icons` | `Record<string, string>` | Shared icon registry. |
+| `variants` | `{ checkbox?: string[]; switch?: string[]; radio?: string[]; file?: string[]; range?: string[] }` | Accepted variant names per component. |
+| `stepperModes` | `string[]` (optional) | `stacked`, `split`, `inline` when the stepper build is present. |
+| `phoneCountries` | `Record<string, { name; code; min; max }>` (optional) | Phone country registry when the phone build is present. |
+| `phoneFormats` | `PhoneFormat[]` (optional) | `national`, `international`, `e164`. |
+| `field` | `typeof zidanField` | Alias for the `zidanField()` initializer. |
+| `api` | `Record<string, unknown>  /  null` | Full-build API surface; `null` before initialization. |
+
+## Method and static method signature index
+
+Every public instance method and static method is listed here with its declaration signature. The prose sections above explain behavior; this table is the complete lookup for parameters and return types. Methods inherited from `ZidanFieldBase` are listed once under that class. Static constants and registries are listed above.
+
+### ZidanSelect (41)
+
+| Member | Kind | Signature |
+| --- | --- | --- |
+| `addTag` | instance | `addTag(label: string, data?: unknown): boolean` |
+| `announce` | instance | `announce(message: string): this` |
+| `areAllSelected` | instance | `areAllSelected(): boolean` |
+| `call` | instance | `signature not found in zidan-form.d.ts` |
+| `clear` | instance | `clear(config?: { silent?: boolean }): this` |
+| `clearCache` | instance | `clearCache(): this` |
+| `close` | instance | `close(): this` |
+| `deselectAll` | instance | `deselectAll(config?: { silent?: boolean }): this` |
+| `destroy` | instance | `destroy(): this` |
+| `destroy` | static | `destroy(scope?: Document  /  Element  /  string): number` |
+| `destroyAll` | static | `destroyAll(): void` |
+| `disable` | instance | `disable(): this` |
+| `editTag` | instance | `editTag(tagOrIndex: number  /  string, label: string): boolean` |
+| `emit` | instance | `emit(name: string, detail?: Record<string, unknown>): this` |
+| `enable` | instance | `enable(): this` |
+| `get` | static | `get(target: string  /  Element  /  null): ZidanSelect  /  null` |
+| `getAsyncState` | instance | `getAsyncState(): SelectAsyncState` |
+| `getSelectedItems` | instance | `getSelectedItems(): Array<{ value: string; label: string }>` |
+| `getTags` | instance | `getTags(): string[]` |
+| `getValue` | instance | `getValue(): unknown` |
+| `hasMoreResults` | instance | `hasMoreResults(): boolean` |
+| `isOpen` | instance | `isOpen(): boolean` |
+| `loadMore` | instance | `loadMore(): this  /  Promise<SelectItem[]>` |
+| `moveTag` | instance | `moveTag(from: number  /  string, to: number): boolean` |
+| `off` | instance | `off(eventName: string, handler?: (event: CustomEvent<Record<string, unknown>>) => void): this` |
+| `on` | instance | `on(node: EventTarget  /  null, type: string, handler: EventListener, config?: boolean  /  AddEventListenerOptions): this` |
+| `open` | instance | `open(): this` |
+| `refresh` | instance | `refresh(): this` |
+| `refreshOptions` | instance | `refreshOptions(): this  /  Promise<SelectItem[]>` |
+| `registerIcon` | static | `registerIcon(name: string, markup: string): typeof ZidanSelect` |
+| `removeTag` | instance | `removeTag(tagOrIndex: string  /  number): boolean` |
+| `selectAll` | instance | `selectAll(config?: { silent?: boolean }): this` |
+| `setFramework` | instance | `setFramework(framework: Framework): this` |
+| `setLayout` | instance | `setLayout(layout: FieldLayout): this` |
+| `setOptions` | instance | `setOptions(options: SelectItemInput[]  /  null): this` |
+| `setScrollbar` | instance | `setScrollbar(scrollbar: Scrollbar): this` |
+| `setTheme` | instance | `setTheme(theme: Theme  /  string): this` |
+| `setValidation` | instance | `setValidation(state: ValidationState): this` |
+| `setValue` | instance | `setValue(value: unknown): this` |
+| `toggle` | instance | `toggle(): this` |
+| `toggleAll` | instance | `toggleAll(config?: { silent?: boolean }): this` |
+
+### ZidanForm (14)
+
+| Member | Kind | Signature |
+| --- | --- | --- |
+| `destroy` | static | `destroy(scope?: Document  /  Element  /  string): number` |
+| `destroyAll` | static | `destroyAll(): ZidanFormStatic` |
+| `detectPhoneCountry` | static | `detectPhoneCountry(value: string): string` |
+| `downscaleImage` | static | `downscaleImage(file: File, options?: DownscaleOptions): Promise<File>` |
+| `formatPhone` | static | `formatPhone(value?: string): string` |
+| `get` | static | `get(target: string  /  Element  /  null): ZidanFieldBase  /  null` |
+| `init` | static | `init(scope?: Document  /  Element, options?: FieldOptions & { force?: boolean }): ZidanFieldBase[]` |
+| `mask` | static | `mask(value: string, pattern: string): string` |
+| `observe` | static | `observe(scope?: Element, options?: FieldOptions): MutationObserver  /  null` |
+| `refresh` | static | `refresh(scope?: Document  /  Element): ZidanFieldBase[]` |
+| `registerIcon` | static | `registerIcon(name: string, markup: string): typeof ZidanSelect  /  ZidanFormStatic  /  undefined` |
+| `serialize` | static | `serialize(target: string  /  HTMLFormElement  /  Element, options?: { files?: boolean }): Record<string, FormDataEntryValue  /  FormDataEntryValue[]>` |
+| `unmask` | static | `unmask(value: string): string` |
+| `validate` | static | `validate(target: string  /  HTMLFormElement  /  Element, options?: { focus?: boolean }): Promise<boolean>` |

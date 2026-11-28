@@ -1900,10 +1900,14 @@ test('TypeScript declarations cover every public option, method and event', () =
   const missingSelect = Object.keys(window.ZidanSelect.defaults).filter((key) => !selectOptions.has(key));
   assert.deepEqual(missingSelect, [], 'SelectOptions misses runtime defaults: ' + missingSelect.join(', '));
 
+  assert.ok(fieldOptions.has('deselectable'), 'FieldOptions must declare the runtime deselectable option');
+  assert.ok(!fieldOptions.has('previews'), 'previews is not implemented and must not be declared');
+
   const ignored = new Set(['messages', 'force']); // force is declared inline on ZidanFormStatic.init()
   const read = new Set([...fullSource.matchAll(/\bopts\.([A-Za-z_$][\w$]*)/g)].map((match) => match[1]));
-  const undeclared = [...read].filter((key) => !ignored.has(key) && !selectOptions.has(key) && !fieldOptions.has(key));
-  assert.deepEqual(undeclared.sort(), [], 'options read by the bundle but missing from the declarations: ' + undeclared.sort().join(', '));
+  const fieldRead = new Set([...fullSource.matchAll(/\bfield(?:Bool|Option|Number|List)\([^,]+,\s*[^,]+,\s*'([A-Za-z_$][\w$]*)'/g)].map((match) => match[1]));
+  const undeclared = [...read, ...fieldRead].filter((key) => !ignored.has(key) && !selectOptions.has(key) && !fieldOptions.has(key));
+  assert.deepEqual([...new Set(undeclared)].sort(), [], 'options read by the bundle but missing from the declarations: ' + [...new Set(undeclared)].sort().join(', '));
 
   const classes = ['ZidanSelect', 'ZidanFieldBase', 'ZidanCheckbox', 'ZidanRadioGroup', 'ZidanFileUpload', 'ZidanTextField'];
   for (const name of classes) {
