@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "package": {
     "name": "zidan-select",
-    "version": "2.5.1"
+    "version": "2.6.0"
   },
-  "sourceHash": "6efa24530ce618e47e1ccabcd9f48bbc7185df38a9adacd6fb03f622bc2e19c7",
+  "sourceHash": "872993a4ec3a11fbf0165fce5b7c14e11c7f3db0700b73cb8d9c036fc6f0c07d",
   "demos": [
     {
       "id": "ZS-DEMO-index-html",
@@ -53,6 +53,7 @@
       "scripts": [
         "nav.js",
         "zidan-form.js",
+        "playground-meta.js",
         "playground.js"
       ],
       "styles": [

@@ -2,14 +2,14 @@
   "schemaVersion": 1,
   "package": {
     "name": "zidan-select",
-    "version": "2.5.1"
+    "version": "2.6.0"
   },
-  "sourceHash": "6efa24530ce618e47e1ccabcd9f48bbc7185df38a9adacd6fb03f622bc2e19c7",
+  "sourceHash": "872993a4ec3a11fbf0165fce5b7c14e11c7f3db0700b73cb8d9c036fc6f0c07d",
   "documentation": [
     {
       "id": "ZS-DOC-readme-md",
       "file": "README.md",
-      "bytes": 74874,
+      "bytes": 76136,
       "headings": [
         "ZidanForm",
         "Which files should you load?",
@@ -54,15 +54,16 @@
         "React, Next.js, Vue, Svelte, Angular",
         "Build & publish",
         "Quality labs",
+        "Contributing & security",
         "Browser support",
-        "What's new in 2.1–2.5",
+        "What's new in 2.1–2.6",
         "Migrating from 1.x"
       ]
     },
     {
       "id": "ZS-DOC-docs-build-md",
       "file": "docs/build.md",
-      "bytes": 17252,
+      "bytes": 18239,
       "headings": [
         "Build & publish",
         "Layout",
@@ -98,7 +99,7 @@
     {
       "id": "ZS-DOC-docs-frameworks-md",
       "file": "docs/frameworks.md",
-      "bytes": 30263,
+      "bytes": 31035,
       "headings": [
         "Framework integration",
         "Contents",
@@ -166,7 +167,7 @@
     {
       "id": "ZS-DOC-docs-options-md",
       "file": "docs/options.md",
-      "bytes": 70987,
+      "bytes": 96672,
       "headings": [
         "Options & data attributes",
         "Direct init by ID or class",
@@ -204,16 +205,26 @@
         "Fields",
         "Select",
         "Form-level helpers",
-        "Events"
+        "Events",
+        "Complete option type index",
+        "Select options (86)",
+        "Field, text, file and form options (149)",
+        "Static property and registry index",
+        "ZidanSelect",
+        "ZidanForm",
+        "Method and static method signature index",
+        "ZidanSelect (41)",
+        "ZidanForm (14)"
       ]
     },
     {
       "id": "ZS-DOC-docs-theming-md",
       "file": "docs/theming.md",
-      "bytes": 10322,
+      "bytes": 10891,
       "headings": [
         "Theming",
         "Resolution order",
+        "Public styling contract",
         "Presets",
         "Tokens",
         "Typography & geometry",
@@ -234,7 +245,7 @@
     {
       "id": "ZS-DOC-docs-validation-md",
       "file": "docs/validation.md",
-      "bytes": 11525,
+      "bytes": 12281,
       "headings": [
         "Validation compatibility",
         "How state is mirrored",

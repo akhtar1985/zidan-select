@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "package": {
     "name": "zidan-select",
-    "version": "2.5.1"
+    "version": "2.6.0"
   },
-  "sourceHash": "6efa24530ce618e47e1ccabcd9f48bbc7185df38a9adacd6fb03f622bc2e19c7",
+  "sourceHash": "872993a4ec3a11fbf0165fce5b7c14e11c7f3db0700b73cb8d9c036fc6f0c07d",
   "events": [
     {
       "id": "ZS-EVENT-async-validation",
@@ -13,7 +13,7 @@
       "name": "zidan:async-validation",
       "source": {
         "file": "zidan-form.js",
-        "line": 3705
+        "line": 3758
       },
       "declaration": null,
       "references": {
@@ -29,7 +29,7 @@
         ],
         "docs": {
           "file": "README.md",
-          "line": 1294
+          "line": 1312
         }
       },
       "status": "unverified",
@@ -42,12 +42,13 @@
       "name": "zidan:change",
       "source": {
         "file": "zidan-form.js",
-        "line": 1599
+        "line": 1615
       },
       "declaration": null,
       "references": {
         "tests": [
-          "scripts/dom/run.mjs"
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
         ],
         "demos": [
           "index.html",
@@ -71,7 +72,7 @@
       "name": "zidan:clear",
       "source": {
         "file": "zidan-form.js",
-        "line": 4909
+        "line": 4962
       },
       "declaration": null,
       "references": {
@@ -95,7 +96,7 @@
       "name": "zidan:close",
       "source": {
         "file": "zidan-form.js",
-        "line": 2156
+        "line": 2172
       },
       "declaration": null,
       "references": {
@@ -105,7 +106,32 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1210
+          "line": 1214
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-EVENT-deselect",
+      "component": "all",
+      "kind": "event",
+      "name": "zidan:deselect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 2218
+      },
+      "declaration": null,
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 1266
         }
       },
       "status": "unverified",
@@ -118,7 +144,7 @@
       "name": "zidan:destroy",
       "source": {
         "file": "zidan-form.js",
-        "line": 3424
+        "line": 3459
       },
       "declaration": null,
       "references": {
@@ -142,7 +168,7 @@
       "name": "zidan:error",
       "source": {
         "file": "zidan-form.js",
-        "line": 2369
+        "line": 2387
       },
       "declaration": null,
       "references": {
@@ -168,7 +194,7 @@
       "name": "zidan:icon-click",
       "source": {
         "file": "zidan-form.js",
-        "line": 6190
+        "line": 6247
       },
       "declaration": null,
       "references": {
@@ -192,7 +218,7 @@
       "name": "zidan:init",
       "source": {
         "file": "zidan-form.js",
-        "line": 1005
+        "line": 1013
       },
       "declaration": null,
       "references": {
@@ -218,7 +244,7 @@
       "name": "zidan:input",
       "source": {
         "file": "zidan-form.js",
-        "line": 6494
+        "line": 6551
       },
       "declaration": null,
       "references": {
@@ -228,7 +254,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 198
+          "line": 199
         }
       },
       "status": "unverified",
@@ -241,7 +267,7 @@
       "name": "zidan:load-more",
       "source": {
         "file": "zidan-form.js",
-        "line": 2332
+        "line": 2350
       },
       "declaration": null,
       "references": {
@@ -269,7 +295,7 @@
       "name": "zidan:no-results",
       "source": {
         "file": "zidan-form.js",
-        "line": 1938
+        "line": 1954
       },
       "declaration": null,
       "references": {
@@ -277,7 +303,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 1212
+          "line": 1217
         }
       },
       "status": "unverified",
@@ -290,7 +316,7 @@
       "name": "zidan:open",
       "source": {
         "file": "zidan-form.js",
-        "line": 2107
+        "line": 2123
       },
       "declaration": null,
       "references": {
@@ -301,7 +327,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1210
+          "line": 1214
         }
       },
       "status": "unverified",
@@ -314,7 +340,7 @@
       "name": "zidan:phone-country",
       "source": {
         "file": "zidan-form.js",
-        "line": 6815
+        "line": 6872
       },
       "declaration": null,
       "references": {
@@ -338,7 +364,7 @@
       "name": "zidan:phone-format",
       "source": {
         "file": "zidan-form.js",
-        "line": 6827
+        "line": 6884
       },
       "declaration": null,
       "references": {
@@ -362,7 +388,7 @@
       "name": "zidan:picker",
       "source": {
         "file": "zidan-form.js",
-        "line": 6793
+        "line": 6850
       },
       "declaration": null,
       "references": {
@@ -387,7 +413,7 @@
       "name": "zidan:remove",
       "source": {
         "file": "zidan-form.js",
-        "line": 4875
+        "line": 4928
       },
       "declaration": null,
       "references": {
@@ -411,7 +437,7 @@
       "name": "zidan:reveal",
       "source": {
         "file": "zidan-form.js",
-        "line": 6289
+        "line": 6346
       },
       "declaration": null,
       "references": {
@@ -419,7 +445,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 199
+          "line": 200
         }
       },
       "status": "unverified",
@@ -432,11 +458,13 @@
       "name": "zidan:select",
       "source": {
         "file": "zidan-form.js",
-        "line": 2213
+        "line": 2231
       },
       "declaration": null,
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
         "demos": [
           "ajax.js",
           "playground.js"
@@ -456,7 +484,7 @@
       "name": "zidan:step",
       "source": {
         "file": "zidan-form.js",
-        "line": 6765
+        "line": 6822
       },
       "declaration": null,
       "references": {
@@ -481,7 +509,7 @@
       "name": "zidan:tag-add",
       "source": {
         "file": "zidan-form.js",
-        "line": 2504
+        "line": 2522
       },
       "declaration": null,
       "references": {
@@ -491,7 +519,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1213
+          "line": 1218
         }
       },
       "status": "unverified",
@@ -504,7 +532,7 @@
       "name": "zidan:tag-edit",
       "source": {
         "file": "zidan-form.js",
-        "line": 2669
+        "line": 2687
       },
       "declaration": null,
       "references": {
@@ -514,7 +542,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 846
+          "line": 847
         }
       },
       "status": "unverified",
@@ -527,7 +555,7 @@
       "name": "zidan:tag-move",
       "source": {
         "file": "zidan-form.js",
-        "line": 2594
+        "line": 2612
       },
       "declaration": null,
       "references": {
@@ -537,7 +565,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 846
+          "line": 847
         }
       },
       "status": "unverified",
@@ -550,7 +578,7 @@
       "name": "zidan:tag-remove",
       "source": {
         "file": "zidan-form.js",
-        "line": 2532
+        "line": 2550
       },
       "declaration": null,
       "references": {
@@ -560,7 +588,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1213
+          "line": 1204
         }
       },
       "status": "unverified",
@@ -573,7 +601,30 @@
       "name": "zidan:upload-cancel",
       "source": {
         "file": "zidan-form.js",
-        "line": 5649
+        "line": 5706
+      },
+      "declaration": null,
+      "references": {
+        "tests": [],
+        "demos": [
+          "playground.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 611
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-EVENT-upload-error",
+      "component": "file",
+      "kind": "event",
+      "name": "zidan:upload-error",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 5692
       },
       "declaration": null,
       "references": {
@@ -590,40 +641,19 @@
       "verifiedBy": null
     },
     {
-      "id": "ZS-EVENT-upload-error",
-      "component": "file",
-      "kind": "event",
-      "name": "zidan:upload-error",
-      "source": {
-        "file": "zidan-form.js",
-        "line": 5635
-      },
-      "declaration": null,
-      "references": {
-        "tests": [],
-        "demos": [
-          "playground.js"
-        ],
-        "docs": {
-          "file": "docs/options.md",
-          "line": 609
-        }
-      },
-      "status": "unverified",
-      "verifiedBy": null
-    },
-    {
       "id": "ZS-EVENT-upload-progress",
       "component": "file",
       "kind": "event",
       "name": "zidan:upload-progress",
       "source": {
         "file": "zidan-form.js",
-        "line": 5576
+        "line": 5633
       },
       "declaration": null,
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
         "demos": [
           "advanced.html",
           "playground.js"
@@ -643,7 +673,7 @@
       "name": "zidan:upload-queued",
       "source": {
         "file": "zidan-form.js",
-        "line": 5370
+        "line": 5427
       },
       "declaration": null,
       "references": {
@@ -664,7 +694,7 @@
       "name": "zidan:upload-retry",
       "source": {
         "file": "zidan-form.js",
-        "line": 5606
+        "line": 5663
       },
       "declaration": null,
       "references": {
@@ -685,7 +715,7 @@
       "name": "zidan:upload-start",
       "source": {
         "file": "zidan-form.js",
-        "line": 5421
+        "line": 5478
       },
       "declaration": null,
       "references": {
@@ -709,7 +739,7 @@
       "name": "zidan:upload-success",
       "source": {
         "file": "zidan-form.js",
-        "line": 5588
+        "line": 5645
       },
       "declaration": null,
       "references": {
@@ -719,7 +749,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 609
+          "line": 610
         }
       },
       "status": "unverified",
@@ -734,12 +764,13 @@
       "declaration": null,
       "references": {
         "tests": [
-          "scripts/dom/run.mjs"
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
         ],
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 1179
+          "line": 1182
         }
       },
       "status": "unverified",
@@ -752,11 +783,13 @@
       "name": "zidan:validation",
       "source": {
         "file": "zidan-form.js",
-        "line": 3793
+        "line": 3177
       },
       "declaration": null,
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
         "demos": [
           "advanced.html",
           "playground.js"

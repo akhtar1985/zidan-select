@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "package": {
     "name": "zidan-select",
-    "version": "2.5.1"
+    "version": "2.6.0"
   },
-  "sourceHash": "6efa24530ce618e47e1ccabcd9f48bbc7185df38a9adacd6fb03f622bc2e19c7",
+  "sourceHash": "872993a4ec3a11fbf0165fce5b7c14e11c7f3db0700b73cb8d9c036fc6f0c07d",
   "methods": [
     {
       "id": "ZS-SELECT-METHOD-addTag",
@@ -14,7 +14,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2512
+        "line": 2530
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -30,7 +30,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1152
+          "line": 1155
         }
       },
       "status": "unverified",
@@ -44,7 +44,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3389
+        "line": 3424
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -57,7 +57,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1155
+          "line": 1158
         }
       },
       "status": "unverified",
@@ -71,7 +71,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2571
+        "line": 2589
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -93,6 +93,42 @@
       "verifiedBy": null
     },
     {
+      "id": "ZS-SELECT-METHOD-call",
+      "component": "select",
+      "kind": "method",
+      "name": "call",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3411
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.call"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "shopify.html",
+          "demo.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 402
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
       "id": "ZS-SELECT-METHOD-clear",
       "component": "select",
       "kind": "method",
@@ -100,7 +136,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3214
+        "line": 3245
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -131,7 +167,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2254
+        "line": 2272
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -162,7 +198,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2139
+        "line": 2155
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -192,7 +228,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2562
+        "line": 2580
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -221,7 +257,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3403
+        "line": 3438
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -258,7 +294,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3280
+        "line": 3311
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -285,7 +321,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2605
+        "line": 2623
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -300,7 +336,36 @@
         ],
         "docs": {
           "file": "README.md",
-          "line": 1263
+          "line": 1281
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SELECT-METHOD-emit",
+      "component": "select",
+      "kind": "method",
+      "name": "emit",
+      "owner": "ZidanSelect",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3394
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanSelect.prototype.emit"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "lab.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 656
         }
       },
       "status": "unverified",
@@ -314,7 +379,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3274
+        "line": 3305
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -341,7 +406,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2403
+        "line": 2421
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -374,7 +439,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2544
+        "line": 2562
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -403,7 +468,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2540
+        "line": 2558
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -419,7 +484,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 57
+          "line": 58
         }
       },
       "status": "unverified",
@@ -433,7 +498,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3184
+        "line": 3215
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -467,7 +532,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2399
+        "line": 2417
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -500,7 +565,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3450
+        "line": 3485
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -529,7 +594,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2393
+        "line": 2411
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -564,7 +629,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2579
+        "line": 2597
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -579,7 +644,7 @@
         ],
         "docs": {
           "file": "README.md",
-          "line": 1263
+          "line": 1281
         }
       },
       "status": "unverified",
@@ -593,7 +658,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3340
+        "line": 3375
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -620,7 +685,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3332
+        "line": 3367
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -628,7 +693,9 @@
       },
       "references": {
         "tests": [
-          "scripts/dom/reliability.mjs"
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
         ],
         "demos": [
           "lab.js"
@@ -649,7 +716,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2093
+        "line": 2109
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -681,7 +748,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3454
+        "line": 3489
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -710,7 +777,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2414
+        "line": 2432
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -743,7 +810,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2518
+        "line": 2536
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -756,7 +823,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1152
+          "line": 1155
         }
       },
       "status": "unverified",
@@ -770,7 +837,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2552
+        "line": 2570
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -799,7 +866,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3300
+        "line": 3332
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -829,7 +896,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3287
+        "line": 3318
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -837,6 +904,7 @@
       },
       "references": {
         "tests": [
+          "scripts/dom/run.mjs",
           "scripts/subset-audit.mjs"
         ],
         "demos": [
@@ -858,7 +926,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3234
+        "line": 3265
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -889,14 +957,16 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3316
+        "line": 3350
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanSelect.prototype.setScrollbar"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
         "demos": [
           "lab.js"
         ],
@@ -916,14 +986,16 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 1420
+        "line": 1431
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanSelect.prototype.setTheme"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
         "demos": [
           "demo.js",
           "lab.js",
@@ -945,7 +1017,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3326
+        "line": 3361
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -975,7 +1047,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 3191
+        "line": 3222
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1008,7 +1080,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2161
+        "line": 2177
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1036,7 +1108,7 @@
       "owner": "ZidanSelect",
       "source": {
         "file": "zidan-form.js",
-        "line": 2566
+        "line": 2584
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1058,6 +1130,186 @@
       "verifiedBy": null
     },
     {
+      "id": "ZS-CHECKBOX-METHOD-call",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "call",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3576
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.call"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "shopify.html",
+          "demo.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 402
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-call",
+      "component": "switch",
+      "kind": "method",
+      "name": "call",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3576
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.call"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "shopify.html",
+          "demo.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 402
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-call",
+      "component": "radio",
+      "kind": "method",
+      "name": "call",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3576
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.call"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "shopify.html",
+          "demo.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 402
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-call",
+      "component": "file",
+      "kind": "method",
+      "name": "call",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3576
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.call"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "shopify.html",
+          "demo.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 402
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-call",
+      "component": "text",
+      "kind": "method",
+      "name": "call",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3576
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.call"
+      },
+      "references": {
+        "tests": [
+          "scripts/dom/run.mjs",
+          "scripts/subset-audit.mjs",
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "shopify.html",
+          "demo.js",
+          "advanced.js",
+          "ajax.js",
+          "playground.js",
+          "nav.js"
+        ],
+        "docs": {
+          "file": "README.md",
+          "line": 402
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
       "id": "ZS-CHECKBOX-METHOD-checkAsync",
       "component": "checkbox",
       "kind": "method",
@@ -1065,7 +1317,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3720
+        "line": 3773
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1079,7 +1331,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1127
+          "line": 1130
         }
       },
       "status": "unverified",
@@ -1093,7 +1345,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3720
+        "line": 3773
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1107,7 +1359,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1127
+          "line": 1130
         }
       },
       "status": "unverified",
@@ -1121,7 +1373,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3720
+        "line": 3773
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1135,7 +1387,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1127
+          "line": 1130
         }
       },
       "status": "unverified",
@@ -1149,7 +1401,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3720
+        "line": 3773
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1163,7 +1415,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1127
+          "line": 1130
         }
       },
       "status": "unverified",
@@ -1177,7 +1429,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3720
+        "line": 3773
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1191,7 +1443,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1127
+          "line": 1130
         }
       },
       "status": "unverified",
@@ -1205,7 +1457,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3798
+        "line": 3851
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1222,7 +1474,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -1236,7 +1488,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3798
+        "line": 3851
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1253,7 +1505,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -1267,7 +1519,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3798
+        "line": 3851
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1284,7 +1536,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -1298,7 +1550,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3798
+        "line": 3851
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1315,7 +1567,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -1329,7 +1581,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3798
+        "line": 3851
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1346,7 +1598,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -1360,7 +1612,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3959
+        "line": 4012
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1397,7 +1649,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3959
+        "line": 4012
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1434,7 +1686,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3959
+        "line": 4012
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1471,7 +1723,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3959
+        "line": 4012
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1508,7 +1760,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3959
+        "line": 4012
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1545,14 +1797,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3530
+        "line": 3565
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.emit"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
         "demos": [
           "lab.js"
         ],
@@ -1572,14 +1826,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3530
+        "line": 3565
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.emit"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
         "demos": [
           "lab.js"
         ],
@@ -1599,14 +1855,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3530
+        "line": 3565
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.emit"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
         "demos": [
           "lab.js"
         ],
@@ -1626,14 +1884,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3530
+        "line": 3565
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.emit"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
         "demos": [
           "lab.js"
         ],
@@ -1653,14 +1913,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3530
+        "line": 3565
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.emit"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
         "demos": [
           "lab.js"
         ],
@@ -1680,7 +1942,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3900
+        "line": 3953
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1709,7 +1971,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3900
+        "line": 3953
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1738,7 +2000,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3900
+        "line": 3953
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1767,7 +2029,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3900
+        "line": 3953
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1796,7 +2058,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3900
+        "line": 3953
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1825,7 +2087,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3908
+        "line": 3961
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1859,7 +2121,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3908
+        "line": 3961
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1893,7 +2155,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3908
+        "line": 3961
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1927,7 +2189,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3908
+        "line": 3961
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1961,7 +2223,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3908
+        "line": 3961
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -1995,7 +2257,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3904
+        "line": 3957
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2012,7 +2274,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1129
+          "line": 1132
         }
       },
       "status": "unverified",
@@ -2026,7 +2288,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3904
+        "line": 3957
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2043,7 +2305,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1129
+          "line": 1132
         }
       },
       "status": "unverified",
@@ -2057,7 +2319,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3904
+        "line": 3957
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2074,7 +2336,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1129
+          "line": 1132
         }
       },
       "status": "unverified",
@@ -2088,7 +2350,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3904
+        "line": 3957
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2105,7 +2367,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1129
+          "line": 1132
         }
       },
       "status": "unverified",
@@ -2119,7 +2381,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3904
+        "line": 3957
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2136,7 +2398,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1129
+          "line": 1132
         }
       },
       "status": "unverified",
@@ -2150,7 +2412,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3523
+        "line": 3558
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2158,7 +2420,9 @@
       },
       "references": {
         "tests": [
-          "scripts/dom/reliability.mjs"
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
         ],
         "demos": [
           "lab.js"
@@ -2179,7 +2443,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3523
+        "line": 3558
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2187,7 +2451,9 @@
       },
       "references": {
         "tests": [
-          "scripts/dom/reliability.mjs"
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
         ],
         "demos": [
           "lab.js"
@@ -2208,7 +2474,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3523
+        "line": 3558
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2216,7 +2482,9 @@
       },
       "references": {
         "tests": [
-          "scripts/dom/reliability.mjs"
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
         ],
         "demos": [
           "lab.js"
@@ -2237,7 +2505,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3523
+        "line": 3558
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2245,7 +2513,9 @@
       },
       "references": {
         "tests": [
-          "scripts/dom/reliability.mjs"
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
         ],
         "demos": [
           "lab.js"
@@ -2266,7 +2536,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3523
+        "line": 3558
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2274,7 +2544,9 @@
       },
       "references": {
         "tests": [
-          "scripts/dom/reliability.mjs"
+          "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
+          "scripts/types/usage.ts"
         ],
         "demos": [
           "lab.js"
@@ -2295,7 +2567,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3955
+        "line": 4008
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2324,7 +2596,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3955
+        "line": 4008
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2353,7 +2625,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3955
+        "line": 4008
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2382,7 +2654,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3955
+        "line": 4008
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2411,7 +2683,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3955
+        "line": 4008
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2440,7 +2712,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3775
+        "line": 3828
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2458,7 +2730,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -2472,7 +2744,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3775
+        "line": 3828
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2490,7 +2762,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -2504,7 +2776,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3775
+        "line": 3828
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2522,7 +2794,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -2536,7 +2808,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3775
+        "line": 3828
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2554,7 +2826,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -2568,7 +2840,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3775
+        "line": 3828
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2586,7 +2858,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1126
+          "line": 1129
         }
       },
       "status": "unverified",
@@ -2600,7 +2872,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3581
+        "line": 3622
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2630,7 +2902,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3581
+        "line": 3622
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2660,7 +2932,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3581
+        "line": 3622
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2690,7 +2962,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3581
+        "line": 3622
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2720,7 +2992,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3581
+        "line": 3622
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2750,7 +3022,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3587
+        "line": 3634
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2758,6 +3030,7 @@
       },
       "references": {
         "tests": [
+          "scripts/dom/run.mjs",
           "scripts/subset-audit.mjs"
         ],
         "demos": [
@@ -2779,7 +3052,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3587
+        "line": 3634
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2787,6 +3060,7 @@
       },
       "references": {
         "tests": [
+          "scripts/dom/run.mjs",
           "scripts/subset-audit.mjs"
         ],
         "demos": [
@@ -2808,7 +3082,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3587
+        "line": 3634
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2816,6 +3090,7 @@
       },
       "references": {
         "tests": [
+          "scripts/dom/run.mjs",
           "scripts/subset-audit.mjs"
         ],
         "demos": [
@@ -2837,7 +3112,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3587
+        "line": 3634
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2845,6 +3120,7 @@
       },
       "references": {
         "tests": [
+          "scripts/dom/run.mjs",
           "scripts/subset-audit.mjs"
         ],
         "demos": [
@@ -2866,7 +3142,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3587
+        "line": 3634
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -2874,6 +3150,7 @@
       },
       "references": {
         "tests": [
+          "scripts/dom/run.mjs",
           "scripts/subset-audit.mjs"
         ],
         "demos": [
@@ -2895,14 +3172,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3569
+        "line": 3604
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.setTheme"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
         "demos": [
           "demo.js",
           "lab.js",
@@ -2924,14 +3203,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3569
+        "line": 3604
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.setTheme"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
         "demos": [
           "demo.js",
           "lab.js",
@@ -2953,14 +3234,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3569
+        "line": 3604
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.setTheme"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
         "demos": [
           "demo.js",
           "lab.js",
@@ -2982,14 +3265,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3569
+        "line": 3604
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.setTheme"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
         "demos": [
           "demo.js",
           "lab.js",
@@ -3011,14 +3296,16 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3569
+        "line": 3604
       },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanFieldBase.prototype.setTheme"
       },
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
         "demos": [
           "demo.js",
           "lab.js",
@@ -3040,7 +3327,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3877
+        "line": 3930
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3070,7 +3357,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3877
+        "line": 3930
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3100,7 +3387,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3877
+        "line": 3930
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3130,7 +3417,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3877
+        "line": 3930
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3160,7 +3447,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3877
+        "line": 3930
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3190,7 +3477,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3922
+        "line": 3975
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3223,7 +3510,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3922
+        "line": 3975
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3256,7 +3543,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3922
+        "line": 3975
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3289,7 +3576,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3922
+        "line": 3975
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3322,7 +3609,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3922
+        "line": 3975
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3355,7 +3642,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3949
+        "line": 4002
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3386,7 +3673,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3949
+        "line": 4002
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3417,7 +3704,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3949
+        "line": 4002
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3448,7 +3735,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3949
+        "line": 4002
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3479,7 +3766,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3949
+        "line": 4002
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3510,7 +3797,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3863
+        "line": 3916
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3546,7 +3833,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3863
+        "line": 3916
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3582,7 +3869,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3863
+        "line": 3916
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3618,7 +3905,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3863
+        "line": 3916
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3654,7 +3941,7 @@
       "owner": "ZidanFieldBase",
       "source": {
         "file": "zidan-form.js",
-        "line": 3863
+        "line": 3916
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3683,6 +3970,156 @@
       "verifiedBy": null
     },
     {
+      "id": "ZS-CHECKBOX-METHOD-validationTargets",
+      "component": "checkbox",
+      "kind": "method",
+      "name": "validationTargets",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3646
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validationTargets"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-SWITCH-METHOD-validationTargets",
+      "component": "switch",
+      "kind": "method",
+      "name": "validationTargets",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3646
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validationTargets"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-RADIO-METHOD-validationTargets",
+      "component": "radio",
+      "kind": "method",
+      "name": "validationTargets",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3646
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validationTargets"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-FILE-METHOD-validationTargets",
+      "component": "file",
+      "kind": "method",
+      "name": "validationTargets",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3646
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validationTargets"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
+      "id": "ZS-TEXT-METHOD-validationTargets",
+      "component": "text",
+      "kind": "method",
+      "name": "validationTargets",
+      "owner": "ZidanFieldBase",
+      "source": {
+        "file": "zidan-form.js",
+        "line": 3646
+      },
+      "declaration": {
+        "file": "zidan-form.d.ts",
+        "symbol": "ZidanFieldBase.prototype.validationTargets"
+      },
+      "references": {
+        "tests": [
+          "scripts/types/usage.ts"
+        ],
+        "demos": [
+          "demo.js",
+          "lab.js"
+        ],
+        "docs": {
+          "file": "docs/options.md",
+          "line": 1126
+        }
+      },
+      "status": "unverified",
+      "verifiedBy": null
+    },
+    {
       "id": "ZS-CHECKBOX-METHOD-isChecked",
       "component": "checkbox",
       "kind": "method",
@@ -3690,7 +4127,7 @@
       "owner": "ZidanCheckbox",
       "source": {
         "file": "zidan-form.js",
-        "line": 4151
+        "line": 4204
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3719,7 +4156,7 @@
       "owner": "ZidanCheckbox",
       "source": {
         "file": "zidan-form.js",
-        "line": 4144
+        "line": 4197
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3735,7 +4172,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 1133
+          "line": 1136
         }
       },
       "status": "unverified",
@@ -3749,7 +4186,7 @@
       "owner": "ZidanCheckbox",
       "source": {
         "file": "zidan-form.js",
-        "line": 4139
+        "line": 4192
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3777,7 +4214,7 @@
       "owner": "ZidanRadioGroup",
       "source": {
         "file": "zidan-form.js",
-        "line": 4330
+        "line": 4383
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3811,7 +4248,7 @@
       "owner": "ZidanRadioGroup",
       "source": {
         "file": "zidan-form.js",
-        "line": 4337
+        "line": 4390
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3844,7 +4281,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 4838
+        "line": 4891
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3874,7 +4311,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5702
+        "line": 5759
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3901,7 +4338,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5655
+        "line": 5712
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3929,7 +4366,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 4895
+        "line": 4948
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3960,7 +4397,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 4793
+        "line": 4846
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -3989,7 +4426,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 4760
+        "line": 4813
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4022,7 +4459,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 4764
+        "line": 4817
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4053,7 +4490,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5331
+        "line": 5388
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4082,7 +4519,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 4862
+        "line": 4915
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4109,7 +4546,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 4882
+        "line": 4935
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4138,7 +4575,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 4858
+        "line": 4911
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4165,7 +4602,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5742
+        "line": 5799
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4192,7 +4629,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5750
+        "line": 5807
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4220,7 +4657,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5258
+        "line": 5315
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4247,7 +4684,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5249
+        "line": 5306
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4274,7 +4711,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5223
+        "line": 5280
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4301,7 +4738,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5212
+        "line": 5265
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4328,7 +4765,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5287
+        "line": 5344
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4360,7 +4797,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5378
+        "line": 5435
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4387,7 +4824,7 @@
       "owner": "ZidanFileUpload",
       "source": {
         "file": "zidan-form.js",
-        "line": 5333
+        "line": 5390
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4417,7 +4854,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6832
+        "line": 6889
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4447,7 +4884,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6802
+        "line": 6859
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4476,7 +4913,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6730
+        "line": 6787
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4491,7 +4928,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 280
+          "line": 281
         }
       },
       "status": "unverified",
@@ -4505,7 +4942,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6785
+        "line": 6842
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4533,7 +4970,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6726
+        "line": 6783
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4546,7 +4983,7 @@
         ],
         "docs": {
           "file": "docs/options.md",
-          "line": 287
+          "line": 288
         }
       },
       "status": "unverified",
@@ -4560,7 +4997,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6806
+        "line": 6863
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4588,7 +5025,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6820
+        "line": 6877
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4619,7 +5056,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6778
+        "line": 6835
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4647,7 +5084,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6798
+        "line": 6855
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4675,7 +5112,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6774
+        "line": 6831
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4703,7 +5140,7 @@
       "owner": "ZidanTextField",
       "source": {
         "file": "zidan-form.js",
-        "line": 6770
+        "line": 6827
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4731,7 +5168,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 3403
+        "line": 3438
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4768,7 +5205,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7264
+        "line": 7321
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4796,7 +5233,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7245
+        "line": 7302
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4830,7 +5267,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 589
+        "line": 862
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4839,6 +5276,7 @@
       "references": {
         "tests": [
           "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
           "scripts/types/package.ts"
         ],
         "demos": [
@@ -4861,7 +5299,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 595
+        "line": 868
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4891,7 +5329,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 3454
+        "line": 3489
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4920,7 +5358,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 496
+        "line": 769
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4951,7 +5389,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 605
+        "line": 878
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -4983,7 +5421,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 3863
+        "line": 3916
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5019,7 +5457,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7200
+        "line": 7257
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5044,7 +5482,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 435
+        "line": 691
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5081,7 +5519,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 504
+        "line": 777
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5109,7 +5547,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7209
+        "line": 7266
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5136,7 +5574,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7222
+        "line": 7279
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5163,7 +5601,10 @@
       "kind": "static-member",
       "name": "field",
       "owner": "ZidanForm",
-      "source": null,
+      "source": {
+        "file": "zidan-form.d.ts",
+        "line": 468
+      },
       "declaration": {
         "file": "zidan-form.d.ts",
         "symbol": "ZidanForm.field"
@@ -5190,7 +5631,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7231
+        "line": 7288
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5215,7 +5656,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7169
+        "line": 7226
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5240,7 +5681,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7208
+        "line": 7265
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5292,7 +5733,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 501
+        "line": 774
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5326,7 +5767,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7204
+        "line": 7261
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5351,7 +5792,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 589
+        "line": 862
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5360,6 +5801,7 @@
       "references": {
         "tests": [
           "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
           "scripts/types/package.ts"
         ],
         "demos": [
@@ -5404,7 +5846,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7214
+        "line": 7271
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5433,7 +5875,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7211
+        "line": 7268
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5444,7 +5886,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 154
+          "line": 155
         }
       },
       "status": "unverified",
@@ -5458,7 +5900,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 595
+        "line": 868
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5488,7 +5930,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7206
+        "line": 7263
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5513,7 +5955,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7207
+        "line": 7264
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5524,7 +5966,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 1098
+          "line": 1101
         }
       },
       "status": "unverified",
@@ -5538,7 +5980,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 432
+        "line": 690
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5567,7 +6009,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7203
+        "line": 7260
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5598,7 +6040,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 605
+        "line": 878
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5630,7 +6072,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7230
+        "line": 7287
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5641,7 +6083,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 1097
+          "line": 1100
         }
       },
       "status": "unverified",
@@ -5677,7 +6119,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7217
+        "line": 7274
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5692,7 +6134,7 @@
         ],
         "docs": {
           "file": "README.md",
-          "line": 1260
+          "line": 1278
         }
       },
       "status": "unverified",
@@ -5706,7 +6148,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.d.ts",
-        "line": 427
+        "line": 223
       },
       "declaration": {
         "file": "zidan-form.d.ts",
@@ -5742,7 +6184,7 @@
       "owner": "ZidanForm",
       "source": {
         "file": "zidan-form.js",
-        "line": 7224
+        "line": 7281
       },
       "declaration": {
         "file": "zidan-form.d.ts",

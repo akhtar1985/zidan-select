@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "package": {
     "name": "zidan-select",
-    "version": "2.5.1"
+    "version": "2.6.0"
   },
-  "sourceHash": "6efa24530ce618e47e1ccabcd9f48bbc7185df38a9adacd6fb03f622bc2e19c7",
+  "sourceHash": "872993a4ec3a11fbf0165fce5b7c14e11c7f3db0700b73cb8d9c036fc6f0c07d",
   "css": [
     {
       "id": "ZS-CSS-CLASS-zs-arrow",
@@ -140,7 +140,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 52
+          "line": 61
         }
       },
       "status": "unverified",
@@ -289,7 +289,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 56
+          "line": 65
         }
       },
       "status": "unverified",
@@ -468,7 +468,7 @@
         "demos": [],
         "docs": {
           "file": "README.md",
-          "line": 1292
+          "line": 1310
         }
       },
       "status": "unverified",
@@ -589,7 +589,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 95
+          "line": 104
         }
       },
       "status": "unverified",
@@ -804,7 +804,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 131
+          "line": 140
         }
       },
       "status": "unverified",
@@ -963,7 +963,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 96
+          "line": 105
         }
       },
       "status": "unverified",
@@ -1034,7 +1034,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 944
+          "line": 946
         }
       },
       "status": "unverified",
@@ -1053,7 +1053,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 944
+          "line": 946
         }
       },
       "status": "unverified",
@@ -1074,7 +1074,7 @@
         ],
         "docs": {
           "file": "docs/validation.md",
-          "line": 217
+          "line": 226
         }
       },
       "status": "unverified",
@@ -1197,7 +1197,7 @@
         "demos": [],
         "docs": {
           "file": "docs/validation.md",
-          "line": 217
+          "line": 226
         }
       },
       "status": "unverified",
@@ -1284,7 +1284,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 49
+          "line": 58
         }
       },
       "status": "unverified",
@@ -1317,7 +1317,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 909
+          "line": 911
         }
       },
       "status": "unverified",
@@ -1392,7 +1392,7 @@
         ],
         "docs": {
           "file": "docs/theming.md",
-          "line": 57
+          "line": 66
         }
       },
       "status": "unverified",
@@ -1696,7 +1696,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 93
+          "line": 102
         }
       },
       "status": "unverified",
@@ -1772,7 +1772,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 126
+          "line": 135
         }
       },
       "status": "unverified",
@@ -1873,7 +1873,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 403
+          "line": 404
         }
       },
       "status": "unverified",
@@ -1908,7 +1908,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 402
+          "line": 403
         }
       },
       "status": "unverified",
@@ -1943,7 +1943,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 402
+          "line": 403
         }
       },
       "status": "unverified",
@@ -2107,6 +2107,7 @@
       "references": {
         "tests": [
           "scripts/dom/reliability.mjs",
+          "scripts/dom/run.mjs",
           "scripts/test.mjs",
           "scripts/subset-audit.mjs"
         ],
@@ -2179,7 +2180,9 @@
       "name": "zs-root--invalid",
       "source": null,
       "references": {
-        "tests": [],
+        "tests": [
+          "scripts/dom/run.mjs"
+        ],
         "demos": [],
         "docs": null
       },
@@ -2339,7 +2342,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 104
+          "line": 113
         }
       },
       "status": "unverified",
@@ -2398,7 +2401,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 92
+          "line": 101
         }
       },
       "status": "unverified",
@@ -2415,7 +2418,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 107
+          "line": 116
         }
       },
       "status": "unverified",
@@ -2434,7 +2437,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 128
+          "line": 137
         }
       },
       "status": "unverified",
@@ -2470,7 +2473,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 110
+          "line": 119
         }
       },
       "status": "unverified",
@@ -2490,7 +2493,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 110
+          "line": 119
         }
       },
       "status": "unverified",
@@ -2510,7 +2513,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 64
+          "line": 73
         }
       },
       "status": "unverified",
@@ -2550,7 +2553,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 70
+          "line": 79
         }
       },
       "status": "unverified",
@@ -2570,7 +2573,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 69
+          "line": 78
         }
       },
       "status": "unverified",
@@ -2610,7 +2613,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 71
+          "line": 80
         }
       },
       "status": "unverified",
@@ -2630,7 +2633,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 53
+          "line": 62
         }
       },
       "status": "unverified",
@@ -2650,7 +2653,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 88
+          "line": 97
         }
       },
       "status": "unverified",
@@ -2670,7 +2673,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 88
+          "line": 97
         }
       },
       "status": "unverified",
@@ -2734,7 +2737,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 87
+          "line": 96
         }
       },
       "status": "unverified",
@@ -2754,7 +2757,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 89
+          "line": 98
         }
       },
       "status": "unverified",
@@ -2774,7 +2777,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 86
+          "line": 95
         }
       },
       "status": "unverified",
@@ -2794,7 +2797,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 85
+          "line": 94
         }
       },
       "status": "unverified",
@@ -2816,7 +2819,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 75
+          "line": 84
         }
       },
       "status": "unverified",
@@ -2853,7 +2856,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 52
+          "line": 61
         }
       },
       "status": "unverified",
@@ -2907,7 +2910,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 76
+          "line": 85
         }
       },
       "status": "unverified",
@@ -2927,7 +2930,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 56
+          "line": 65
         }
       },
       "status": "unverified",
@@ -2947,7 +2950,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 56
+          "line": 65
         }
       },
       "status": "unverified",
@@ -2967,7 +2970,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 56
+          "line": 65
         }
       },
       "status": "unverified",
@@ -3004,7 +3007,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 97
+          "line": 106
         }
       },
       "status": "unverified",
@@ -3024,7 +3027,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 95
+          "line": 104
         }
       },
       "status": "unverified",
@@ -3044,7 +3047,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 95
+          "line": 104
         }
       },
       "status": "unverified",
@@ -3064,7 +3067,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 96
+          "line": 105
         }
       },
       "status": "unverified",
@@ -3123,7 +3126,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 74
+          "line": 83
         }
       },
       "status": "unverified",
@@ -3143,7 +3146,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 46
+          "line": 55
         }
       },
       "status": "unverified",
@@ -3163,7 +3166,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 47
+          "line": 56
         }
       },
       "status": "unverified",
@@ -3183,7 +3186,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 55
+          "line": 64
         }
       },
       "status": "unverified",
@@ -3203,7 +3206,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 79
+          "line": 88
         }
       },
       "status": "unverified",
@@ -3223,7 +3226,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 50
+          "line": 59
         }
       },
       "status": "unverified",
@@ -3243,7 +3246,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 103
+          "line": 112
         }
       },
       "status": "unverified",
@@ -3263,7 +3266,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 103
+          "line": 112
         }
       },
       "status": "unverified",
@@ -3276,7 +3279,7 @@
       "name": "--zs-input-height",
       "source": {
         "file": "plugin-theme.css",
-        "line": 1487
+        "line": 1491
       },
       "references": {
         "tests": [
@@ -3302,7 +3305,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 49
+          "line": 58
         }
       },
       "status": "unverified",
@@ -3322,7 +3325,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 48
+          "line": 57
         }
       },
       "status": "unverified",
@@ -3342,7 +3345,7 @@
         "demos": [],
         "docs": {
           "file": "docs/options.md",
-          "line": 909
+          "line": 911
         }
       },
       "status": "unverified",
@@ -3464,7 +3467,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 77
+          "line": 86
         }
       },
       "status": "unverified",
@@ -3484,7 +3487,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 58
+          "line": 67
         }
       },
       "status": "unverified",
@@ -3504,7 +3507,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 58
+          "line": 67
         }
       },
       "status": "unverified",
@@ -3524,7 +3527,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 57
+          "line": 66
         }
       },
       "status": "unverified",
@@ -3546,7 +3549,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 78
+          "line": 87
         }
       },
       "status": "unverified",
@@ -3583,7 +3586,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 54
+          "line": 63
         }
       },
       "status": "unverified",
@@ -3603,7 +3606,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 54
+          "line": 63
         }
       },
       "status": "unverified",
@@ -3623,7 +3626,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 105
+          "line": 114
         }
       },
       "status": "unverified",
@@ -3643,7 +3646,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 67
+          "line": 76
         }
       },
       "status": "unverified",
@@ -3685,7 +3688,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 72
+          "line": 81
         }
       },
       "status": "unverified",
@@ -3727,7 +3730,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 94
+          "line": 103
         }
       },
       "status": "unverified",
@@ -3747,7 +3750,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 94
+          "line": 103
         }
       },
       "status": "unverified",
@@ -3767,7 +3770,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 93
+          "line": 102
         }
       },
       "status": "unverified",
@@ -3809,7 +3812,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 108
+          "line": 117
         }
       },
       "status": "unverified",
@@ -3833,7 +3836,7 @@
         ],
         "docs": {
           "file": "README.md",
-          "line": 1300
+          "line": 1318
         }
       },
       "status": "unverified",
@@ -3853,7 +3856,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 115
+          "line": 124
         }
       },
       "status": "unverified",
@@ -3890,7 +3893,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 111
+          "line": 120
         }
       },
       "status": "unverified",
@@ -3910,7 +3913,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 112
+          "line": 121
         }
       },
       "status": "unverified",
@@ -3930,7 +3933,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 113
+          "line": 122
         }
       },
       "status": "unverified",
@@ -3970,7 +3973,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 114
+          "line": 123
         }
       },
       "status": "unverified",
@@ -3990,7 +3993,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 114
+          "line": 123
         }
       },
       "status": "unverified",
@@ -4010,7 +4013,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 111
+          "line": 120
         }
       },
       "status": "unverified",
@@ -4030,7 +4033,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 143
+          "line": 152
         }
       },
       "status": "unverified",
@@ -4050,7 +4053,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 143
+          "line": 152
         }
       },
       "status": "unverified",
@@ -4070,7 +4073,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 143
+          "line": 152
         }
       },
       "status": "unverified",
@@ -4083,14 +4086,14 @@
       "name": "--zs-scrollbar-thumb-reveal",
       "source": {
         "file": "plugin-theme.css",
-        "line": 553
+        "line": 555
       },
       "references": {
         "tests": [],
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 144
+          "line": 153
         }
       },
       "status": "unverified",
@@ -4110,7 +4113,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 144
+          "line": 153
         }
       },
       "status": "unverified",
@@ -4147,7 +4150,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 104
+          "line": 113
         }
       },
       "status": "unverified",
@@ -4167,7 +4170,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 104
+          "line": 113
         }
       },
       "status": "unverified",
@@ -4204,7 +4207,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 92
+          "line": 101
         }
       },
       "status": "unverified",
@@ -4224,7 +4227,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 92
+          "line": 101
         }
       },
       "status": "unverified",
@@ -4244,7 +4247,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 107
+          "line": 116
         }
       },
       "status": "unverified",
@@ -4264,7 +4267,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 107
+          "line": 116
         }
       },
       "status": "unverified",
@@ -4284,7 +4287,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 91
+          "line": 100
         }
       },
       "status": "unverified",
@@ -4304,7 +4307,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 65
+          "line": 74
         }
       },
       "status": "unverified",
@@ -4324,7 +4327,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 66
+          "line": 75
         }
       },
       "status": "unverified",
@@ -4361,7 +4364,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 116
+          "line": 125
         }
       },
       "status": "unverified",
@@ -4381,7 +4384,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 116
+          "line": 125
         }
       },
       "status": "unverified",
@@ -4401,7 +4404,7 @@
         "demos": [],
         "docs": {
           "file": "docs/theming.md",
-          "line": 116
+          "line": 125
         }
       },
       "status": "unverified",

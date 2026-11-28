@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "package": {
     "name": "zidan-select",
-    "version": "2.5.1"
+    "version": "2.6.0"
   },
-  "sourceHash": "6efa24530ce618e47e1ccabcd9f48bbc7185df38a9adacd6fb03f622bc2e19c7",
+  "sourceHash": "872993a4ec3a11fbf0165fce5b7c14e11c7f3db0700b73cb8d9c036fc6f0c07d",
   "components": [
     {
       "id": "ZS-COMP-SELECT",
@@ -17,7 +17,7 @@
       ],
       "source": {
         "file": "zidan-form.js",
-        "line": 950
+        "line": 958
       }
     },
     {
@@ -26,7 +26,7 @@
       "family": "field",
       "source": {
         "file": "zidan-form.js",
-        "line": 3496
+        "line": 3531
       }
     },
     {
@@ -42,7 +42,7 @@
       ],
       "source": {
         "file": "zidan-form.js",
-        "line": 3990
+        "line": 4043
       }
     },
     {
@@ -58,7 +58,7 @@
       ],
       "source": {
         "file": "zidan-form.js",
-        "line": 3990
+        "line": 4043
       }
     },
     {
@@ -74,7 +74,7 @@
       ],
       "source": {
         "file": "zidan-form.js",
-        "line": 4172
+        "line": 4225
       }
     },
     {
@@ -90,7 +90,7 @@
       ],
       "source": {
         "file": "zidan-form.js",
-        "line": 4505
+        "line": 4558
       }
     },
     {
@@ -115,7 +115,7 @@
       ],
       "source": {
         "file": "zidan-form.js",
-        "line": 5866
+        "line": 5923
       }
     },
     {

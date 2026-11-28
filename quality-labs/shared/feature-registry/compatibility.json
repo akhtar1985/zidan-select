@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "package": {
     "name": "zidan-select",
-    "version": "2.5.1"
+    "version": "2.6.0"
   },
-  "sourceHash": "6efa24530ce618e47e1ccabcd9f48bbc7185df38a9adacd6fb03f622bc2e19c7",
+  "sourceHash": "872993a4ec3a11fbf0165fce5b7c14e11c7f3db0700b73cb8d9c036fc6f0c07d",
   "compatibility": {
     "browsers": {
       "claim": "| Engine | Version | Notes | | --- | --- | --- | | Chrome / Edge | 105+ | Full theme + scrollbar control. | | Firefox | 121+ | All controls; scrollbars keep the native thin gutter and scrollbar-color (no gradients, no thumb hover). | | Safari / iOS Safari | 15.4+ | All controls; overlay scrollbars follow OS settings. | | Node / SSR | 18+ | Import is side-effect free without a DOM; initialise after hydration. | prefers-reduced-motion and forced-colors are respected. :has() is not required. ---",
       "source": {
         "file": "README.md",
-        "line": 1242
+        "line": 1249
       },
       "status": "unverified"
     },
