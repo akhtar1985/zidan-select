@@ -3,7 +3,7 @@
  * Source of truth: zidan-form.d.ts, zidan-form.js, plugin-core.css, plugin-theme.css
  */
 window.ZIDAN_LAB_INVENTORY = {
-  "version": "2.5.0",
+  "version": "2.5.1",
   "generatedBy": "scripts/lab-inventory.mjs",
   "select": {
     "options": [

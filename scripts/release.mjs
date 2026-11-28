@@ -35,6 +35,7 @@ const TEXT_SITES = [
   'README.md',
   'index.html',
   'advanced.html',
+  'api.html',
   'ajax.html',
   'playground.html',
   'shopify.html',

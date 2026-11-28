@@ -4,9 +4,9 @@
   "source": "scripts/lab-inventory.mjs",
   "package": {
     "name": "zidan-select",
-    "version": "2.5.0"
+    "version": "2.5.1"
   },
-  "sourceHash": "225b7da0f1f336c8d4f7415b0cb26d5f831159d24282396ab14da278cc865329",
+  "sourceHash": "6efa24530ce618e47e1ccabcd9f48bbc7185df38a9adacd6fb03f622bc2e19c7",
   "components": [
     {
       "id": "ZS-COMP-SELECT",

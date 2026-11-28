@@ -104,7 +104,7 @@ Without esbuild the build still succeeds and prints that minification was skippe
 | Select-only | `/dist/select/zidan-select.min.js` — ≈87 kB | `/dist/select/plugin-select-core.min.css` — ≈10 kB | `/dist/select/plugin-select-theme.min.css` — ≈29 kB |
 | File-only | `/dist/file/zidan-file.min.js` — ≈70 kB | `/dist/file/plugin-file-core.min.css` — ≈7 kB | `/dist/file/plugin-file-theme.min.css` — ≈34 kB |
 
-Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.5.0` to each path (or your own origin). These are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
+Prepend `https://cdn.jsdelivr.net/npm/zidan-select@2.5.1` to each path (or your own origin). These are real entries in the npm tarball, so unpkg and self-hosted CDNs serve the same bytes.
 Use these package files rather than relying on a CDN's auto-minification.
 Check the three you use with `curl -I` before changing a version, then update the URLs in the
 README, the demo build cards and the playground in the same commit.
@@ -231,10 +231,10 @@ move the tag: the run reads the version from `package.json` at that ref, which i
 artefact in step with `vX.Y.Z`.
 
 ```bash
-gh workflow run release.yml --ref v2.5.0   # any existing tag
+gh workflow run release.yml --ref v2.5.1   # any existing tag
 gh run watch
-npm view zidan-select dist-tags            # latest should be 2.5.0
-npm view zidan-select@2.5.0 version
+npm view zidan-select dist-tags            # latest should be 2.5.1
+npm view zidan-select@2.5.1 version
 ```
 
 A `workflow_dispatch` run skips the push-only guards and the "Create the GitHub release" step, so
@@ -242,8 +242,8 @@ create the Release yourself when the panel is empty — the body comes from the 
 section the workflow uses:
 
 ```bash
-node scripts/changelog-section.mjs 2.5.0 --output .build/notes-2.5.0.md
-gh release create v2.5.0 --title v2.5.0 --notes-file .build/notes-2.5.0.md --verify-tag
+node scripts/changelog-section.mjs 2.5.1 --output .build/notes-2.5.1.md
+gh release create v2.5.1 --title v2.5.1 --notes-file .build/notes-2.5.1.md --verify-tag
 ```
 
 Use `--output`, not a shell redirect. Windows PowerShell turns `>` into UTF-16LE, which

@@ -11,6 +11,8 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+## [2.5.1] - 2026-11-28
+
 ### Added
 
 - Declarative `fetchParams` (`data-zidan-fetch-params`) merges extra query parameters into
@@ -32,6 +34,10 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ### Fixed
 
+- The release version bump now updates the `api.html` brand version as well as the other demo
+  pages, so the shared-UI check stays green across releases.
+- The ESM entry test compares against `package.json` instead of a hard-coded version, so a
+  release bump cannot make every ESM entry look broken.
 - GitHub Release bodies are written with an explicit UTF-8 `--output` path instead of a shell
   redirect, so a notes file produced in Windows PowerShell (UTF-16LE) can no longer publish
   mojibake; `scripts/changelog-section.mjs` gained `--output <file>` and strips a UTF-8 BOM.

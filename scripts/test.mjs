@@ -414,6 +414,7 @@ check('TypeScript declarations ship', () => {
 });
 
 check('ES module entries import without a browser', () => {
+  const version = JSON.parse(read('package.json')).version;
   const script = [
     "const [root, select, file] = await Promise.all([",
     "  import('./zidan-form.mjs'),",
@@ -421,7 +422,7 @@ check('ES module entries import without a browser', () => {
     "  import('./dist/file/zidan-file.mjs')",
     "]);",
     "for (const [name, mod] of Object.entries({ root, select, file })) {",
-    "  if (!mod.ZidanForm || mod.ZidanForm.version !== '2.5.0') throw new Error(name + ' ESM entry did not expose ZidanForm');",
+    "  if (!mod.ZidanForm || mod.ZidanForm.version !== " + JSON.stringify(version) + ") throw new Error(name + ' ESM entry did not expose ZidanForm');",
     "}",
     "if (typeof root.zidanSelect !== 'function' || typeof select.ZidanSelect !== 'function' || typeof file.ZidanFileUpload !== 'function') {",
     "  throw new Error('an ESM entry lost its named exports');",
