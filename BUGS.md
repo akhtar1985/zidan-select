@@ -11,10 +11,10 @@ the documentation sources (`docs/*.md`, `README.md`, `index.html`,
   events a consumer can observe.
 * **Low** — code smell, dead variable, cosmetic inconsistency.
 
-**Current status (v2.5.0):** `npm run build`, `npm run sizes`, `npm run
-types` and `npm test` pass. The suite runs 88 DOM tests plus the static
-checks, and the API lab exercises every documented option, callback, method
-and event (92 self-test rows). The size failure described in BUG-001/002 was
+**Current status (v2.5.1):** `npm run build`, `npm run sizes`, `npm run
+types`, `npm run lint` and `npm test` pass. The suite runs 93 DOM tests plus
+the static checks, and the API lab exercises every documented option,
+callback, method and event. The size failure described in BUG-001/002 was
 fixed before the v2.5.0 pass; the original verdicts are kept below as an
 audit trail.
 
@@ -320,9 +320,24 @@ Total: **30 findings**, 6 high, 18 medium, 6 low.
 
 ## Resolution status
 
-Re-checked against the v2.5.0 working tree. `npm test` passes (88 DOM tests),
+Re-checked against the v2.5.1 working tree. `npm test` passes (93 DOM tests),
 including the size check that was failing when this audit was written. The
 working tree already carried the BUG-001/002/003 fixes before the pass.
+
+### P3 source verification (v2.5.1)
+
+Each row was re-read in the current source; the line numbers are the evidence.
+
+| # | Verdict | Evidence |
+|---|---------|----------|
+| 004 | Fixed | `setOptions()` clears `this.error` and `this.loadMoreError` next to the cache reset (`zidan-form.js:3295-3296`). |
+| 008 | Fixed | `onControlClick()` has no early `return`; an open non-searchable select closes instead (`zidan-form.js:2992-2996`). |
+| 014 | Fixed | the xhr `abort()` handler finishes the state, and `cancelUpload()` only calls `_canceledUpload()` while the status is still `uploading` (`zidan-form.js:5750`), so the second path is skipped. |
+| 020 | Intentional | `_setProgress()` clamps to 99 (`zidan-form.js:5629`) and only a completion signal writes 100; a stalled upload needs a consumer-side timeout, which would be a new option rather than a fix. |
+| 022 | Fixed | no `__zidanCustomError` remains on the native input; each field class overrides `_customError()` on its instance (`zidan-form.js:3651, 4208, 4399, 5010`). |
+| 024 | Not a bug | `sanitizeIcon()` rejects a document containing any `parsererror` element, not only the root (`zidan-form.js:240`). |
+| 025 | Not a bug | `close()` leaves `asyncPage` untouched; the next `loadMore()` continues from the stored page (`zidan-form.js:2414`) and `scripts/dom/run.mjs:458-468` pins it. |
+| 027 | Fixed | `inheritedAttr()` returns `value.trim()` (`zidan-form.js:590`). |
 
 ### Unreleased API-consistency pass
 

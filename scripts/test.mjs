@@ -10,6 +10,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { sourceFiles } from './lint.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
@@ -30,7 +31,7 @@ function assert(condition, message) {
 }
 
 check('JavaScript syntax', () => {
-  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'lab.js', 'advanced.js', 'ajax.js', 'playground.js', 'nav.js', 'scripts/build.mjs', 'scripts/docs.mjs', 'scripts/serve.mjs', 'scripts/exa-search.mjs', 'scripts/changelog-section.mjs', 'scripts/dom/run.mjs', 'scripts/dom/reliability.mjs', 'scripts/pack-check.mjs', 'scripts/test.mjs', 'scripts/sizes.mjs', 'scripts/release.mjs']) {
+  for (const file of sourceFiles()) {
     execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'pipe' });
   }
 });
@@ -441,10 +442,20 @@ check('Pages metadata is complete', () => {
   assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/shopify.html'), 'sitemap missing the Shopify demo');
   assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/advanced.html'), 'sitemap missing the advanced page');
   assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/api.html'), 'sitemap missing the API request lab');
+  const publicPages = ['', 'advanced.html', 'playground.html', 'api.html', 'ajax.html', 'shopify.html', 'lab.html',
+    'docs/', 'docs/options.html', 'docs/theming.html', 'docs/frameworks.html', 'docs/comparison.html',
+    'docs/validation.html', 'docs/validation-guide.html', 'docs/build.html', 'docs/html-and-wordpress.html'];
+  for (const page of publicPages) {
+    assert(sitemap.includes('https://akhtar1985.github.io/zidan-select/' + page), 'sitemap is missing ' + (page || 'the home page'));
+  }
   const workflow = read('.github/workflows/pages.yml');
   assert(workflow.includes('robots.txt') && workflow.includes('sitemap.xml'), 'Pages workflow does not publish robots/sitemap');
   assert(workflow.includes('shopify.html'), 'Pages workflow does not publish the Shopify demo');
   assert(workflow.includes('advanced.html') && workflow.includes('nav.css'), 'Pages workflow does not publish the advanced page or shared header');
+  for (const asset of ['lab.html', 'lab.css', 'lab-app.js', 'lab-inventory.js', 'dist']) {
+    assert(workflow.includes(asset), 'Pages workflow does not publish ' + asset);
+  }
+  assert(read('lab.html').includes('<link rel="canonical"'), 'testing lab missing canonical URL');
   assert(read('advanced.html').includes('<link rel="canonical"'), 'advanced page missing canonical URL');
   const html = read('index.html');
   assert(html.includes('<link rel="canonical"'), 'demo missing canonical URL');

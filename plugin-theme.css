@@ -194,6 +194,8 @@
 .zs-root--disabled .zs-control,
 .zs-root--disabled .zs-control:hover {
   opacity: var(--zs-disabled-opacity);
+  /* engines without color-mix() keep this flat fallback */
+  background: var(--zs-bg);
   background: color-mix(in srgb, var(--zs-bg) 88%, #808080);
   border-color: var(--zs-border-color);
   box-shadow: none;
@@ -640,6 +642,8 @@
 .zs-field--disabled .zs-input-shell,
 .zs-field--disabled .zs-file-drop {
   cursor: not-allowed;
+  /* engines without color-mix() keep this flat fallback */
+  background: var(--zs-bg);
   background: color-mix(in srgb, var(--zs-bg) 88%, #808080);
 }
 

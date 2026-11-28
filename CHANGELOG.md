@@ -24,6 +24,17 @@ heading, bumps every version site in the repository, commits and tags. See
 
 - Virtual windowing is on by default: `virtual: 'auto'` windows lists from 150 rows, which
   drops a 5 000-option render from ~614 ms to ~13 ms. Pass `virtual: false` to opt out.
+- `npm run lint` now syntax-checks every first-party `.js`/`.mjs` file (39 files across the
+  root pages, `scripts/` and `quality-labs/`) through `scripts/lint.mjs`; `npm test` imports
+  the same list instead of keeping its own.
+- Disabled controls and drop zones declare a flat token fallback before their `color-mix()`
+  tint, so engines older than Chrome 111 / Safari 16.2 / Firefox 113 still get a themed
+  surface instead of a transparent one.
+- `sitemap.xml` lists all 16 public pages (seven demo pages, nine documentation pages)
+  instead of eight.
+- The testing lab (`lab.html`) is published with the demo site, linked from every page's
+  navigation, and served from the same workflow that builds the select-only and file-only
+  bundles it switches between.
 - `setLayout()`, `setFramework()`, `setScrollbar()`, `setTheme()` and `setVariant()` no longer
   throw on an unknown value: they keep the current setting and log one `console.warn`, matching
   the other setters.

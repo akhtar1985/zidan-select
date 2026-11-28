@@ -39,6 +39,7 @@ const TEXT_SITES = [
   'ajax.html',
   'playground.html',
   'shopify.html',
+  'lab.html',
   'docs/index.html',
   'docs/validation.html',
   'docs/build.md',

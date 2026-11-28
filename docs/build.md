@@ -56,8 +56,8 @@ side by side at the [builds section](https://akhtar1985.github.io/zidan-select/#
 | Command | Effect |
 | --- | --- |
 | `npm run dev` | Serves the repo at <http://localhost:4173> (`PORT=8080 npm run dev`). No dependency needed. |
-| `npm test` | `node --check` on every script, asserts `plugin-core.css` has no colour literals, checks all presets/adapters, the exported API, and that the documented asset sizes match `dist/`. |
-| `npm run lint` | Syntax check only. |
+| `npm test` | `node --check` on every script (shared with `npm run lint`), asserts `plugin-core.css` has no colour literals, checks all presets/adapters, the exported API, and that the documented asset sizes match `dist/`. |
+| `npm run lint` | Syntax-checks every first-party `.js`/`.mjs` file (root, `scripts/`, `quality-labs/`) through `scripts/lint.mjs`; `npm test` imports the same list. |
 | `npm run build` | Cleans `dist/`, copies the core/theme CSS, generates the select-only and file-only bundles, and minifies **if** esbuild is installed. The full JS entry stays at the package root, so the package never ships the same file twice. |
 | `npm install` | Runs `prepare`, so a git install (`npm i user/repo`) builds `dist/` and its `./select` and `./file` subpaths resolve. Minified subpaths need esbuild, which the tarball already contains. |
 | `npm run sizes` | Rewrites the byte sizes quoted in `docs/build.md`, `README.md`, `index.html` and `advanced.html` from the built files. Run it after `npm run build`; `npm test` fails when they drift. |
@@ -131,9 +131,9 @@ Regenerate them with `npm run build` followed by `npm run sizes`; `npm test` fai
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | 317,871 B (≈310 kB) → 177,082 B (≈173 kB) | 44,449 B (≈43 kB) → 33,969 B (≈33 kB) | 53,149 B (≈52 kB) → 44,755 B (≈44 kB) |
-| Select-only | 160,131 B (≈156 kB) → 89,414 B (≈87 kB) | 13,441 B (≈13 kB) → 10,199 B (≈10 kB) | 34,705 B (≈34 kB) → 29,373 B (≈29 kB) |
-| File-only | 128,253 B (≈125 kB) → 72,524 B (≈71 kB) | 10,512 B (≈10 kB) → 7,434 B (≈7 kB) | 40,404 B (≈39 kB) → 34,695 B (≈34 kB) |
+| Full | 317,871 B (≈310 kB) → 177,082 B (≈173 kB) | 44,449 B (≈43 kB) → 33,969 B (≈33 kB) | 53,325 B (≈52 kB) → 44,803 B (≈44 kB) |
+| Select-only | 160,131 B (≈156 kB) → 89,414 B (≈87 kB) | 13,441 B (≈13 kB) → 10,199 B (≈10 kB) | 34,793 B (≈34 kB) → 29,397 B (≈29 kB) |
+| File-only | 128,253 B (≈125 kB) → 72,524 B (≈71 kB) | 10,512 B (≈10 kB) → 7,434 B (≈7 kB) | 40,492 B (≈40 kB) → 34,719 B (≈34 kB) |
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their
@@ -296,11 +296,13 @@ import 'zidan-select/file/css/theme';
 
 ## GitHub Pages
 
-The demo is static and needs no build. `.github/workflows/pages.yml` assembles `_site/` on every
-push to `main` — `index.html`, `advanced.html`, `playground.html`, `shopify.html`, `advanced.css`,
-`advanced.js`, `playground.css`, `playground.js`, `demo.css`, `demo.js`, `nav.css`, `nav.js`, `robots.txt`,
-`sitemap.xml`, the four library files and `docs/` — then uploads it with
-`actions/upload-pages-artifact` and publishes it with `actions/deploy-pages`.
+The demo is static, but Pages builds the subsets so the testing lab can load any of the three
+bundles. `.github/workflows/pages.yml` runs `npm ci` (whose `prepare` hook builds `dist/`), then
+assembles `_site/` on every push to `main` — the seven demo pages (`index.html`, `advanced.html`,
+`playground.html`, `api.html`, `ajax.html`, `shopify.html`, `lab.html`), their CSS/JS including
+`lab.css`, `lab-app.js` and `lab-inventory.js`, `dist/`, `demo-data/`, `robots.txt`, `sitemap.xml`,
+the library files and `docs/` — then uploads it with `actions/upload-pages-artifact` and publishes
+it with `actions/deploy-pages`.
 
 One-time setup: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
@@ -310,6 +312,7 @@ One-time setup: **Settings → Pages → Build and deployment → Source: GitHub
 | `https://akhtar1985.github.io/zidan-select/advanced.html` | Advanced options and API reference |
 | `https://akhtar1985.github.io/zidan-select/playground.html` | Per-field option playground |
 | `https://akhtar1985.github.io/zidan-select/shopify.html` | Shopify product-page demo |
+| `https://akhtar1985.github.io/zidan-select/lab.html` | Testing lab: coverage board and self-tests per build |
 | `https://akhtar1985.github.io/zidan-select/docs/` | Documentation index |
 | `/#select`, `/#check`, `/#file`, `/#inputs`, `/#themes` | Deep links to a demo tab |
 | `/playground.html#select`, `#file`, `#checkbox`, `#radio`, `#text` | Deep links to a playground control |

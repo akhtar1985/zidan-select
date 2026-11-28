@@ -321,7 +321,7 @@ Select / combobox / tags only (≈156 kB raw / ≈87 kB minified JS, ≈13 → 1
 ```
 
 File upload only (≈125 kB raw / ≈71 kB minified JS, ≈10 → 7 kB core CSS,
-≈39 → 34 kB theme CSS):
+≈40 → 34 kB theme CSS):
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-core.css">
