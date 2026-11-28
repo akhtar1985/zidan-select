@@ -30,9 +30,9 @@ Sizes measure the current source build; CDN links pin the 2.6.0 release.
 
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈310 kB raw · ≈173 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/plugin-theme.css) |
-| Select-only | ≈156 kB raw · ≈87 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/plugin-select-theme.css) |
-| File-only | ≈125 kB raw · ≈71 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/plugin-file-theme.css) |
+| Full — every control | ≈303 kB raw · ≈173 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/plugin-theme.css) |
+| Select-only | ≈153 kB raw · ≈87 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/select/plugin-select-theme.css) |
+| File-only | ≈122 kB raw · ≈71 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
 [Select-only and file-only builds](#select-only-and-file-only-builds); the
@@ -306,7 +306,7 @@ Copyable CDN URLs (pin the version):
 - `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/plugin-file-theme.css>
 - `plugin-file-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.6.0/dist/file/plugin-file-theme.min.css>
 
-Select / combobox / tags only (≈156 kB raw / ≈87 kB minified JS, ≈13 → 10 kB core CSS,
+Select / combobox / tags only (≈153 kB raw / ≈87 kB minified JS, ≈13 → 10 kB core CSS,
 ≈34 → 29 kB theme CSS):
 
 ```html
@@ -320,7 +320,7 @@ Select / combobox / tags only (≈156 kB raw / ≈87 kB minified JS, ≈13 → 1
 </script>
 ```
 
-File upload only (≈125 kB raw / ≈71 kB minified JS, ≈10 → 7 kB core CSS,
+File upload only (≈122 kB raw / ≈71 kB minified JS, ≈10 → 7 kB core CSS,
 ≈40 → 34 kB theme CSS):
 
 ```html

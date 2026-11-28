@@ -5,7 +5,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const stat = (file) => fs.statSync(path.join(root, file)).size;
+const stat = (file) => {
+  const buf = fs.readFileSync(path.join(root, file));
+  if (!/\.(?:js|mjs|css|html|md|json|ts|txt)$/.test(file)) return buf.length;
+  return Buffer.byteLength(buf.toString('utf8').replace(/\r\n/g, '\n'), 'utf8');
+};
 const kb = (bytes) => Math.round(bytes / 1024);
 const comma = (bytes) => bytes.toLocaleString('en-US');
 const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;

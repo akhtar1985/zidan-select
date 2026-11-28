@@ -405,8 +405,10 @@ This section is additive; the Phase 1 findings above remain the audit baseline. 
 
 ## 10. Phase 3 release candidate — 2026-11-28
 
-Phase 3 evidence is recorded in `quality-reports/RELEASE-2.6.0-EVIDENCE.md`. The fresh 2.6.0 tarball has 40 files, is 407,131 bytes and unpacks to 1,752,550 bytes; all 33 export targets resolve. The 2.5.1 package had 53 files and 2,729,081 unpacked bytes; the difference is the slimmer `docs/*.md` packaging, removal of generated HTML/screenshots and duplicate full-build `dist` artifacts, plus `CHANGELOG.md`. No exported subpath was lost.
+Phase 3 evidence is recorded in `quality-reports/RELEASE-2.6.0-EVIDENCE.md`. The fresh 2.6.0 tarball has 40 files, is 407,128 bytes and unpacks to 1,752,550 bytes; all 33 export targets resolve. The 2.5.1 package had 53 files and 2,729,081 unpacked bytes; the difference is the slimmer `docs/*.md` packaging, removal of generated HTML/screenshots and duplicate full-build `dist` artifacts, plus `CHANGELOG.md`. No exported subpath was lost.
 
 Diff review caught an accidental truncation of `ajax.css` to the literal text `utf8`; it was restored from HEAD and the `.ajax-copy` rule re-added. The Demo Lab and a browser computed-style check (padding 16px, radius 14px, background rgb(17,22,42), three copy controls) passed after the fix.
+
+The first CI package run then exposed a Windows/Linux CRLF size drift: the full raw bundle was documented as 310 kB from a CRLF checkout while GitHub Actions checked out LF. `scripts/sizes.mjs` and `scripts/test.mjs` now normalize line endings before measuring, `docs/build.md` records the LF-canonical 310,366 B, and a new `.gitattributes` pins LF. CI is being re-run.
 
 All local gates are green: 93 DOM tests, types, lint, pack check and 4/4 labs. The release candidate is committed locally; it is not pushed, tagged, deployed or published. The demo matrix remains 0 COMPLETE; only a truthful 2.6.0 API/docs release can be claimed.

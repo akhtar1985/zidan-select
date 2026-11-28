@@ -559,7 +559,13 @@ check('documented sizes match the built assets', () => {
       core: 'dist/file/plugin-file-core.css', coreMin: 'dist/file/plugin-file-core.min.css',
       theme: 'dist/file/plugin-file-theme.css', themeMin: 'dist/file/plugin-file-theme.min.css' }
   ];
-  const sizeKb = (file) => Math.round(fs.statSync(path.join(root, file)).size / 1024);
+  const sizeBytes = (file) => {
+    const buf = fs.readFileSync(path.join(root, file));
+    return /\.(?:js|mjs|css|html|md|json|ts|txt)$/.test(file)
+      ? Buffer.byteLength(buf.toString('utf8').replace(/\r\n/g, '\n'), 'utf8')
+      : buf.length;
+  };
+  const sizeKb = (file) => Math.round(sizeBytes(file) / 1024);
   const home = read('index.html');
   const advanced = read('advanced.html');
   const readme = read('README.md');
@@ -599,7 +605,7 @@ check('documented sizes match the built assets', () => {
     'dist/file/plugin-file-core.css', 'dist/file/plugin-file-core.min.css',
     'dist/file/plugin-file-theme.css', 'dist/file/plugin-file-theme.min.css'
   ]) {
-    const bytes = fs.statSync(path.join(root, file)).size;
+    const bytes = sizeBytes(file);
     assert(docsBuild.includes(bytes.toLocaleString('en-US') + ' B'), 'build guide has a stale byte size for ' + file);
   }
 });
