@@ -30,9 +30,9 @@ Sizes measure the current source build; CDN links pin the 2.5.1 release.
 
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈308 kB raw · ≈172 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-theme.css) |
-| Select-only | ≈155 kB raw · ≈87 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-theme.css) |
-| File-only | ≈124 kB raw · ≈70 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.css) |
+| Full — every control | ≈310 kB raw · ≈173 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-theme.css) |
+| Select-only | ≈156 kB raw · ≈87 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-theme.css) |
+| File-only | ≈125 kB raw · ≈71 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
 [Select-only and file-only builds](#select-only-and-file-only-builds); the
@@ -50,9 +50,9 @@ same pinned bytes:
 
 | Build | JS (min) | CSS (min) |
 | --- | --- | --- |
-| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/zidan-form.min.js) — ≈172 kB | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/plugin-core.min.css) — ≈33 kB + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/plugin-theme.min.css) — ≈44 kB |
+| Full | [zidan-form.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/zidan-form.min.js) — ≈173 kB | [plugin-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/plugin-core.min.css) — ≈33 kB + [plugin-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/plugin-theme.min.css) — ≈44 kB |
 | Select-only | [zidan-select.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/zidan-select.min.js) — ≈87 kB | [plugin-select-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-core.min.css) — ≈10 kB + [plugin-select-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-theme.min.css) — ≈29 kB |
-| File-only | [zidan-file.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/zidan-file.min.js) — ≈70 kB | [plugin-file-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-core.min.css) — ≈7 kB + [plugin-file-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.min.css) — ≈34 kB |
+| File-only | [zidan-file.min.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/zidan-file.min.js) — ≈71 kB | [plugin-file-core.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-core.min.css) — ≈7 kB + [plugin-file-theme.min.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.min.css) — ≈34 kB |
 
 - **One file of JS** — `zidan-form.js` (classic script, UMD-ish) + `zidan-form.mjs` (ESM wrapper).
 - **Split CSS** — `plugin-core.css` (structure only) and `plugin-theme.css` (tokens, presets, skins).
@@ -62,7 +62,7 @@ same pinned bytes:
   `FormData`, `reset()`, `required`, `:invalid` and jQuery Validation's `:hidden` ignore behave.
 - **6 themes** `default · modern · minimal · dark · glass · auto`; `auto` follows the OS
   colour scheme through `prefers-color-scheme`.
-- **Large lists** — opt-in virtual window (`virtual: 'auto'`), accent-insensitive search,
+- **Large lists** — virtual window on by default (`virtual: 'auto'` from 150 rows), accent-insensitive search,
   `<mark>` match highlighting and native type-ahead for non-searchable selects.
 - **i18n** — bundled `en · es · fr · de · ar` copy packs, `<html lang>` detection and
   `ZidanSelect.locales` for custom packs.
@@ -306,7 +306,7 @@ Copyable CDN URLs (pin the version):
 - `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.css>
 - `plugin-file-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.min.css>
 
-Select / combobox / tags only (≈155 kB raw / ≈87 kB minified JS, ≈13 → 10 kB core CSS,
+Select / combobox / tags only (≈156 kB raw / ≈87 kB minified JS, ≈13 → 10 kB core CSS,
 ≈34 → 29 kB theme CSS):
 
 ```html
@@ -320,7 +320,7 @@ Select / combobox / tags only (≈155 kB raw / ≈87 kB minified JS, ≈13 → 1
 </script>
 ```
 
-File upload only (≈124 kB raw / ≈70 kB minified JS, ≈10 → 7 kB core CSS,
+File upload only (≈125 kB raw / ≈71 kB minified JS, ≈10 → 7 kB core CSS,
 ≈39 → 34 kB theme CSS):
 
 ```html
@@ -809,7 +809,7 @@ per field; clickable icons call `input.showPicker()` when available.
 ### Select options
 
 See [`docs/options.md`](https://akhtar1985.github.io/zidan-select/docs/options.html) for the complete table (`mode`, `layout`,
-`themeFramework`, `searchable`, `clearable`, `multiple`, `maxTags`, `suggestions`,
+`framework`, `searchable`, `clearable`, `multiple`, `maxTags`, `suggestions`,
 `fetchOptions`, `debounce`, `minChars`, callbacks, `customClasses`, `scrollbar`, …).
 
 Validation state options on both layers: **the plugin never submits or blocks a form** — it

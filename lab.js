@@ -12,7 +12,7 @@
 
   var EXPECTED = {
     selectOptions: [
-      'mode', 'layout', 'themeFramework', 'theme', 'id', 'name', 'disabled', 'required',
+      'mode', 'layout', 'framework', 'themeFramework', 'theme', 'id', 'name', 'disabled', 'required',
       'options', 'value', 'label', 'ariaLabel', 'placeholder',
       'multiple', 'searchable', 'clearable', 'closeOnSelect', 'maxDropdownHeight',
       'noResultsText', 'emptyText', 'loadingText', 'clearText', 'requiredText',
@@ -65,7 +65,7 @@
     ],
     selectCallbacks: [
       'onInit', 'onChange', 'onSelect', 'onOpen', 'onClose',
-      'onTagAdd', 'onTagRemove', 'onTagMove', 'onTagEdit', 'onLoadMore', 'onError'
+      'onTagAdd', 'onTagRemove', 'onTagMove', 'onTagEdit', 'onLoadMore', 'onError', 'onDeselect'
     ],
     fieldCallbacks: [
       'onInit', 'onChange', 'onValidation', 'onRemove', 'onInput', 'onIconClick',
@@ -97,7 +97,7 @@
     events: [
       'async-validation', 'change', 'clear', 'close', 'destroy', 'error', 'icon-click',
       'init', 'input', 'load-more', 'no-results', 'open', 'phone-country', 'phone-format',
-      'picker', 'remove', 'reveal', 'select', 'step', 'tag-add', 'tag-remove', 'tag-move', 'tag-edit',
+      'picker', 'remove', 'reveal', 'select', 'deselect', 'step', 'tag-add', 'tag-remove', 'tag-move', 'tag-edit',
       'upload-cancel', 'upload-error', 'upload-progress', 'upload-queued',
       'upload-retry', 'upload-start', 'upload-success', 'validation', 'validate'
     ]
@@ -199,6 +199,7 @@
   var selectA = initSelect('#lab-select', {
     mode: 'combobox',
     layout: 'floating-label',
+    framework: 'none',
     themeFramework: 'none',
     theme: 'modern',
     id: 'lab-select-a',
@@ -330,7 +331,8 @@
     label: 'Multi with renderSelected',
     options: ['One', 'Two', 'Three'],
     renderSelected: function (item) { return '◉ ' + item.label; },
-    onSelect: hook('selectCallbacks', 'onSelect')
+    onSelect: hook('selectCallbacks', 'onSelect'),
+    onDeselect: hook('selectCallbacks', 'onDeselect')
   });
 
   var remote = initSelect('#lab-remote', {
@@ -851,8 +853,12 @@
           name: 'deselectAll',
           run: function () {
             multi.selectAll();
+            /* user removal (chip ×) drives zidan:deselect + onDeselect */
+            var chip = multi.root.querySelector('[data-zs-remove="0"]');
+            if (chip) chip.click();
+            var afterChip = multi.getValue().length;
             multi.deselectAll();
-            return 'left=' + multi.getValue().length;
+            return 'left=' + afterChip;
           }
         },
         {

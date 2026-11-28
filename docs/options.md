@@ -681,7 +681,7 @@ be larger than the original, the original file is uploaded unchanged.
 | --- | --- | --- | --- |
 | `mode` | `data-zidan-select`, `data-zidan-mode` | `select` | `select`, `combobox`, `tags`. |
 | `layout` | `data-zidan-layout` | `classic-clean` | Five select layouts (see theming doc). |
-| `themeFramework` | `data-zidan-framework` | `auto` | `auto`, `none`, `vanilla`, `bootstrap`, `tailwind`, `bulma`, `foundation`. |
+| `framework` | `data-zidan-framework` | `auto` | `auto`, `none`, `bootstrap`, `tailwind`, `bulma`, `foundation`; `themeFramework` is a deprecated alias, `vanilla` behaves like `none`. |
 | `theme` | `data-zidan-theme` | `default` | Colour preset; `auto` follows `prefers-color-scheme` (see the search & scale section). |
 | `id` | — | generated | Root id prefix. |
 | `name` | `data-zidan-name` | native name | Name for hidden mirror input in mount mode. |
@@ -868,6 +868,7 @@ control shows `"…" is not in the list.` through the tag error slot. Leave the 
 | `onInit` | `{ instance, mode, value }` |
 | `onChange` | `{ instance, value, previousValue? }` |
 | `onSelect` | `{ instance, value, item }` |
+| `onDeselect` | `{ instance, value, previousValue, item }`; user-driven multi-select removal only. |
 | `onOpen` / `onClose` | `{ instance }` |
 | `onTagAdd` | `{ instance, tag, value }` |
 | `onTagRemove` | `{ instance, tag, value }` |
@@ -882,16 +883,16 @@ Every callback receives a single payload object.
 
 #### Virtual window
 
-Local lists with hundreds of rows can render only the visible slice. Windowing is opt-in and
-skipped for grouped lists, custom `renderOption` renderers and paged results, where row heights
-or extras change per row.
+Local lists with hundreds of rows render only the visible slice. Windowing is on by default
+(`virtual: 'auto'`, from 150 rows) and skipped for grouped lists, custom `renderOption` renderers
+and paged results, where row heights or extras change per row.
 
 ```js
 zidanSelect('#city', { virtual: 'auto', virtualThreshold: 150, itemHeight: 38 });
 ```
 
-- `virtual: true` always windows; `'auto'` windows once the filtered list reaches `virtualThreshold`;
-  a number sets the threshold directly.
+- `virtual: 'auto'` (the default) windows once the filtered list reaches `virtualThreshold`;
+  `true` always windows, `false` disables it, a number sets the threshold directly.
 - `itemHeight` fixes the row height used for spacer math. Leave `0` to measure the first row.
 - Rows keep `aria-setsize` / `aria-posinset`; keyboard `Home`, `End`, `↑`, `↓` and type-ahead
   scroll the window and keep `aria-activedescendant` on the active row.
@@ -955,7 +956,8 @@ const picker = zidanSelect('#mymov', {
   /* Core */
   mode: 'combobox',                 // 'select' | 'combobox' | 'tags' (default 'select')
   layout: 'classic-clean',          // 5 select layouts, see theming.md
-  themeFramework: 'none',           // 'auto' | 'none' | 'vanilla' | 'bootstrap' | 'tailwind' | 'bulma' | 'foundation'
+  framework: 'none',                // 'auto' | 'none' | 'bootstrap' | 'tailwind' | 'bulma' | 'foundation'
+  themeFramework: 'none',           // deprecated alias of framework, kept for compatibility
   theme: 'default',                 // 'default' | 'modern' | 'minimal' | 'dark' | 'glass'
   // id: 'mymov',                   // root id prefix; leave unset for class targets
   // name: 'movie',                 // defaults to the native name
@@ -994,7 +996,7 @@ const picker = zidanSelect('#mymov', {
   highlightMatches: false,          // wrap the matched slice in <mark class="zs-match">
   typeAhead: true,                  // printable keys jump in a non-searchable select
   typeAheadTimeout: 600,            // ms before the type-ahead buffer resets
-  virtual: false,                   // true | false | 'auto' | number (threshold)
+  virtual: 'auto',                  // 'auto' (default) | true | false | number (threshold)
   virtualThreshold: 150,            // 'auto' threshold, in options
   itemHeight: 0,                    // fixed virtual row height; 0 measures the first row
   locale: null,                     // 'en' | 'es' | 'fr' | 'de' | 'ar' or a custom pack
@@ -1091,7 +1093,7 @@ as JSON.
 
 ```js
 ZidanForm.themes          // ['default','modern','minimal','dark','glass']
-ZidanForm.frameworks      // ['auto','none','vanilla','bootstrap','tailwind','bulma','foundation']
+ZidanForm.frameworks      // ['auto','none','vanilla','bootstrap','tailwind','bulma','foundation']; vanilla = none
 ZidanForm.fieldLayouts    // ['stacked','inline','card','compact','floating','outlined']
 ZidanForm.variants        // { checkbox, switch, radio, file, range } accepted names
 ZidanForm.stepperModes    // ['stacked','split','inline']
@@ -1127,7 +1129,7 @@ to any field that should span the row) rather than putting it on a single field.
 | `checkAsync()` | Promise resolving to the custom-rule result; runs pending state and stale guards. |
 | `validate()` | Promise resolving to overall validity after native and custom rules. |
 | `isPending()` | Whether an async rule is currently running. |
-| `setTheme(name)`, `setFramework(name)`, `setLayout(name)` | Scoped restyling. |
+| `setTheme(name)`, `setFramework(name)`, `setLayout(name)`, `setScrollbar(name)` | Scoped restyling; an unknown value is ignored with a `console.warn` and the current setting is kept. |
 | `destroy()` | Restores the original DOM and removes every listener. |
 
 Checkbox adds `setIndeterminate(bool)`, `setChecked(bool)` and `isChecked()`.
@@ -1196,9 +1198,10 @@ covers the document, like `destroyAll()`.
 
 ## Events
 
-Removing an already-selected option from a multi-select (or a tag from a tag
-field) reports only via `change`, not `select`: the removal is not a new
-selection, so there is no matching `zidan:select` for it.
+Removing an already-selected option from a multi-select (the option row or its chip)
+emits `zidan:deselect` and then `change`; a tag removed from a tag field emits
+`zidan:tag-remove` and `change`. Programmatic `setValue()`, `clear()` and
+`deselectAll()` do not emit `deselect`: it reports user intent only.
 
 | Event | Detail |
 | --- | --- |
@@ -1209,6 +1212,7 @@ selection, so there is no matching `zidan:select` for it.
 | `zidan:async-validation` | `{ instance, valid, message, error? }` |
 | `zidan:open` / `zidan:close` | `{ instance }` (select) |
 | `zidan:select` | `{ instance, value, item }` (select) |
+| `zidan:deselect` | `{ instance, value, previousValue, item }` (multi-select user removal) |
 | `zidan:no-results` | `{ instance, query }` (select) |
 | `zidan:tag-add` / `zidan:tag-remove` | `{ instance, tag, value }` (select tags) |
 | `zidan:tag-move` | `{ instance, tag, from, to, value }` (select tags) |

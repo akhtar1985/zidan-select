@@ -11,6 +11,23 @@ heading, bumps every version site in the repository, commits and tags. See
 
 ## [Unreleased]
 
+### Added
+
+- `zidan:deselect` (plus the `onDeselect` callback) fires when a user removes an option from
+  a multi-select or clicks a selected chip; `zidan:change` follows as before. Programmatic
+  `setValue()`, `clear()` and `deselectAll()` stay silent, so the event keeps reporting intent.
+- `framework` is now the select's documented option name, matching fields and
+  `data-zs-framework`. `themeFramework` keeps working as a deprecated alias, and `vanilla` is
+  documented as identical to `none`.
+
+### Changed
+
+- Virtual windowing is on by default: `virtual: 'auto'` windows lists from 150 rows, which
+  drops a 5 000-option render from ~614 ms to ~13 ms. Pass `virtual: false` to opt out.
+- `setLayout()`, `setFramework()`, `setScrollbar()`, `setTheme()` and `setVariant()` no longer
+  throw on an unknown value: they keep the current setting and log one `console.warn`, matching
+  the other setters.
+
 ## [2.5.1] - 2026-11-28
 
 ### Added

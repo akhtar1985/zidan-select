@@ -202,6 +202,7 @@ export interface ZidanEventMap {
   'zidan:remove': ZidanRemoveDetail;
   'zidan:reveal': ZidanRevealDetail;
   'zidan:select': ZidanSelectEventDetail;
+  'zidan:deselect': ZidanSelectEventDetail;
   'zidan:step': ZidanStepDetail;
   'zidan:tag-add': ZidanTagEventDetail;
   'zidan:tag-edit': ZidanTagEditDetail;
@@ -242,6 +243,8 @@ export interface SelectCallbacks {
   onTagRemove?(detail: { tag: string; value: SelectItem[]; instance: ZidanSelect }): void;
   onTagMove?(detail: { tag: string; from: number; to: number; value: SelectItem[]; instance: ZidanSelect }): void;
   onTagEdit?(detail: { tag: string; label: string; previousLabel: string; index: number; instance: ZidanSelect }): void;
+  /** A value was removed from a multi-select by the user (option or chip) */
+  onDeselect?(detail: { value: unknown; previousValue: unknown; item: SelectItem; instance: ZidanSelect }): void;
   /** `page` is the zero-based index used by fetchOptions; the first follow-up page is 1. */
   onLoadMore?(detail: { page: number; query: string; instance: ZidanSelect }): void;
   onError?(detail: { error?: unknown; message: string; callback?: string; instance: ZidanSelect }): void;
@@ -261,6 +264,9 @@ export interface SelectOptions extends SelectCallbacks {
   mode?: SelectMode;
   layout?: SelectLayout;
   theme?: Theme | string;
+  /** CSS-framework adapter: 'auto' detects it from the page, 'none' disables it */
+  framework?: Framework;
+  /** @deprecated Use `framework`; still accepted as an alias. */
   themeFramework?: Framework;
   id?: string;
   name?: string;
@@ -893,6 +899,7 @@ declare global {
     'zidan:remove': CustomEvent<ZidanRemoveDetail>;
     'zidan:reveal': CustomEvent<ZidanRevealDetail>;
     'zidan:select': CustomEvent<ZidanSelectEventDetail>;
+    'zidan:deselect': CustomEvent<ZidanSelectEventDetail>;
     'zidan:step': CustomEvent<ZidanStepDetail>;
     'zidan:tag-add': CustomEvent<ZidanTagEventDetail>;
     'zidan:tag-edit': CustomEvent<ZidanTagEditDetail>;

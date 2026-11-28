@@ -241,8 +241,9 @@ name. To drive it yourself instead, set the attribute before init:
 
 ## Framework adapters
 
-`data-zs-framework` (or the `framework` option) accepts `none`, `vanilla`, `bootstrap`,
-`tailwind`, `bulma`, `foundation`. Adapters only remap tokens plus a few structural
+`data-zs-framework` (or the `framework` option; `themeFramework` is a deprecated alias)
+accepts `none`, `bootstrap`, `tailwind`, `bulma` and `foundation`. The legacy value `vanilla` is
+accepted and behaves exactly like `none`. Adapters only remap tokens plus a few structural
 compat rules (Bootstrap `input-group`, for example). Nothing depends on the framework's
 JavaScript.
 

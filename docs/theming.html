@@ -158,7 +158,7 @@
 &lt;/div&gt;</code></pre>
 <p><code>--zs-grid-min</code> / <code>--zs-grid-gap</code> control the auto-fit columns.</p>
 <h2 id="framework-adapters">Framework adapters</h2>
-<p><code>data-zs-framework</code> (or the <code>framework</code> option) accepts <code>none</code>, <code>vanilla</code>, <code>bootstrap</code>, <code>tailwind</code>, <code>bulma</code>, <code>foundation</code>. Adapters only remap tokens plus a few structural compat rules (Bootstrap <code>input-group</code>, for example). Nothing depends on the framework's JavaScript.</p>
+<p><code>data-zs-framework</code> (or the <code>framework</code> option; <code>themeFramework</code> is a deprecated alias) accepts <code>none</code>, <code>bootstrap</code>, <code>tailwind</code>, <code>bulma</code> and <code>foundation</code>. The legacy value <code>vanilla</code> is accepted and behaves exactly like <code>none</code>. Adapters only remap tokens plus a few structural compat rules (Bootstrap <code>input-group</code>, for example). Nothing depends on the framework's JavaScript.</p>
 <pre><code class="language-html">&lt;html data-zs-framework=&quot;bootstrap&quot;&gt;   &lt;!-- whole page --&gt;
 &lt;form data-zs-framework=&quot;tailwind&quot;&gt;    &lt;!-- one form --&gt;</code></pre>
 <h2 id="scrollbar-variants">Scrollbar variants</h2>

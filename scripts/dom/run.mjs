@@ -1210,7 +1210,7 @@ test('API lab: every documented option, callback and method is demonstrated', as
   for (const category of Object.keys(missing)) {
     assert.deepEqual(Array.from(missing[category]), [], category + ' coverage is incomplete');
   }
-  assert.equal(lab.expected.events.length, 32, 'event inventory is incomplete');
+  assert.equal(lab.expected.events.length, 33, 'event inventory is incomplete');
   const selectDefaults = Object.keys(window.ZidanSelect.defaults);
   assert.deepEqual(Array.from(selectDefaults.filter(name => !lab.expected.selectOptions.includes(name))), [], 'API lab inventory omits select defaults');
   const optionsDoc = fs.readFileSync(path.join(root, 'docs/options.md'), 'utf8');
@@ -1418,6 +1418,90 @@ test('virtual lists render a window and keep ARIA positions', () => {
   assert.equal(select.input.getAttribute('aria-activedescendant'), finalOption.id);
 });
 
+test('virtual windowing defaults to auto at the row threshold', () => {
+  const window = boot('<select id="s"></select>');
+  assert.equal(window.ZidanSelect.defaults.virtual, 'auto');
+  const values = [];
+  for (let i = 0; i < 240; i += 1) values.push('Row ' + (i + 1));
+  const select = window.zidanSelect('#s', { options: values, itemHeight: 32 });
+  Object.defineProperty(select.dropdown, 'clientHeight', { configurable: true, value: 320 });
+  select.open();
+  const rendered = select.dropdown.querySelectorAll('[role="option"]');
+  assert.ok(rendered.length > 0 && rendered.length < 60, 'expected a default window, rendered ' + rendered.length);
+  select.destroy();
+
+  const plain = window.zidanSelect('#s', { options: values, virtual: false });
+  plain.open();
+  assert.equal(plain.dropdown.querySelectorAll('[role="option"]').length, 240, 'virtual: false must render every row');
+});
+
+test('multi-select removal emits deselect before change and ignores programmatic changes', () => {
+  const window = boot('<select id="s" multiple><option value="a">A</option><option value="b">B</option><option value="c">C</option></select>');
+  const order = [];
+  const callbacks = [];
+  const select = window.zidanSelect('#s', { onDeselect: (detail) => callbacks.push(detail) });
+  select.root.addEventListener('zidan:deselect', (event) => order.push('deselect:' + Array.from(event.detail.value).join('')));
+  select.root.addEventListener('zidan:change', (event) => order.push('change:' + Array.from(event.detail.value).join('')));
+
+  select.setValue(['a', 'b', 'c']);
+  assert.deepEqual(order, ['change:abc'], 'setValue must not emit deselect');
+
+  const chip = select.root.querySelector('[data-zs-remove="0"]');
+  assert.ok(chip, 'missing chip remove button');
+  chip.click();
+  assert.deepEqual(order.slice(-2), ['deselect:bc', 'change:bc']);
+  assert.equal(callbacks.length, 1);
+  assert.equal(callbacks[0].item.value, 'a');
+  assert.deepEqual(Array.from(callbacks[0].value), ['b', 'c']);
+
+  select._selectItem(select.items.filter((item) => item.value === 'b')[0]);
+  assert.deepEqual(order.slice(-2), ['deselect:c', 'change:c']);
+  assert.equal(callbacks.length, 2);
+
+  select.selectAll();
+  select.deselectAll();
+  select.clear();
+  assert.equal(callbacks.length, 2, 'selectAll/deselectAll/clear must not emit deselect');
+});
+
+test('unknown setter values warn and keep the current setting', () => {
+  const window = boot('<select id="s"><option value="a">A</option></select><input id="f" data-zidan />');
+  const warnings = [];
+  window.console.warn = (message) => warnings.push(String(message));
+  const select = window.zidanSelect('#s');
+  const before = {
+    layout: select.layout,
+    framework: select.framework,
+    scrollbar: select.opts.scrollbar,
+    theme: select.themeMode
+  };
+  select.setLayout('nope');
+  select.setFramework('nope');
+  select.setScrollbar('nope');
+  select.setTheme('nope');
+  assert.equal(select.layout, before.layout);
+  assert.equal(select.framework, before.framework);
+  assert.equal(select.opts.scrollbar, before.scrollbar);
+  assert.equal(select.themeMode, before.theme);
+  assert.equal(warnings.length, 4, 'expected one warning per unknown value');
+  assert.ok(warnings[0].includes('unknown layout') && warnings[0].includes('classic-clean'), warnings[0]);
+
+  const field = window.zidanField('#f');
+  const fieldBefore = { theme: field.theme, layout: field.layout, framework: field.framework };
+  field.setTheme('nope');
+  field.setLayout('nope');
+  field.setFramework('nope');
+  assert.equal(field.theme, fieldBefore.theme);
+  assert.equal(field.layout, fieldBefore.layout);
+  assert.equal(field.framework, fieldBefore.framework);
+  assert.equal(warnings.length, 7);
+
+  select.setLayout('soft-pill');
+  field.setLayout('inline');
+  assert.equal(select.layout, 'soft-pill');
+  assert.equal(field.layout, 'inline');
+  assert.equal(warnings.length, 7, 'valid values must not warn');
+});
 test('type-ahead jumps and cycles options in a plain select', async () => {
   const window = boot('<select id="s"><option>Apple</option><option>Banana</option><option>Blueberry</option><option>Cherry</option></select>');
   const select = window.zidanSelect('#s', { mode: 'select', typeAheadTimeout: 20 });

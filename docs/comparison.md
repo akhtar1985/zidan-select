@@ -32,7 +32,7 @@ same two stylesheets.
 | CSS-framework adapters | **Bootstrap, Tailwind, Bulma, Foundation** | — | — | — | — | n/a |
 | Validation coexistence tests | **jQuery Validation, JustValidate, Parsley, native** | — | — | — | — | Native + framework |
 | Framework support | **React, Next.js, Vue, Svelte, Angular guides** | Community wrappers | Community wrappers | Community wrappers | Community wrappers | Framework kits |
-| Weight | ≈308 kB raw JS + two CSS files | larger, plus jQuery | moderate | moderate | small | large (whole framework) |
+| Weight | ≈310 kB raw JS + two CSS files | larger, plus jQuery | moderate | moderate | small | large (whole framework) |
 
 Feature claims above describe each project's *core* package. Plugins and community add-ons can
 close some gaps — check the other project's current docs before deciding.

@@ -814,9 +814,10 @@ options. See [options.md](options.md#instance-methods).
 ## CSS frameworks are separate
 
 The JavaScript framework guides above are about component lifecycles. **CSS-framework
-adapters** are a different feature: set `data-zs-framework` (or `data-zidan-framework`) to
-`bootstrap`, `tailwind`, `bulma`, `foundation`, `vanilla` or `none` on a form or a parent. They
-map tokens and control sizing, not component state.
+adapters** are a different feature: set the `framework` option (or `data-zs-framework` /
+`data-zidan-framework`) to `bootstrap`, `tailwind`, `bulma`, `foundation` or `none` on a form or a
+parent. `themeFramework` is a deprecated alias; `vanilla` behaves like `none`. They map tokens and
+control sizing, not component state.
 
 ~~~html
 <form data-zs-framework="bootstrap" data-zs-theme="default">

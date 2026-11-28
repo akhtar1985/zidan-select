@@ -599,6 +599,13 @@
     return list.indexOf(candidate) === -1 ? fallback : candidate;
   }
 
+  /* Public enum setters ignore unknown values (the control keeps its current
+     setting) and say so once, instead of throwing and breaking a render pass. */
+  function warnInvalid(kind, value, allowed) {
+    if (typeof console === 'undefined' || !console.warn) return;
+    console.warn('ZidanForm: unknown ' + kind + ' "' + String(value) + '". Use: ' + allowed.join(', ') + '.');
+  }
+
   /* rangeTicks: JS array, JSON array, comma list or a tick count */
   function parseRangeTicks(value) {
     if (Array.isArray(value)) return value.slice();
@@ -723,7 +730,8 @@
     mode: null,                // 'select' | 'combobox' | 'tags'
     layout: 'classic-clean',
     theme: 'default',
-    themeFramework: 'auto',    // 'auto' | 'vanilla' | 'bootstrap' | 'tailwind'
+    framework: 'auto',         // 'auto' | 'none' | 'bootstrap' | 'tailwind' | 'bulma' | 'foundation'
+    themeFramework: 'auto',    // deprecated alias of framework
     id: null,
     name: null,
     disabled: false,
@@ -787,7 +795,7 @@
     /* search, scale & i18n */
     accentInsensitive: true,   // fold diacritics so "cafe" matches "Café"
     highlightMatches: false,   // wrap the matching label substring in <mark>
-    virtual: false,            // false | true | 'auto' | minimum row count
+    virtual: 'auto',           // 'auto' | false | true | minimum row count
     virtualThreshold: 150,     // row count used by virtual: 'auto'
     itemHeight: 0,             // fixed row height for virtualization (0 = measure)
     typeAhead: true,           // jump to options by typing in a non-searchable select
@@ -1021,7 +1029,7 @@
 
     var nativeMultiple = isNativeSelect ? this.el.multiple : false;
 
-    var framework = options.themeFramework || d.zidanFramework || 'auto';
+    var framework = options.framework || options.themeFramework || d.zidanFramework || 'auto';
     framework = String(framework).toLowerCase();
     if (FRAMEWORKS.indexOf(framework) === -1) framework = 'auto';
 
@@ -1115,7 +1123,8 @@
     merged.highlightMatches = pick('highlightMatches', readBoolAttr(d.zidanHighlightMatches, DEFAULTS.highlightMatches));
     merged.typeAhead = pick('typeAhead', readBoolAttr(d.zidanTypeAhead, DEFAULTS.typeAhead));
     merged.typeAheadTimeout = pick('typeAheadTimeout', d.zidanTypeAheadTimeout ? parseInt(d.zidanTypeAheadTimeout, 10) || DEFAULTS.typeAheadTimeout : DEFAULTS.typeAheadTimeout);
-    merged.virtual = pick('virtual', parseVirtual(d.zidanVirtual));
+    var virtualAttr = parseVirtual(d.zidanVirtual);
+    merged.virtual = pick('virtual', virtualAttr === undefined ? DEFAULTS.virtual : virtualAttr);
     merged.virtualThreshold = pick('virtualThreshold', d.zidanVirtualThreshold ? parseInt(d.zidanVirtualThreshold, 10) || DEFAULTS.virtualThreshold : DEFAULTS.virtualThreshold);
     merged.itemHeight = pick('itemHeight', d.zidanItemHeight ? parseInt(d.zidanItemHeight, 10) || 0 : DEFAULTS.itemHeight);
     merged.locale = pick('locale', d.zidanLocale || (doc && doc.documentElement ? doc.documentElement.lang : null) || DEFAULTS.locale);
@@ -1128,7 +1137,8 @@
     // these three are authoritative after the merge
     merged.mode = mode;
     merged.layout = layout;
-    merged.themeFramework = framework;
+    merged.framework = framework;
+    merged.themeFramework = framework; // deprecated alias, kept in sync
     merged.scrollbar = scrollbar;
     merged.theme = pick('theme', d.zidanTheme || d.zsTheme || DEFAULTS.theme);
     if (mode === 'combobox') merged.searchable = true;
@@ -1230,7 +1240,8 @@
   /* ---------------- DOM building ---------------- */
 
   ZidanSelect.prototype._resolveFramework = function () {
-    if (this.opts.themeFramework && this.opts.themeFramework !== 'auto') return this.opts.themeFramework;
+    var configured = this.opts.framework || this.opts.themeFramework;
+    if (configured && configured !== 'auto') return configured;
     if (!doc) return 'vanilla';
     var declared = inheritedAttr(this.el, ['data-zidan-framework', 'data-zs-framework']);
     if (!declared) declared = doc.documentElement.getAttribute('data-zs-framework') || '';
@@ -1279,7 +1290,7 @@
     var existingWrapper = this.el.parentNode && this.el.parentNode.classList &&
       this.el.parentNode.classList.contains('zs-root--mount');
 
-    var scope = resolveScope(this.el, { theme: opts.theme, framework: opts.themeFramework, layout: opts.layout });
+    var scope = resolveScope(this.el, { theme: opts.theme, framework: opts.framework || opts.themeFramework, layout: opts.layout });
     this.themeMode = scope.theme;
     this.theme = resolveThemeName(scope.theme);
 
@@ -1418,7 +1429,12 @@
   };
 
   ZidanSelect.prototype.setTheme = function (name) {
-    var next = pickList(name, THEMES, this.themeMode);
+    var next = name === undefined || name === null ? '' : String(name).toLowerCase();
+    if (!next) return this;
+    if (THEMES.indexOf(next) === -1) {
+      warnInvalid('theme', name, THEMES);
+      return this;
+    }
     this.themeMode = next;
     this.opts.theme = next;
     this.theme = resolveThemeName(next);
@@ -2199,6 +2215,8 @@
         this._syncNative();
         var current = this.getValue();
         if (JSON.stringify(current) !== JSON.stringify(previous)) {
+          this.emit('deselect', { value: current, previousValue: previous, item: item, instance: this });
+          this.call('onDeselect', { value: current, previousValue: previous, item: item, instance: this });
           this.emit('change', { value: current, previousValue: previous, instance: this });
           this.call('onChange', { value: current, previousValue: previous, instance: this });
         }
@@ -3079,8 +3097,11 @@
         self.value_.splice(index, 1);
         self._render();
         self._syncNative();
-        self.emit('change', { value: self.getValue(), previousValue: previous, item: item, instance: self });
-        self.call('onChange', { value: self.getValue(), previousValue: previous, item: item, instance: self });
+        var next = self.getValue();
+        self.emit('deselect', { value: next, previousValue: previous, item: item, instance: self });
+        self.call('onDeselect', { value: next, previousValue: previous, item: item, instance: self });
+        self.emit('change', { value: next, previousValue: previous, item: item, instance: self });
+        self.call('onChange', { value: next, previousValue: previous, item: item, instance: self });
         self.announce(item.label + ' removed.');
         if (self.opened) self._renderDropdown();
       }
@@ -3297,7 +3318,8 @@
   ZidanSelect.prototype.setLayout = function (layoutName) {
     var next = String(layoutName || '').toLowerCase();
     if (LAYOUTS.indexOf(next) === -1) {
-      throw new Error('ZidanSelect: unknown layout "' + layoutName + '". Use: ' + LAYOUTS.join(', '));
+      warnInvalid('layout', layoutName, LAYOUTS);
+      return this;
     }
     this.layout = next;
     this.opts.layout = next;
@@ -3310,9 +3332,11 @@
   ZidanSelect.prototype.setFramework = function (frameworkName) {
     var next = String(frameworkName || '').toLowerCase();
     if (FRAMEWORKS.indexOf(next) === -1) {
-      throw new Error('ZidanSelect: unknown framework "' + frameworkName + '". Use: ' + FRAMEWORKS.join(', '));
+      warnInvalid('framework', frameworkName, FRAMEWORKS);
+      return this;
     }
-    this.opts.themeFramework = next;
+    this.opts.framework = next;
+    this.opts.themeFramework = next; // deprecated alias, kept in sync
     this.framework = next === 'auto' ? this._resolveFramework() : next;
     this.root.setAttribute('data-zs-framework', this.framework);
     this.controlEl.classList.toggle('form-control', this.framework === 'bootstrap');
@@ -3326,7 +3350,8 @@
   ZidanSelect.prototype.setScrollbar = function (scrollbarName) {
     var next = String(scrollbarName || '').toLowerCase();
     if (SCROLLBARS.indexOf(next) === -1) {
-      throw new Error('ZidanSelect: unknown scrollbar "' + scrollbarName + '". Use: ' + SCROLLBARS.join(', '));
+      warnInvalid('scrollbar', scrollbarName, SCROLLBARS);
+      return this;
     }
     this.opts.scrollbar = next;
     if (this.root) this.root.setAttribute('data-zs-scrollbar', next);
@@ -3577,7 +3602,13 @@
   };
 
   ZidanFieldBase.prototype.setTheme = function (name) {
-    this.theme = pickList(name, THEMES, this.theme);
+    var next = name === undefined || name === null ? '' : String(name).toLowerCase();
+    if (!next) return this;
+    if (THEMES.indexOf(next) === -1) {
+      warnInvalid('theme', name, THEMES);
+      return this;
+    }
+    this.theme = next;
     if (this.root) {
       if (this.theme === 'auto') trackAutoTheme(this.root);
       else {
@@ -3589,13 +3620,25 @@
   };
 
   ZidanFieldBase.prototype.setFramework = function (name) {
-    this.framework = pickList(name, FRAMEWORKS, this.framework);
+    var next = name === undefined || name === null ? '' : String(name).toLowerCase();
+    if (!next) return this;
+    if (FRAMEWORKS.indexOf(next) === -1) {
+      warnInvalid('framework', name, FRAMEWORKS);
+      return this;
+    }
+    this.framework = next;
     if (this.root) this.root.setAttribute('data-zs-framework', this.framework);
     return this;
   };
 
   ZidanFieldBase.prototype.setLayout = function (name) {
-    this.layout = pickList(name, FIELD_LAYOUTS, this.layout || 'stacked');
+    var next = name === undefined || name === null ? '' : String(name).toLowerCase();
+    if (!next) return this;
+    if (FIELD_LAYOUTS.indexOf(next) === -1) {
+      warnInvalid('layout', name, FIELD_LAYOUTS);
+      return this;
+    }
+    this.layout = next;
     if (this.root) this.root.setAttribute('data-zs-layout', this.layout);
     return this;
   };
@@ -5220,7 +5263,11 @@
   };
 
   ZidanFileUpload.prototype.setVariant = function (name) {
-    var next = pickList(name, FILE_VARIANTS, this.variant);
+    var next = String(name || '').toLowerCase();
+    if (FILE_VARIANTS.indexOf(next) === -1) {
+      warnInvalid('file variant', name, FILE_VARIANTS);
+      return this;
+    }
     if (next === this.variant) return this;
     this.variant = next;
     FILE_VARIANTS.forEach(function (variant) { this.drop.classList.remove('zs-file-drop--' + variant); }, this);

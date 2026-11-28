@@ -324,6 +324,14 @@ Re-checked against the v2.5.0 working tree. `npm test` passes (88 DOM tests),
 including the size check that was failing when this audit was written. The
 working tree already carried the BUG-001/002/003 fixes before the pass.
 
+### Unreleased API-consistency pass
+
+- #011 closed in code: multi-select removals emit `zidan:deselect` (and `onDeselect`)
+  before `zidan:change`; `setValue()`, `clear()` and `deselectAll()` stay silent.
+- `virtual` now defaults to `'auto'` (150 rows), `framework` replaces `themeFramework`
+  as the documented select option (deprecated alias kept), and unknown enum setter
+  values warn instead of throwing.
+
 ### v2.5.0 regression re-check
 
 | Area | Verdict | Notes |
@@ -352,7 +360,7 @@ working tree already carried the BUG-001/002/003 fixes before the pass.
 | 008 | Fixed | unreachable early return in `onControlClick` removed |
 | 009 | Fixed | `addTag()` returns `_addTagObject()`, which already re-renders |
 | 010 | Fixed | redundant second empty-string assignment removed |
-| 011 | Documented | `docs/options.md` now records that removal reports through `change` only |
+| 011 | Fixed (Unreleased) | user removals (option row or chip ×) emit `zidan:deselect` + `onDeselect` before `change`; programmatic changes stay silent |
 | 012 | Fixed | rebuilt native options carry `selected` before `_syncNative()` runs |
 | 013 | Fixed | `clear(config)` forwards `silent` |
 | 014 | Fixed | `cancelUpload()` finishes the state from a single path |
@@ -373,10 +381,11 @@ working tree already carried the BUG-001/002/003 fixes before the pass.
 | 029 | Fixed | `initFieldList` forwards `force` |
 | 030 | Fixed | an identical announcement is repeated on the next tick |
 
-For the original 30 findings: 18 code fixes, 1 documentation fix, 3 already
-fixed before the pass, 6 confirmed not defects or intentional behaviour (#005,
-#020, #023, #024, #025, #026) and 1 deferred with rationale (#018). The v2.5.0
-re-check above adds eight more code/documentation fixes.
+For the original 30 findings: 19 code fixes, 3 already fixed before the pass,
+6 confirmed not defects or intentional behaviour (#005, #020, #023, #024,
+#025, #026) and 1 deferred with rationale (#018). The v2.5.0 re-check above
+adds eight more code/documentation fixes; the Unreleased API pass closes #011
+in code rather than documentation.
 
 ## Quality-lab follow-up (v2.5.0 working tree)
 
