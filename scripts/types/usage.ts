@@ -9,7 +9,8 @@ import ZidanFormDefault, {
   type FetchContext,
   type FetchPage,
   type SelectOptions,
-  type FieldRule
+  type FieldRule,
+  type ZidanChangeDetail
 } from '../../zidan-form';
 import {
   ZidanSelect as SelectOnly,
@@ -78,3 +79,41 @@ selectOnly.hasMoreResults();
 initZidanForms(document, { showValidState: true });
 ZidanForm.get('#email');
 ZidanFormDefault.version;
+
+/* typed events: on(select), addEventListener(any element) and emit/call */
+select.on('zidan:change', (event) => {
+  const detail: ZidanChangeDetail = event.detail;
+  void detail.value;
+  void event.detail.instance;
+});
+select.emit('zidan:validation', { instance: select, state: 'valid' });
+select.call('onChange', { value: 'a', instance: select });
+select.el.addEventListener('zidan:select', (event) => {
+  void event.detail.item;
+});
+const targets: HTMLElement[] = field.validationTargets();
+void targets;
+field.call('onValidation', { instance: field, state: 'invalid', message: 'Required' });
+files.root.addEventListener('zidan:upload-progress', (event) => {
+  void event.detail.file.name;
+  void event.detail.progress;
+});
+/* the form-level validate event is typed on <form> */
+const form = document.querySelector('form');
+form?.addEventListener('zidan:validate', (event) => {
+  void event.detail.valid;
+  void event.detail.fields;
+});
+
+const rich = zidanField('#rich', {
+  autoIcon: true,
+  iconClickable: true,
+  stepperPosition: 'left',
+  stepperDelay: 300,
+  reveal: true,
+  validationIcon: true,
+  switchStyle: 'switch',
+  phoneCountrySelect: false,
+  onInput: ({ value }) => void value
+});
+void rich;

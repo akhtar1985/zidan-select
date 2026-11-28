@@ -15,7 +15,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
-const assets = ['zidan-form.js', 'zidan-form.mjs', 'plugin-core.css', 'plugin-theme.css'];
+/* CSS is copied because the minified files live next to it; the JS entry stays
+   at the package root so the package never ships the same 300 kB file twice. */
+const assets = ['plugin-core.css', 'plugin-theme.css'];
 
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 const version = pkg.version;
@@ -179,6 +181,19 @@ export type {
   SelectCallbacks,
   SelectOptions,
   SelectAsyncState,
+  ZidanEventName,
+  ZidanEventDetail,
+  ZidanEventMap,
+  ZidanFormEventMap,
+  ZidanChangeDetail,
+  ZidanInitDetail,
+  ZidanSelectEventDetail,
+  ZidanTagEventDetail,
+  ZidanTagEditDetail,
+  ZidanTagMoveDetail,
+  ZidanValidationDetail,
+  ZidanAsyncValidationDetail,
+  ZidanErrorDetail,
   ZidanFormStatic,
   AutoInitTarget,
   AutoInitConfig
@@ -274,7 +289,24 @@ export type {
   FieldRule,
   FieldMessages,
   FieldOptions,
+  FieldCallbacks,
   FileFieldOptions,
+  ZidanEventName,
+  ZidanEventDetail,
+  ZidanEventMap,
+  ZidanFormEventMap,
+  ZidanChangeDetail,
+  ZidanInitDetail,
+  ZidanUploadDetail,
+  ZidanRemoveDetail,
+  ZidanValidationDetail,
+  ZidanErrorDetail,
+  ZidanInputDetail,
+  ZidanStepDetail,
+  ZidanPickerDetail,
+  ZidanPhoneDetail,
+  ZidanIconClickDetail,
+  ZidanRevealDetail,
   UploadContext,
   UploadHandler,
   UploadState,
@@ -302,12 +334,6 @@ await fs.mkdir(dist, { recursive: true });
 for (const asset of assets) {
   await fs.copyFile(path.join(root, asset), path.join(dist, asset));
 }
-
-await fs.writeFile(
-  path.join(dist, 'zidan-form.cjs'),
-  "'use strict';\nmodule.exports = require('../zidan-form.js');\n",
-  'utf8'
-);
 
 for (const variant of variants) {
   const dir = path.join(dist, variant.dir);
@@ -380,6 +406,6 @@ try {
   if (err && err.code !== 'ERR_MODULE_NOT_FOUND') throw err;
 }
 
-console.log('built dist/ (' + assets.length + ' files + CJS entry)');
+console.log('built dist/ (' + assets.length + ' stylesheets, JS stays at the package root)');
 console.log('built subset bundles: select/ (6 files), file/ (6 files)');
 console.log(minified ? 'minified copies written with esbuild (full + both subsets)' : 'esbuild not installed — skipped minified copies');

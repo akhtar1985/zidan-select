@@ -169,6 +169,32 @@ test('declarative select attributes control closing, accessibility and required 
   select.destroy();
 });
 
+test('invalid native select is intercepted, announced and cleared on selection', () => {
+  const window = boot('<form id="f"><select id="s" name="s" required data-zidan-select><option value="">Pick</option><option value="a">A</option></select></form>');
+  const select = window.zidanSelect('#s');
+  const native = window.document.getElementById('s');
+  const seen = [];
+  select.on('validation', (event) => seen.push(event.detail));
+
+  const invalid = new window.Event('invalid', { cancelable: true });
+  native.dispatchEvent(invalid);
+
+  assert.equal(invalid.defaultPrevented, true, 'the browser must not try to focus the hidden select');
+  assert.equal(select.root.classList.contains('zs-root--invalid'), true);
+  assert.equal(select.input.getAttribute('aria-invalid'), 'true');
+  assert.equal(window.document.activeElement, select.input, 'focus moves to the visible combobox');
+  assert.equal(select.liveEl.textContent, select.opts.requiredText);
+  assert.equal(seen.length, 1);
+  assert.equal(seen[0].state, 'invalid');
+  assert.equal(seen[0].instance, select);
+  assert.equal(window.document.getElementById('f').checkValidity(), false);
+
+  select.setValue('a');
+  assert.equal(select.input.hasAttribute('aria-invalid'), false);
+  assert.equal(select.root.classList.contains('zs-root--invalid'), false);
+  assert.equal(window.document.getElementById('f').checkValidity(), true);
+});
+
 test('callback exceptions reach onError with the callback name and error', () => {
   const window = boot('<select id="s"><option value="">Pick</option><option value="a">A</option></select>');
   const errors = [];
@@ -1754,6 +1780,64 @@ test('large option lists are inserted as one DOM batch', async () => {
 
 /* ---------------- reliability suite ---------------- */
 
+/* ---------------- declaration parity ---------------- */
+
+test('TypeScript declarations cover every public option, method and event', () => {
+  const declarations = fs.readFileSync(path.join(root, 'zidan-form.d.ts'), 'utf8');
+
+  function block(name) {
+    const start = declarations.indexOf('interface ' + name + ' ');
+    const classStart = declarations.indexOf('class ' + name + ' ');
+    const from = start >= 0 ? start : classStart;
+    assert.notEqual(from, -1, 'declaration block missing: ' + name);
+    const open = declarations.indexOf('{', from);
+    let depth = 0;
+    for (let i = open; i < declarations.length; i += 1) {
+      if (declarations[i] === '{') depth += 1;
+      else if (declarations[i] === '}') {
+        depth -= 1;
+        if (!depth) return declarations.slice(open + 1, i);
+      }
+    }
+    throw new Error('unterminated declaration block: ' + name);
+  }
+  const members = (...names) => {
+    const found = new Set();
+    for (const name of names) {
+      for (const match of block(name).matchAll(/^\s{2}([A-Za-z_$][\w$]*)\??\s*(?:<[^>\n]*>)?\s*[:(]/gm)) found.add(match[1]);
+    }
+    return found;
+  };
+
+  const window = boot('<select id="decl" multiple><option value="a">Alpha</option><option value="b">Beta</option></select>');
+  const selectOptions = members('SelectOptions', 'SelectCallbacks');
+  const fieldOptions = members('FieldOptions', 'FieldCallbacks', 'FileFieldOptions', 'TextFieldOptions');
+
+  const missingSelect = Object.keys(window.ZidanSelect.defaults).filter((key) => !selectOptions.has(key));
+  assert.deepEqual(missingSelect, [], 'SelectOptions misses runtime defaults: ' + missingSelect.join(', '));
+
+  const ignored = new Set(['messages', 'force']); // force is declared inline on ZidanFormStatic.init()
+  const read = new Set([...fullSource.matchAll(/\bopts\.([A-Za-z_$][\w$]*)/g)].map((match) => match[1]));
+  const undeclared = [...read].filter((key) => !ignored.has(key) && !selectOptions.has(key) && !fieldOptions.has(key));
+  assert.deepEqual(undeclared.sort(), [], 'options read by the bundle but missing from the declarations: ' + undeclared.sort().join(', '));
+
+  const classes = ['ZidanSelect', 'ZidanFieldBase', 'ZidanCheckbox', 'ZidanRadioGroup', 'ZidanFileUpload', 'ZidanTextField'];
+  for (const name of classes) {
+    const declared = members(name, 'ZidanFieldBase');
+    const methods = new Set([...fullSource.matchAll(new RegExp(name + '\\.prototype\\.([A-Za-z_$][\\w$]*) =', 'g'))].map((match) => match[1]));
+    const publicMethods = [...methods].filter((method) => !method.startsWith('_') && method !== 'constructor');
+    const missingMethods = publicMethods.filter((method) => !declared.has(method));
+    assert.deepEqual(missingMethods, [], name + ' declarations miss: ' + missingMethods.join(', '));
+  }
+
+  const eventMap = block('ZidanEventMap');
+  const emitted = new Set([...fullSource.matchAll(/emit\(\s*'([a-z][\w:-]*)'/g)].map((match) => match[1]));
+  const missingEvents = [...emitted].filter((name) => !eventMap.includes("'zidan:" + name + "'"));
+  assert.deepEqual(missingEvents, [], 'ZidanEventMap misses dispatched events: ' + missingEvents.join(', '));
+  const htmlEvents = block('HTMLElementEventMap');
+  const missingDomEvents = [...emitted].filter((name) => !htmlEvents.includes("'zidan:" + name + "'"));
+  assert.deepEqual(missingDomEvents, [], 'HTMLElementEventMap misses: ' + missingDomEvents.join(', '));
+});
 registerReliabilityTests({ test, boot, wait, assert });
 
 /* ---------------- runner ---------------- */

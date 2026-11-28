@@ -3141,9 +3141,19 @@
     this.debouncedFetch = debounce(function (query) { self._fetch(query); }, this.opts.debounce);
 
     if (this.el && this.el.addEventListener) {
-      this.onNativeInvalid = function () {
+      /* The augmented control replaces the native one visually, so the browser
+         cannot focus the real <select> when it is invalid. Chrome then aborts
+         the submit with "An invalid form control ... is not focusable" and says
+         nothing to the user. Prevent that dead end, move focus to the visible
+         combobox, announce the reason and publish the state. */
+      this.onNativeInvalid = function (event) {
+        if (event && event.preventDefault) event.preventDefault();
+        if (self.destroyed) return;
         self.setValidation('invalid');
         if (self.input && self.input.focus) self.input.focus();
+        var message = self.opts.requiredText || 'Please select an option.';
+        self.announce(message);
+        self.emit('validation', { instance: self, state: 'invalid', message: message });
       };
       this.el.addEventListener('invalid', this.onNativeInvalid);
     }

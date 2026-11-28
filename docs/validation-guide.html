@@ -28,7 +28,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+        <span class="brand-sub">v2.5.1 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -153,12 +153,11 @@ form.addEventListener('submit', event =&gt; {
     if (field) field.update();
   });
 
-  if (!form.checkValidity()) {
-    form.querySelector(':invalid')?.focus();
-    return;
-  }
+  if (!form.reportValidity()) return;
   submit(new FormData(form));
 });</code></pre>
+<p><code>reportValidity()</code> is deliberate: it fires <code>invalid</code> on each control that fails, so an enhanced control can move focus and announce itself. <code>checkValidity()</code> reports the same boolean but fires no events, and <code>form.querySelector(':invalid')</code> returns the hidden native <code>&lt;select&gt;</code> first, whose <code>focus()</code> is a no-op.</p>
+<p>Enhanced selects: the real <code>&lt;select&gt;</code> is <code>display: none</code>, so the browser cannot focus it to show its own bubble and Chrome logs &quot;An invalid form control with name='…' is not focusable.&quot; The library intercepts <code>invalid</code>, calls <code>preventDefault()</code>, focuses the visible combobox, sets <code>aria-invalid=&quot;true&quot;</code>, announces <code>requiredText</code> through the live region and emits <code>zidan:validation</code> with <code>{ instance, state, message }</code>. Submission is still blocked; the difference is that the user is told why.</p>
 <p>Radio groups: validity belongs to the radios. <code>field.setValidation('invalid')</code> marks every radio, which paints the group border through the theme.</p>
 <h2 id="jquery-validation">jQuery Validation</h2>
 <pre><code class="language-html">&lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;

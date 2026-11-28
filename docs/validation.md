@@ -145,13 +145,22 @@ form.addEventListener('submit', event => {
     if (field) field.update();
   });
 
-  if (!form.checkValidity()) {
-    form.querySelector(':invalid')?.focus();
-    return;
-  }
+  if (!form.reportValidity()) return;
   submit(new FormData(form));
 });
 ```
+
+`reportValidity()` is deliberate: it fires `invalid` on each control that fails, so an
+enhanced control can move focus and announce itself. `checkValidity()` reports the same
+boolean but fires no events, and `form.querySelector(':invalid')` returns the hidden native
+`<select>` first, whose `focus()` is a no-op.
+
+Enhanced selects: the real `<select>` is `display: none`, so the browser cannot focus it to
+show its own bubble and Chrome logs "An invalid form control with name='…' is not focusable."
+The library intercepts `invalid`, calls `preventDefault()`, focuses the visible combobox,
+sets `aria-invalid="true"`, announces `requiredText` through the live region and emits
+`zidan:validation` with `{ instance, state, message }`. Submission is still blocked; the
+difference is that the user is told why.
 
 Radio groups: validity belongs to the radios. `field.setValidation('invalid')` marks every
 radio, which paints the group border through the theme.

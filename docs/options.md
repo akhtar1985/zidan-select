@@ -1223,6 +1223,8 @@ selection, so there is no matching `zidan:select` for it.
 | `zidan:picker` | `{ instance, type }` |
 | `zidan:upload-start` | `{ instance, file, name, size }` |
 | `zidan:upload-progress` | `{ instance, file, name, progress }` |
+| `zidan:upload-queued` | `{ instance, file, name, size, position }` |
+| `zidan:upload-retry` | `{ instance, file, name, attempt, nextAttempt, delay, error, message }` |
 | `zidan:upload-success` | `{ instance, file, name, result }` |
 | `zidan:upload-error` | `{ instance, file, name, error, message }` |
 | `zidan:upload-cancel` | `{ instance, file, name }` |

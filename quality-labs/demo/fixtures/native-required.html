@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo Lab · native required fixture</title>
+  <link rel="stylesheet" href="../../../plugin-core.css">
+  <link rel="stylesheet" href="../../../plugin-theme.css">
+</head>
+<body>
+  <main>
+    <h1>Native required fixture</h1>
+    <p>No <code>novalidate</code>: this fixture exercises the browser constraint-validation path.</p>
+    <form id="nr-form" action="?" method="get">
+      <label for="nr-fruit">Fruit</label>
+      <select id="nr-fruit" name="fruit" required data-zidan-select="select">
+        <option value="">Choose a fruit…</option>
+        <option value="apple">Apple</option>
+        <option value="pear">Pear</option>
+      </select>
+      <button id="nr-submit" type="submit">Send</button>
+      <p id="nr-status" role="status">idle</p>
+    </form>
+  </main>
+  <script>
+    (function () {
+      window.__submits = 0;
+      document.getElementById('nr-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        window.__submits += 1;
+        document.getElementById('nr-status').textContent = 'submitted';
+      });
+    })();
+  </script>
+  <script src="../../../zidan-form.js"></script>
+</body>
+</html>

@@ -177,9 +177,11 @@ try {
   const parsed = JSON.parse(pack.stdout.slice(start));
   packFiles = (parsed[0] && parsed[0].files || []).map((entry) => entry.path);
 } catch (error) { packError = error.message; }
-const requiredPack = ['README.md', 'LICENSE', 'zidan-form.js', 'zidan-form.mjs', 'zidan-form.d.ts', 'zidan-form.d.mts', 'plugin-core.css', 'plugin-theme.css', 'docs/index.html', 'docs/options.html'];
+const requiredPack = ['README.md', 'CHANGELOG.md', 'LICENSE', 'zidan-form.js', 'zidan-form.mjs', 'zidan-form.d.ts', 'zidan-form.d.mts', 'plugin-core.css', 'plugin-theme.css', 'docs/options.md', 'docs/build.md'];
 const absent = requiredPack.filter((file) => !packFiles.includes(file));
-const forbidden = packFiles.filter((file) => /^(?:quality-labs|zidan-select-lab-kit|scripts|node_modules)\//.test(file));
+/* The guides are published on GitHub Pages; the tarball keeps the Markdown sources
+   but must not spend ~750 kB on generated HTML or screenshots npm cannot render. */
+const forbidden = packFiles.filter((file) => /^(?:quality-labs|zidan-select-lab-kit|scripts|node_modules)\//.test(file) || /\.(?:png|html)$/.test(file));
 const packOk = !packError && pack.exitCode === 0 && absent.length === 0 && forbidden.length === 0;
 add(makeCheck('ZS-DOCS-PACK', 'npm package contains the documented runtime, CSS, declarations and guides', packOk ? 'PASS' : 'FAIL', {
   evidence: packError ? 'parse error: ' + packError : packFiles.length + ' packed files · absent=' + (absent.join(', ') || 'none') + ' · forbidden=' + (forbidden.join(', ') || 'none')

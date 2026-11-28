@@ -57,6 +57,175 @@ export type FetchOptions = (
   context?: FetchContext
 ) => FetchResult | Promise<FetchResult>;
 
+/* ------------------------------------------------------------------ *
+ * Events
+ *
+ * Every custom event is dispatched on `instance.root`, bubbles, and is
+ * prefixed with `zidan:`. `emit()` always adds `instance` (and `kind` for
+ * fields), so the detail types below keep an open index signature: the
+ * payload of a shared name such as `zidan:change` differs per field type.
+ * ------------------------------------------------------------------ */
+export interface ZidanEventDetail {
+  instance?: ZidanSelect | ZidanFieldBase;
+  kind?: string;
+  [key: string]: unknown;
+}
+
+export interface ZidanChangeDetail extends ZidanEventDetail {
+  /** New value: string or array for selects, boolean for checkboxes, File[] for uploads */
+  value?: unknown;
+  previousValue?: unknown;
+  item?: SelectItem;
+  checked?: boolean;
+  files?: File[];
+}
+
+export interface ZidanInitDetail extends ZidanEventDetail {
+  mode?: SelectMode;
+  layout?: string;
+  framework?: string;
+  variant?: string;
+  type?: string;
+  stepper?: boolean;
+  phone?: boolean;
+  range?: boolean;
+}
+
+export interface ZidanSelectEventDetail extends ZidanEventDetail {
+  value?: unknown;
+  item?: SelectItem;
+  label?: string;
+}
+
+export interface ZidanTagEventDetail extends ZidanEventDetail {
+  tag: string;
+  value: SelectItem[];
+}
+
+export interface ZidanTagEditDetail extends ZidanEventDetail {
+  tag: string;
+  label: string;
+  previousLabel: string;
+  index: number;
+}
+
+export interface ZidanTagMoveDetail extends ZidanEventDetail {
+  tag: string;
+  from: number;
+  to: number;
+  value: SelectItem[];
+}
+
+export interface ZidanValidationDetail extends ZidanEventDetail {
+  state: ValidationState;
+  message?: string;
+}
+
+export interface ZidanAsyncValidationDetail extends ZidanEventDetail {
+  valid: boolean;
+  message?: string;
+  error?: unknown;
+}
+
+export interface ZidanErrorDetail extends ZidanEventDetail {
+  error?: unknown;
+  message: string;
+  /** Name of the callback that threw, when an `onX` handler raised */
+  callback?: string;
+  action?: string;
+}
+
+export interface ZidanInputDetail extends ZidanEventDetail {
+  value: string;
+}
+
+export interface ZidanStepDetail extends ZidanEventDetail {
+  value: number;
+  direction: 'up' | 'down';
+  step: number;
+}
+
+export interface ZidanIconClickDetail extends ZidanEventDetail {
+  icon: string;
+  position: 'left' | 'right';
+}
+
+export interface ZidanPhoneDetail extends ZidanEventDetail {
+  country?: string;
+  format?: PhoneFormat;
+}
+
+export interface ZidanPickerDetail extends ZidanEventDetail {
+  type: string;
+}
+
+export interface ZidanRevealDetail extends ZidanEventDetail {
+  visible: boolean;
+}
+
+export interface ZidanRemoveDetail extends ZidanEventDetail {
+  file: File;
+  index: number;
+}
+
+export interface ZidanUploadDetail extends ZidanEventDetail {
+  file: File;
+  name: string;
+  size?: number;
+  position?: number;
+  progress?: number;
+  result?: unknown;
+  error?: unknown;
+  message?: string;
+  attempts?: number;
+  attempt?: number;
+  nextAttempt?: number;
+  delay?: number;
+}
+
+export interface ZidanEventMap {
+  'zidan:async-validation': ZidanAsyncValidationDetail;
+  'zidan:change': ZidanChangeDetail;
+  'zidan:clear': ZidanEventDetail;
+  'zidan:close': ZidanEventDetail;
+  'zidan:destroy': ZidanEventDetail;
+  'zidan:error': ZidanErrorDetail;
+  'zidan:icon-click': ZidanIconClickDetail;
+  'zidan:init': ZidanInitDetail;
+  'zidan:input': ZidanInputDetail;
+  'zidan:load-more': ZidanEventDetail & { page?: number; query?: string };
+  'zidan:no-results': ZidanEventDetail & { query?: string };
+  'zidan:open': ZidanEventDetail;
+  'zidan:phone-country': ZidanPhoneDetail;
+  'zidan:phone-format': ZidanPhoneDetail;
+  'zidan:picker': ZidanPickerDetail;
+  'zidan:remove': ZidanRemoveDetail;
+  'zidan:reveal': ZidanRevealDetail;
+  'zidan:select': ZidanSelectEventDetail;
+  'zidan:step': ZidanStepDetail;
+  'zidan:tag-add': ZidanTagEventDetail;
+  'zidan:tag-edit': ZidanTagEditDetail;
+  'zidan:tag-move': ZidanTagMoveDetail;
+  'zidan:tag-remove': ZidanTagEventDetail;
+  'zidan:upload-cancel': ZidanUploadDetail;
+  'zidan:upload-error': ZidanUploadDetail;
+  'zidan:upload-progress': ZidanUploadDetail;
+  'zidan:upload-queued': ZidanUploadDetail;
+  'zidan:upload-retry': ZidanUploadDetail;
+  'zidan:upload-start': ZidanUploadDetail;
+  'zidan:upload-success': ZidanUploadDetail;
+  'zidan:validation': ZidanValidationDetail;
+}
+
+export type ZidanEventName = keyof ZidanEventMap;
+
+/** Dispatched on the <form> element by ZidanForm.validate() */
+export interface ZidanFormEventMap {
+  'zidan:validate': { valid: boolean; form: HTMLFormElement; fields: ZidanFieldBase[] };
+}
+
+export type ZidanFormEventName = keyof ZidanFormEventMap;
+
 export interface SelectCallbacks {
   filterOption?(item: SelectItem, query: string, context: { instance: ZidanSelect; mode: SelectMode; caseSensitive: boolean; selected: boolean }): boolean;
   renderOption?(item: SelectItem, context: { index: number; selected: boolean; active: boolean; query: string; instance: ZidanSelect }): string | Node | null | undefined;
@@ -226,7 +395,27 @@ export interface FieldMessages {
 
 export type UploadUrl = string | ((file: File, field: ZidanFileUpload) => string);
 
-export interface FieldOptions {
+export interface FieldCallbacks {
+  /** Text, number, phone, date and range inputs plus textareas */
+  onInput?(detail: { instance: ZidanFieldBase; value: unknown }): void;
+  onValidation?(detail: { instance: ZidanFieldBase; state: ValidationState; message?: string }): void;
+  /** Fires when an input icon is rendered as a button (iconClickable or a date/time picker) */
+  onIconClick?(detail: { instance: ZidanFieldBase; icon: string; position: 'left' | 'right' }): void;
+  onStep?(detail: { instance: ZidanFieldBase; value: number; direction: 'up' | 'down' }): void;
+  onPicker?(detail: { instance: ZidanFieldBase; type: string }): void;
+  onPhoneCountry?(detail: { instance: ZidanFieldBase; country: string }): void;
+  onPhoneFormat?(detail: { instance: ZidanFieldBase; format: PhoneFormat }): void;
+  /** File uploads: a file was removed from the list */
+  onRemove?(detail: { instance: ZidanFileUpload; file: File; index: number }): void;
+  onUploadStart?(detail: ZidanUploadDetail): void;
+  onUploadProgress?(detail: ZidanUploadDetail): void;
+  onUploadSuccess?(detail: ZidanUploadDetail): void;
+  /** Alias of onUploadSuccess */
+  onUpload?(detail: ZidanUploadDetail): void;
+  onUploadError?(detail: ZidanUploadDetail): void;
+  onUploadCancel?(detail: ZidanUploadDetail): void;
+}
+export interface FieldOptions extends FieldCallbacks {
   theme?: Theme | string;
   framework?: Framework;
   layout?: FieldLayout;
@@ -238,8 +427,59 @@ export interface FieldOptions {
   showValidState?: boolean;
   label?: string;
   hint?: string;
-  uploadUrl?: UploadUrl;
+  /* --- shared field options (inputs, textareas, checkboxes, radios, files) --- */
+  /** Use the built-in icon for the input type (mail, phone, calendar, clock, search, link, hash, palette) */
+  autoIcon?: boolean;
+  /** Accessible name for a decorative or custom icon */
+  iconLabel?: string;
+  /** Render the icon as a button and emit zidan:icon-click */
+  iconClickable?: boolean;
+  /** Add check/alert glyphs driven by the validation state */
+  validationIcon?: boolean;
+  /** Second line for card, tile, button and minimal checkbox/radio variants */
+  description?: string;
+  /** Radio group: fallback description per value */
+  descriptions?: Record<string, string>;
+  /** Radio group: fallback label per value */
+  labels?: Record<string, string>;
+  /** Text/aria label for the clear-all button */
+  clearLabel?: string;
+  /** Password reveal toggle */
+  reveal?: boolean;
+  showPasswordLabel?: string;
+  hidePasswordLabel?: string;
+  /** Checkbox starts mixed */
+  indeterminate?: boolean;
+  /** Checkbox/switch visual variant, e.g. 'switch' */
+  switchStyle?: string;
+  /** Switch styles: text shown on the checked / unchecked side */
+  onLabel?: string;
+  offLabel?: string;
+  /** Stepper: [inline] position of the +/- buttons */
+  stepperPosition?: 'left' | 'right';
+  /** Add a wrapping border around the field (theme hook) */
+  stepperWrap?: boolean;
+  /** Press and hold repeats the step (default true) */
+  stepperLongPress?: boolean;
+  /** Hold delay before repeating, ms (default 420) */
+  stepperDelay?: number;
+  /** Repeat interval, ms (default 90) */
+  stepperInterval?: number;
+  stepperUpLabel?: string;
+  stepperDownLabel?: string;
+  /** Phone fields: show the searchable country picker (default true) */
+  phoneCountrySelect?: boolean;
+  phoneCountries?: string[];
+  phoneCountryLabel?: string;
+  phoneCountrySearchText?: string;
+  phoneCountryEmptyText?: string;
+  /** Add a picker button when no icon is present */
+  pickerButton?: boolean;
+  /** Registered icon name for the picker button (default calendar/clock) */
+  pickerIcon?: string;
+  pickerLabel?: string;  uploadUrl?: UploadUrl;
   uploadHandler?: UploadHandler;
+  /** Escape hatch: undocumented options and framework-specific passthroughs */
   [key: string]: unknown;
 }
 
@@ -292,6 +532,8 @@ export interface FileFieldOptions extends FieldOptions {
   uploadParams?: UploadParams;
   uploadData?: Record<string, unknown> | ((file: File, field: ZidanFileUpload) => Record<string, unknown>);
   uploadHeaders?: Record<string, string | string[]> | ((file: File, field: ZidanFileUpload) => Record<string, string | string[]>);
+  /** Alias of uploadHeaders */
+  headers?: Record<string, string | string[]> | ((file: File, field: ZidanFileUpload) => Record<string, string | string[]>);
   uploadResponsePath?: string;
   uploadErrorPath?: string;
   /** Abort and report a timeout after this many milliseconds (0 = no timeout) */
@@ -340,7 +582,16 @@ export interface FileFieldOptions extends FieldOptions {
   downscaleMaxBytes?: number;
   downscaleMime?: string;
   downscaleForce?: boolean;
-}
+  /** Custom uploader; alias of uploadHandler */
+  upload?: UploadHandler;
+  /** Upload target variant: dropzone, button, avatar, gallery, compact */
+  fileVariant?: string;
+  uploadIcon?: string;
+  /** Dropzone headline (default Choose a file) */
+  title?: string;
+  dropHint?: string;
+  /** Decorate a rendered file row after the default markup exists */
+  renderFile?(item: HTMLElement, context: { file: File; index: number; state: UploadState; field: ZidanFileUpload }): void;}
 
 export interface TextFieldOptions extends FieldOptions {
   icon?: string;
@@ -430,8 +681,15 @@ export class ZidanFieldBase {
   setValue(value: unknown): this;
   update(): this;
   refresh(): this;
-  on<K extends EventTarget>(node: K | null, type: string, handler: EventListener, config?: boolean | AddEventListenerOptions): this;
+  /** Register a DOM listener that is removed by destroy() */
+  on(node: EventTarget | null, type: string, handler: EventListener, config?: boolean | AddEventListenerOptions): this;
+  emit<K extends ZidanEventName>(name: K, detail?: ZidanEventMap[K]): this;
   emit(name: string, detail?: Record<string, unknown>): this;
+  /** Call an `onX` callback if the consumer supplied one; exceptions become zidan:error */
+  call<K extends keyof FieldCallbacks>(callbackName: K, payload?: Parameters<NonNullable<FieldCallbacks[K]>>[0]): ReturnType<NonNullable<FieldCallbacks[K]>> | undefined;
+  call<T = unknown>(callbackName: string, payload?: unknown): T | undefined;
+  /** Native elements that carry the field's validity (radios return every input) */
+  validationTargets(): HTMLElement[];
   destroy(): this;
 }
 
@@ -477,8 +735,16 @@ export class ZidanSelect {
   setValidation(state: ValidationState): this;
   isOpen(): boolean;
   refresh(): this;
+  /** Subscribe to a zidan:* event; the handler receives the typed CustomEvent */
+  on<K extends ZidanEventName>(eventName: K, handler: (event: CustomEvent<ZidanEventMap[K]>) => void): this;
   on(eventName: string, handler: (event: CustomEvent<Record<string, unknown>>) => void): this;
+  off<K extends ZidanEventName>(eventName: K, handler?: (event: CustomEvent<ZidanEventMap[K]>) => void): this;
   off(eventName: string, handler?: (event: CustomEvent<Record<string, unknown>>) => void): this;
+  emit<K extends ZidanEventName>(name: K, detail?: ZidanEventMap[K]): this;
+  emit(name: string, detail?: Record<string, unknown>): this;
+  /** Call an `onX` callback if supplied; exceptions emit zidan:error and then onError */
+  call<K extends keyof SelectCallbacks>(callbackName: K, payload?: Parameters<NonNullable<SelectCallbacks[K]>>[0]): ReturnType<NonNullable<SelectCallbacks[K]>> | undefined;
+  call<T = unknown>(callbackName: string, payload?: unknown): T | undefined;
   announce(message: string): this;
   /** fetch the next page (remote pagination) */
   loadMore(): this | Promise<SelectItem[]>;
@@ -605,6 +871,44 @@ export interface ZidanFormStatic {
   serialize(target: string | HTMLFormElement | Element, options?: { files?: boolean }): Record<string, FormDataEntryValue | FormDataEntryValue[]>;
   /** Runs every enhanced field's validate() plus native constraints, focuses the first invalid field */
   validate(target: string | HTMLFormElement | Element, options?: { focus?: boolean }): Promise<boolean>;
+}
+
+declare global {
+  interface HTMLElementEventMap {
+    'zidan:async-validation': CustomEvent<ZidanAsyncValidationDetail>;
+    'zidan:change': CustomEvent<ZidanChangeDetail>;
+    'zidan:clear': CustomEvent<ZidanEventDetail>;
+    'zidan:close': CustomEvent<ZidanEventDetail>;
+    'zidan:destroy': CustomEvent<ZidanEventDetail>;
+    'zidan:error': CustomEvent<ZidanErrorDetail>;
+    'zidan:icon-click': CustomEvent<ZidanIconClickDetail>;
+    'zidan:init': CustomEvent<ZidanInitDetail>;
+    'zidan:input': CustomEvent<ZidanInputDetail>;
+    'zidan:load-more': CustomEvent<ZidanEventDetail & { page?: number; query?: string }>;
+    'zidan:no-results': CustomEvent<ZidanEventDetail & { query?: string }>;
+    'zidan:open': CustomEvent<ZidanEventDetail>;
+    'zidan:phone-country': CustomEvent<ZidanPhoneDetail>;
+    'zidan:phone-format': CustomEvent<ZidanPhoneDetail>;
+    'zidan:picker': CustomEvent<ZidanPickerDetail>;
+    'zidan:remove': CustomEvent<ZidanRemoveDetail>;
+    'zidan:reveal': CustomEvent<ZidanRevealDetail>;
+    'zidan:select': CustomEvent<ZidanSelectEventDetail>;
+    'zidan:step': CustomEvent<ZidanStepDetail>;
+    'zidan:tag-add': CustomEvent<ZidanTagEventDetail>;
+    'zidan:tag-edit': CustomEvent<ZidanTagEditDetail>;
+    'zidan:tag-move': CustomEvent<ZidanTagMoveDetail>;
+    'zidan:tag-remove': CustomEvent<ZidanTagEventDetail>;
+    'zidan:upload-cancel': CustomEvent<ZidanUploadDetail>;
+    'zidan:upload-error': CustomEvent<ZidanUploadDetail>;
+    'zidan:upload-progress': CustomEvent<ZidanUploadDetail>;
+    'zidan:upload-queued': CustomEvent<ZidanUploadDetail>;
+    'zidan:upload-retry': CustomEvent<ZidanUploadDetail>;
+    'zidan:upload-start': CustomEvent<ZidanUploadDetail>;
+    'zidan:upload-success': CustomEvent<ZidanUploadDetail>;
+    'zidan:validation': CustomEvent<ZidanValidationDetail>;
+    /** Dispatched on the <form> by ZidanForm.validate() */
+    'zidan:validate': CustomEvent<ZidanFormEventMap['zidan:validate']>;
+  }
 }
 
 export const ZidanForm: ZidanFormStatic;

@@ -291,6 +291,33 @@ try {
     const valid = await browser.evaluate(`(() => ({ status: document.querySelector('#lab-status').textContent, data: Object.fromEntries(new FormData(document.querySelector('#lab-form')).entries()) }))()`);
     add(makeCheck('ZS-DEMO-FORM-VALID', 'Valid form fixture submits with native FormData', valid.status === 'valid' && valid.data.plan === 'pro' && valid.data.email === 'ada@example.com' ? 'PASS' : 'FAIL', { evidence: JSON.stringify(valid) }));
 
+    /* ---------- native required fixture (no novalidate) ---------- */
+    await browser.navigate(server.url + 'quality-labs/demo/fixtures/native-required.html');
+    await browser.click('#nr-submit');
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    const blocked = await browser.evaluate(`(() => {
+      const inst = document.querySelector('#nr-fruit').__zidanSelect;
+      return {
+        submits: window.__submits,
+        live: inst.liveEl.textContent,
+        ariaInvalid: inst.input.getAttribute('aria-invalid'),
+        rootInvalid: inst.root.classList.contains('zs-root--invalid'),
+        focusOnCombobox: document.activeElement === inst.input,
+        liveMode: inst.liveEl.getAttribute('aria-live')
+      };
+    })()`);
+    const focusLog = (browser.diagnostics.log || []).filter((entry) => /not focusable/i.test(entry.text || '')).length;
+    add(makeCheck('ZS-DEMO-NATIVE-REQUIRED',
+      'A required enhanced select blocks submit with an announced error instead of an unfocusable-control dead end',
+      blocked.submits === 0 && blocked.rootInvalid && blocked.ariaInvalid === 'true' && blocked.focusOnCombobox && blocked.live.length > 0 && blocked.liveMode === 'polite' && focusLog === 0 ? 'PASS' : 'FAIL',
+      { evidence: JSON.stringify(Object.assign({}, blocked, { focusLog: focusLog })) }));
+
+    await browser.evaluate(`(() => { document.querySelector('#nr-fruit').__zidanSelect.setValue('apple'); })()`);
+    await browser.click('#nr-submit');
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    const sent = await browser.evaluate(`(() => ({ submits: window.__submits, data: Object.fromEntries(new FormData(document.querySelector('#nr-form')).entries()) }))()`);
+    add(makeCheck('ZS-DEMO-NATIVE-REQUIRED-VALID', 'Choosing a value lets the same native form submit with FormData', sent.submits === 1 && sent.data.fruit === 'apple' ? 'PASS' : 'FAIL', { evidence: JSON.stringify(sent) }));
+
     /* ---------- lifecycle fixture ---------- */
     await browser.navigate(server.url + 'quality-labs/demo/fixtures/lifecycle.html');
     const lifecycle = await browser.evaluate('window.__labLifecycle.cycle(10)');

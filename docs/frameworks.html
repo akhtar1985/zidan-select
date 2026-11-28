@@ -28,7 +28,7 @@
       <span class="logo-mark" aria-hidden="true">Z</span>
       <span>
         <span class="brand-name">ZidanForm</span>
-        <span class="brand-sub">v2.5.0 · zero dependencies</span>
+        <span class="brand-sub">v2.5.1 · zero dependencies</span>
       </span>
     </a>
     <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -593,6 +593,16 @@ const options: FieldOptions = { label: 'Email', validate: value =&gt; String(val
 const field: ZidanFieldBase | null = zidanField('#email', options);
 const select: ZidanSelect | ZidanSelect[] | null = zidanSelect('#country', { mode: 'combobox' });</code></pre>
 <p><code>zidanSelect()</code> returns one instance for one match and an array for multiple matches. Use <code>ZidanSelect.get(element)</code> when you need the instance attached to a native select, and <code>ZidanForm.get(input)</code> for a field.</p>
+<p>Events are typed too. <code>ZidanSelect#on()</code> narrows the handler for every <code>zidan:*</code> name, and the DOM event map is augmented, so <code>addEventListener('zidan:change', …)</code> receives a <code>CustomEvent</code> with the right detail. <code>ZidanEventMap</code>, <code>ZidanEventName</code>, <code>ZidanFormEventMap</code> and the per-event detail interfaces are exported.</p>
+<pre><code class="language-ts">select.on('zidan:change', event =&gt; {
+  const value = event.detail.value;   // string | string[] | null for selects
+  const owner = event.detail.instance; // ZidanSelect
+  void value; void owner;
+});
+field.root.addEventListener('zidan:validation', event =&gt; {
+  const state = event.detail.state;    // 'valid' | 'invalid' | null | undefined
+  void state;
+});</code></pre>
 <p>The declarations cover the file queue: <code>getFileState()</code>, <code>removeFiles()</code>, <code>isUploading()</code>, <code>whenUploaded()</code>, <code>setUploadUrl()</code>, <code>setUploadOptions()</code>, <code>retryAll()</code> and the upload/validation options. See <a href="options.html#instance-methods">options.md</a>.</p>
 <h2 id="css-frameworks-are-separate">CSS frameworks are separate</h2>
 <p>The JavaScript framework guides above are about component lifecycles. <strong>CSS-framework adapters</strong> are a different feature: set <code>data-zs-framework</code> (or <code>data-zidan-framework</code>) to <code>bootstrap</code>, <code>tailwind</code>, <code>bulma</code>, <code>foundation</code>, <code>vanilla</code> or <code>none</code> on a form or a parent. They map tokens and control sizing, not component state.</p>

@@ -1,0 +1,45 @@
+name: Package
+
+# Guards the published artefact rather than only the source: every export target
+# must resolve from the packed tarball, the tarball must stay lean, the shipped
+# declarations must compile for bundler and node16 consumers, and a checkout
+# without node_modules must be able to rebuild dist/ through the prepare hook.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: package-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      # npm ci also runs `prepare`, so dist/ exists for the checks below.
+      - run: npm ci
+
+      - name: Source checks
+        run: npm test
+
+      - name: Declarations
+        run: npm run types
+
+      - name: Published artefact
+        run: npm run pack:check
+
+      - name: Labs
+        run: npm run lab:all

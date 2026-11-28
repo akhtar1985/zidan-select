@@ -30,9 +30,9 @@ Sizes measure the current source build; CDN links pin the 2.5.1 release.
 
 | Build | JavaScript size | JavaScript (CDN) | CSS (CDN) |
 | --- | --- | --- | --- |
-| Full — every control | ≈301 kB raw · ≈172 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-theme.css) |
-| Select-only | ≈151 kB raw · ≈87 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-theme.css) |
-| File-only | ≈121 kB raw · ≈70 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.css) |
+| Full — every control | ≈308 kB raw · ≈172 kB minified | [zidan-form.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/zidan-form.js) | [plugin-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-core.css) + [plugin-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/plugin-theme.css) |
+| Select-only | ≈155 kB raw · ≈87 kB minified | [zidan-select.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/zidan-select.js) | [plugin-select-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-core.css) + [plugin-select-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/select/plugin-select-theme.css) |
+| File-only | ≈124 kB raw · ≈70 kB minified | [zidan-file.js](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/zidan-file.js) | [plugin-file-core.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-core.css) + [plugin-file-theme.css](https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.css) |
 
 Copyable snippets, ESM files and per-file sizes live in
 [Select-only and file-only builds](#select-only-and-file-only-builds); the
@@ -306,7 +306,7 @@ Copyable CDN URLs (pin the version):
 - `plugin-file-theme.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.css>
 - `plugin-file-theme.min.css` — <https://cdn.jsdelivr.net/npm/zidan-select@2.5.1/dist/file/plugin-file-theme.min.css>
 
-Select / combobox / tags only (≈151 kB raw / ≈87 kB minified JS, ≈13 → 10 kB core CSS,
+Select / combobox / tags only (≈155 kB raw / ≈87 kB minified JS, ≈13 → 10 kB core CSS,
 ≈34 → 29 kB theme CSS):
 
 ```html
@@ -320,7 +320,7 @@ Select / combobox / tags only (≈151 kB raw / ≈87 kB minified JS, ≈13 → 1
 </script>
 ```
 
-File upload only (≈121 kB raw / ≈70 kB minified JS, ≈10 → 7 kB core CSS,
+File upload only (≈124 kB raw / ≈70 kB minified JS, ≈10 → 7 kB core CSS,
 ≈39 → 34 kB theme CSS):
 
 ```html
@@ -1181,11 +1181,12 @@ npm run sizes   # sync the byte sizes quoted in the docs with dist/
 | Command | What it does |
 | --- | --- |
 | `scripts/serve.mjs` | No-dependency demo server on port 4173 (`PORT=8080 npm run dev`). |
-| `scripts/build.mjs` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, emits the select-only and file-only bundles with declarations, and minifies every JS/CSS output with esbuild. |
+| `scripts/build.mjs` | Cleans `dist/`, copies the core/theme CSS, emits the select-only and file-only bundles with declarations, and minifies every JS/CSS output with esbuild. Runs automatically on `npm install` (`prepare`) so git installs resolve `./select` and `./file`. |
 | `scripts/test.mjs` | Verifies syntax, that core CSS carries no colour literals, that all presets/adapters exist, the public API is exported, the build artifacts ship, and the playground, README, demo and cookbook stay wired to each other — then runs 71 jsdom behaviour suites. |
 | `scripts/dom/run.mjs` | jsdom suites for select, fields, uploads, async validation, pagination, RTL, teardown, and the select-only/file-only/minified bundles. |
 | `scripts/exa-search.mjs` | Exa web search for docs and release research: `npm run search -- "your question"` (`--num 10` for more results). Reads `EXA_API_KEY`; copy `.env.example` to `.env` (git-ignored) and add a key from https://dashboard.exa.ai/api-keys. |
 | `scripts/sizes.mjs` | Rewrites the byte sizes quoted in `docs/build.md`, `README.md`, `index.html` and `advanced.html` from `dist/`, so the docs cannot drift (`npm run sizes`). |
+| `scripts/pack-check.mjs` | Packs the tarball, unpacks it into a temporary consumer and proves every `exports` subpath resolves for CJS and ESM, that the shipped declarations compile under bundler and node16 resolution, and that a dependency-free copy can rebuild `dist/` (`npm run pack:check`). Also fails if the tarball ships generated HTML or grows past its 600 kB budget. |
 | `scripts/release.mjs` | One-command release: `npm run release -- patch --note "what changed"` bumps every version site, rolls `CHANGELOG.md`, runs the checks, commits and tags `vX.Y.Z`. |
 
 `exa-js` is a dev dependency only, so the published bundle stays dependency-free.

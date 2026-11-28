@@ -26,9 +26,10 @@ zidan-select/
 │  ├─ serve.mjs         # dependency-free dev server (port 4173)
 │  ├─ build.mjs         # assembles dist/ and the select/file subset bundles
 │  ├─ test.mjs          # syntax / split-CSS / API checks
+│  ├─ pack-check.mjs    # packs the tarball and proves every export resolves
 │  └─ release.mjs       # one-command version bump, changelog roll, commit and tag
 ├─ docs/                # comparison, options, validation, frameworks, theming, build
-├─ .github/workflows/   # pages.yml (demo) and release.yml (npm publish with provenance)
+├─ .github/workflows/   # pages.yml (demo), package.yml (tarball + types) and release.yml (npm publish)
 ├─ CHANGELOG.md
 ├─ README.md
 └─ LICENSE
@@ -57,8 +58,10 @@ side by side at the [builds section](https://akhtar1985.github.io/zidan-select/#
 | `npm run dev` | Serves the repo at <http://localhost:4173> (`PORT=8080 npm run dev`). No dependency needed. |
 | `npm test` | `node --check` on every script, asserts `plugin-core.css` has no colour literals, checks all presets/adapters, the exported API, and that the documented asset sizes match `dist/`. |
 | `npm run lint` | Syntax check only. |
-| `npm run build` | Cleans `dist/`, copies the four assets, writes `dist/zidan-form.cjs`, generates the select-only and file-only bundles, and minifies **if** esbuild is installed. |
+| `npm run build` | Cleans `dist/`, copies the core/theme CSS, generates the select-only and file-only bundles, and minifies **if** esbuild is installed. The full JS entry stays at the package root, so the package never ships the same file twice. |
+| `npm install` | Runs `prepare`, so a git install (`npm i user/repo`) builds `dist/` and its `./select` and `./file` subpaths resolve. Minified subpaths need esbuild, which the tarball already contains. |
 | `npm run sizes` | Rewrites the byte sizes quoted in `docs/build.md`, `README.md`, `index.html` and `advanced.html` from the built files. Run it after `npm run build`; `npm test` fails when they drift. |
+| `npm run pack:check` | Packs the tarball, unpacks it into a temporary consumer, resolves every `exports` subpath for CJS and ESM, compiles the shipped declarations under bundler and node16 resolution, and rebuilds `dist/` from a copy with no `node_modules`. `package.yml` runs it on every pull request. |
 | `npm run release -- patch` | Bumps every version site, rolls `CHANGELOG.md`, runs the checks, commits and tags `vX.Y.Z`. |
 
 There is no watch task: the JS and CSS are the distributables, so edit and reload. `npm run
@@ -68,9 +71,6 @@ dev` sends `Cache-Control: no-store`, which is enough for the demo.
 
 ```
 dist/
-├─ zidan-form.js
-├─ zidan-form.mjs
-├─ zidan-form.cjs          # module.exports = require('../zidan-form.js')
 ├─ plugin-core.css
 ├─ plugin-theme.css
 ├─ select/
@@ -131,9 +131,9 @@ Regenerate them with `npm run build` followed by `npm run sizes`; `npm test` fai
 
 | Build | JavaScript | Core CSS | Theme CSS |
 | --- | --- | --- | --- |
-| Full | 307,741 B (≈301 kB) → 176,211 B (≈172 kB) | 44,449 B (≈43 kB) → 33,969 B (≈33 kB) | 53,149 B (≈52 kB) → 44,755 B (≈44 kB) |
-| Select-only | 154,350 B (≈151 kB) → 88,818 B (≈87 kB) | 13,441 B (≈13 kB) → 10,199 B (≈10 kB) | 34,705 B (≈34 kB) → 29,373 B (≈29 kB) |
-| File-only | 124,134 B (≈121 kB) → 72,109 B (≈70 kB) | 10,512 B (≈10 kB) → 7,434 B (≈7 kB) | 40,404 B (≈39 kB) → 34,695 B (≈34 kB) |
+| Full | 315,888 B (≈308 kB) → 176,398 B (≈172 kB) | 44,449 B (≈43 kB) → 33,969 B (≈33 kB) | 53,149 B (≈52 kB) → 44,755 B (≈44 kB) |
+| Select-only | 158,854 B (≈155 kB) → 89,005 B (≈87 kB) | 13,441 B (≈13 kB) → 10,199 B (≈10 kB) | 34,705 B (≈34 kB) → 29,373 B (≈29 kB) |
+| File-only | 127,152 B (≈124 kB) → 72,109 B (≈70 kB) | 10,512 B (≈10 kB) → 7,434 B (≈7 kB) | 40,404 B (≈39 kB) → 34,695 B (≈34 kB) |
 
 A page should load **one** flavour: a subset **or** the full build. The `__zidanFormGuard`
 check keeps the first initialised copy, so loading two flavours together does not merge their

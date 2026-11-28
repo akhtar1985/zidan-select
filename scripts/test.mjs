@@ -30,7 +30,7 @@ function assert(condition, message) {
 }
 
 check('JavaScript syntax', () => {
-  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'lab.js', 'advanced.js', 'ajax.js', 'playground.js', 'nav.js', 'scripts/build.mjs', 'scripts/docs.mjs', 'scripts/serve.mjs', 'scripts/exa-search.mjs', 'scripts/changelog-section.mjs', 'scripts/dom/run.mjs']) {
+  for (const file of ['zidan-form.js', 'zidan-form.mjs', 'demo.js', 'lab.js', 'advanced.js', 'ajax.js', 'playground.js', 'nav.js', 'scripts/build.mjs', 'scripts/docs.mjs', 'scripts/serve.mjs', 'scripts/exa-search.mjs', 'scripts/changelog-section.mjs', 'scripts/dom/run.mjs', 'scripts/dom/reliability.mjs', 'scripts/pack-check.mjs', 'scripts/test.mjs', 'scripts/sizes.mjs', 'scripts/release.mjs']) {
     execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'pipe' });
   }
 });
@@ -365,6 +365,8 @@ check('demo and documentation pages share the home visual system', () => {
         assert(html.includes('href="https://github.com/akhtar1985/zidan-select/blob/main/CHANGELOG.md"'), 'build guide does not link to the repository changelog');
         assert(html.includes('href="https://github.com/akhtar1985/zidan-select/blob/main/.github/workflows/release.yml"'), 'build guide does not link to the release workflow');
       }
+      assert(read('docs/' + out + '.html') === html,
+        'docs/' + out + '.html is stale — run "node scripts/docs.mjs docs" and commit the result');
       const prose = html.replace(/<pre>[\s\S]*?<\/pre>/g, '').replace(/<code>[\s\S]*?<\/code>/g, '');
       assert(!prose.includes('&lt;a '), out + ' guide escapes Markdown links instead of rendering them');
       const source = out === 'validation-guide' ? 'validation' : out;

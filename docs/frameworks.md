@@ -791,6 +791,22 @@ const select: ZidanSelect | ZidanSelect[] | null = zidanSelect('#country', { mod
 `ZidanSelect.get(element)` when you need the instance attached to a native select, and
 `ZidanForm.get(input)` for a field.
 
+Events are typed too. `ZidanSelect#on()` narrows the handler for every `zidan:*` name, and the
+DOM event map is augmented, so `addEventListener('zidan:change', …)` receives a `CustomEvent`
+with the right detail. `ZidanEventMap`, `ZidanEventName`, `ZidanFormEventMap` and the per-event
+detail interfaces are exported.
+
+~~~ts
+select.on('zidan:change', event => {
+  const value = event.detail.value;   // string | string[] | null for selects
+  const owner = event.detail.instance; // ZidanSelect
+  void value; void owner;
+});
+field.root.addEventListener('zidan:validation', event => {
+  const state = event.detail.state;    // 'valid' | 'invalid' | null | undefined
+  void state;
+});
+~~~
 The declarations cover the file queue: `getFileState()`, `removeFiles()`, `isUploading()`,
 `whenUploaded()`, `setUploadUrl()`, `setUploadOptions()`, `retryAll()` and the upload/validation
 options. See [options.md](options.md#instance-methods).
